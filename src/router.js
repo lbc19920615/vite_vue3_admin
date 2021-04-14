@@ -13,7 +13,8 @@ export const constantRouterMap = [
         path: "dashboard",
         name: "Home",
         meta: {
-          title: 'dashboard'
+          title: 'dashboard',
+          icon: 'shangdian'
         },
         component: () => import('@/views/home/index.vue'),
       },
