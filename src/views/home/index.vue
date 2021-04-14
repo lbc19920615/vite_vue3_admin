@@ -1,0 +1,20 @@
+<template>
+  home {{count}}
+  <button class="bg-green-300" @click="increment">increment</button>
+</template>
+
+<script>
+import { computed } from "vue";
+import { useStore } from 'vuex'
+
+export default {
+  setup(props) {
+    const store = useStore()
+    let count = computed(() => store.state.count)
+    return {
+      count,
+      increment: () => store.commit('increment'),
+    }
+  },
+}
+</script>
