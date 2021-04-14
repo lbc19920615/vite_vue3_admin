@@ -3,7 +3,7 @@
   <button class="bg-green-300" @click="increment">increment</button>
 </template>
 
-<script>
+<script lang="ts">
 import { computed } from "vue";
 import { useStore } from 'vuex'
 
