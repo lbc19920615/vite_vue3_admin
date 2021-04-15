@@ -1,4 +1,3 @@
-import { defineComponent } from 'vue'
 import SvgIcon from '@/components/SvgIcon/index.vue'// svg组件
 import './iconfont'
 
