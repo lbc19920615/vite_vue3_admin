@@ -12,7 +12,7 @@ export default {
     },
   },
   setup(props) {
-    const content = ref<string>(null);
+    const content = ref<string>('');
     //动态引入 异步加载
     import("../markdown/install.md").then((result) => {
       content.value = result.default;
