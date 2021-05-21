@@ -1,24 +1,20 @@
 <template>
-  <al-markdown></al-markdown>
-
-  home {{count}}
+  home {{ count }}
   <button class="bg-green-300" @click="increment">increment</button>
 </template>
 
 <script lang="ts">
 import { computed } from "vue";
-import { useStore } from 'vuex'
-import AlMarkdown from "../../components/AlMarkdown.vue";
+import { useStore } from "vuex";
 
 export default {
-  components: {AlMarkdown},
-  setup(props) {
-    const store = useStore()
-    let count = computed(() => store.state.count)
+  setup() {
+    const store = useStore();
+    let count = computed(() => store.state.count);
     return {
       count,
-      increment: () => store.commit('increment'),
-    }
+      increment: () => store.commit("increment"),
+    };
   },
-}
+};
 </script>
