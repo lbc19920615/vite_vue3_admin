@@ -10,7 +10,7 @@ import { useStore } from "vuex";
 export default {
   setup() {
     const store = useStore();
-    let count = computed(() => store.state.count);
+    let count = computed(() => store.state.demoModule.count);
     return {
       count,
       increment: () => store.commit("increment"),
