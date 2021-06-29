@@ -7,6 +7,8 @@ import 'normalize.css/normalize.css'
 import router from './router'
 import store from './store'
 
+import content from './links/test.linkvue'
+
 // store.dispatch('ToggleSideBar')
 store.dispatch('GenerateRoutes', {
   roles: ['admin']
@@ -17,12 +19,18 @@ import icons from './icons/index'
 import '@/styles/index.scss' // global css
 import '@/styles/app.scss'
 
+import eventBus from 'vue3-eventbus'
+
 
 const app = createApp(App)
+  // app.use(content)
   app.use(ElementPlus, {
     size: 'medium'
   })
+  app.use(eventBus)
   app.use(icons)
   app.use(router)
   app.use(store)
   app.mount('#app')
+
+window.app = app

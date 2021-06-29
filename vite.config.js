@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { md } from './plugins/md'
+import { linkvue } from './plugins/linkvue'
 import fs from 'fs'
 import path from 'path'
 import { exec } from 'child_process'
@@ -15,5 +16,5 @@ export default defineConfig({
       { find: '@', replacement: '/src' },
     ]
   },
-  plugins: [md({}), vue()],
+  plugins: [md({}), linkvue(), vue()],
 })
