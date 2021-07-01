@@ -5,7 +5,6 @@ const mdToJs = (str) => {
   let options = {}
   let template = ejs.compile(str, options);
   const content = template(data)
-  console.log(content)
   return `export default {
     install(app) {
       app.component('test-link', {
