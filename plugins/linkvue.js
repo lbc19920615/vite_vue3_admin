@@ -1,11 +1,12 @@
 import ejs from 'ejs'
 
 const mdToJs = (str) => {
-  let data = {}
-  let options = {}
-  let template = ejs.compile(str, options);
-  const content = template(data)
-  return `export default {
+  return new Promise(resolve => {
+    let data = {}
+    let options = {}
+    let template = ejs.compile(str, options);
+    const content = template(data)
+    let ret = `export default {
     install(app) {
       app.component('test-link', {
         template: \`${content}\`
@@ -13,6 +14,8 @@ const mdToJs = (str) => {
             console.log(app)
     }
   }`
+    resolve(ret)
+  })
 }
 
 export function linkvue(pluginOptions) {
@@ -21,7 +24,7 @@ export function linkvue(pluginOptions) {
     name: 'vite-import-linkvue',
     config() {
     },
-    transform(code, id) {
+    async transform(code, id) {
       if (!id.endsWith('.linkvue')) return null
 
       return mdToJs(code)
