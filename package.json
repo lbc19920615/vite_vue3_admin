@@ -10,7 +10,9 @@
     "ejs": "^3.1.6",
     "element-plus": "^1.0.2-beta.40",
     "js-cookie": "^2.2.1",
+    "json5": "^2.2.0",
     "normalize.css": "^8.0.1",
+    "twig": "^1.15.4",
     "vue": "^3.0.5",
     "vue-router": "^4.0.6",
     "vue-sfc-parser": "^0.1.2",
@@ -25,7 +27,6 @@
     "marked": "^2.0.1",
     "postcss": "^7.0.35",
     "sass": "^1.32.8",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.0",
     "vite": "^2.3.3"
   }
 }
