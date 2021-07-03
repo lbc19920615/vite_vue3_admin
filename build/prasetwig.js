@@ -1,7 +1,6 @@
-var Twig = require('twig'), // Twig module
-    twig = Twig.twig;
+import Twig from 'twig'
 
-var JSON5 = require('json5')
+import JSON5 from 'json5'
 
 // place to keep flags
 var vuecoms = {};
@@ -56,4 +55,6 @@ Twig.extend(function(Twig) {
     });
 });
 
-module.exports = Twig
+export {
+    Twig
+}

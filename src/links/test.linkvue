@@ -1,3 +1,12 @@
-<div>
-    sdsds
-</div>
+<template>
+    <div>
+        sdsds
+        {%  vuecom '{tag: "username"}' %}
+    </div>
+</template>
+
+<script>
+    export default {
+
+    }
+</script>
