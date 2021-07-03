@@ -1,7 +1,12 @@
-import { Twig } from './prasetwig'
+import { Twig, render } from './prasetwig'
 const { parseComponent } = require('vue-sfc-parser')
 
-console.log(Twig)
+
+const config = {
+  'username': {
+    vistrual: ''
+  }
+}
 
 function parseLinkVue(str) {
   const res = parseComponent(str)
@@ -9,14 +14,26 @@ function parseLinkVue(str) {
 
   let _template = res.template.content
 
-  let template = Twig.twig({
-    data: _template
-  }).render()
+  let [template, vuecoms] = render(_template)
 
-  console.log(_template)
+  for (let [key, value] of Object.entries(vuecoms)) {
+    console.log(key, value)
+  }
+
+
+  let _script = res.script.content
+
+  let script = `
+    let ENV = {}
+    ENV.config = {
+      template: \`${template}\`
+    }
+    app.component('test-link', ${_script})
+  `
 
   return {
-    template: template
+    template: template,
+    script
   }
 }
 
@@ -24,13 +41,9 @@ const mdToJs = (str) => {
   return new Promise(resolve => {
     let data = {}
     let options = {}
-    let { template } = parseLinkVue(str)
+    let { template, script } = parseLinkVue(str)
     let ret = `export default {
-    install(app) {
-      app.component('test-link', {
-        template: \`${template}\`
-      })
-    }
+    install(app) {${script}}
   }`
     resolve(ret)
   })

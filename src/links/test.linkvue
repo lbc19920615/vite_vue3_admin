@@ -1,12 +1,17 @@
 <template>
     <div>
         sdsds
-        {%  vuecom '{tag: "username"}' %}
+        {%  vuecom '{tag: "username-1", use: "username"}' %}
     </div>
 </template>
 
 <script>
-    export default {
+  (
+    {
+      ...ENV.config,
+        setup() {
 
+        }
     }
+  )
 </script>

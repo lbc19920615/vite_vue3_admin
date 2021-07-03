@@ -18,6 +18,8 @@ Twig.extend(function(Twig) {
 
         // runs on matched tokens when the template is loaded. (once per template)
         compile: function (token) {
+            vuecoms = {}
+
             var expression = token.match[1];
 
             // Compile the expression. (turns the string into tokens)
@@ -26,7 +28,7 @@ Twig.extend(function(Twig) {
                 value: expression
             }]).stack;
 
-            console.log(token.stack)
+            // console.log(token.stack)
 
             delete token.match;
             return token;
@@ -38,9 +40,11 @@ Twig.extend(function(Twig) {
             var param = Twig.expression.parse.apply(this, [token.stack, context]),
                 output = "";
 
-            console.log(typeof param, JSON5.parse(param))
+            // console.log(typeof param, JSON5.parse(param))
+
             try {
                 var obj = JSON5.parse(param)
+                vuecoms[obj.use] = obj
                 output = `<${obj.tag} />`
             } catch (e) {
                 console.error(e)
@@ -55,6 +59,16 @@ Twig.extend(function(Twig) {
     });
 });
 
+function render() {
+    let _template = Twig.twig({
+        data: _template
+    }).render()
+    return [
+      _template, vuecoms
+    ]
+}
+
 export {
-    Twig
+    Twig,
+    render
 }

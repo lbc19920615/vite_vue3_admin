@@ -10,7 +10,6 @@ import router from './router'
 import store from './store'
 
 import content from './links/test.linkvue'
-// console.log(content)
 
 // store.dispatch('ToggleSideBar')
 store.dispatch('GenerateRoutes', {
