@@ -24,7 +24,9 @@ import '@/styles/app.scss'
 import eventBus from 'vue3-eventbus'
 
 
-const app = Vue.createApp(App)
+
+window.startApp = function () {
+  const app = Vue.createApp(App)
   app.config.devtools = true
   app.use(content)
   app.use(ElementPlus, {
@@ -35,5 +37,4 @@ const app = Vue.createApp(App)
   app.use(router)
   app.use(store)
   app.mount('#app')
-
-window.app = app
+}
