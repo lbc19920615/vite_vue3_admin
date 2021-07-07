@@ -5,8 +5,9 @@
         <router-link v-if="hasOneShowingChildren(item.children) && !item.children[0].children&&!item.alwaysShow" :to="item.path+'/'+item.children[0].path"
                      :key="item.children[0].name">
           <el-menu-item :index="item.path+'/'+item.children[0].path" :class="{'submenu-title-noDropdown':!isNest}">
-            <template #title>
+            
               <svg-icon v-if="item.children[0].meta&&item.children[0].meta.icon" :icon-class="item.children[0].meta.icon"></svg-icon>
+            <template #title>
               <span v-if="item.children[0].meta&&item.children[0].meta.title" >{{item.children[0].meta.title}}</span>
             </template>
           </el-menu-item>
@@ -23,8 +24,9 @@
 
             <router-link v-else :to="item.path+'/'+child.path" :key="child.name">
               <el-menu-item :index="item.path+'/'+child.path">
-                <template #title>
+                
                   <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"></svg-icon>
+                <template #title>
                   <span v-if="child.meta&&child.meta.title">{{child.meta.title}}</span>
                 </template>
               </el-menu-item>
