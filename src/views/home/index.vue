@@ -10,7 +10,7 @@ import { useStore } from "vuex";
 
 export default {
   components: {
-    AboutView: globalThis.loadComponent('about.vue')
+    AboutView: globalThis.loadComponent('container.vue')
   },
   setup() {
     const store = useStore();
