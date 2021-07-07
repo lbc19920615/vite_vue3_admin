@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <test-link></test-link>
-    <remote-com></remote-com>
+    <router-view></router-view>
   </div>
 </template>
 

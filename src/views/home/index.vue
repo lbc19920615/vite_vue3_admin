@@ -1,6 +1,7 @@
 <template>
   home {{ count }}
   <button class="bg-green-300" @click="increment">increment</button>
+  <AboutView></AboutView>
 </template>
 
 <script lang="ts">
@@ -8,6 +9,9 @@ import { computed } from "vue";
 import { useStore } from "vuex";
 
 export default {
+  components: {
+    AboutView: globalThis.loadComponent('about.vue')
+  },
   setup() {
     const store = useStore();
     let count = computed(() => store.state.demoModule.count);

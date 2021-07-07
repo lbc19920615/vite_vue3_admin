@@ -4,7 +4,10 @@ import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
 import 'normalize.css/normalize.css'
 
-// console.log(Vue)
+globalThis.Vue = Vue
+
+// console.log(globalThis.initBsLoader)
+
 
 import router from './router'
 import store from './store'
@@ -24,9 +27,12 @@ import '@/styles/app.scss'
 import eventBus from 'vue3-eventbus'
 
 
+globalThis.initBsLoader(Vue)
 
 window.startApp = function () {
+
   const app = Vue.createApp(App)
+  app.use(globalThis.moduleConfig)
   app.config.devtools = true
   app.use(content)
   app.use(ElementPlus, {
@@ -37,4 +43,5 @@ window.startApp = function () {
   app.use(router)
   app.use(store)
   app.mount('#app')
+  return app
 }

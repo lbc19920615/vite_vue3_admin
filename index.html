@@ -9,9 +9,15 @@
   </head>
   <body>
     <div id="app"></div>
+    <script src="https://unpkg.com/vue3-sfc-loader/dist/vue3-sfc-loader.js"></script>
+    <script type="module">
+      import { moduleConfig, initBsLoader } from 'http://localhost:7002/public/vue-bs-loader.js'
+      globalThis.moduleConfig = moduleConfig
+      globalThis.initBsLoader = initBsLoader
+    </script>
     <script type="module" src="/src/main.js"></script>
     <script type="module">
-      window.startApp()
+      globalThis.app = window.startApp()
     </script>
   </body>
 </html>
