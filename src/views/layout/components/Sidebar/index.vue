@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="logo">
-      <img src="//oss.kaoyanvip.cn/uploads/file1573098085835.jpg">
+      <!-- <img src="//oss.kaoyanvip.cn/uploads/file1573098085835.jpg"> -->
+      <div class="normal">LOGO</div>
+      <div class="small">L</div>
     </div>
     <el-scrollbar wrapClass="scrollbar-wrapper">
       <el-menu mode="vertical" :show-timeout="200"
@@ -16,7 +18,7 @@
 <script>
 import { useStore } from 'vuex'
 import SidebarItem from './SidebarItem.vue'
-import {computed, ref} from "vue";
+import {computed} from "vue";
 
 export default {
   components: { SidebarItem },

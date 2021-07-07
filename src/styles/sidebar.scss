@@ -1,4 +1,6 @@
 #app {
+  --app-sidebar-width: 55px;
+
   // 主体区域
   .main-container {
     min-height: 100%;
@@ -51,13 +53,24 @@
   }
   .logo {
     height: 63px;
+    > * {
+      height: 100%;
+      place-items: center;
+      font-size: 30px;
+    }
+    .normal {
+      display: grid;
+    }
+    .small {
+      display: none;
+    }
   }
   .hideSidebar {
     .sidebar-container {
-      width: 45px !important;
+      width: var(--app-sidebar-width) !important;
     }
     .main-container {
-      margin-left: 45px;
+      margin-left: var(--app-sidebar-width);
     }
     .submenu-title-noDropdown {
       padding-left: 15px !important;
@@ -89,9 +102,11 @@
       }
     }
     .logo {
-      img {
-        height: 45px;
-        transform: translate(-14px, 8px);
+      .small {
+        display: grid;
+      }
+      .normal {
+        display: none;
       }
     }
   }
