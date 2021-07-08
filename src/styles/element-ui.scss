@@ -29,12 +29,11 @@
   }
 }
 
-
-//@font-face{
-//  font-family:element-icons;
-//  src:url(../../node_modules/element-ui/lib/theme-chalk/fonts/element-icons.woff) format("woff"),
-//      url(../../node_modules/element-ui/lib/theme-chalk/fonts/element-icons.ttf) format("truetype");
-//  font-weight:400;
-//  font-display:"auto";
-//  font-style:normal
-//}
+@font-face{
+  font-family:element-icons;
+  src:url(../../node_modules/element-plus/lib/theme-chalk/fonts/element-icons.woff) format("woff"),
+      url(../../node_modules/element-plus/lib/theme-chalk/fonts/element-icons.ttf) format("truetype");
+  font-weight:400;
+  font-display: auto;
+  font-style:normal
+}

@@ -7,7 +7,7 @@
 
 <template>
   <div>
-    about
+    <i class="el-icon-edit"></i>about
   </div>
 </template>
 
