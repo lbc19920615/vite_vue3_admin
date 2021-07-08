@@ -8,7 +8,6 @@ globalThis.Vue = Vue
 
 // console.log(globalThis.initBsLoader)
 
-
 import router from './router'
 import store from './store'
 
@@ -26,6 +25,8 @@ import '@/styles/app.scss'
 
 import eventBus from 'vue3-eventbus'
 
+import * as remote from '@/plugins/remote'
+
 
 globalThis.initBsLoader(Vue)
 
@@ -35,6 +36,7 @@ window.startApp = function () {
   app.use(globalThis.moduleConfig)
   app.config.devtools = true
   app.use(content)
+  app.use(remote)
   app.use(ElementPlus, {
     size: 'medium'
   })

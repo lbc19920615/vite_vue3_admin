@@ -7,13 +7,10 @@
 <script>
 import {defineAsyncComponent, defineComponent} from "vue";
 
-export default {
+export default defineComponent({
   components: {
-    remoteCom:defineAsyncComponent({
-      loader: () =>  import('./components/base.vue')
-    })
   }
-}
+})
 </script>
 
 <style>
