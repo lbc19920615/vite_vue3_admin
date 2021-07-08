@@ -7,6 +7,7 @@
 
 <script>
 import {defineComponent, getCurrentInstance, ref} from "vue";
+import * as Vue from "vue";
 
 export default defineComponent({
   components: {
@@ -28,19 +29,20 @@ export default defineComponent({
     let serviceNames = ref([
     ])
 
-    // function installService(serviceName = '', path = '') {
-    //   if (serviceNames.value.indexOf(serviceName) < 0) {
-    //     /* @vite-ignore */
-    //     import(path).then(res => {
-    //       const service = res.default
-    //       app.appContext.app.component(serviceName, service)
-    //       setTimeout(() => {
-    //         serviceNames.value.push(serviceName)
-    //       }, 16)
-    //     })
-    //   }
-    // }
+    function installService(serviceName = '', path = '') {
+      if (serviceNames.value.indexOf(serviceName) < 0) {
+        globalThis.importScripts(path)
+            .then(res => {
+          const service = res.install(Vue)
+          app.appContext.app.component(serviceName, service)
+          setTimeout(() => {
+            serviceNames.value.push(serviceName)
+          }, 16)
+        })
+      }
+    }
 
+    /* @vite-ignore */
     // installService('serviceA', './storecoms/service.vue')
 
 

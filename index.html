@@ -27,6 +27,9 @@
             }
         }
         window.customElements.define('app-loading', AppLoading);
+        globalThis.importScripts = function (p = '') {
+          return import(p)
+        }
     </script>
     <script src="http://localhost:7002/public/vue3-sfc-loader.js"></script>
     <script type="module">

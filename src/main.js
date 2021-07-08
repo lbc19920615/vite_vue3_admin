@@ -32,6 +32,10 @@ window.startApp = function () {
   const storeApp = Vue.createApp(StoreApp)
   const app = Vue.createApp(App)
 
+  app.config.isCustomElement = tag => {
+    return tag === 'app-loading'
+  }
+
   storeApp.use({
     install(_a) {
       _a.config.globalProperties.$mainApp = app
