@@ -1,3 +1,5 @@
+import {onMounted} from "vue";
+
 export function install (app) {
   globalThis.loadTemplate('cm-field-tpl', globalThis, {
     path: 'template-field'
@@ -13,7 +15,12 @@ export function install (app) {
         modelValue: null
       },
       setup(props, {emit}) {
-        const { ref } = Vue
+        const { ref, onMounted } = Vue
+        // console.log(props.modelValue)
+        onMounted(() => {
+          value.value = props.modelValue
+        })
+
         const value = ref(null)
         function onInput(e) {
           // console.log('onInput', props.modelValue, e)

@@ -22,13 +22,22 @@ import '@/styles/app.scss'
 import eventBus from 'vue3-eventbus'
 
 import * as remote from '@/plugins/remote'
+import StoreApp from "./StoreApp.vue";
 
 
 globalThis.initBsLoader(Vue)
 
 window.startApp = function () {
 
+  const storeApp = Vue.createApp(StoreApp)
   const app = Vue.createApp(App)
+
+  storeApp.use({
+    install(_a) {
+      _a.config.globalProperties.$mainApp = app
+    }
+  })
+
   app.use(globalThis.moduleConfig)
   app.config.devtools = true
   app.use(remote)
@@ -39,6 +48,10 @@ window.startApp = function () {
   app.use(icons)
   app.use(router)
   app.use(store)
+
+
+  storeApp.mount('#storeApp')
   app.mount('#app')
+
   return app
 }
