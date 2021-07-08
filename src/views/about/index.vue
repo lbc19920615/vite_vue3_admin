@@ -6,8 +6,9 @@
 </style>
 
 <template>
-  <canvas id="canvas"/>
-  <canvas id="name"/>
+  <div>
+    about
+  </div>
 </template>
 
 <script>

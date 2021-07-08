@@ -8,26 +8,31 @@ export const constantRouterMap = [
     component: Layout,
     redirect: 'dashboard',
     hidden: false,
+    meta: {
+      title: 'views',
+      icon: 'shangdian'
+    },
     children: [
       {
         path: "dashboard",
         name: "Home",
         meta: {
           title: 'dashboard',
-          icon: 'shangdian'
+          // icon: 'shangdian'
         },
         component: () => import('@/views/home/index.vue'),
       },
+      {
+        path: "about",
+        name: "About",
+
+        meta: {
+          title: 'About',
+          // icon: 'shangdian'
+        },
+        component: () => import('@/views/about/index.vue'),
+      },
     ]
-  },
-  {
-    path: "/about",
-    name: "About",
-    hidden: false,
-    meta: {
-      title: 'About'
-    },
-    component: () => import('@/views/about/index.vue'),
   },
 ];
 

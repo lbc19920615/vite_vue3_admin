@@ -11,8 +11,6 @@ globalThis.Vue = Vue
 import router from './router'
 import store from './store'
 
-import content from './links/test.linkvue'
-
 // store.dispatch('ToggleSideBar')
 store.dispatch('GenerateRoutes', {
   roles: ['admin']
@@ -35,7 +33,6 @@ window.startApp = function () {
   const app = Vue.createApp(App)
   app.use(globalThis.moduleConfig)
   app.config.devtools = true
-  app.use(content)
   app.use(remote)
   app.use(ElementPlus, {
     size: 'medium'

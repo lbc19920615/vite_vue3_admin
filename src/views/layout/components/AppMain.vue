@@ -4,11 +4,12 @@
 <!--      &lt;!&ndash; <router-view :key="key"></router-view> &ndash;&gt;-->
 <!--      <router-view></router-view>-->
 <!--    </transition>-->
-    <router-view v-slot="{ Component }">
-      <transition name="fade" mode="out-in">
-        <component :is="Component" />
-      </transition>
-    </router-view>
+<!--    <router-view v-slot="{ Component }">-->
+<!--      <transition name="fade" mode="out-in">-->
+<!--        <component :is="Component" />-->
+<!--      </transition>-->
+<!--    </router-view>-->
+    <router-view></router-view>
   </section>
 </template>
 
