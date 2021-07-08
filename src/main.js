@@ -6,8 +6,6 @@ import 'normalize.css/normalize.css'
 
 globalThis.Vue = Vue
 
-// console.log(globalThis.initBsLoader)
-
 import router from './router'
 import store from './store'
 
