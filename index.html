@@ -9,6 +9,24 @@
   </head>
   <body>
     <div id="app"></div>
+    <template id="loading-tpl">
+        <div
+        style="position: fixed; left: 0; top: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"
+        >
+            <div style="font-size: 60px;">Loading...</div>
+        </div>
+    </template>
+    <script>
+        class AppLoading extends HTMLElement {
+            constructor() {
+                super();
+                let tmpl = document.getElementById('loading-tpl')
+                let shadowRoot = this.attachShadow({mode: 'open'});
+                shadowRoot.appendChild(tmpl.content.cloneNode(true));
+            }
+        }
+        window.customElements.define('app-loading', AppLoading);
+    </script>
     <script src="http://localhost:7002/public/vue3-sfc-loader.js"></script>
     <script type="module">
       import { moduleConfig, initBsLoader } from 'http://localhost:7002/public/vue-bs-loader.js'
