@@ -24,11 +24,6 @@ import eventBus from 'vue3-eventbus'
 import * as remote from '@/plugins/remote'
 import StoreApp from "./StoreApp.vue";
 
-import content1 from '@my-virtual-file:src=template-field.twig'
-globalThis.initTemplate('test-tpl-id', globalThis, {
-  html: content1
-})
-
 globalThis.initBsLoader(Vue)
 
 window.startApp = function () {

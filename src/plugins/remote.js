@@ -1,12 +1,18 @@
-import {onMounted} from "vue";
+// import fieldContent from '@my-virtual-file:src=template-field.twig'
+// import coma from "__remote/coma.js"
+//
+// console.log(coma)
 
 export function install (app) {
-  globalThis.loadTemplate('cm-field-tpl', globalThis, {
-    path: 'template-field'
-  }).then(({html}) => {
-    // console.log('html', html)
+  import('@my-virtual-file:src=template-field.twig').then(res => {
+    let templateId = 'cm-field-tpl'
+
+    globalThis.initTemplate(templateId, globalThis, {
+      html: res.default
+    })
+
     app.component('cm-field', {
-      template: html,
+      template: '#' + templateId,
       props: {
         prop: String,
         label: String,
@@ -38,4 +44,10 @@ export function install (app) {
       }
     })
   })
+
+  // globalThis.loadTemplate('cm-field-tpl', globalThis, {
+  //   path: 'template-field'
+  // }).then(({html}) => {
+  //   // console.log('html', html)
+  // })
 }
