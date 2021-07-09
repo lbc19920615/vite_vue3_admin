@@ -1,10 +1,8 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { md } from './plugins/md'
-import { linkvue } from './plugins/linkvue'
-import fs from 'fs'
+import fileloader from './plugins/fileloader'
 import path from 'path'
-import { exec } from 'child_process'
 
 const projectRootDir = path.resolve(__dirname);
 
@@ -16,5 +14,5 @@ export default defineConfig({
       { find: '@', replacement: '/src' },
     ]
   },
-  plugins: [md({}), linkvue(), vue()],
+  plugins: [md({}), fileloader(),  vue()],
 })

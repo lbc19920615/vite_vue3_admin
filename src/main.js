@@ -24,6 +24,8 @@ import eventBus from 'vue3-eventbus'
 import * as remote from '@/plugins/remote'
 import StoreApp from "./StoreApp.vue";
 
+import { msg } from '@my-virtual-file:method=query_sql_dataset_data&projectId=85&appToken=7d22e38e-5717-11e7-907b-a6006ad3dba0'
+console.log(msg)
 
 globalThis.initBsLoader(Vue)
 
