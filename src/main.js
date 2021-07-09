@@ -32,7 +32,7 @@ window.startApp = function () {
   const storeApp = Vue.createApp(StoreApp)
   const app = Vue.createApp(App)
 
-  app.config.isCustomElement = tag => {
+  app.config.compilerOptions.isCustomElement = tag => {
     return tag === 'app-loading'
   }
 
