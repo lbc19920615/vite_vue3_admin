@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import {defineComponent, getCurrentInstance, ref} from "vue";
+import {defineComponent, getCurrentInstance, onMounted, ref} from "vue";
 import * as Vue from "vue";
 
 export default defineComponent({
@@ -20,12 +20,13 @@ export default defineComponent({
           .config.globalProperties.$globalStore = this
       app.appContext.config.globalProperties.$mainApp.provide('globalStore', this)
       // console.log(app.appContext.config.globalProperties.$mainApp
+      // app.appContext.config.globalProperties.$context = this
       //     .config.globalProperties)
     }
     globalThis.storeApp = this
   },
-  setup(){
-    let app = getCurrentInstance()
+  setup(props, ctx){
+    let appInstance = getCurrentInstance()
     let serviceNames = ref([
     ])
 
@@ -34,7 +35,7 @@ export default defineComponent({
         globalThis.importScripts(path)
             .then(res => {
           const service = res.install(Vue)
-          app.appContext.app.component(serviceName, service)
+          appInstance.appContext.app.component(serviceName, service)
           setTimeout(() => {
             serviceNames.value.push(serviceName)
           }, 16)
@@ -42,9 +43,20 @@ export default defineComponent({
       }
     }
 
-    /* @vite-ignore */
-    // installService('serviceA', './storecoms/service.vue')
-
+    async function run(name, method, ...args) {
+      if (this.$refs[name] && this.$refs[name][method]) {
+        let [err, ret] = await to(
+            this.$refs[name][method].apply(null, args)
+        )
+        if (err) {
+          return Promise.reject(err)
+        } else {
+          return ret
+        }
+      } else {
+        console.error('no service')
+      }
+    }
 
     let num = ref(0)
     function setNum(v) {
@@ -55,6 +67,7 @@ export default defineComponent({
       serviceNames,
       num,
       installService,
+      run,
       setNum
     }
   }

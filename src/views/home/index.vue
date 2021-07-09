@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import {computed, getCurrentInstance, inject, reactive} from "vue";
+import { inject, reactive } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -21,8 +21,10 @@ export default {
     // const app = getCurrentInstance()
     // console.log('home', app.appContext.config.globalProperties)
     const globalStore = inject('globalStore')
+
+    globalStore.installService('serviceA', 'http://localhost:7002/public/service.js')
     // console.log(globalStore.num)
-    globalStore.setNum(1)
+    // globalStore.setNum(1)
 
     const store = useStore();
     const model = reactive({
