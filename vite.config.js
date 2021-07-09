@@ -14,5 +14,12 @@ export default defineConfig({
       { find: '@', replacement: '/src' },
     ]
   },
-  plugins: [md({}), fileloader(),  vue()],
+  plugins: [
+    md({}),
+    fileloader({
+      virtualFileId: '@my-virtual-file',
+      origin: 'http://localhost:7002/getcontent'
+    }),
+    vue()
+  ],
 })

@@ -36,8 +36,9 @@
       import { moduleConfig, initBsLoader } from 'http://localhost:7002/public/vue-bs-loader.js'
       globalThis.moduleConfig = moduleConfig
       globalThis.initBsLoader = initBsLoader
-      import { loadTemplate } from 'http://localhost:7002/public/template-loader.js'
+      import { loadTemplate,initTemplate } from 'http://localhost:7002/public/template-loader.js'
       globalThis.loadTemplate = loadTemplate
+      globalThis.initTemplate = initTemplate
     </script>
     <script type="module" src="/src/main.js"></script>
     <script type="module">
