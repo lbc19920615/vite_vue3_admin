@@ -7,15 +7,14 @@
 
 <template>
   <div>
-    <i class="el-icon-edit"></i>about
+    <table-a></table-a>
   </div>
 </template>
 
 <script>
-// import chinaJson from './china.json'
-// import * as d3geo from 'd3-geo'
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   data () {
     return {
       scene: null, // 场景
@@ -24,6 +23,9 @@ export default {
       map: null // 地图容器
     }
   },
-  methods: {}
-}
+  methods: {},
+  components: {
+    'tableA': globalThis.loadComponent('tabledef.vue', '&config_id=s1212121222sss1212121')
+  }
+})
 </script>
