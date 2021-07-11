@@ -32,6 +32,16 @@ export const constantRouterMap = [
         },
         component: () => import('@/views/about/index.vue'),
       },
+      {
+        path: "search",
+        name: "Search",
+
+        meta: {
+          title: 'Search',
+          // icon: 'shangdian'
+        },
+        component: () => import('@/views/home/search.vue'),
+      },
     ]
   },
 ];

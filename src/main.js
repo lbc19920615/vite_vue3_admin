@@ -24,6 +24,8 @@ import eventBus from 'vue3-eventbus'
 import * as remote from '@/plugins/remote'
 import StoreApp from "./StoreApp.vue";
 
+import * as highlightPlugin from '@/plugins/highlight'
+
 globalThis.initBsLoader(Vue)
 
 window.startApp = function () {
@@ -47,6 +49,7 @@ window.startApp = function () {
   app.use(ElementPlus, {
     size: 'medium'
   })
+  app.use(highlightPlugin)
   app.use(eventBus)
   app.use(icons)
   app.use(router)
