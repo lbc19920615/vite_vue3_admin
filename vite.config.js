@@ -13,7 +13,7 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: '@', replacement: '/src' },
-      { find: '__remote', replacement: 'http://localhost:7002/public' },
+      { find: '__remote', replacement: 'http://localhost:7002' },
     ]
   },
   plugins: [

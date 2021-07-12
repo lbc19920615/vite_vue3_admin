@@ -39,7 +39,7 @@ export default function myPlugin({
                 // console.log('load', id, parsed[1])
                 if (Array.isArray(parsed) && parsed[1]) {
                     let query = qs.parse(parsed[1])
-                    console.log(parsed[1])
+                    // console.log(parsed[1])
                     let content = await fetchText(origin + '?' + parsed[1])
                     return 'export default `'+content+'`'
                 }

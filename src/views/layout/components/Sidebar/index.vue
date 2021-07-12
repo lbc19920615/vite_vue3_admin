@@ -39,7 +39,7 @@ export default {
     const active_path = computed(() => {
       let route = router.currentRoute.value
 
-      console.log(route)
+      // console.log(route)
       let { meta = {} } = route;
       let { parentPath = "" } = meta;
       return parentPath || route.path;

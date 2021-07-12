@@ -9,7 +9,7 @@ export default () => {
             //     `<title>Title replaced!</title>`
             // )
             let [ret] =  render(html)
-            console.log(ret)
+            // console.log(ret)
             return ret
         }
     }
