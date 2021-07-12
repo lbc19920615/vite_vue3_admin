@@ -18,21 +18,39 @@ $sel: "." + $tag;
 
 <script>
 import MyHighlight from "@/components/Myhighlight/MyHighlight.vue";
-import {getCurrentInstance} from "vue";
+import {defineAsyncComponent, getCurrentInstance} from "vue";
 
-import fieldContent from '@my-virtual-file:src=searchdemo.twig&config_id=s1212121222sss1212121'
-import coma from "__remote/getscript?src=searchdemodef.js&config_id=s1212121222sss1212121"
-console.log(coma)
 
 
 export default {
   name: "Search",
-  components: {MyHighlight},
+  components: {
+    MyHighlight,
+    ['search-demo1']: defineAsyncComponent(() => {
+      return new Promise((resolve, reject) => {
+        import('@my-virtual-file:src=searchdemo.twig&config_id=s1212121222sss1212121').then((res) => {
+          let templateId = 'search-demo1-tpl'
+          globalThis.initTemplate(templateId, globalThis, {
+            html: res.default
+          })
+          import("__remote/getscript?src=searchdemodef.js&config_id=s1212121222sss1212121").then((def) => {
+            console.log(def)
+            resolve({
+              template: '#' + templateId,
+              ...def.default
+            })
+          })
+        }).catch(e => {
+          console.error(e)
+        })
+      })
+    })
+  },
   created() {
-    this.$defineComponent('search-demo1', { template: fieldContent, def: coma })
   },
   setup() {
     let instance = getCurrentInstance()
+
   }
 }
 </script>
