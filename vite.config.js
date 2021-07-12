@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { md } from './plugins/md'
 import fileloader from './plugins/fileloader'
 import path from 'path'
+import htmlPlugin from './plugins/html'
 
 const projectRootDir = path.resolve(__dirname);
 
@@ -17,6 +18,7 @@ export default defineConfig({
   },
   plugins: [
     md({}),
+    htmlPlugin(),
     fileloader({
       virtualFileId: '@my-virtual-file',
       origin: 'http://localhost:7002/getcontent'
