@@ -1,5 +1,5 @@
 <style lang="scss">
-$tag: "pgae-search";
+$tag: "page-search";
 $sel: "." + $tag;
 
 #{$sel} {
@@ -7,8 +7,7 @@ $sel: "." + $tag;
 </style>
 
 <template>
-  <div class="pgae-search">
-    <my-highlight tpl="search-doc-1">
+  <div class="page-search"><my-highlight tpl="search-doc-1">
     </my-highlight>
   </div>
 </template>
