@@ -61,12 +61,26 @@ Twig.extend(function(Twig) {
 
 function render(data) {
     let _template = Twig.twig({
-        data: data
+        data: data,
+        allowInlineIncludes: true
     }).render()
     return [
         _template, vuecoms
     ]
 }
+
+Twig.cache(false);
+export async function renderTwig(path, params = {}) {
+    return new Promise((resolve, reject) => {
+        Twig.renderFile(path, params, (err, html) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(html);
+        });
+    });
+}
+
 
 export {
     Twig,
