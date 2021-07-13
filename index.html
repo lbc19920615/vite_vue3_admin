@@ -5,11 +5,9 @@
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
-    <script src="./three.js"></script>
   </head>
   <body>
 {% include './src/htmls/template.html' %}
-
     <div id="app"></div>
     <div id="storeApp"></div>
     <template id="loading-tpl">
@@ -30,7 +28,7 @@
         }
         window.customElements.define('app-loading', AppLoading);
         globalThis.importScripts = function (p = '') {
-          return import(p)
+            return import(p)
         }
     </script>
     <script src="http://localhost:7002/public/vue3-sfc-loader.js"></script>

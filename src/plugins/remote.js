@@ -5,14 +5,14 @@
 
 export function install (app) {
 
-  app.config.globalProperties.$defineComponent = function(name, {template = '', def = {}} = {}) {
-    if (!app._instance.appContext.components[name]) {
-      app.component(name, {
-        template,
-        ...def
-      })
-    }
-  };
+  // app.config.globalProperties.$defineComponent = function(name, {template = '', def = {}} = {}) {
+  //   if (!app._instance.appContext.components[name]) {
+  //     app.component(name, {
+  //       template,
+  //       ...def
+  //     })
+  //   }
+  // };
 
   import('@my-virtual-file:src=template-field.twig').then(res => {
     let templateId = 'cm-field-tpl'
@@ -28,7 +28,13 @@ export function install (app) {
         label: String,
         type: String,
         formPath: String,
-        modelValue: null
+        modelValue: null,
+        ui: {
+          type: Object,
+          default() {
+            return {}
+          }
+        }
       },
       setup(props, {emit}) {
         const { ref, onMounted } = Vue
