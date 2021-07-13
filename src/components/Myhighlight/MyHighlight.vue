@@ -8,7 +8,7 @@ $sel: ".my-highlight";
 
 <template>
 <div>
-  <h3>{{label}}</h3>
+  <h3>{{label}}<slot name="header"></slot></h3>
   <slot></slot>
   <pre v-if="rendered" v-highlightjs class="my-highlight">
 <code
