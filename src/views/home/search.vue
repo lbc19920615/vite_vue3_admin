@@ -27,23 +27,7 @@ export default {
   components: {
     MyHighlight,
     ['search-demo1']: defineAsyncComponent(() => {
-      return new Promise((resolve, reject) => {
-        import('@my-virtual-file:src=searchdemo.twig&config_id=s1212121222sss1212121').then((res) => {
-          let templateId = 'search-demo1-tpl'
-          globalThis.initTemplate(templateId, globalThis, {
-            html: res.default
-          })
-          import("__remote/getscript?src=searchdemodef.js&config_id=s1212121222sss1212121").then((def) => {
-            console.log(def)
-            resolve({
-              template: '#' + templateId,
-              ...def.default
-            })
-          })
-        }).catch(e => {
-          console.error(e)
-        })
-      })
+      return import("__remote/getscript?src=searchdemodef/index.twigvue&config_id=search.json5")
     })
   },
   created() {
