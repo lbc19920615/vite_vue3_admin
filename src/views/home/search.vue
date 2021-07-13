@@ -10,7 +10,12 @@ $sel: "." + $tag;
   <div class="page-search">
     <search-demo1></search-demo1>
 
-    <my-highlight tpl="search-doc-1">
+    <my-highlight label="search-demo1 code">
+      <textarea lang="js" style="display: none">
+['search-demo1']: defineAsyncComponent(() => {
+  return import("__remote/getscript?src=searchdemodef/index.twigvue&config_id=search.json5")
+})
+      </textarea>
     </my-highlight>
 
   </div>

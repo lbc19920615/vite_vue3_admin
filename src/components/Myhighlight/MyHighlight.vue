@@ -8,6 +8,7 @@ $sel: ".my-highlight";
 
 <template>
 <div>
+  <h3>{{label}}</h3>
   <slot></slot>
   <pre v-if="rendered" v-highlightjs class="my-highlight">
 <code
@@ -47,7 +48,8 @@ export default {
     //   type: String,
     //   default: ''
     // }
-    tpl: String
+    tpl: String,
+    label: String
   },
   data() {
     return {
@@ -65,10 +67,18 @@ export default {
     }
   },
   created() {
-    let template = document.getElementById(this.tpl)
-    if (template) {
-      let lang = template.getAttribute('lang')
-      let html = pretty(template.innerHTML.trim())
+    if (this.tpl) {
+      let template = document.getElementById(this.tpl)
+      if (template) {
+        let lang = template.getAttribute('lang')
+        let html = pretty(template.innerHTML.trim())
+        this.register(lang, html)
+      }
+    }
+    let slotsDefault = this.$slots.default()
+    if (Array.isArray(slotsDefault) && slotsDefault[0]) {
+      let { lang } = slotsDefault[0].props
+      let html = pretty(slotsDefault[0].children)
       this.register(lang, html)
     }
   },
