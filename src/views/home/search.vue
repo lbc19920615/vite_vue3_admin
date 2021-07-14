@@ -9,6 +9,7 @@ $sel: "." + $tag;
 <template>
   <div class="page-search">
     <search-demo1></search-demo1>
+    <al-datetime-range v-model:start="now" v-model:end="now"></al-datetime-range>
 
     <my-highlight label="search-demo1 import">
       <textarea lang="js" style="display: none">
@@ -50,8 +51,10 @@ export default {
   },
   setup() {
     let instance = getCurrentInstance()
+    let now = '2021-6-7 12:12:11'
     return {
-      searchConfig
+      searchConfig,
+      now
     }
   }
 }

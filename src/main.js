@@ -1,15 +1,17 @@
 import * as Vue from 'vue/dist/vue.cjs'
 import App from './App.vue'
+import 'normalize.css/normalize.css'
+
+// element
 import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
-import 'normalize.css/normalize.css'
+import locale from 'element-plus/lib/locale/lang/zh-cn'
 
 globalThis.Vue = Vue
 
 import router from './router'
 import store from './store'
 
-// store.dispatch('ToggleSideBar')
 store.dispatch('GenerateRoutes', {
   roles: ['admin']
 })
@@ -36,6 +38,7 @@ window.startApp = function () {
   app.config.compilerOptions.isCustomElement = tag => {
     return tag === 'app-loading'
   }
+  app.config.devtools = true
 
   storeApp.use({
     install(_a) {
@@ -44,10 +47,10 @@ window.startApp = function () {
   })
 
   app.use(globalThis.moduleConfig)
-  app.config.devtools = true
   app.use(remote)
   app.use(ElementPlus, {
-    size: 'medium'
+    size: 'medium',
+    locale
   })
   app.use(highlightPlugin)
   app.use(eventBus)
@@ -55,9 +58,7 @@ window.startApp = function () {
   app.use(router)
   app.use(store)
 
-
   storeApp.mount('#storeApp')
   app.mount('#app')
-
   return app
 }

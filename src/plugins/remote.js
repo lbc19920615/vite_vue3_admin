@@ -1,18 +1,12 @@
-// import fieldContent from '@my-virtual-file:src=template-field.twig'
-// import coma from "__remote/coma.js"
-//
-// console.log(coma)
-
 export function install (app) {
 
-  // app.config.globalProperties.$defineComponent = function(name, {template = '', def = {}} = {}) {
-  //   if (!app._instance.appContext.components[name]) {
-  //     app.component(name, {
-  //       template,
-  //       ...def
-  //     })
-  //   }
-  // };
+
+  import("__remote/getscript?src=alDatetimeRange/index.twigvue").then((def) => {
+    if (def.default) {
+      const com = def.default('AlDatetimeRange')
+      app.component(com.name, com)
+    }
+  })
 
   import('@my-virtual-file:src=template-field.twig').then(res => {
     let templateId = 'cm-field-tpl'
