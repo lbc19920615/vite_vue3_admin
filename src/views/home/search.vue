@@ -9,7 +9,8 @@ $sel: "." + $tag;
 <template>
   <div class="page-search">
     <search-demo1></search-demo1>
-    <al-datetime-range v-model:start="now" v-model:end="now"></al-datetime-range>
+    {{startDate}} {{endDate}}
+    <al-datetime-range v-model:start="startDate" v-model:end="endDate"></al-datetime-range>
 
     <my-highlight label="search-demo1 import">
       <textarea lang="js" style="display: none">
@@ -40,6 +41,7 @@ $sel: "." + $tag;
 import MyHighlight from "@/components/Myhighlight/MyHighlight.vue";
 import {defineAsyncComponent, getCurrentInstance} from "vue";
 import searchConfig from '__remote/getconfig?config_id=search.json5'
+import { ref } from 'vue'
 
 export default {
   name: "Search",
@@ -51,10 +53,11 @@ export default {
   },
   setup() {
     let instance = getCurrentInstance()
-    let now = '2021-6-7 12:12:11'
+    let now = '2021-06-07 12:12:11'
     return {
       searchConfig,
-      now
+      startDate: ref(now),
+      endDate: ref(now),
     }
   }
 }
