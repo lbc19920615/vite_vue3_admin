@@ -10,7 +10,7 @@ $sel: "." + $tag;
   <div class="page-search">
     <search-demo1></search-demo1>
 
-    <my-highlight label="search-demo1 import">
+    <my-highlight label="script">
       <textarea lang="js" style="display: none">
 ['search-demo1']: defineAsyncComponent(() => {
   return import("__remote/getscript?src=searchdemodef/index.twigvue&config_id=search.json5")
@@ -36,7 +36,7 @@ $sel: "." + $tag;
     <p>start: {{startDate}} end: {{endDate}}</p>
     <al-datetime-range v-model:start="startDate" v-model:end="endDate"></al-datetime-range>
 
-    <my-highlight label="search-demo1 import">
+    <my-highlight label="script">
       <textarea lang="js" style="display: none">
 <script>
 import("__remote/getscript?src=alDatetimeRange/index.twigvue").then((def) => {
