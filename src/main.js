@@ -9,6 +9,33 @@ import locale from 'element-plus/lib/locale/lang/zh-cn'
 
 globalThis.Vue = Vue
 
+import { fetchreq } from '@expose/main.js'
+console.log(fetchreq)
+
+import qs from 'qs'
+globalThis.qs = qs
+
+window.testQuery = function () {
+  let query = qs.stringify({
+    src: 'stable.twig',
+    tableDef: [
+      {
+        label: '日期',
+        prop: 'date',
+        width: 100
+      },
+      {
+        label: '姓名', prop: 'name' },
+      { label: '邮编', prop: 'zip' }
+    ],
+  })
+  fetchreq('/getcontentv2?' + query, {
+    baseUrl: 'http://localhost:7002'
+  }).then((res) => {
+    console.log('fetchreq', res)
+  })
+}
+
 import router from './router'
 import store from './store'
 
