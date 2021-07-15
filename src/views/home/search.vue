@@ -9,8 +9,6 @@ $sel: "." + $tag;
 <template>
   <div class="page-search">
     <search-demo1></search-demo1>
-    {{startDate}} {{endDate}}
-    <al-datetime-range v-model:start="startDate" v-model:end="endDate"></al-datetime-range>
 
     <my-highlight label="search-demo1 import">
       <textarea lang="js" style="display: none">
@@ -32,6 +30,23 @@ $sel: "." + $tag;
 </script>
       </textarea>
       </template>
+    </my-highlight>
+
+    <h3>datetimepicker</h3>
+    <p>start: {{startDate}} end: {{endDate}}</p>
+    <al-datetime-range v-model:start="startDate" v-model:end="endDate"></al-datetime-range>
+
+    <my-highlight label="search-demo1 import">
+      <textarea lang="js" style="display: none">
+<script>
+import("__remote/getscript?src=alDatetimeRange/index.twigvue").then((def) => {
+  if (def.default) {
+    const com = def.default('AlDatetimeRange')
+    app.component(com.name, com)
+  }
+})
+</script>
+      </textarea>
     </my-highlight>
 
   </div>
