@@ -1,3 +1,10 @@
+import { moduleConfig, initBsLoader } from '__remote/public/vue-bs-loader.js'
+globalThis.moduleConfig = moduleConfig
+globalThis.initBsLoader = initBsLoader
+import { loadTemplate,initTemplate } from '__remote/public/template-loader.js'
+globalThis.loadTemplate = loadTemplate
+globalThis.initTemplate = initTemplate
+
 import * as Vue from 'vue/dist/vue.cjs'
 import App from './App.vue'
 import 'normalize.css/normalize.css'
@@ -10,7 +17,7 @@ import locale from 'element-plus/lib/locale/lang/zh-cn'
 globalThis.Vue = Vue
 
 import { fetchreq } from '@expose/main.js'
-console.log(fetchreq)
+console.log(import.meta)
 
 import qs from 'qs'
 globalThis.qs = qs

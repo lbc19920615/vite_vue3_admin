@@ -1,15 +1,13 @@
 import { render } from './prasetwig'
+import config from "../config";
+
+console.log(config)
 
 export default () => {
     return {
         name: 'html-transform',
         transformIndexHtml(html) {
-            // return html.replace(
-            //     /<title>(.*?)<\/title>/,
-            //     `<title>Title replaced!</title>`
-            // )
-            let [ret] =  render(html)
-            // console.log(ret)
+            let [ret] =  render(html, config)
             return ret
         }
     }

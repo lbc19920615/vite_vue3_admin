@@ -1,3 +1,7 @@
+/**
+ * @module parsetwig
+ */
+
 import Twig from 'twig'
 
 import JSON5 from 'json5'
@@ -59,11 +63,17 @@ Twig.extend(function(Twig) {
     });
 });
 
-function render(data) {
+/**
+ * render
+ * @param data {string} 字符串
+ * @param params { {} } 参数
+ * @returns {(*|{})[]}
+ */
+function render(data, params = {}) {
     let _template = Twig.twig({
         data: data,
         allowInlineIncludes: true
-    }).render()
+    }).render(params)
     return [
         _template, vuecoms
     ]
