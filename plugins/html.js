@@ -1,12 +1,11 @@
 import { render } from './prasetwig'
-import config from "../config";
-
-console.log(config)
+import { getEnvConfig } from "../config";
 
 export default () => {
     return {
         name: 'html-transform',
         transformIndexHtml(html) {
+            const config = getEnvConfig()
             let [ret] =  render(html, config)
             return ret
         }
