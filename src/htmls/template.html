@@ -15,4 +15,7 @@
         }
     }
     window.customElements.define('app-loading', AppLoading);
+    globalThis.importScripts = function (p = '') {
+        return import(p)
+    }
 </script>
