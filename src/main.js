@@ -3,6 +3,8 @@ import { initTemplate } from '__remote/public/template-loader.js'
 globalThis.initTemplate = initTemplate
 
 import * as Vue from 'vue/dist/vue.cjs'
+globalThis.Vue = Vue
+
 import App from './App.vue'
 import 'normalize.css/normalize.css'
 
@@ -11,31 +13,8 @@ import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 
-globalThis.Vue = Vue
-
 import { fetchreq, qs } from '@expose/main.js'
-globalThis.qs = qs
-
-window.testQuery = function () {
-  let query = qs.stringify({
-    src: 'stable.twig',
-    tableDef: [
-      {
-        label: '日期',
-        prop: 'date',
-        width: 100
-      },
-      {
-        label: '姓名', prop: 'name' },
-      { label: '邮编', prop: 'zip' }
-    ],
-  })
-  fetchreq('/getcontentv2?' + query, {
-    baseUrl: 'http://localhost:7002'
-  }).then((res) => {
-    console.log('fetchreq', res)
-  })
-}
+// globalThis.qs = qs
 
 import router from './router'
 import store from './store'
@@ -88,4 +67,25 @@ window.startApp = function () {
   storeApp.mount('#storeApp')
   app.mount('#app')
   return app
+}
+
+window.testQuery = function () {
+  let query = qs.stringify({
+    src: 'stable.twig',
+    tableDef: [
+      {
+        label: '日期',
+        prop: 'date',
+        width: 100
+      },
+      {
+        label: '姓名', prop: 'name' },
+      { label: '邮编', prop: 'zip' }
+    ],
+  })
+  fetchreq('/getcontentv2?' + query, {
+    baseUrl: 'http://localhost:7002'
+  }).then((res) => {
+    console.log('fetchreq', res)
+  })
 }
