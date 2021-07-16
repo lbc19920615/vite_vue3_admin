@@ -21,10 +21,23 @@
 </template>
 
 <script>
-import { defineComponent} from "vue";
+import {defineComponent, inject} from "vue";
 
 export default defineComponent({
-  mounted() {
+  setup() {
+    const globalStore = inject('globalStore')
+
+    globalStore.installExposeServices([
+      ['serviceA', '/public/service.js']
+    ])
+
+    document.addEventListener('visibilitychange', function (newVal) {
+      if (document.visibilityState === 'visible') {
+        globalStore.installExposeServices([
+          ['serviceA', '/public/service.js']
+        ])
+      }
+    })
   }
 })
 </script>

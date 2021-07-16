@@ -6,8 +6,10 @@
 </template>
 
 <script>
-import {defineComponent, getCurrentInstance, onMounted, ref} from "vue";
+import {defineComponent, getCurrentInstance, ref} from "vue";
 import * as Vue from "vue";
+import { REMOTE_ORIGIN } from '@expose/main.js'
+console.log(REMOTE_ORIGIN)
 
 export default defineComponent({
   components: {
@@ -43,6 +45,12 @@ export default defineComponent({
       }
     }
 
+    function installExposeServices(serviceEnties = []) {
+      for (let [serviceName, path] of serviceEnties) {
+        installService(serviceName, REMOTE_ORIGIN + path)
+      }
+    }
+
     async function run(name, method, ...args) {
       if (this.$refs[name] && this.$refs[name][method]) {
         let [err, ret] = await to(
@@ -66,6 +74,7 @@ export default defineComponent({
     return {
       serviceNames,
       num,
+      installExposeServices,
       installService,
       run,
       setNum

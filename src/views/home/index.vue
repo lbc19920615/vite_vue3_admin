@@ -9,8 +9,9 @@
 </template>
 
 <script lang="ts">
-import { inject, reactive } from "vue";
+import { inject, reactive, watch} from "vue";
 import { useStore } from "vuex";
+import { useDocumentVisibility } from 'vue-use-web';
 
 export default {
   components: {
@@ -18,14 +19,6 @@ export default {
     AboutView: globalThis.loadComponent('container.vue')
   },
   setup() {
-    // const app = getCurrentInstance()
-    // console.log('home', app.appContext.config.globalProperties)
-    const globalStore = inject('globalStore')
-
-    globalStore.installService('serviceA', 'http://localhost:7002/public/service.js')
-    // console.log(globalStore.num)
-    // globalStore.setNum(1)
-
     const store = useStore();
     const model = reactive({
       a:1
