@@ -1,8 +1,8 @@
 import { moduleConfig, initBsLoader } from '__remote/public/vue-bs-loader.js'
-globalThis.moduleConfig = moduleConfig
-globalThis.initBsLoader = initBsLoader
-import { loadTemplate,initTemplate } from '__remote/public/template-loader.js'
-globalThis.loadTemplate = loadTemplate
+// globalThis.moduleConfig = moduleConfig
+// globalThis.initBsLoader = initBsLoader
+import { initTemplate } from '__remote/public/template-loader.js'
+// globalThis.loadTemplate = loadTemplate
 globalThis.initTemplate = initTemplate
 
 import * as Vue from 'vue/dist/vue.cjs'
@@ -62,7 +62,7 @@ import StoreApp from "./StoreApp.vue";
 
 import * as highlightPlugin from '@/plugins/highlight'
 
-globalThis.initBsLoader(Vue)
+initBsLoader(Vue)
 
 window.startApp = function () {
 
@@ -80,7 +80,7 @@ window.startApp = function () {
     }
   })
 
-  app.use(globalThis.moduleConfig)
+  app.use(moduleConfig)
   app.use(remote)
   app.use(ElementPlus, {
     size: 'medium',
