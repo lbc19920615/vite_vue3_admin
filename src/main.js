@@ -13,7 +13,7 @@ import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 
-import { fetchreq, qs } from '@expose/main.js'
+import { fetchContentV2, qs } from '@expose/main.js'
 // globalThis.qs = qs
 
 import router from './router'
@@ -70,7 +70,7 @@ window.startApp = function () {
 }
 
 window.testQuery = function () {
-  let query = qs.stringify({
+  let query = {
     src: 'stable.twig',
     tableDef: [
       {
@@ -92,10 +92,8 @@ window.testQuery = function () {
         label: '姓名', prop: 'name' },
       { label: '邮编', prop: 'zip' }
     ],
-  })
-  fetchreq('/getcontentv2?' + query, {
-    baseUrl: 'http://localhost:7002'
-  }).then((res) => {
+  }
+  fetchContentV2(query).then((res) => {
     console.log('fetchreq', res)
   })
 }
