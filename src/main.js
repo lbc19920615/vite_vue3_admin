@@ -76,7 +76,17 @@ window.testQuery = function () {
       {
         label: '日期',
         prop: 'date',
-        width: 100
+        width: 100,
+        rules: [
+          {
+            age: 111,
+            name: {
+              validator() {
+                console.log('111')
+              }
+            }
+          }
+        ]
       },
       {
         label: '姓名', prop: 'name' },
