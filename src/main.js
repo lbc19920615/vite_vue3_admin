@@ -1,8 +1,5 @@
-import { moduleConfig, initBsLoader } from '__remote/public/vue-bs-loader.js'
-// globalThis.moduleConfig = moduleConfig
-// globalThis.initBsLoader = initBsLoader
+import { moduleConfig, initBrowserVueSFCLoader } from '__remote/public/vue-bs-loader.js'
 import { initTemplate } from '__remote/public/template-loader.js'
-// globalThis.loadTemplate = loadTemplate
 globalThis.initTemplate = initTemplate
 
 import * as Vue from 'vue/dist/vue.cjs'
@@ -16,10 +13,7 @@ import locale from 'element-plus/lib/locale/lang/zh-cn'
 
 globalThis.Vue = Vue
 
-import { fetchreq } from '@expose/main.js'
-console.log(import.meta)
-
-import qs from 'qs'
+import { fetchreq, qs } from '@expose/main.js'
 globalThis.qs = qs
 
 window.testQuery = function () {
@@ -51,7 +45,6 @@ store.dispatch('GenerateRoutes', {
 })
 
 import icons from './icons/index'
-
 import '@/styles/index.scss' // global css
 import '@/styles/app.scss'
 
@@ -62,7 +55,7 @@ import StoreApp from "./StoreApp.vue";
 
 import * as highlightPlugin from '@/plugins/highlight'
 
-initBsLoader(Vue)
+initBrowserVueSFCLoader(Vue)
 
 window.startApp = function () {
 
