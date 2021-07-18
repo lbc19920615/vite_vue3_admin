@@ -59,7 +59,7 @@ import searchConfig from '__remote/getconfig?config_id=search.json5'
 import { ref } from 'vue'
 
 export default {
-  name: "Search",
+  name: "Form",
   components: {
     MyHighlight,
     ['search-demo1']: defineAsyncComponent(() => {
