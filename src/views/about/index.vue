@@ -53,13 +53,16 @@ let rowMixin = {
     return {
       rowv2: [
         {
-          w: 240
+          w: 240,
+          h: 210
         },
         {
-          w: '1fr'
+          w: '1fr',
+          h: 210
         },
         {
-          w: '1fr'
+          w: '1fr',
+          h: 210
         }
       ],
     }
@@ -71,6 +74,7 @@ let rowMixin = {
       }
     })
     this.calcWidth()
+    this.calcHeight()
     this.resetSortable()
   },
   methods: {
@@ -88,22 +92,26 @@ let rowMixin = {
         }
       })
     },
-    calcWidth() {
-      let len = this.rowv2.length
-      let staticWidth = 0
-
-      let frItems = this.rowv2.filter( v => {
-        return v.w && v.w.endsWith && v.w.endsWith('fr')
+    _parseItems(prop) {
+      let rows = this.rowv2
+      let frItems = rows.filter( v => {
+        return v[prop] && v[prop].endsWith && v[prop].endsWith('fr')
       })
-
-      let frLength = frItems.map(v => parseInt(v.w)).reduce((a, b) => a + b, 0)
-
-
-      let otherItems = this.rowv2.filter(v => {
+      let otherItems = rows.filter(v => {
         return !frItems.includes(v)
       })
 
-      let otherTotal = otherItems.map(v  => parseInt(v.w)).reduce((a, b) => a + b, 0)
+      let frLength = frItems.map(v => parseInt(v[prop])).reduce((a, b) => a + b, 0)
+
+      let otherTotal = otherItems.map(v  => parseInt(v[prop])).reduce((a, b) => a + b, 0)
+
+      return {
+        frItems, otherItems, frLength, otherTotal
+      }
+    },
+
+    calcWidth() {
+      let { frItems, otherItems, frLength, otherTotal } = this._parseItems('w')
 
       frItems.forEach(frItem => {
         let numberW = parseInt(frItem.w)
@@ -112,6 +120,14 @@ let rowMixin = {
 
       otherItems.forEach(otherItem => {
         otherItem.style.width = otherItem.w + 'px'
+      })
+    },
+
+    calcHeight() {
+      let { otherItems } = this._parseItems('h')
+
+      otherItems.forEach(otherItem => {
+        otherItem.style.height = otherItem.h + 'px'
       })
     }
   }
