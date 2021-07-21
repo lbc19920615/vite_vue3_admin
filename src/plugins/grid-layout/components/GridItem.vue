@@ -676,7 +676,7 @@ import { getDocumentDir } from "../helpers/DOM"
                         height: h === Infinity ? h : Math.round(this.rowHeight * h + Math.max(0, h - 1) * this.margin[1])
                     };
                 }
-
+                // console.log(out)
 
                 return out;
             },

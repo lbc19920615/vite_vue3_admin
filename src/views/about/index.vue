@@ -3,6 +3,10 @@
   background-color: #99a9bf;
   color: #ffffff;
 }
+
+.vue-row-item {
+  display: inline-block;
+}
 </style>
 
 <template>
@@ -28,9 +32,11 @@
                  :key="item.i"
                  :min-w="item.minW"
       >
-        {{item.i}}
       </grid-item>
     </grid-layout>
+
+    <div class="vue-grid-row"><div class="vue-grid-item vue-row-item" v-for="(item, index) in rowv2"
+                                   :style="item.style" draggable="true">{{item.w}}</div></div>
     <table-a></table-a>
   </div>
 </template>
@@ -38,13 +44,69 @@
 <script>
 import { defineComponent } from "vue";
 
+let rowMixin = {
+  data() {
+    return {
+      rowv2: [
+        {
+          w: 240
+        },
+        {
+          w: '1fr'
+        },
+        {
+          w: '1fr'
+        }
+      ],
+    }
+  },
+  mounted() {
+    this.rowv2.forEach(v => {
+      v.style = {
+        width: ''
+      }
+    })
+    this.calcWidth()
+  },
+  methods: {
+    calcWidth() {
+      let len = this.rowv2.length
+      let staticWidth = 0
+
+      let frItems = this.rowv2.filter( v => {
+        return v.w && v.w.endsWith && v.w.endsWith('fr')
+      })
+
+      let frLength = frItems.map(v => parseInt(v.w)).reduce((a, b) => a + b, 0)
+
+
+      let otherItems = this.rowv2.filter(v => {
+        return !frItems.includes(v)
+      })
+
+      let otherTotal = otherItems.map(v  => parseInt(v.w)).reduce((a, b) => a + b, 0)
+
+      frItems.forEach(frItem => {
+        let numberW = parseInt(frItem.w)
+        frItem.style.width = `calc((100% - ${otherTotal}px) / ${frLength} * ${numberW})`
+      })
+
+      otherItems.forEach(otherItem => {
+        otherItem.style.width = otherItem.w + 'px'
+      })
+    }
+  }
+}
+
 export default defineComponent({
+  mixins: [
+    rowMixin
+  ],
   data () {
     return {
       layout: [
-        {"x":0,"y":0,"w":2,"h":2,"i":"0"},
-        {"x":2,"y":0,"w":2,"h":4,"i":"1"},
-        {"x":4,"y":0,"w":2,"h":5,"i":"2"}
+        {"x":0,"y":0,"w":24,"h":2,"i":"0"},
+        {"x":2,"y":0,"w":24,"h":4,"i":"1"},
       ]
     }
   },
