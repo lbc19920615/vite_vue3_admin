@@ -35,13 +35,14 @@
       </grid-item>
     </grid-layout>
 
-    <div class="vue-grid-row"><div class="vue-grid-item vue-row-item" v-for="(item, index) in rowv2"
+    <div ref="gridrow" class="vue-grid-row"><div class="vue-grid-item vue-row-item" v-for="(item, index) in rowv2"
                                    :style="item.style" draggable="true">{{item.w}}</div></div>
     <table-a></table-a>
   </div>
 </template>
 
 <script>
+import Sortable from 'sortablejs';
 import { defineComponent } from "vue";
 
 let rowMixin = {
@@ -67,8 +68,23 @@ let rowMixin = {
       }
     })
     this.calcWidth()
+    this.resetSortable()
   },
   methods: {
+    resetSortable() {
+      let self = this
+      let row = JSON.parse(JSON.stringify( self.rowv2))
+      new Sortable(this.$refs.gridrow, {
+        onEnd: function (/**Event*/evt) {
+          const { oldIndex, newIndex } = evt
+          // console.log('evt', oldIndex, newIndex)
+          let oldItem = row[oldIndex]
+          row.splice(oldIndex, 1)
+          row.splice(newIndex, 0, oldItem)
+          self.rowv2 = row
+        }
+      })
+    },
     calcWidth() {
       let len = this.rowv2.length
       let staticWidth = 0
