@@ -36,7 +36,7 @@
     </grid-layout>
 
     <div ref="gridrow" class="vue-grid-row"><div class="vue-grid-item vue-row-item" v-for="(item, index) in rowv2"
-                                   :style="item.style" draggable="true">{{item.w}}</div></div>
+                       :style="item.style"           >{{item.w}}</div></div>
     <table-a></table-a>
   </div>
 </template>
