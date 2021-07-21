@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { md } from './plugins/md'
 import fileloader from './plugins/fileloader'
 // import path from 'path'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import htmlPlugin from './plugins/html'
 // const projectRootDir = path.resolve(__dirname);
 import {initEnvConfig} from "./config";
@@ -27,7 +28,8 @@ export default (({mode}) => {
         virtualFileId: '@my-virtual-file',
         origin: 'http://localhost:7002/getcontent'
       }),
-      vue()
+      vue(),
+      vueJsx(),
     ],
   })
 })

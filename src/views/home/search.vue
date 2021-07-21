@@ -57,7 +57,6 @@ import MyHighlight from "@/components/Myhighlight/MyHighlight.vue";
 import {defineAsyncComponent, getCurrentInstance} from "vue";
 import searchConfig from '__remote/getconfig?config_id=search.json5'
 import { ref } from 'vue'
-
 export default {
   name: "Form",
   components: {

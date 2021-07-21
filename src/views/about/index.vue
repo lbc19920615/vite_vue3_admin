@@ -37,6 +37,8 @@
 
     <div ref="gridrow" class="vue-grid-row"><div class="vue-grid-item vue-row-item" v-for="(item, index) in rowv2"
                        :style="item.style"           >{{item.w}}</div></div>
+
+    <jsx-com></jsx-com>
     <table-a></table-a>
   </div>
 </template>
@@ -44,6 +46,7 @@
 <script>
 import Sortable from 'sortablejs';
 import { defineComponent } from "vue";
+import JsxCom from "@/components/jsxcom.vue";
 
 let rowMixin = {
   data() {
@@ -128,6 +131,7 @@ export default defineComponent({
   },
   methods: {},
   components: {
+    JsxCom,
     'tableA': globalThis.loadComponent('tabledef.vue', '&config_id=s1212121222sss1212121')
   }
 })
