@@ -1,14 +1,65 @@
+<style lang="scss">
+.vue-grid-row {
+  display: flex;
+}
+
+.vue-row-item {
+  display: inline-flex;
+}
+
+
+.vue-grid-row-tools {
+  position: relative;
+  &__action {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 11111;
+    transform: translate(-100%, 100%);
+  }
+
+  .vue-row-items {
+    //position: relative;
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translateY(-100%);
+    width: 100%;
+  }
+
+  .vue-row-item {
+    position: relative;
+  }
+
+  .vue-row-item__tools {
+    display: inline-flex;
+  }
+}
+</style>
+
 <template>
-  <div class="vue-grid-row"><div class="vue-row-item" v-for="(item, index) in rowv2"
-                                               :style="item.style"           >{{item.w}}</div>
+  <div class="vue-grid-row-tools">
+    <div class="vue-row-items">
+      <div class="vue-row-item__tools"   v-for="(item, index) in rowv2"
+           :style="{width: item.style ? item.style.width : '', height: 'auto'}" >
+        <unit-input v-model="item.w" @change="changeItem"></unit-input>
+      </div>
+    </div>
+    <div ref="row" class="vue-grid-row"><div
+        class="vue-row-item" v-for="(item, index) in rowv2"
+                                   :style="item.style" >{{item.w}}</div></div>
+    <div class="vue-grid-row-tools__action"><button @click="addItem">+</button></div>
   </div>
 </template>
 
 <script>
 import Sortable from "sortablejs";
+import UnitInput from "@/components/UnitInput.vue";
 
 export default {
   name: "grid-row",
+  components: {UnitInput},
   data() {
     return {
       rowv2: [
@@ -32,9 +83,27 @@ export default {
       immediate: true
     }
   },
-  mounted() {
-  },
   methods: {
+    parseNum(v) {
+      return parseInt(v)
+    },
+    changW(e) {
+      console.log('changW', e)
+    },
+    changeItem(item) {
+      this.init()
+    },
+    addItem() {
+      this.rowv2.push({
+        w: '1fr',
+        wAsNumber: 11,
+        h: '50%',
+        style: {
+          width: ''
+        }
+      })
+      this.init()
+    },
     init() {
       this.rowv2.forEach(v => {
         v.style = {
@@ -50,7 +119,7 @@ export default {
       let row = JSON.parse(JSON.stringify( self.rowv2))
 
       // console.log('row', row, this.$el)
-      new Sortable(this.$el, {
+      new Sortable(this.$refs.row, {
         onEnd: function (/**Event*/evt) {
           const { oldIndex, newIndex } = evt
           // console.log('evt', oldIndex, newIndex)

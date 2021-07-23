@@ -16,10 +16,6 @@
   }
 }
 
-.vue-row-item {
-  display: inline-block;
-}
-
 //.render-layout__con {
 //  position: relative;
 //}
@@ -54,14 +50,14 @@ export default defineComponent({
           w: 240,
           h: 120,
         },
-        {
-          w: '1fr',
-          h: 210,
-        },
-        {
-          w: '1fr',
-          h: 170,
-        }
+        // {
+        //   w: '1fr',
+        //   h: 210,
+        // },
+        // {
+        //   w: '1fr',
+        //   h: 170,
+        // }
       ]
     }
 
@@ -76,21 +72,21 @@ export default defineComponent({
     }
     return {
       layout: [
+        demoRow,
         // demoRow,
-        // demoRow,
-        {
-          type: 'grid',
-          data: [
-            {"x": 0, "y": 0, "w": 24, "h": 211, "i": "0"},
-            {
-              "x": 2, "y": 0, "w": 24, "h": 411, "i": "1",
-              children: [
-                  demoRow,
-                // demoGrid
-              ]
-            }
-          ]
-        },
+        // {
+        //   type: 'grid',
+        //   data: [
+        //     {"x": 0, "y": 0, "w": 24, "h": 211, "i": "0"},
+        //     {
+        //       "x": 2, "y": 0, "w": 24, "h": 411, "i": "1",
+        //       children: [
+        //           demoRow,
+        //         // demoGrid
+        //       ]
+        //     }
+        //   ]
+        // },
       ]
     }
   },
