@@ -1,37 +1,58 @@
-<style lang="scss">
+<style lang="scss" scoped>
 $tag: "plumb-layout";
 $sel: "." + $tag;
 
 #{$sel} {
-  width: 600px;
-  height: 300px;
+  width: 900px;
+  height: 600px;
   border: 1px solid #eee;
   .item {
-    height: 100px;
+    height: 50px;
     width: 100%;
-    border: 1px solid blue;
+    border-bottom: 1px solid #999;
+    &:last-child {
+      border-bottom-color: transparent;
+    }
   }
-.container {
-  width: 100px;
-  position: absolute;
-}
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .content-item {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+  .container {
+    position: absolute;
+  }
   .abs {
     position: absolute;
+  }
+  .section {
+    border: 1px solid #7272ff;
+    background-color: #ffffff;
+    z-index: 0;
   }
 }
 </style>
 
 <template>
   <div  class="plumb-layout">
+    <el-button @click="getVisibleConnections">get connect</el-button>
     <div id="diagramContainer1" class="container">
-      <div id="i1-0"  class="abs" style="width: 100%">
-        <div id="i1" class="item">i1</div>
-        <div id="i2" class="item">i2</div>
-        <div id="i3" class="item">i3</div>
-      </div>
-
-      <div id="i1-1" class="item abs">i1-1</div>
-      <div id="i1-2" class="item abs">i1-2</div>
+      <template v-for="(dep,depIndex) in deps">
+        <div :id="dep.id" class="abs section"
+             style="width: 200px;"
+             :style="{left: (100 * depIndex) + 'px', top: (100 * depIndex) + 'px'}">
+          <div class="item header" :id="dep.id + '-top'">top</div>
+          <template v-for="item in dep.items">
+            <div :id="item.id" class="item content-item">{{item.id}}</div>
+          </template>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -45,6 +66,50 @@ export default {
   data() {
     return {
       instance: null,
+      deps: [
+        {
+          id: 'i1',
+          items: [
+            {
+              id: 'i1-0'
+            },
+            {
+              id: 'i1-1'
+            },
+            {
+              id: 'i1-2'
+            }
+          ]
+        },
+        {
+          id: 'i2',
+          items: [
+            {
+              id: 'i2-0'
+            },
+            {
+              id: 'i2-1'
+            },
+            {
+              id: 'i2-2'
+            }
+          ]
+        },
+        {
+          id: 'i3',
+          items: [
+            {
+              id: 'i3-0'
+            },
+            {
+              id: 'i3-1'
+            },
+            {
+              id: 'i3-2'
+            }
+          ]
+        }
+      ]
     }
   },
   mounted() {
@@ -98,61 +163,63 @@ export default {
           length: 10,
           location: 1
         }],
+        ['Label', {
+          label: '<button class="delete-node-btn">X</button>',
+          cssClass: '',
+          labelStyle: {
+            color: 'red'
+          },
+          events: {
+            click: function (labelOverlay, originalEvent) {
+              // console.log('click on label overlay for :', labelOverlay.component)
+              // console.log(labelOverlay)
+              // console.log(originalEvent)
+              jsPlumb.deleteConnection(labelOverlay.component)
+            }
+          }
+        }]
       ]
     }
 
-    function ins1() {
-      var instance = jsPlumb.getInstance({
-        Container: 'diagramContainer1'
+    function ins1(id, instance, items = []) {
+      instance.addEndpoint(id + '-top' , {
+        anchors: ['Top']
+      }, config.baseStyle)
+      instance.addEndpoint(id + '-top' , {
+        anchors: ['Left']
+      }, config.baseStyle)
+      items.forEach(item => {
+        instance.addEndpoint(item.id , {
+          anchors: ['Left']
+        }, config.baseStyle)
+        instance.addEndpoint(item.id , {
+          anchors: ['Right']
+        }, config.baseStyle)
       })
-
-      instance.addEndpoint('i1', {
-        anchors: ['Right']
-      }, config.baseStyle)
-
-      instance.addEndpoint('i2', {
-        anchor: 'Right'
-      }, config.baseStyle)
-
-      instance.addEndpoint('i3', {
-        anchors: ['Right']
-      }, config.baseStyle)
-
-
-      instance.addEndpoint('i1-1', {
-        anchors: ['Left']
-      }, config.baseStyle)
-
-      instance.addEndpoint('i1-2', {
-        anchors: ['Left']
-      }, config.baseStyle)
-
-      instance.draggable('i1-0')
-      instance.draggable('i1-1')
-      instance.draggable('i1-2')
+      instance.draggable(id)
     }
 
-    // function ins2() {
-    //   var instance = jsPlumb.getInstance({
-    //     Container: 'diagramContainer2'
-    //   })
-    //
-    //   instance.addEndpoint('i1-1', {
-    //     anchors: ['Left']
-    //   }, config.baseStyle)
-    //
-    //
-    //   instance.draggable('diagramContainer2')
-    // }
-
     jsPlumb.ready(function () {
-      ins1()
+      let instance = jsPlumb.getInstance({
+        Container: 'diagramContainer1'
+      })
+      self.instance = instance
+      self.deps.forEach(dep => {
+        ins1(dep.id, instance, dep.items)
+      })
     })
   },
   methods: {
-   drawConnections(instance) {
+    getVisibleConnections() {
+      let allConnections = this.instance.getConnections({
 
-    },
+      });
+      let ret = allConnections.filter(v => {
+        return v.target && v.source
+      })
+      console.log(ret)
+      return ret
+    }
   }
 }
 </script>
