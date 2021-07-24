@@ -109,37 +109,40 @@ export default {
     showEdit(newVal) {
       if (newVal) {
         this.$nextTick(() => {
-          this.resetSortableV2(this.rowv2,
-              {
-                option: {
-                  handle: '.grid-column-handle'
-                },
-                onEnd(newVal) {
-                  console.log('newVal', newVal, JSON.parse(JSON.stringify(newVal)))
-                  this.showEdit = false
-                  this.rowvItems = JSON.parse(JSON.stringify(newVal))
-                  this.$nextTick(() => {
-                    this.showEdit = true
-                  })
-                  // this.showEdit = true
-                }
-              }
-          )
+          this.resetTools()
         })
       }
     },
     layout: {
       handler(newVal) {
         this.rowv2 = newVal
-        this.rowvItems = JSON.parse(JSON.stringify(newVal))
         this.$nextTick(() => {
-          this.init()
+          this.init().then(() => {
+            this.rowvItems = JSON.parse(JSON.stringify(newVal))
+          })
         })
       },
       immediate: true
     }
   },
   methods: {
+    resetTools() {
+      this.resetSortableV2(this.rowv2,
+          {
+            option: {
+              handle: '.grid-column-handle'
+            },
+            onEnd(newVal) {
+              // console.log('newVal', newVal, JSON.parse(JSON.stringify(newVal)))
+              this.showEdit = false
+              this.rowvItems = JSON.parse(JSON.stringify(newVal))
+              this.$nextTick(() => {
+                this.showEdit = true
+              })
+            }
+          }
+      )
+    },
     onResizeEnd(item, index,  v) {
       this.rowv2[index].h = v.height
       item.h = v.height
@@ -151,17 +154,18 @@ export default {
     parseNum(v) {
       return parseInt(v)
     },
-    changeItem(item) {
-      this.init()
-    },
     addItem() {
       this.rowv2.push({
         style: {
-          width: '',
+          height: '',
         },
         h: 100
       })
-      this.init()
+      this.$nextTick(() => {
+        this.init().then(() => {
+          this.rowvItems = JSON.parse(JSON.stringify(this.rowv2))
+        })
+      })
     },
     init() {
       this.rowv2.forEach(v => {
@@ -173,6 +177,7 @@ export default {
       })
       // this.calcWidth(this.rowv2)
       this.calcHeight(this.rowv2)
+      return Promise.resolve()
     },
   }
 }

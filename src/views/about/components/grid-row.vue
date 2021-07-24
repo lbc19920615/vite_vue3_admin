@@ -49,13 +49,15 @@ $cls: "vue-grid-row-tools";
 
 <template>
   <div class="vue-grid-row-tools">
-    <div class="vue-row-items" v-show="showEdit">
-      <div class="vue-row-item__tools" v-for="(item, index) in rowv2"
+    <div ref="row" class="vue-row-items" v-if="showEdit">
+      <div class="vue-row-item__tools" v-for="(item, index) in rowvItems"
            :style="{width: item.style ? item.style.width : '', height: 'auto'}" >
-        <unit-input v-model="item.w" @change="changeItem"></unit-input>
+        <unit-input v-model="rowv2[index].w" @update:modelValue="changeItem"></unit-input>
+        <button class="grid-column-handle"><i class="el-icon-rank"></i></button>
+        <button @click="removeItem(index)"><i class="el-icon-remove"></i></button>
       </div>
     </div>
-    <div ref="row" class="vue-grid-row"><div
+    <div  class="vue-grid-row"><div
         class="vue-row-item" v-for="(item, index) in rowv2"
                                    :style="item.style" >{{item.w}}</div></div>
     <div class="vue-grid-row-tools__action"><button
@@ -80,6 +82,7 @@ export default {
     return {
       rowv2: [
       ],
+      rowvItems: []
     }
   },
   props: {
@@ -89,33 +92,77 @@ export default {
     }
   },
   watch: {
+    showEdit(newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          this.resetTools()
+        })
+      }
+    },
     layout: {
       handler(newVal) {
         this.rowv2 = newVal
         this.$nextTick(() => {
-          this.init()
+          this.init().then(() => {
+            this.rowvItems = JSON.parse(JSON.stringify( this.rowv2 ))
+          })
         })
       },
       immediate: true
     }
   },
   methods: {
+    resetTools() {
+      if (Array.isArray(this.rowv2) && this.rowv2.length > 0) {
+        this.resetSortableV2(this.rowv2,
+            {
+              option: {
+                handle: '.grid-column-handle'
+              },
+              onEnd(newVal) {
+                // console.log('newVal', newVal, JSON.parse(JSON.stringify(newVal)))
+                this.showEdit = false
+                this.rowvItems = JSON.parse(JSON.stringify(newVal))
+                this.$nextTick(() => {
+                  this.showEdit = true
+                })
+                // this.showEdit = true
+              }
+            }
+        )
+      } else {
+        this.rowvItems = []
+      }
+    },
     parseNum(v) {
       return parseInt(v)
     },
     changeItem(item) {
-      this.init()
+      console.log('change', item)
+      this.init().then(() => {
+        this.rowvItems = JSON.parse(JSON.stringify(this.rowv2))
+      })
+    },
+    removeItem(index) {
+      console.log(index)
+      this.rowv2.splice(index, 1)
+      this.init().then(() => {
+        this.rowvItems = JSON.parse(JSON.stringify( this.rowv2 ))
+        // console.log(  this.rowvItems)
+      })
     },
     addItem() {
       this.rowv2.push({
         w: '1fr',
-        wAsNumber: 11,
         h: '50%',
         style: {
           width: ''
         }
       })
-      this.init()
+      this.init().then(() => {
+        this.rowvItems = JSON.parse(JSON.stringify( this.rowv2 ))
+        // console.log(  this.rowvItems)
+      })
     },
     init() {
       this.rowv2.forEach(v => {
@@ -127,7 +174,7 @@ export default {
       })
       this.calcWidth(this.rowv2)
       this.calcHeight(this.rowv2)
-      this.resetSortable(this.rowv2)
+      return Promise.resolve()
     },
   }
 }
