@@ -22,7 +22,8 @@
 
 <template>
   <div class="page-search">
-    <render-layout :items="layout"></render-layout>
+<!--    <render-layout :items="layout"></render-layout>-->
+    <PlumbLayout></PlumbLayout>
     <!--    <table-a></table-a>-->
   </div>
 </template>
@@ -31,10 +32,21 @@
 import {defineComponent} from "vue";
 import GridRow from "@/views/about/components/grid-row.vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
+import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
 
 export default defineComponent({
   mixins: [],
   data() {
+    let demoRow = {
+      type: 'row',
+      data: [
+        {
+          w: 240,
+          h: 120,
+        },
+      ]
+    }
+
     let demoColumn = {
       type: 'column',
       data: [
@@ -43,15 +55,9 @@ export default defineComponent({
         },
         {
           h: 120,
-        },
-      ]
-    }
-    let demoRow = {
-      type: 'row',
-      data: [
-        {
-          w: 240,
-          h: 120,
+          children: [
+            demoRow,
+          ]
         },
       ]
     }
@@ -68,7 +74,6 @@ export default defineComponent({
     return {
       layout: [
         demoColumn,
-        demoRow,
         // demoRow,
         // {
         //   type: 'grid',
@@ -88,6 +93,7 @@ export default defineComponent({
   },
   methods: {},
   components: {
+    PlumbLayout,
     RenderLayout,
     GridRow,
     // 'tableA': globalThis.loadComponent('tabledef.vue', '&config_id=s1212121222sss1212121')

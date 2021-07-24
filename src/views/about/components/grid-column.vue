@@ -69,7 +69,7 @@
     <div class="vue-grid-column">
       <div  :active="['b']"  class="vue-column-item"
                       :style="item.style"  v-for="(item, index) in rowv2">
-        {{item}}
+        <slot v-bind="{item, index}"></slot>
       </div>
     </div>
     <div class="vue-grid-column-tools__action"><button

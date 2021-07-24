@@ -10,8 +10,8 @@
 <!--      </layout-grid>-->
       <grid-column :class="levelItemCls" v-if="layoutItem.type === 'column'"
                 :layout="layoutItem.data">
-        <template v-slot:default="scope">
-          {{scope}}
+        <template v-slot:default="{item}">
+          <template v-if="item.children && item.children.length > 0"><render-layout :level="level + 1" :items="item.children"></render-layout></template>
         </template>
       </grid-column>
       <grid-row :class="levelItemCls" v-if="layoutItem.type === 'row'"
