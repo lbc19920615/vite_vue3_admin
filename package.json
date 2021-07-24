@@ -21,6 +21,7 @@
     "sortablejs": "^1.14.0",
     "twig": "^1.15.4",
     "vue": "^3.1.4",
+    "vue-resizable": "^2.0.5",
     "vue-router": "^4.0.6",
     "vue-sfc-parser": "^0.1.2",
     "vue3-eventbus": "^2.0.0",

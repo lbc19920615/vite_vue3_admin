@@ -1,4 +1,4 @@
-<style lang="scss">
+<style lang="scss" scoped>
 .vue-grid-row {
   display: flex;
 }
@@ -7,15 +7,24 @@
   display: inline-flex;
 }
 
-
+$cls: "vue-grid-row-tools";
 .vue-grid-row-tools {
   position: relative;
-  &__action {
+
+  &:hover {
+    .#{$cls}__action {
+      display: block;
+    }
+  }
+
+  .#{$cls}__action {
     position: absolute;
     left: 0;
-    bottom: 0;
+    top: 0;
     z-index: 11111;
-    transform: translate(-100%, 100%);
+    transform: translate(-100%, 0);
+
+    display: none;
   }
 
   .vue-row-items {
@@ -40,8 +49,8 @@
 
 <template>
   <div class="vue-grid-row-tools">
-    <div class="vue-row-items">
-      <div class="vue-row-item__tools"   v-for="(item, index) in rowv2"
+    <div class="vue-row-items" v-show="showEdit">
+      <div class="vue-row-item__tools" v-for="(item, index) in rowv2"
            :style="{width: item.style ? item.style.width : '', height: 'auto'}" >
         <unit-input v-model="item.w" @change="changeItem"></unit-input>
       </div>
@@ -49,16 +58,23 @@
     <div ref="row" class="vue-grid-row"><div
         class="vue-row-item" v-for="(item, index) in rowv2"
                                    :style="item.style" >{{item.w}}</div></div>
-    <div class="vue-grid-row-tools__action"><button @click="addItem">+</button></div>
+    <div class="vue-grid-row-tools__action"><button
+        @click="addItem"><i class="el-icon-plus"></i></button><button
+        @click="enableEdit"><i class="el-icon-edit"></i></button></div>
   </div>
 </template>
 
 <script>
-import Sortable from "sortablejs";
 import UnitInput from "@/components/UnitInput.vue";
+import GridRow from "@/views/about/mixins/GridRow";
+import GridRowControl from "@/views/about/mixins/GridRowControl";
 
 export default {
   name: "grid-row",
+  mixins: [
+    GridRowControl,
+    GridRow,
+  ],
   components: {UnitInput},
   data() {
     return {
@@ -87,9 +103,6 @@ export default {
     parseNum(v) {
       return parseInt(v)
     },
-    changW(e) {
-      console.log('changW', e)
-    },
     changeItem(item) {
       this.init()
     },
@@ -106,68 +119,16 @@ export default {
     },
     init() {
       this.rowv2.forEach(v => {
-        v.style = {
-          width: ''
+        if (!v.style) {
+          v.style = {
+            width: ''
+          }
         }
       })
-      this.calcWidth()
-      this.calcHeight()
-      this.resetSortable()
+      this.calcWidth(this.rowv2)
+      this.calcHeight(this.rowv2)
+      this.resetSortable(this.rowv2)
     },
-    resetSortable() {
-      let self = this
-      let row = JSON.parse(JSON.stringify( self.rowv2))
-
-      // console.log('row', row, this.$el)
-      new Sortable(this.$refs.row, {
-        onEnd: function (/**Event*/evt) {
-          const { oldIndex, newIndex } = evt
-          // console.log('evt', oldIndex, newIndex)
-          let oldItem = row[oldIndex]
-          row.splice(oldIndex, 1)
-          row.splice(newIndex, 0, oldItem)
-          self.rowv2 = row
-        }
-      })
-    },
-    _parseItems(prop) {
-      let rows = this.rowv2
-      let frItems = rows.filter( v => {
-        return v[prop] && v[prop].endsWith && v[prop].endsWith('fr')
-      })
-      let otherItems = rows.filter(v => {
-        return !frItems.includes(v)
-      })
-
-      let frLength = frItems.map(v => parseInt(v[prop])).reduce((a, b) => a + b, 0)
-
-      let otherTotal = otherItems.map(v  => parseInt(v[prop])).reduce((a, b) => a + b, 0)
-
-      return {
-        frItems, otherItems, frLength, otherTotal
-      }
-    },
-
-    calcWidth() {
-      let { frItems, otherItems, frLength, otherTotal } = this._parseItems('w')
-
-      frItems.forEach(frItem => {
-        let numberW = parseInt(frItem.w)
-        frItem.style.width = `calc((100% - ${otherTotal}px) / ${frLength} * ${numberW})`
-      })
-
-      otherItems.forEach(otherItem => {
-        otherItem.style.width = otherItem.w + 'px'
-      })
-    },
-
-    calcHeight() {
-      let { otherItems } = this._parseItems('h')
-
-      otherItems.forEach(otherItem => {
-        otherItem.style.height = otherItem.h + 'px'
-      })
-    }
   }
 }
 </script>

@@ -5,27 +5,19 @@
 }
 
 .layout-level-0 {
-  .vue-grid-item, .vue-row-item {
+  .vue-row-item {
     background-color: #d3dce6;
+  }
+  .vue-column-item {
+    background-color: #ebebeb;
   }
 }
 
 .layout-level-1 {
-  .vue-grid-item, .vue-row-item {
+  .vue-row-item {
     background-color: #99a9bf;
   }
 }
-
-//.render-layout__con {
-//  position: relative;
-//}
-//
-//.handle {
-//  position: absolute;
-//  left: 0;
-//  top: 0;
-//  z-index: 1111111;
-//}
 </style>
 
 <template>
@@ -43,6 +35,17 @@ import RenderLayout from "@/views/about/components/render-layout.vue";
 export default defineComponent({
   mixins: [],
   data() {
+    let demoColumn = {
+      type: 'column',
+      data: [
+        {
+          h: 120,
+        },
+        {
+          h: 120,
+        },
+      ]
+    }
     let demoRow = {
       type: 'row',
       data: [
@@ -50,14 +53,6 @@ export default defineComponent({
           w: 240,
           h: 120,
         },
-        // {
-        //   w: '1fr',
-        //   h: 210,
-        // },
-        // {
-        //   w: '1fr',
-        //   h: 170,
-        // }
       ]
     }
 
@@ -72,6 +67,7 @@ export default defineComponent({
     }
     return {
       layout: [
+        demoColumn,
         demoRow,
         // demoRow,
         // {
