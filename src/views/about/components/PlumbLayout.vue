@@ -35,30 +35,40 @@ $sel: "." + $tag;
     border: 1px solid #7272ff;
     background-color: #ffffff;
     z-index: 0;
+    width: 200px;
+  }
+
+  @for $i from 1  through 10 {
+    .section:nth-child(#{$i}) {
+      $index: $i - 1;
+      left: 300px * $index;
+      top: 100px * $index;
+    }
   }
 }
 </style>
 
 <template>
   <div  class="plumb-layout">
-    <el-button @click="getVisibleConnections">get connect</el-button>
+    <el-button @click="getLinkRealtions">get connect</el-button>
+    <el-button @click="appendTest">appendTest</el-button>
     <div id="diagramContainer1" class="container">
-      <template v-for="(dep,depIndex) in deps">
-        <div :id="dep.id" class="abs section"
-             style="width: 200px;"
-             :style="{left: (100 * depIndex) + 'px', top: (100 * depIndex) + 'px'}">
-          <div class="item header" :id="dep.id + '-top'">top</div>
-          <template v-for="item in dep.items">
-            <div :id="item.id" class="item content-item">{{item.id}}</div>
-          </template>
-        </div>
-      </template>
+      <div :id="dep.id" class="abs section"
+           v-for="(dep,depIndex) in deps"
+           :key="depIndex"
+           >
+        <div class="item header" :data-pid="dep.id"  :id="dep.id + '-top'">top</div>
+        <template v-for="(item, index) in dep.items" :key="index">
+          <div :id="item.id" :data-pid="dep.id" class="item content-item">{{item.id}}</div>
+        </template>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import {jsPlumb} from 'jsplumb'
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
   name: "PlumbLayout",
@@ -66,6 +76,7 @@ export default {
   data() {
     return {
       instance: null,
+      config: {},
       deps: [
         {
           id: 'i1',
@@ -114,8 +125,7 @@ export default {
   },
   mounted() {
     let self = this
-
-    var config = {}
+    let config = {}
     config.connectorPaintStyle = {
       lineWidth: 1,
       stroke: '#4caf50',
@@ -171,15 +181,22 @@ export default {
           },
           events: {
             click: function (labelOverlay, originalEvent) {
-              // console.log('click on label overlay for :', labelOverlay.component)
+              console.log('click on label overlay for :', labelOverlay.component)
               // console.log(labelOverlay)
               // console.log(originalEvent)
-              jsPlumb.deleteConnection(labelOverlay.component)
+              // jsPlumb.deleteConnection(labelOverlay.component)
+              if (labelOverlay.component.isDetachAllowed()) {
+                // console.log('isDetachAllowed', self.instance)
+                self.instance.deleteConnection(labelOverlay.component)
+                // jsPlumb.repaint()
+              }
             }
           }
         }]
       ]
     }
+
+    self.config = config
 
     function ins1(id, instance, items = []) {
       instance.addEndpoint(id + '-top' , {
@@ -196,7 +213,8 @@ export default {
           anchors: ['Right']
         }, config.baseStyle)
       })
-      instance.draggable(id)
+      instance.draggable(id, {
+      })
     }
 
     jsPlumb.ready(function () {
@@ -207,15 +225,51 @@ export default {
       self.deps.forEach(dep => {
         ins1(dep.id, instance, dep.items)
       })
+
     })
   },
   methods: {
+    renderItem(item) {
+      let instance = this.instance
+      let config = this.config
+      instance.addEndpoint(item.id , {
+        anchors: ['Left']
+      }, config.baseStyle)
+      instance.addEndpoint(item.id , {
+        anchors: ['Right']
+      }, config.baseStyle)
+    },
+    appendTest() {
+      let opt = this.deps[0]
+      let newItem = {
+        id: opt.id + '-' + uuidv4()
+      }
+      opt.items.push(newItem)
+      this.$nextTick(() => {
+        this.renderItem(newItem)
+        this.instance.repaintEverything()
+      })
+    },
     getVisibleConnections() {
       let allConnections = this.instance.getConnections({
 
       });
-      let ret = allConnections.filter(v => {
+      let ret = []
+      ret = allConnections.filter(v => {
         return v.target && v.source
+      })
+      return ret
+    },
+    getLinkRealtions() {
+      let allVisibleConnections = this.getVisibleConnections()
+      let ret = []
+      ret = allVisibleConnections.map(v => {
+        return {
+          toPID: v.target.dataset.pid,
+          fromPID: v.source.dataset.pid,
+          form: v.sourceId,
+          to: v.targetId
+        }
       })
       console.log(ret)
       return ret

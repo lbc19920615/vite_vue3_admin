@@ -29,7 +29,7 @@
   <div class="page-search">
     <render-layout :map="layoutMap"
                    id="id1111"></render-layout>
-<!--    <PlumbLayout></PlumbLayout>-->
+    <PlumbLayout></PlumbLayout>
     <!--    <table-a></table-a>-->
   </div>
 </template>
