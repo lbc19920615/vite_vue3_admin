@@ -1,6 +1,5 @@
 <template>
   <div class="render-layout" :class="['render-layout-level-' + level]">
-    <template class="render-layout__con" v-for="layoutItem in items">
 <!--      <div class="handle">move</div>-->
 <!--      <layout-grid :class="['layout-level-' + level]" v-if="layoutItem.type === 'grid'"-->
 <!--                   :layout="layoutItem.data">-->
@@ -8,15 +7,18 @@
 <!--          <template v-if="scope.children && scope.children.length > 0"><render-layout :level="level + 1" :items="scope.children"></render-layout></template>-->
 <!--        </template>-->
 <!--      </layout-grid>-->
-      <grid-column :class="levelItemCls" v-if="layoutItem.type === 'column'"
-                :layout="layoutItem.data">
+      <grid-column :class="levelItemCls" v-if="curObj.type === 'column'"
+                :layout="curObj.data">
         <template v-slot:default="{item}">
-          <template v-if="item.children && item.children.length > 0"><render-layout :level="level + 1" :items="item.children"></render-layout></template>
+          <render-layout v-if="item.to" :level="level + 1" :map="map" :id="item.to"></render-layout>
         </template>
       </grid-column>
-      <grid-row :class="levelItemCls" v-if="layoutItem.type === 'row'"
-                :layout="layoutItem.data"></grid-row>
-    </template>
+      <grid-row :class="levelItemCls" v-if="curObj.type === 'row'"
+                :layout="curObj.data">
+        <template v-slot:default="{item}">
+          <render-layout v-if="item.to" :level="level + 1" :map="map" :id="item.to"></render-layout>
+        </template>
+      </grid-row>
   </div>
 </template>
 
@@ -29,13 +31,18 @@ import GridColumn from "@/views/about/components/grid-column.vue";
 export default {
   name: 'RenderLayout',
   props: {
-    items: {
-      type: Array,
-      default: []
-    },
     level: {
       type: Number,
       default: 0
+    },
+    map: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    id: {
+      type: String,
     }
   },
   components: {
@@ -47,6 +54,15 @@ export default {
     return {}
   },
   computed: {
+    curObj() {
+      console.log(this.map, this.id)
+      if (this.map[this.id]) {
+        return this.map[this.id]
+      }
+      return {
+        data: []
+      }
+    },
     levelItemCls() {
       return ['layout-level-' + this.level]
     }

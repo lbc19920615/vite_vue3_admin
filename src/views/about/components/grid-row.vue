@@ -59,7 +59,9 @@ $cls: "vue-grid-row-tools";
     </div>
     <div  class="vue-grid-row"><div
         class="vue-row-item" v-for="(item, index) in rowv2"
-                                   :style="item.style" >{{item.w}}</div></div>
+                                   :style="item.style" >
+      <slot v-bind="{item, index}"></slot>
+    </div></div>
     <div class="vue-grid-row-tools__action"><button
         @click="addItem"><i class="el-icon-plus"></i></button><button
         @click="enableEdit"><i class="el-icon-edit"></i></button></div>

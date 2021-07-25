@@ -5,9 +5,6 @@
 }
 
 .layout-level-0 {
-  .vue-row-item {
-    background-color: #d3dce6;
-  }
   .vue-column-item {
     background-color: #ebebeb;
   }
@@ -18,12 +15,21 @@
     background-color: #99a9bf;
   }
 }
+
+.render-layout-level-2 {
+  width: 100%;
+  .vue-column-item {
+    background-color: #001528;
+  }
+}
+
 </style>
 
 <template>
   <div class="page-search">
-<!--    <render-layout :items="layout"></render-layout>-->
-    <PlumbLayout></PlumbLayout>
+    <render-layout :map="layoutMap"
+                   id="id1111"></render-layout>
+<!--    <PlumbLayout></PlumbLayout>-->
     <!--    <table-a></table-a>-->
   </div>
 </template>
@@ -37,16 +43,6 @@ import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
 export default defineComponent({
   mixins: [],
   data() {
-    let demoRow = {
-      type: 'row',
-      data: [
-        {
-          w: 240,
-          h: 120,
-        },
-      ]
-    }
-
     let demoColumn = {
       type: 'column',
       data: [
@@ -55,12 +51,35 @@ export default defineComponent({
         },
         {
           h: 120,
-          children: [
-            demoRow,
-          ]
+          to: 'id222'
         },
       ]
     }
+
+
+    let demoRow = {
+      type: 'row',
+      data: [
+        {
+          w: 240,
+          h: 120,
+          to: 'id333'
+        },
+      ]
+    }
+
+    let demoColumn2 = {
+      type: 'column',
+      data: [
+        {
+          h: 30,
+        },
+        {
+          h: 30,
+        },
+      ]
+    }
+
 
     let demoGrid = {
       type: 'grid',
@@ -72,6 +91,11 @@ export default defineComponent({
       ]
     }
     return {
+      layoutMap: {
+        'id1111': demoColumn,
+        'id222': demoRow,
+        'id333': demoColumn2
+      },
       layout: [
         demoColumn,
         // demoRow,
