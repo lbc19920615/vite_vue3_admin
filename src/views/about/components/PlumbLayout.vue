@@ -41,7 +41,7 @@ $sel: "." + $tag;
   @for $i from 1  through 10 {
     .section:nth-child(#{$i}) {
       $index: $i - 1;
-      left: 300px * $index;
+      left: 100px * $index;
       top: 100px * $index;
     }
   }
@@ -51,7 +51,7 @@ $sel: "." + $tag;
 <template>
   <div  class="plumb-layout">
     <el-button @click="getLinkRealtions">get connect</el-button>
-    <el-button @click="appendTest">appendTest</el-button>
+    <el-button @click="appendDep">appendDep</el-button>
     <div id="diagramContainer1" class="container">
       <div :id="dep.id" class="abs section"
            v-for="(dep,depIndex) in deps"
@@ -61,6 +61,7 @@ $sel: "." + $tag;
         <template v-for="(item, index) in dep.items" :key="index">
           <div :id="item.id" :data-pid="dep.id" class="item content-item">{{item.id}}</div>
         </template>
+        <el-button @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
       </div>
     </div>
   </div>
@@ -198,7 +199,26 @@ export default {
 
     self.config = config
 
-    function ins1(id, instance, items = []) {
+
+    jsPlumb.ready(function () {
+      let instance = jsPlumb.getInstance({
+        Container: 'diagramContainer1'
+      })
+      self.instance = instance
+      self.insDeps(self.deps)
+    })
+  },
+  methods: {
+    insDeps(deps) {
+      let self = this
+      let instance = this.instance
+      deps.forEach(dep => {
+        self.insDep(dep.id, instance, dep.items)
+      })
+    },
+    insDep(id, instance, items = []) {
+      let self = this
+      let config = this.config
       instance.addEndpoint(id + '-top' , {
         anchors: ['Top']
       }, config.baseStyle)
@@ -206,29 +226,26 @@ export default {
         anchors: ['Left']
       }, config.baseStyle)
       items.forEach(item => {
-        instance.addEndpoint(item.id , {
-          anchors: ['Left']
-        }, config.baseStyle)
-        instance.addEndpoint(item.id , {
-          anchors: ['Right']
-        }, config.baseStyle)
+        self.renderItem(item)
       })
       instance.draggable(id, {
       })
-    }
-
-    jsPlumb.ready(function () {
-      let instance = jsPlumb.getInstance({
-        Container: 'diagramContainer1'
+    },
+    appendDep() {
+      let id = 'i4'
+      let dep = {
+        id: id,
+        items: [
+          {
+            id: id + '-' + uuidv4()
+          }
+        ]
+      }
+      this.deps.push(dep)
+      this.$nextTick(() => {
+        this.insDep(id, this.instance, dep.items)
       })
-      self.instance = instance
-      self.deps.forEach(dep => {
-        ins1(dep.id, instance, dep.items)
-      })
-
-    })
-  },
-  methods: {
+    },
     renderItem(item) {
       let instance = this.instance
       let config = this.config
@@ -239,8 +256,8 @@ export default {
         anchors: ['Right']
       }, config.baseStyle)
     },
-    appendTest() {
-      let opt = this.deps[0]
+    appendItem(dep) {
+      let opt = dep
       let newItem = {
         id: opt.id + '-' + uuidv4()
       }
