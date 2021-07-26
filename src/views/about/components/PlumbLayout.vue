@@ -58,7 +58,12 @@ $sel: "." + $tag;
            v-for="(dep,depIndex) in deps"
            :key="depIndex"
            >
-        <div class="item header" :data-pid="dep.id"  :id="dep.id + '-top'">top</div>
+        <div class="item header" :data-pid="dep.id"  :id="dep.id + '-top'">
+          <div>
+            <div>type: {{dep.type}}</div>
+            <div>id: {{dep.id}}</div>
+          </div>
+        </div>
         <template v-for="(item, index) in dep.items" :key="index">
           <div :id="item.id" :data-pid="dep.id" class="item content-item">{{item.id}}</div>
         </template>
