@@ -73,7 +73,6 @@
       </div>
     </div>
     <div class="vue-grid-column-tools__action"><button
-        @click="addItem"><i class="el-icon-plus"></i></button><button
         @click="enableEdit"><i class="el-icon-edit"></i></button></div>
   </div>
 </template>

@@ -54,7 +54,6 @@ $cls: "vue-grid-row-tools";
            :style="{width: item.style ? item.style.width : '', height: 'auto'}" >
         <unit-input v-model="rowv2[index].w" @update:modelValue="changeItem"></unit-input>
         <button class="grid-column-handle"><i class="el-icon-rank"></i></button>
-        <button @click="removeItem(index)"><i class="el-icon-remove"></i></button>
       </div>
     </div>
     <div  class="vue-grid-row"><div
@@ -63,7 +62,6 @@ $cls: "vue-grid-row-tools";
       <slot v-bind="{item, index}"></slot>
     </div></div>
     <div class="vue-grid-row-tools__action"><button
-        @click="addItem"><i class="el-icon-plus"></i></button><button
         @click="enableEdit"><i class="el-icon-edit"></i></button></div>
   </div>
 </template>
