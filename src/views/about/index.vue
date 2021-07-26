@@ -41,9 +41,11 @@
                    @edit-dep="onEditDep"
       ></PlumbLayout>
 
-      <div style="flex: 1">
-        <template v-if="currentEditDep">
-          {{currentEditDep}}
+      <div style="flex: 1" v-loading="renderFormLoading">
+        <template v-if="renderFormDesigner">
+          {{currentEditDep.type}}
+          <search-demo1 v-if="currentEditDep.type === 'row'" @init="onInitDemo1" :modelValue="currentEditDep"></search-demo1>
+          <search-demo1 v-if="currentEditDep.type === 'column'" @init="onInitDemo1" :modelValue="currentEditDep"></search-demo1>
         </template>
       </div>
     </el-row>
@@ -52,21 +54,54 @@
 </template>
 
 <script>
-import {defineComponent} from "vue";
+import {defineAsyncComponent, defineComponent} from "vue";
 import GridRow from "@/views/about/components/grid-row.vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
 
+let formDesignerMixin = {
+  components: {
+    ['search-demo1']: defineAsyncComponent(() => {
+      return import("__remote/getscript?src=formDesigner/index.twigvue&config_id=layoutDesigner.json5")
+    }),
+    ['search-demo2']: defineAsyncComponent(() => {
+      return import("__remote/getscript?src=formDesigner/index.twigvue&config_id=layoutDesigner.json5")
+    })
+  },
+  data() {
+    return {
+      searchDemo1Ref: null
+    }
+  },
+  methods: {
+    onInitDemo1(context) {
+      this.searchDemo1Ref = context
+      console.log( this.currentEditDep )
+      context.setModel(this.currentEditDep)
+    }
+  }
+}
+
 let depManagerMixin = {
   data() {
     return {
+      renderFormLoading: false,
+      renderFormDesigner: false,
       currentEditDep: null
     }
   },
   methods: {
     onEditDep(dep) {
       // console.log('onEditDep', dep)
+      this.renderFormLoading = true
+      this.renderFormDesigner = false
       this.currentEditDep = dep
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.renderFormLoading = false
+          this.renderFormDesigner = true
+        }, 30)
+      })
     }
   }
 }
@@ -130,6 +165,7 @@ let plumbLayoutMixin = {
 
 export default defineComponent({
   mixins: [
+    formDesignerMixin,
     plumbLayoutMixin,
     renderLayoutMixin,
     depManagerMixin,
