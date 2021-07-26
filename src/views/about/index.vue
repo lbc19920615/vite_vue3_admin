@@ -36,7 +36,9 @@
     </div>
     <PlumbLayout :root-id="rootId"
                  :handleAppend="handleAppend"
-                 @save-data="onGetData"></PlumbLayout>
+                 @save-data="onGetData"
+      @edit-dep="onEditDep"
+    ></PlumbLayout>
     <!--    <table-a></table-a>-->
   </div>
 </template>
@@ -46,6 +48,14 @@ import {defineComponent} from "vue";
 import GridRow from "@/views/about/components/grid-row.vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
+
+let depManagerMixin = {
+  methods: {
+    onEditDep(dep) {
+      console.log('onEditDep', dep)
+    }
+  }
+}
 
 let renderLayoutMixin = {
   methods: {
@@ -108,6 +118,7 @@ export default defineComponent({
   mixins: [
     plumbLayoutMixin,
     renderLayoutMixin,
+    depManagerMixin,
   ],
   data() {
     let demoColumn = {

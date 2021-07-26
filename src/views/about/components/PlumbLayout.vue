@@ -7,7 +7,7 @@ $sel: "." + $tag;
   height: 600px;
   border: 1px solid #eee;
   .item {
-    height: 50px;
+    min-height: 50px;
     width: 100%;
     border-bottom: 1px solid #999;
     &:last-child {
@@ -60,6 +60,9 @@ $sel: "." + $tag;
            >
         <div class="item header" :data-pid="dep.id"  :id="dep.id + '-top'">
           <div>
+            <div>
+              <button><i class="el-icon-edit" @click="editDep(dep)"></i></button>
+            </div>
             <div>type: {{dep.type}}</div>
             <div>id: {{dep.id}}</div>
           </div>
@@ -277,6 +280,9 @@ export default {
       this.$nextTick(() => {
         this.insDep(id, this.instance, dep.items)
       })
+    },
+    editDep(dep) {
+      this.$emit('edit-dep', dep)
     },
     renderItem(item) {
       let instance = this.instance
