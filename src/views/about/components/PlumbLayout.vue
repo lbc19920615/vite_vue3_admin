@@ -137,13 +137,19 @@ export default {
           type: 'row',
           items: [
             {
-              id: 'i3-0'
+              id: 'i3-0',
+              w: '1fr',
+              h: 50,
             },
             {
-              id: 'i3-1'
+              id: 'i3-1',
+              w: '1fr',
+              h: 50,
             },
             {
-              id: 'i3-2'
+              id: 'i3-2',
+              w: '1fr',
+              h: 50,
             }
           ]
         }
