@@ -74,7 +74,15 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default {
   name: "PlumbLayout",
-  components: { },
+  props: {
+    rootId: String,
+    handleAppend: {
+      type: Function,
+      default() {
+        return function () {}
+      }
+    }
+  },
   data() {
     return {
       instance: null,
@@ -82,15 +90,19 @@ export default {
       deps: [
         {
           id: 'i1',
+          type: 'column',
           items: [
             {
-              id: 'i1-0'
+              id: 'i1-0',
+              h: 120
             },
             {
-              id: 'i1-1'
+              id: 'i1-1',
+              h: 120
             },
             {
-              id: 'i1-2'
+              id: 'i1-2',
+              h: 120
             }
           ]
         },
@@ -260,7 +272,10 @@ export default {
     appendItem(dep) {
       let opt = dep
       let newItem = {
-        id: opt.id + '-' + uuidv4()
+        id: opt.id + '-' + uuidv4(),
+      }
+      if (this.handleAppend) {
+        this.handleAppend(newItem, dep)
       }
       opt.items.push(newItem)
       this.$nextTick(() => {

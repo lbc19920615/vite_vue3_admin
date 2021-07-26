@@ -8,13 +8,13 @@
 <!--        </template>-->
 <!--      </layout-grid>-->
       <grid-column :class="levelItemCls" v-if="curObj.type === 'column'"
-                :layout="curObj.data">
+                :layout="curObj.items">
         <template v-slot:default="{item}">
           <render-layout v-if="item.to" :level="level + 1" :map="map" :id="item.to"></render-layout>
         </template>
       </grid-column>
       <grid-row :class="levelItemCls" v-if="curObj.type === 'row'"
-                :layout="curObj.data">
+                :layout="curObj.items">
         <template v-slot:default="{item}">
           <render-layout v-if="item.to" :level="level + 1" :map="map" :id="item.to"></render-layout>
         </template>

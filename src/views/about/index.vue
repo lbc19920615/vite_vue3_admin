@@ -27,12 +27,14 @@
 
 <template>
   <div class="page-search">
-<!--    <render-layout :map="layoutMap"-->
-<!--                   id="id1111"></render-layout>-->
+    <render-layout :map="currentLayoutMap"
+                   :id="rootId"></render-layout>
     <div>
       {{currentLayoutMap}}
     </div>
-    <PlumbLayout @save-data="onGetData"></PlumbLayout>
+    <PlumbLayout :root-id="rootId"
+                 :handleAppend="handleAppend"
+                 @save-data="onGetData"></PlumbLayout>
     <!--    <table-a></table-a>-->
   </div>
 </template>
@@ -50,9 +52,17 @@ let plumbLayoutMixin = {
     }
   },
   methods: {
+    handleAppend(newItem, dep) {
+      // console.log('newItem', dep)
+      if (dep.type === 'column') {
+        newItem.h = 120
+      }
+    },
     onGetData({deps, links = []}) {
-      console.log('onGetData', deps, links)
-      let map = {}
+      // console.log('onGetData', deps, links)
+      let map = {
+        [this.rootId]: deps.find(v => v.id === this.rootId)
+      }
       links.forEach(link => {
         let { toPID = '' } = link
         if (toPID) {
@@ -62,7 +72,7 @@ let plumbLayoutMixin = {
           }
         }
       })
-      this.currentLayoutMap = map
+      this.currentLayoutMap = JSON.parse(JSON.stringify(map))
     }
   }
 }
@@ -107,8 +117,9 @@ export default defineComponent({
         },
       ]
     }
-    
+
     return {
+      rootId: 'i1',
       layoutMap: {
         'id1111': demoColumn,
         'id222': demoRow,
@@ -116,20 +127,6 @@ export default defineComponent({
       },
       layout: [
         demoColumn,
-        // demoRow,
-        // {
-        //   type: 'grid',
-        //   data: [
-        //     {"x": 0, "y": 0, "w": 24, "h": 211, "i": "0"},
-        //     {
-        //       "x": 2, "y": 0, "w": 24, "h": 411, "i": "1",
-        //       children: [
-        //           demoRow,
-        //         // demoGrid
-        //       ]
-        //     }
-        //   ]
-        // },
       ]
     }
   },
