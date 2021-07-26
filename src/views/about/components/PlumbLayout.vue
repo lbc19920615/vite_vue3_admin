@@ -61,7 +61,7 @@ $sel: "." + $tag;
         <div class="item header" :data-pid="dep.id"  :id="dep.id + '-top'">
           <div>
             <div>
-              <button><i class="el-icon-edit" @click="editDep(dep)"></i></button>
+              <button @click="editDep(dep)"><i class="el-icon-edit" ></i></button>
             </div>
             <div>type: {{dep.type}}</div>
             <div>id: {{dep.id}}</div>
