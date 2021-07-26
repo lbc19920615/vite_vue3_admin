@@ -113,20 +113,28 @@ export default {
         },
         {
           id: 'i2',
+          type: 'row',
           items: [
             {
-              id: 'i2-0'
+              id: 'i2-0',
+              w: '1fr',
+              h: 50,
             },
             {
-              id: 'i2-1'
+              id: 'i2-1',
+              w: '1fr',
+              h: 50,
             },
             {
-              id: 'i2-2'
+              id: 'i2-2',
+              w: '1fr',
+              h: 50,
             }
           ]
         },
         {
           id: 'i3',
+          type: 'row',
           items: [
             {
               id: 'i3-0'
@@ -200,7 +208,7 @@ export default {
           },
           events: {
             click: function (labelOverlay, originalEvent) {
-              console.log('click on label overlay for :', labelOverlay.component)
+              // console.log('click on label overlay for :', labelOverlay.component)
               // console.log(labelOverlay)
               // console.log(originalEvent)
               // jsPlumb.deleteConnection(labelOverlay.component)
@@ -313,7 +321,7 @@ export default {
         return {
           toPID: v.target.dataset.pid,
           fromPID: v.source.dataset.pid,
-          form: v.sourceId,
+          from: v.sourceId,
           to: v.targetId
         }
       })

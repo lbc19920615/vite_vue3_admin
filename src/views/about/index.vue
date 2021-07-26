@@ -28,7 +28,9 @@
 <template>
   <div class="page-search">
     <render-layout :map="currentLayoutMap"
-                   :id="rootId"></render-layout>
+                   :id="rootId"
+                   :handleNext="handleNext"
+    ></render-layout>
     <div>
       {{currentLayoutMap}}
     </div>
@@ -45,9 +47,25 @@ import GridRow from "@/views/about/components/grid-row.vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
 
+let renderLayoutMixin = {
+  methods: {
+    handleNext(item) {
+      // console.log(this.currentLinks, item.id)
+      let fromId = item.id
+      let connection = this.currentLinks.find(v => v.from === fromId)
+      if (connection) {
+        console.log('from', connection)
+        return connection.toPID
+      }
+      return ''
+    }
+  }
+}
+
 let plumbLayoutMixin = {
   data() {
     return {
+      currentLinks: [],
       currentLayoutMap: {},
     }
   },
@@ -57,9 +75,13 @@ let plumbLayoutMixin = {
       if (dep.type === 'column') {
         newItem.h = 120
       }
+      if (dep.type === 'row') {
+        newItem.w = '1fr'
+        newItem.h = 50
+      }
     },
     onGetData({deps, links = []}) {
-      // console.log('onGetData', deps, links)
+      console.log('onGetData', deps, links)
       let map = {
         [this.rootId]: deps.find(v => v.id === this.rootId)
       }
@@ -73,13 +95,15 @@ let plumbLayoutMixin = {
         }
       })
       this.currentLayoutMap = JSON.parse(JSON.stringify(map))
+      this.currentLinks = JSON.parse(JSON.stringify(links))
     }
   }
 }
 
 export default defineComponent({
   mixins: [
-    plumbLayoutMixin
+    plumbLayoutMixin,
+    renderLayoutMixin,
   ],
   data() {
     let demoColumn = {

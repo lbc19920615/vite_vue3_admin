@@ -10,7 +10,8 @@
       <grid-column :class="levelItemCls" v-if="curObj.type === 'column'"
                 :layout="curObj.items">
         <template v-slot:default="{item}">
-          <render-layout v-if="item.to" :level="level + 1" :map="map" :id="item.to"></render-layout>
+          <render-layout  :level="level + 1" :map="map"
+                         :id="getNext(item)"></render-layout>
         </template>
       </grid-column>
       <grid-row :class="levelItemCls" v-if="curObj.type === 'row'"
@@ -43,6 +44,12 @@ export default {
     },
     id: {
       type: String,
+    },
+    handleNext: {
+      type: Function,
+      default() {
+        return function () { return '' }
+      }
     }
   },
   components: {
@@ -68,10 +75,17 @@ export default {
     }
   },
   methods: {
+    getNext(item) {
+      let id = ''
+      // console.log('getNext')
+      if (this.handleNext) {
+        id = this.handleNext(item)
+      }
+      return id
+    },
     resetSortable() {
       let self = this
-
-      console.log('row',  this.$el)
+      // console.log('row',  this.$el)
       new Sortable(this.$el, {
         // handle: '.handle',
         onEnd: function (/**Event*/evt) {
