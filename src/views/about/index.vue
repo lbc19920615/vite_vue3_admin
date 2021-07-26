@@ -34,17 +34,19 @@
     <div>
       {{currentLayoutMap}}
     </div>
-    <PlumbLayout :root-id="rootId"
-                 :handleAppend="handleAppend"
-                 @save-data="onGetData"
-      @edit-dep="onEditDep"
-    ></PlumbLayout>
+    <el-row type="flex">
+      <PlumbLayout :root-id="rootId"
+                   :handleAppend="handleAppend"
+                   @save-data="onGetData"
+                   @edit-dep="onEditDep"
+      ></PlumbLayout>
 
-    <div>
-      <template v-if="currentEditDep">
-        {{currentEditDep}}
-      </template>
-    </div>
+      <div style="flex: 1">
+        <template v-if="currentEditDep">
+          {{currentEditDep}}
+        </template>
+      </div>
+    </el-row>
     <!--    <table-a></table-a>-->
   </div>
 </template>
