@@ -50,6 +50,7 @@ $sel: "." + $tag;
 
 <template>
   <div  class="plumb-layout">
+    <el-button @click="save">save</el-button>
     <el-button @click="getLinkRealtions">get connect</el-button>
     <el-button @click="appendDep">appendDep</el-button>
     <div id="diagramContainer1" class="container">
@@ -277,6 +278,14 @@ export default {
       })
       return ret
     },
+    save() {
+      let links = this.getLinkRealtions()
+      let ret = {
+        deps: this.deps,
+        links
+      }
+      this.$emit('save-data', ret)
+    },
     getLinkRealtions() {
       let allVisibleConnections = this.getVisibleConnections()
       let ret = []
@@ -288,7 +297,7 @@ export default {
           to: v.targetId
         }
       })
-      console.log(ret)
+      // console.log(ret)
       return ret
     }
   }

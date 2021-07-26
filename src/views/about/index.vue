@@ -27,9 +27,12 @@
 
 <template>
   <div class="page-search">
-    <render-layout :map="layoutMap"
-                   id="id1111"></render-layout>
-    <PlumbLayout></PlumbLayout>
+<!--    <render-layout :map="layoutMap"-->
+<!--                   id="id1111"></render-layout>-->
+    <div>
+      {{currentLayoutMap}}
+    </div>
+    <PlumbLayout @save-data="onGetData"></PlumbLayout>
     <!--    <table-a></table-a>-->
   </div>
 </template>
@@ -40,8 +43,34 @@ import GridRow from "@/views/about/components/grid-row.vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
 
+let plumbLayoutMixin = {
+  data() {
+    return {
+      currentLayoutMap: {},
+    }
+  },
+  methods: {
+    onGetData({deps, links = []}) {
+      console.log('onGetData', deps, links)
+      let map = {}
+      links.forEach(link => {
+        let { toPID = '' } = link
+        if (toPID) {
+          let dep = deps.find(v => v.id === toPID)
+          if (dep) {
+            map[toPID] = dep
+          }
+        }
+      })
+      this.currentLayoutMap = map
+    }
+  }
+}
+
 export default defineComponent({
-  mixins: [],
+  mixins: [
+    plumbLayoutMixin
+  ],
   data() {
     let demoColumn = {
       type: 'column',
@@ -55,7 +84,6 @@ export default defineComponent({
         },
       ]
     }
-
 
     let demoRow = {
       type: 'row',
@@ -79,17 +107,7 @@ export default defineComponent({
         },
       ]
     }
-
-
-    let demoGrid = {
-      type: 'grid',
-      data: [
-        {"x": 0, "y": 0, "w": 24, "h": 2, "i": "0"},
-        {
-          "x": 2, "y": 0, "w": 24, "h": 4, "i": "1",
-        }
-      ]
-    }
+    
     return {
       layoutMap: {
         'id1111': demoColumn,
