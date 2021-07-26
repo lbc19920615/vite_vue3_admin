@@ -52,10 +52,14 @@ let renderLayoutMixin = {
     handleNext(item) {
       // console.log(this.currentLinks, item.id)
       let fromId = item.id
-      let connection = this.currentLinks.find(v => v.from === fromId)
-      if (connection) {
-        console.log('from', connection)
-        return connection.toPID
+      let connections = this.currentLinks.filter(v => v.from === fromId)
+      if (connections) {
+        // console.log('from', connections)
+        // return connection.toPID
+        if (Array.isArray(connections) && connections[0]) {
+          return connections[0].toPID
+        }
+        return ''
       }
       return ''
     }
