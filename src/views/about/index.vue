@@ -39,6 +39,12 @@
                  @save-data="onGetData"
       @edit-dep="onEditDep"
     ></PlumbLayout>
+
+    <div>
+      <template v-if="currentEditDep">
+        {{currentEditDep}}
+      </template>
+    </div>
     <!--    <table-a></table-a>-->
   </div>
 </template>
@@ -50,9 +56,15 @@ import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
 
 let depManagerMixin = {
+  data() {
+    return {
+      currentEditDep: null
+    }
+  },
   methods: {
     onEditDep(dep) {
-      console.log('onEditDep', dep)
+      // console.log('onEditDep', dep)
+      this.currentEditDep = dep
     }
   }
 }
