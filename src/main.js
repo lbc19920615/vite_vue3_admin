@@ -35,8 +35,8 @@ import StoreApp from "./StoreApp.vue";
 import * as highlightPlugin from '@/plugins/highlight'
 
 import VueGridLayout from '@/plugins/grid-layout'
-
-console.log(VueGridLayout)
+import CustomFormRenderPlugin from "@/plugins/form-render";
+// console.log(VueGridLayout)
 
 initBrowserVueSFCLoader(Vue)
 
@@ -63,6 +63,7 @@ window.startApp = function () {
     locale
   })
   app.use(VueGridLayout)
+  app.use(CustomFormRenderPlugin)
   app.use(highlightPlugin)
   app.use(eventBus)
   app.use(icons)

@@ -20,7 +20,13 @@ $sel: "." + $tag;
 export default {
   name: "UnitInput",
   props: {
-    modelValue: null
+    modelValue: null,
+    config: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
   },
   data() {
     return {
