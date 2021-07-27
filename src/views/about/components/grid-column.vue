@@ -11,11 +11,11 @@
 .vue-grid-column-tools {
   position: relative;
 
-  &:hover {
-    .vue-grid-column-tools__action {
-      display: block;
-    }
-  }
+  //&:hover {
+  //  .vue-grid-column-tools__action {
+  //    display: block;
+  //  }
+  //}
 
   &__action {
     position: absolute;

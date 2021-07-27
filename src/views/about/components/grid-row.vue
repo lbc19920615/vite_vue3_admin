@@ -11,11 +11,11 @@ $cls: "vue-grid-row-tools";
 .vue-grid-row-tools {
   position: relative;
 
-  &:hover {
-    .#{$cls}__action {
-      display: block;
-    }
-  }
+  //&:hover {
+  //  .#{$cls}__action {
+  //    display: block;
+  //  }
+  //}
 
   .#{$cls}__action {
     position: absolute;
