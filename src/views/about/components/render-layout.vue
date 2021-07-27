@@ -10,14 +10,14 @@
       <grid-column :class="levelItemCls" v-if="curObj.type === 'column'"
                 :layout="curObj.items">
         <template v-slot:default="{item}">
-          <render-layout :level="level + 1" :map="map"
+          <render-layout :level="level + 1" :map="map" :handle-next="handleNext"
                          :id="getNext(item)"></render-layout>
         </template>
       </grid-column>
       <grid-row :class="levelItemCls" v-if="curObj.type === 'row'"
                 :layout="curObj.items">
         <template v-slot:default="{item}">
-          <render-layout :level="level + 1" :map="map"
+          <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"
                          :id="getNext(item)"></render-layout>
         </template>
       </grid-row>
@@ -48,9 +48,7 @@ export default {
     },
     handleNext: {
       type: Function,
-      default() {
-        return function () { return '' }
-      }
+      default: null
     }
   },
   components: {
