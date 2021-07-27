@@ -1,5 +1,5 @@
 <script lang="jsx">
-import {defineComponent, h, onMounted, reactive, resolveComponent} from "vue";
+import {defineComponent, h, onMounted, watch, reactive, resolveComponent} from "vue";
 
 export default defineComponent({
   // template: '#' + templateId,
@@ -22,6 +22,11 @@ export default defineComponent({
     const obj = reactive({
       value: props.modelValue
     })
+
+    watch(() => props.modelValue, (newVal) => {
+      console.log('custom', newVal)
+      obj.value = newVal
+    }, { immediate: true })
 
     return () => (<widgetDef modelValue={obj.value} config={widgetConfig}></widgetDef>)
   }

@@ -35,14 +35,28 @@ export default {
     }
   },
   mounted() {
-    this.num = parseInt(this.modelValue)
-    // console.log(this.num)
-    if (this.modelValue && this.modelValue.replace) {
-
-      this.unit = this.modelValue.replace(this.num, '')
+    // this.resolveValue()
+  },
+  watch: {
+    modelValue: {
+      handler(newVal) {
+        console.log('resolveValue', newVal)
+        this.resolveValue(newVal)
+      },
+      immediate: true
     }
   },
   methods: {
+    resolveValue(newVal) {
+      let v = parseInt(newVal)
+      if (!Number.isNaN(v)) {
+        this.num = v
+      }
+      // console.log(this.num)
+      if (newVal && newVal.replace) {
+        this.unit = newVal.replace(this.num, '')
+      }
+    },
     changeItem() {
       let v = `${this.num}${this.unit}`
       console.log('change item', v)
