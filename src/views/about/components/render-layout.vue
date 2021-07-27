@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     curObj() {
-      console.log(this.map, this.id)
+      // console.log(this.map, this.id)
       if (this.map[this.id]) {
         return this.map[this.id]
       }
