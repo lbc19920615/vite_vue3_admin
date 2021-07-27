@@ -13,7 +13,7 @@ export default defineComponent({
     },
     modelValue: null
   },
-  setup(props) {
+  setup(props, {emit}) {
     let { widget, widgetConfig } = props.ui
     const widgetDef = resolveComponent(widget)
     // onMounted(() => {
@@ -28,7 +28,12 @@ export default defineComponent({
       obj.value = newVal
     }, { immediate: true })
 
-    return () => (<widgetDef modelValue={obj.value} config={widgetConfig}></widgetDef>)
+    function onChange(e) {
+      console.log('custom render onChange', e)
+      emit('update:modelValue', e)
+    }
+
+    return () => (<widgetDef onUpdate:modelValue={onChange} modelValue={obj.value} config={widgetConfig}></widgetDef>)
   }
 })
 </script>

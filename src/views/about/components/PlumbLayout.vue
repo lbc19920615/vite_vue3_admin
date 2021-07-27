@@ -289,7 +289,15 @@ export default {
       this.$emit('edit-dep', dep)
     },
     deleteItem(dep, item, index) {
+      this.removeItem(item)
       dep.items.splice(index,1)
+      this.$nextTick(() => {
+        this.instance.repaintEverything()
+      })
+    },
+    removeItem(item) {
+      let instance = this.instance
+      instance.removeAllEndpoints(item.id)
     },
     renderItem(item) {
       let instance = this.instance

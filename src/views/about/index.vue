@@ -45,7 +45,7 @@
         <template v-if="renderFormDesigner">
           {{currentEditDep.type}}
           <search-demo1 v-if="currentEditDep.type === 'row'" @init="onInitDemo1" :modelValue="currentEditDep"></search-demo1>
-          <search-demo1 v-if="currentEditDep.type === 'column'" @init="onInitDemo1" :modelValue="currentEditDep"></search-demo1>
+          <search-demo2 v-if="currentEditDep.type === 'column'" @init="onInitDemo1" :modelValue="currentEditDep"></search-demo2>
         </template>
       </div>
     </el-row>

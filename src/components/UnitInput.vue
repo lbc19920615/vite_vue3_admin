@@ -59,7 +59,7 @@ export default {
     },
     changeItem() {
       let v = `${this.num}${this.unit}`
-      console.log('change item', v)
+      // console.log('change item', v)
       this.$emit('update:modelValue', v)
     }
   }
