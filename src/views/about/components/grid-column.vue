@@ -174,7 +174,7 @@ export default {
           }
         }
       })
-      // this.calcWidth(this.rowv2)
+      this.calcWidth(this.rowv2)
       this.calcHeight(this.rowv2)
       return Promise.resolve()
     },
