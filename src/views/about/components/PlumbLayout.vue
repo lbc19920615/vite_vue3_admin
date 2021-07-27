@@ -68,9 +68,13 @@ $sel: "." + $tag;
           </div>
         </div>
         <template v-for="(item, index) in dep.items" :key="index">
-          <div :id="item.id" :data-pid="dep.id" class="item content-item">{{item.id}}</div>
+          <div :id="item.id" :data-pid="dep.id" class="item content-item">
+            <div>{{item.id}}</div>
+            <button @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>
+          </div>
         </template>
-        <el-button @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
+        <el-button size="small"
+                   @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
       </div>
     </div>
   </div>
@@ -283,6 +287,9 @@ export default {
     },
     editDep(dep) {
       this.$emit('edit-dep', dep)
+    },
+    deleteItem(dep, item, index) {
+      dep.items.splice(index,1)
     },
     renderItem(item) {
       let instance = this.instance
