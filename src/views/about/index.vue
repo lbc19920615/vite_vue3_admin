@@ -1,25 +1,25 @@
 <style lang="scss">
 .vue-grid-item {
   color: #ffffff;
-
 }
 
-.layout-level-0 {
-  .vue-column-item {
-    background-color: #ebebeb;
-  }
+@function random-rgb() {
+  @return rgb(random(255), random(255), random(255))
 }
 
-.layout-level-1 {
-  .vue-row-item {
-    background-color: #99a9bf;
-  }
+@mixin random-bgr(){
+  background: random-rgb();
 }
 
-.render-layout-level-2 {
-  width: 100%;
-  .vue-column-item {
-    background-color: #001528;
+@for $i from 0 through 10 {
+  .render-layout-level-#{$i} {
+    width: 100%;
+    .vue-column-item {
+      @include random-bgr();
+    }
+    .vue-row-item {
+      @include random-bgr();
+    }
   }
 }
 
