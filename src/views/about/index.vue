@@ -65,7 +65,7 @@ let formDesignerMixin = {
       return import("__remote/getscript?src=formDesigner/index.twigvue&config_id=layoutDesigner.json5")
     }),
     ['search-demo2']: defineAsyncComponent(() => {
-      return import("__remote/getscript?src=formDesigner/index.twigvue&config_id=layoutDesigner.json5")
+      return import("__remote/getscript?src=formDesigner/index.twigvue&config_id=layoutColumn.json5")
     })
   },
   data() {
