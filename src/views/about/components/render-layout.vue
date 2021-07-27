@@ -10,14 +10,15 @@
       <grid-column :class="levelItemCls" v-if="curObj.type === 'column'"
                 :layout="curObj.items">
         <template v-slot:default="{item}">
-          <render-layout  :level="level + 1" :map="map"
+          <render-layout :level="level + 1" :map="map"
                          :id="getNext(item)"></render-layout>
         </template>
       </grid-column>
       <grid-row :class="levelItemCls" v-if="curObj.type === 'row'"
                 :layout="curObj.items">
         <template v-slot:default="{item}">
-          <render-layout v-if="item.to" :level="level + 1" :map="map" :id="item.to"></render-layout>
+          <render-layout :level="level + 1" :map="map"
+                         :id="getNext(item)"></render-layout>
         </template>
       </grid-row>
   </div>
