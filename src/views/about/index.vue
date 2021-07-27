@@ -44,8 +44,18 @@
       <div style="flex: 1" v-loading="renderFormLoading">
         <template v-if="renderFormDesigner">
           {{currentEditDep.type}}
-          <search-demo1 v-if="currentEditDep.type === 'row'" @init="onInitDemo1" :modelValue="currentEditDep"></search-demo1>
-          <search-demo2 v-if="currentEditDep.type === 'column'" @init="onInitDemo1" :modelValue="currentEditDep"></search-demo2>
+          <search-demo1 v-if="currentEditDep.type === 'row'"
+                        @init="onInitDemo1" :modelValue="currentEditDep">
+            <template v-slot:key1__array__before="{items, index}">
+              <header>{{index}}</header>
+            </template>
+          </search-demo1>
+          <search-demo2 v-if="currentEditDep.type === 'column'"
+                        @init="onInitDemo1" :modelValue="currentEditDep">
+            <template v-slot:key1__array__before="{items, index}">
+              <header>{{index}}</header>
+            </template>
+          </search-demo2>
         </template>
       </div>
     </el-row>
