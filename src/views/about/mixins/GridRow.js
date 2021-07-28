@@ -27,7 +27,14 @@ export default {
       })
 
       otherItems.forEach(otherItem => {
-        otherItem.style.width = otherItem.w + 'px'
+        let numberW = parseInt(otherItem.w)
+        let unit = undefined
+        if (Number.isNaN(numberW)) {
+          // numberW = undefined
+        } else {
+          unit = numberW + 'px'
+        }
+        otherItem.style.width = unit
       })
     },
     calcHeight(rows = []) {

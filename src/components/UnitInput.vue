@@ -8,10 +8,13 @@ $sel: "." + $tag;
 
 <template>
   <div class="unit-input">
-    <el-input-number size="small"  controls-position="right" style="width: 90px;" v-model.number="num" @change="changeItem(num)" type="text" ></el-input-number>
+    <el-input-number size="small"  controls-position="right"
+                     style="width: 90px;" v-model.number="num"
+                     @change="changeItem(num)" type="text" ></el-input-number>
     <el-select  size="small" v-model="unit"  clearable
                 @change="changeItem(unit)" style="width: 60px;">
-      <el-option label="fr" value="fr" ></el-option>
+      <el-option v-for="unit in units"
+                 :label="unit" :value="unit" ></el-option>
     </el-select>
   </div>
 </template>
@@ -31,7 +34,19 @@ export default {
   data() {
     return {
       num: 0,
-      unit: ''
+      unit: '',
+      units: [
+          'fr',
+          'px',
+          'rem',
+          'ex',
+          'vw',
+          'vh',
+          'vmax',
+          'vmin',
+          'em',
+          '%'
+      ]
     }
   },
   mounted() {
