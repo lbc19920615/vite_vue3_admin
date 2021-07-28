@@ -10,6 +10,10 @@ export let groupManagerMixin = {
                 {
                     type: 'column',
                     desc: '纵向布局'
+                },
+                {
+                    type: 'form',
+                    desc: 'FORM布局'
                 }
             ]
         }
