@@ -50,9 +50,24 @@ $sel: "." + $tag;
 
 <template>
   <div  class="plumb-layout">
-    <el-button @click="save">save</el-button>
-    <el-button @click="getLinkRealtions">get connect</el-button>
-    <el-button @click="appendDep">appendDep</el-button>
+    <el-button @click="save">保存</el-button>
+<!--    <el-button @click="getLinkRealtions">get connect</el-button>-->
+    <el-button @click="toggleGroupDialog(true)">添加组</el-button>
+
+    <el-dialog
+        v-model="dialogVisible" title="组选择" width="80vw"
+    :close-on-click-modal="false"
+    >
+      <el-row type="flex">
+        <el-col :span="6"
+                v-for="group in groups"
+                @click="selectGroupTemplate(group)">
+          <div>{{group.type}}</div>
+          <div>{{group.desc}}</div>
+        </el-col>
+      </el-row>
+    </el-dialog>
+
     <div id="diagramContainer1" class="container">
       <div :id="dep.id" class="abs section"
            v-for="(dep,depIndex) in deps"
@@ -82,10 +97,14 @@ $sel: "." + $tag;
 
 <script>
 import {jsPlumb} from 'jsplumb'
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
+import {groupManagerMixin} from "./PlumbLayout/groupDialog";
 
 export default {
   name: "PlumbLayout",
+  mixins: [
+    groupManagerMixin
+  ],
   props: {
     rootId: String,
     handleAppend: {
@@ -100,66 +119,6 @@ export default {
       instance: null,
       config: {},
       deps: [
-        {
-          id: 'i1',
-          type: 'column',
-          items: [
-            {
-              id: 'i1-0',
-              h: 120
-            },
-            {
-              id: 'i1-1',
-              h: 120
-            },
-            {
-              id: 'i1-2',
-              h: 120
-            }
-          ]
-        },
-        {
-          id: 'i2',
-          type: 'row',
-          items: [
-            {
-              id: 'i2-0',
-              w: '1fr',
-              h: 50,
-            },
-            {
-              id: 'i2-1',
-              w: '1fr',
-              h: 50,
-            },
-            {
-              id: 'i2-2',
-              w: '1fr',
-              h: 50,
-            }
-          ]
-        },
-        {
-          id: 'i3',
-          type: 'row',
-          items: [
-            {
-              id: 'i3-0',
-              w: '1fr',
-              h: 50,
-            },
-            {
-              id: 'i3-1',
-              w: '1fr',
-              h: 50,
-            },
-            {
-              id: 'i3-2',
-              w: '1fr',
-              h: 50,
-            }
-          ]
-        }
       ]
     }
   },
@@ -238,16 +197,17 @@ export default {
 
     self.config = config
 
-
     jsPlumb.ready(function () {
-      let instance = jsPlumb.getInstance({
+      self.instance = jsPlumb.getInstance({
         Container: 'diagramContainer1'
       })
-      self.instance = instance
-      self.insDeps(self.deps)
+      self.$emit('init', self)
     })
   },
   methods: {
+    init({deps = []} = {}) {
+      this.deps = deps
+    },
     insDeps(deps) {
       let self = this
       let instance = this.instance
@@ -270,16 +230,19 @@ export default {
       instance.draggable(id, {
       })
     },
-    appendDep() {
-      let id = 'i4'
+    /**
+     * appendDep
+     * @param def {{}} required
+     */
+    appendDep(def = {}) {
+      let id = 'i' + '-' + uuidv4()
       let dep = {
         id: id,
         items: [
-          {
-            id: id + '-' + uuidv4()
-          }
-        ]
+        ],
+        ...def
       }
+      console.log('dep', dep)
       this.deps.push(dep)
       this.$nextTick(() => {
         this.insDep(id, this.instance, dep.items)
@@ -335,6 +298,7 @@ export default {
     },
     save() {
       let links = this.getLinkRealtions()
+      // console.log('links', this.deps, links)
       let ret = {
         deps: this.deps,
         links

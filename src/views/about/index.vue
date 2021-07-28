@@ -31,11 +31,10 @@
                    :id="rootId"
                    :handleNext="handleNext"
     ></render-layout>
-    <div>
-      {{currentLayoutMap}}
-    </div>
     <el-row type="flex">
-      <PlumbLayout :root-id="rootId"
+      <PlumbLayout
+          @init="onPlumbLayoutInit"
+          :root-id="rootId"
                    :handleAppend="handleAppend"
                    @save-data="onGetData"
                    @edit-dep="onEditDep"
@@ -119,13 +118,12 @@ let depManagerMixin = {
 let renderLayoutMixin = {
   methods: {
     handleNext(item) {
-      // console.log(this.currentLinks, item.id)
       let fromId = item.id
       let connections = this.currentLinks.filter(v => v.from === fromId)
-      if (connections) {
-        // console.log('from', connections)
+      if (Array.isArray(connections)) {
         // return connection.toPID
-        if (Array.isArray(connections) && connections[0]) {
+        if (connections[0]) {
+          console.log('handleNext', fromId, connections[0].toPID)
           return connections[0].toPID
         }
         return ''
@@ -143,6 +141,73 @@ let plumbLayoutMixin = {
     }
   },
   methods: {
+    onPlumbLayoutInit(self) {
+      self.deps = [
+        {
+          id: 'i1',
+          type: 'column',
+          items: [
+            {
+              id: 'i1-0',
+              h: 120
+            },
+            {
+              id: 'i1-1',
+              h: 120
+            },
+            {
+              id: 'i1-2',
+              h: 120
+            }
+          ]
+        },
+        {
+          id: 'i2',
+          type: 'row',
+          items: [
+            {
+              id: 'i2-0',
+              w: '1fr',
+              h: 50,
+            },
+            {
+              id: 'i2-1',
+              w: '1fr',
+              h: 50,
+            },
+            {
+              id: 'i2-2',
+              w: '1fr',
+              h: 50,
+            }
+          ]
+        },
+        {
+          id: 'i3',
+          type: 'row',
+          items: [
+            {
+              id: 'i3-0',
+              w: '1fr',
+              h: 50,
+            },
+            {
+              id: 'i3-1',
+              w: '1fr',
+              h: 50,
+            },
+            {
+              id: 'i3-2',
+              w: '1fr',
+              h: 50,
+            }
+          ]
+        }
+      ]
+      self.$nextTick(() => {
+        self.insDeps(self.deps)
+      })
+    },
     handleAppend(newItem, dep) {
       // console.log('newItem', dep)
       if (dep.type === 'column') {
