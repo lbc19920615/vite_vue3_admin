@@ -28,7 +28,7 @@
 <template>
   <div class="page-search">
     <div style="height: 300px;">
-      <json-code-editor></json-code-editor>
+      <json-code-editor v-model="testModel"></json-code-editor>
     </div>
     <div style="display: none">
       <render-layout :map="currentLayoutMap"
@@ -252,52 +252,15 @@ export default defineComponent({
     depManagerMixin,
   ],
   data() {
-    let demoColumn = {
-      type: 'column',
-      data: [
-        {
-          h: 120,
-        },
-        {
-          h: 120,
-          to: 'id222'
-        },
-      ]
-    }
-
-    let demoRow = {
-      type: 'row',
-      data: [
-        {
-          w: 240,
-          h: 120,
-          to: 'id333'
-        },
-      ]
-    }
-
-    let demoColumn2 = {
-      type: 'column',
-      data: [
-        {
-          h: 30,
-        },
-        {
-          h: 30,
-        },
-      ]
-    }
-
     return {
       rootId: 'i1',
       layoutMap: {
-        'id1111': demoColumn,
-        'id222': demoRow,
-        'id333': demoColumn2
       },
       layout: [
-        demoColumn,
-      ]
+      ],
+      testModel: JSON.stringify({
+        a: 1
+      }, null, 2)
     }
   },
   methods: {},

@@ -8,8 +8,8 @@
   <div class="editor" ref="dom"></div>
 </template>
 
-<script setup="setup">
-import { onMounted, defineProps, defineEmits, defineEmit, ref } from 'vue';
+<script setup>
+import { onMounted, ref } from 'vue';
 import * as monaco from 'monaco-editor';
 
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
@@ -41,7 +41,7 @@ onMounted(() => {
   const jsonModel = monaco.editor.createModel(
       props.modelValue,
       'json',
-      monaco.Uri.parse('{}')
+      // monaco.Uri.parse('{}')
   );
 
   instance = monaco.editor.create(dom.value, {
@@ -53,8 +53,9 @@ onMounted(() => {
 
   instance.onDidChangeModelContent(() => {
     const value = instance.getValue();
-    console.log(emit)
-    // emit('update:modelValue', value);
+    if (emit) {
+      emit('update:modelValue', value);
+    }
   });
 });
 </script>
