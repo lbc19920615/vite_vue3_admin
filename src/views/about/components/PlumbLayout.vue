@@ -86,9 +86,9 @@ $sel: "." + $tag;
         <div class="item content-item" :data-pid="dep.id"
              :id="dep.id + '-evt'"
         >events</div>
-        <div class="item content-item" :data-pid="dep.id"
-             :id="dep.id + '-fun'"
-        >functions</div>
+<!--        <div class="item content-item" :data-pid="dep.id"-->
+<!--             :id="dep.id + '-fun'"-->
+<!--        >functions</div>-->
         <template v-if="!dep.config.closure">
           <h3 style="margin: 10px 0;">items</h3>
           <template v-for="(item, index) in dep.items" :key="index">
