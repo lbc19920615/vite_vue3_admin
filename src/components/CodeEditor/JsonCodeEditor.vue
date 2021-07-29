@@ -1,6 +1,6 @@
 <style scoped>
 .editor {
-  height: 100%;
+  height: 300px;
 }
 </style>
 
@@ -31,8 +31,6 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
-console.log(emit)
-
 const dom = ref();
 
 let instance;
@@ -57,6 +55,12 @@ onMounted(() => {
       emit('update:modelValue', value);
     }
   });
+
+  window.addEventListener('resize', function () {
+    if (instance &&   instance.layout()) {
+      instance.layout()
+    }
+  })
 });
 </script>
 

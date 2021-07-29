@@ -27,16 +27,14 @@
 
 <template>
   <div class="page-search">
-    <div style="height: 300px;">
-      <json-code-editor v-model="testModel"></json-code-editor>
-    </div>
-    <div style="display: none">
+    <div>
       <render-layout :map="currentLayoutMap"
                      :id="rootId"
                      :handleNext="handleNext"
       ></render-layout>
-      <el-row type="flex">
+      <el-row type="flex" style="flex-wrap: nowrap;">
         <PlumbLayout
+            style="flex: 1"
             @init="onPlumbLayoutInit"
             :root-id="rootId"
             :handleAppend="handleAppend"
@@ -44,7 +42,8 @@
             @edit-dep="onEditDep"
         ></PlumbLayout>
 
-        <div style="flex: 1" v-loading="renderFormLoading">
+        <div style="width: 600px" v-loading="renderFormLoading">
+          {{currentEditDep ? currentEditDep.type : ''}}
           <template v-if="renderFormDesigner">
             <!--          {{currentEditDep.type}}-->
             <search-demo1 v-if="currentEditDep.type === 'row'"
@@ -59,6 +58,9 @@
                 <header>{{index}}</header>
               </template>
             </search-demo2>
+            <form-prop-editor v-if="currentEditDep.type === 'form'"
+                          @init="onInitDemo1" :modelValue="currentEditDep">
+            </form-prop-editor>
           </template>
         </div>
       </el-row>
@@ -78,6 +80,9 @@ let formDesignerMixin = {
   components: {
     ['search-demo1']: defineAsyncComponent(() => {
       return import("__remote/getscript?src=formDesigner/index.twigvue&config_id=layoutDesigner.json5")
+    }),
+    ['form-prop-editor']: defineAsyncComponent(() => {
+      return import("__remote/getscript?src=formDesigner/index.twigvue&config_id=layoutForm.json5")
     }),
     ['search-demo2']: defineAsyncComponent(() => {
       return import("__remote/getscript?src=formDesigner/index.twigvue&config_id=layoutColumn.json5")
