@@ -172,6 +172,10 @@ let plumbLayoutMixin = {
         {
           id: 'i1',
           type: 'column',
+          config: {
+            version: 'v1',
+            enableAdd: true
+          },
           items: [
             {
               id: 'i1-0',
@@ -190,6 +194,10 @@ let plumbLayoutMixin = {
         {
           id: 'i2',
           type: 'row',
+          config: {
+            version: 'v1',
+            enableAdd: true
+          },
           items: [
             {
               id: 'i2-0',
@@ -210,23 +218,12 @@ let plumbLayoutMixin = {
         },
         {
           id: 'i3',
-          type: 'row',
+          type: 'form',
+          config: {
+            version: 'v1',
+            enableAdd: false
+          },
           items: [
-            {
-              id: 'i3-0',
-              w: '1fr',
-              h: 50,
-            },
-            {
-              id: 'i3-1',
-              w: '1fr',
-              h: 50,
-            },
-            {
-              id: 'i3-2',
-              w: '1fr',
-              h: 50,
-            }
           ]
         }
       ]
@@ -238,6 +235,7 @@ let plumbLayoutMixin = {
       console.log('handleDep', dep)
       if (dep.type === 'form') {
         dep.content = ''
+        dep.config.enableAdd = false
       }
     },
     handleAppend(newItem, dep) {
