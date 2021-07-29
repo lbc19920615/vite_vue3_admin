@@ -21,9 +21,13 @@
                          :id="getNext(item)"></render-layout>
         </template>
       </grid-row>
-      <div :class="levelItemCls" v-if="curObj.type === 'form'">
-        {{curObj}}
-      </div>
+      <AsyncForm :class="levelItemCls"
+                 :obj="curObj"
+                 :template="'comformscr.twig'"
+                 :json="curObj.content"
+                 v-if="curObj.type === 'form'">
+
+      </AsyncForm>
   </div>
 </template>
 
@@ -32,6 +36,7 @@ import GridRow from "@/views/about/components/grid-row.vue";
 import LayoutGrid from "@/views/about/components/layout-grid.vue";
 import Sortable from "sortablejs";
 import GridColumn from "@/views/about/components/grid-column.vue";
+import AsyncForm from "@/views/about/components/async-form.vue";
 
 export default {
   name: 'RenderLayout',
@@ -55,6 +60,7 @@ export default {
     }
   },
   components: {
+    AsyncForm,
     GridColumn,
     LayoutGrid,
     GridRow,
