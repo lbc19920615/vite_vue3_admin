@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import * as monaco from 'monaco-editor';
 
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
@@ -41,6 +41,12 @@ onMounted(() => {
       'json',
       // monaco.Uri.parse('{}')
   );
+
+  watch(() => props.modelValue, (newval) => {
+    console.log('props.modelValue', newval)
+    jsonModel.setValue(newval)
+  })
+
 
   instance = monaco.editor.create(dom.value, {
     model: jsonModel,

@@ -49,17 +49,7 @@ export default {
     async fetch() {
       let self = this
       try {
-        let tpl = await fetchContentV3({
-          row: {
-            type: 'object',
-            properties: {
-              id: {
-                type: 'string',
-                ui: {}
-              },
-            }
-          }
-        }, {
+        let tpl = await fetchContentV3(this.formDef, {
           src: this.template
         })
         let comName = 'test-' + Date.now()

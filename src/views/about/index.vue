@@ -229,7 +229,17 @@ let plumbLayoutMixin = {
             version: 'v1',
             closure: true
           },
-          content: '',
+          content: JSON.stringify({
+            row: {
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string',
+                  ui: {}
+                },
+              }
+            }
+          }, null, 2),
           items: [
           ]
         }
@@ -292,9 +302,6 @@ export default defineComponent({
       },
       layout: [
       ],
-      testModel: JSON.stringify({
-        a: 1
-      }, null, 2)
     }
   },
   methods: {},

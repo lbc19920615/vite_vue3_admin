@@ -24,7 +24,7 @@ export default defineComponent({
     })
 
     watch(() => props.modelValue, (newVal) => {
-      // console.log('custom', newVal)
+      console.log('custom', newVal)
       obj.value = newVal
     }, { immediate: true })
 
