@@ -243,9 +243,9 @@ export default {
       instance.addEndpoint(id + '-evt' , {
         anchors: ['Right']
       }, config.baseStyle)
-      instance.addEndpoint(id + '-fun' , {
-        anchors: ['Right']
-      }, config.baseStyle)
+      // instance.addEndpoint(id + '-fun' , {
+      //   anchors: ['Right']
+      // }, config.baseStyle)
       items.forEach(item => {
         self.renderItem(item)
       })
