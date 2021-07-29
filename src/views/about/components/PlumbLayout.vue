@@ -73,7 +73,8 @@ $sel: "." + $tag;
            v-for="(dep,depIndex) in deps"
            :key="depIndex"
            >
-        <div class="item header" :data-pid="dep.id"  :id="dep.id + '-top'">
+        <div class="item header" :data-pid="dep.id"
+             :id="dep.id + '-top'">
           <div>
             <div>
               <button @click="editDep(dep)"><i class="el-icon-edit" ></i></button>
@@ -82,14 +83,21 @@ $sel: "." + $tag;
             <div>id: {{dep.id}}</div>
           </div>
         </div>
-        <template v-for="(item, index) in dep.items" :key="index">
-          <div :id="item.id" :data-pid="dep.id" class="item content-item">
-            <div>{{item.id}}</div>
-            <button @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>
-          </div>
+        <h3 style="margin: 10px 0;">events</h3>
+        <div class="item header" :data-pid="dep.id"
+             :id="dep.id + '-fun'"
+        ></div>
+        <template v-if="!dep.config.closure">
+          <h3 style="margin: 10px 0;">items</h3>
+          <template v-for="(item, index) in dep.items" :key="index">
+            <div :id="item.id" :data-pid="dep.id" class="item content-item">
+              <div>{{item.id}}</div>
+              <button @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>
+            </div>
+          </template>
+          <el-button size="small"
+                     @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
         </template>
-        <el-button size="small" v-if="!dep.config.closure"
-                   @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
       </div>
     </div>
   </div>
@@ -229,6 +237,9 @@ export default {
       }, config.baseStyle)
       instance.addEndpoint(id + '-top' , {
         anchors: ['Left']
+      }, config.baseStyle)
+      instance.addEndpoint(id + '-fun' , {
+        anchors: ['Right']
       }, config.baseStyle)
       items.forEach(item => {
         self.renderItem(item)
