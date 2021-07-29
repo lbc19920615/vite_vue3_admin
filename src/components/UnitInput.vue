@@ -11,7 +11,7 @@ $sel: "." + $tag;
     <el-input-number size="small"  controls-position="right"
                      style="width: 90px;" v-model.number="num"
                      @change="changeItem(num)" type="text" ></el-input-number>
-    <el-select  size="small" v-model="unit"  clearable
+    <el-select  size="small" v-model="unit" clearable
                 @change="changeItem(unit)" style="width: 60px;">
       <el-option v-for="unit in units"
                  :label="unit" :value="unit" ></el-option>
@@ -74,8 +74,9 @@ export default {
     },
     changeItem() {
       let v = `${this.num}${this.unit}`
-      // console.log('change item', v)
+      console.log('change item', v)
       this.$emit('update:modelValue', v)
+      this.$emit('change', v)
     }
   }
 }

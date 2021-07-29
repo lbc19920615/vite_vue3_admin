@@ -1,4 +1,14 @@
 import Sortable from "sortablejs";
+function isNumber(v) {
+  if(typeof v === 'number') {
+    return true
+  }
+  return /^\d+$/.test(v);
+}
+
+function calTotal(items, prop) {
+  return items.map(v  => parseInt(v[prop])).reduce((a, b) => a + b, 0)
+}
 
 export default {
   methods: {
@@ -19,20 +29,41 @@ export default {
       }
     },
     calcWidth(rows = []) {
-      let { frItems, otherItems, frLength, otherTotal } = this._parseItems('w', rows)
+      let { frItems, otherItems, frLength } = this._parseItems('w', rows)
+
+      let numberItems = rows.filter(v => {
+        return isNumber(v.w)
+      })
+
+      let str = ''
+
+      let stringItems = otherItems.filter(v => {
+        return !numberItems.includes(v)
+      })
+
+      if (stringItems.length > 0) {
+        str = stringItems.map(v => v.w).join(' - ')
+      }
+
+      if (str) {
+        str = ' - ' + str
+      }
+
+      console.log('stringItems', stringItems, str)
+
+      let otherTotal = calTotal(numberItems, 'w')
 
       frItems.forEach(frItem => {
         let numberW = parseInt(frItem.w)
-        frItem.style.width = `calc((100% - ${otherTotal}px) / ${frLength} * ${numberW})`
+        frItem.style.width = `calc((100% - ${otherTotal}px${str})/ ${frLength} * ${numberW})`
       })
 
       otherItems.forEach(otherItem => {
-        let numberW = parseInt(otherItem.w)
         let unit = undefined
-        if (Number.isNaN(numberW)) {
-          // numberW = undefined
+        if (isNumber(otherItem.w)) {
+          unit = otherItem.w + 'px'
         } else {
-          unit = numberW + 'px'
+          unit = otherItem.w
         }
         otherItem.style.width = unit
       })

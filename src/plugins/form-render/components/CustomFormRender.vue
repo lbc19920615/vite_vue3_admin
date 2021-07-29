@@ -28,12 +28,17 @@ export default defineComponent({
       obj.value = newVal
     }, { immediate: true })
 
-    function onChange(e) {
+    function onUpdateModelValue(e) {
       console.log('custom render onChange', e)
       emit('update:modelValue', e)
     }
 
-    return () => (<widgetDef ui={props.ui} onUpdate:modelValue={onChange} modelValue={obj.value} config={widgetConfig}></widgetDef>)
+    function onChange(e) {
+      console.log('onChange', e)
+    }
+
+    return () => (<widgetDef ui={props.ui}  onChange={onChange} onUpdate:modelValue={onUpdateModelValue}
+                             modelValue={obj.value} config={widgetConfig}></widgetDef>)
   }
 })
 </script>
