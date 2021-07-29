@@ -88,7 +88,7 @@ $sel: "." + $tag;
             <button @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>
           </div>
         </template>
-        <el-button size="small" v-if="dep.config.enableAdd"
+        <el-button size="small" v-if="!dep.config.closure"
                    @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
       </div>
     </div>
@@ -248,7 +248,7 @@ export default {
         ],
         config: {
           version: 'v1',
-          enableAdd: true
+          closure: false
         },
         ...def
       }

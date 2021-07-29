@@ -174,7 +174,7 @@ let plumbLayoutMixin = {
           type: 'column',
           config: {
             version: 'v1',
-            enableAdd: true
+            closure: false
           },
           items: [
             {
@@ -196,7 +196,7 @@ let plumbLayoutMixin = {
           type: 'row',
           config: {
             version: 'v1',
-            enableAdd: true
+            closure: false
           },
           items: [
             {
@@ -221,7 +221,7 @@ let plumbLayoutMixin = {
           type: 'form',
           config: {
             version: 'v1',
-            enableAdd: false
+            closure: true
           },
           items: [
           ]
@@ -235,7 +235,7 @@ let plumbLayoutMixin = {
       console.log('handleDep', dep)
       if (dep.type === 'form') {
         dep.content = ''
-        dep.config.enableAdd = false
+        dep.config.closure = true
       }
     },
     handleAppend(newItem, dep) {
