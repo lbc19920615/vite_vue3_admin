@@ -155,7 +155,7 @@ let renderLayoutMixin = {
       if (Array.isArray(connections)) {
         // return connection.toPID
         if (connections[0]) {
-          console.log('handleNext', fromId, connections[0].toPID)
+          // console.log('handleNext', fromId, connections[0].toPID)
           return connections[0].toPID
         }
         return ''

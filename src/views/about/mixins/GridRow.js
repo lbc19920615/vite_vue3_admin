@@ -49,7 +49,7 @@ export default {
         str = ' - ' + str
       }
 
-      console.log('stringItems', stringItems, str)
+      // console.log('stringItems', stringItems, str)
 
       let otherTotal = calTotal(numberItems, 'w')
 
