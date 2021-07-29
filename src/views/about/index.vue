@@ -236,6 +236,9 @@ let plumbLayoutMixin = {
       ]
       self.$nextTick(() => {
         self.insDeps(self.deps)
+        setTimeout(() => {
+          self.insLinks()
+        }, 300)
       })
     },
     handleDep(dep) {

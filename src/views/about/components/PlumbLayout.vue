@@ -332,6 +332,18 @@ export default {
         self.insDep(dep.id, instance, dep.items)
       })
     },
+    insLinks() {
+      let self = this
+      let instance = this.instance
+      let config = this.config
+      let endPoints1 = instance.getEndpoints('i1-0')
+      let endPoints2 = instance.getEndpoints('i3-top')
+      console.log(endPoints1, endPoints2)
+      instance.connect({
+        source: endPoints1[1],
+        target: endPoints2[1]
+      })
+    },
     /**
      * insDep
      */
