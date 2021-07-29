@@ -13,8 +13,7 @@ import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 
-import { fetchContentV2, qs } from '@expose/main.js'
-// globalThis.qs = qs
+import { fetchContentV2, fetchContentV3 } from '@expose/main.js'
 
 import router from './router'
 import store from './store'
@@ -78,6 +77,8 @@ window.startApp = function () {
 window.testQuery = function () {
   let query = {
     src: 'stable.twig',
+  }
+  let data = {
     tableDef: [
       {
         label: '日期',
@@ -99,7 +100,10 @@ window.testQuery = function () {
       { label: '邮编', prop: 'zip' }
     ],
   }
-  fetchContentV2(query).then((res) => {
+  // fetchContentV2(query).then((res) => {
+  //   console.log('fetchreq', res)
+  // })
+  fetchContentV3(data, query).then((res) => {
     console.log('fetchreq', res)
   })
 }
