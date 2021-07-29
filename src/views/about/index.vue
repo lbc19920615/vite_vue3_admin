@@ -3,12 +3,12 @@
   color: #ffffff;
 }
 
-@function random-rgb() {
-  @return rgb(random(255), random(255), random(255))
+@function random-rgb($opacity: 1) {
+  @return rgb(random(255), random(255), random(255), $opacity)
 }
 
-@mixin random-bgr(){
-  background: random-rgb();
+@mixin random-bgr($opacity: 1){
+  background: random-rgb($opacity);
 }
 
 @for $i from 0 through 10 {
@@ -16,9 +16,15 @@
     width: 100%;
     .vue-column-item {
       @include random-bgr();
+      &:nth-child(2n+1) {
+        @include random-bgr(.5);
+      }
     }
     .vue-row-item {
       @include random-bgr();
+      &:nth-child(2n+1) {
+        @include random-bgr(.5);
+      }
     }
   }
 }
