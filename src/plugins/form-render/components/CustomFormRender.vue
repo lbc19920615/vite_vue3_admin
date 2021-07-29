@@ -29,7 +29,7 @@ export default defineComponent({
     }, { immediate: true })
 
     function onChange(e) {
-      // console.log('custom render onChange', e)
+      console.log('custom render onChange', e)
       emit('update:modelValue', e)
     }
 

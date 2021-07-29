@@ -21,6 +21,9 @@
                          :id="getNext(item)"></render-layout>
         </template>
       </grid-row>
+      <div :class="levelItemCls" v-if="curObj.type === 'form'">
+        {{curObj}}
+      </div>
   </div>
 </template>
 

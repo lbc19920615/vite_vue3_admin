@@ -38,28 +38,35 @@
             @init="onPlumbLayoutInit"
             :root-id="rootId"
             :handleAppend="handleAppend"
+            :handle-dep="handleDep"
             @save-data="onGetData"
             @edit-dep="onEditDep"
         ></PlumbLayout>
 
         <div style="width: 600px" v-loading="renderFormLoading">
-          {{currentEditDep ? currentEditDep.type : ''}}
+          {{currentEditDep}}
           <template v-if="renderFormDesigner">
             <!--          {{currentEditDep.type}}-->
             <search-demo1 v-if="currentEditDep.type === 'row'"
-                          @init="onInitDemo1" :modelValue="currentEditDep">
+                          @init="onInitDemo1" :modelValue="currentEditDep"
+                          @model:update="onUpdateModelValue"
+            >
               <template v-slot:key1__array__before="{items, index}">
                 <header>{{index}}</header>
               </template>
             </search-demo1>
             <search-demo2 v-if="currentEditDep.type === 'column'"
-                          @init="onInitDemo1" :modelValue="currentEditDep">
+                          @init="onInitDemo1" :modelValue="currentEditDep"
+                          @model:update="onUpdateModelValue"
+            >
               <template v-slot:key1__array__before="{items, index}">
                 <header>{{index}}</header>
               </template>
             </search-demo2>
             <form-prop-editor v-if="currentEditDep.type === 'form'"
-                          @init="onInitDemo1" :modelValue="currentEditDep">
+                          @init="onInitDemo1" :modelValue="currentEditDep"
+                @model:update="onUpdateModelValue"
+            >
             </form-prop-editor>
           </template>
         </div>
@@ -98,6 +105,14 @@ let formDesignerMixin = {
       this.searchDemo1Ref = context
       console.log( this.currentEditDep )
       context.setModel(this.currentEditDep)
+    },
+    onUpdateModelValue(e) {
+      // console.log('onUpdateModelValue', key, value)
+      let key = 'content'
+      if (key && e[key]) {
+        this.currentEditDep[key] = e[key]
+      }
+      console.log('onUpdateModelValue', e,  this.currentEditDep)
     }
   }
 }
@@ -218,6 +233,12 @@ let plumbLayoutMixin = {
       self.$nextTick(() => {
         self.insDeps(self.deps)
       })
+    },
+    handleDep(dep) {
+      console.log('handleDep', dep)
+      if (dep.type === 'form') {
+        dep.content = ''
+      }
     },
     handleAppend(newItem, dep) {
       // console.log('newItem', dep)

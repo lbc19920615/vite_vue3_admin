@@ -112,6 +112,12 @@ export default {
       default() {
         return function () {}
       }
+    },
+    handleDep: {
+      type: Function,
+      default() {
+        return function () {}
+      }
     }
   },
   data() {
@@ -242,7 +248,9 @@ export default {
         ],
         ...def
       }
-      console.log('dep', dep)
+      if (this.handleDep) {
+        this.handleDep(dep)
+      }
       this.deps.push(dep)
       this.$nextTick(() => {
         this.insDep(id, this.instance, dep.items)
