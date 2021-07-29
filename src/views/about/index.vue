@@ -27,37 +27,42 @@
 
 <template>
   <div class="page-search">
-    <render-layout :map="currentLayoutMap"
-                   :id="rootId"
-                   :handleNext="handleNext"
-    ></render-layout>
-    <el-row type="flex">
-      <PlumbLayout
-          @init="onPlumbLayoutInit"
-          :root-id="rootId"
-                   :handleAppend="handleAppend"
-                   @save-data="onGetData"
-                   @edit-dep="onEditDep"
-      ></PlumbLayout>
+    <div style="height: 300px;">
+      <json-code-editor></json-code-editor>
+    </div>
+    <div style="display: none">
+      <render-layout :map="currentLayoutMap"
+                     :id="rootId"
+                     :handleNext="handleNext"
+      ></render-layout>
+      <el-row type="flex">
+        <PlumbLayout
+            @init="onPlumbLayoutInit"
+            :root-id="rootId"
+            :handleAppend="handleAppend"
+            @save-data="onGetData"
+            @edit-dep="onEditDep"
+        ></PlumbLayout>
 
-      <div style="flex: 1" v-loading="renderFormLoading">
-        <template v-if="renderFormDesigner">
-          {{currentEditDep.type}}
-          <search-demo1 v-if="currentEditDep.type === 'row'"
-                        @init="onInitDemo1" :modelValue="currentEditDep">
-            <template v-slot:key1__array__before="{items, index}">
-              <header>{{index}}</header>
-            </template>
-          </search-demo1>
-          <search-demo2 v-if="currentEditDep.type === 'column'"
-                        @init="onInitDemo1" :modelValue="currentEditDep">
-            <template v-slot:key1__array__before="{items, index}">
-              <header>{{index}}</header>
-            </template>
-          </search-demo2>
-        </template>
-      </div>
-    </el-row>
+        <div style="flex: 1" v-loading="renderFormLoading">
+          <template v-if="renderFormDesigner">
+            <!--          {{currentEditDep.type}}-->
+            <search-demo1 v-if="currentEditDep.type === 'row'"
+                          @init="onInitDemo1" :modelValue="currentEditDep">
+              <template v-slot:key1__array__before="{items, index}">
+                <header>{{index}}</header>
+              </template>
+            </search-demo1>
+            <search-demo2 v-if="currentEditDep.type === 'column'"
+                          @init="onInitDemo1" :modelValue="currentEditDep">
+              <template v-slot:key1__array__before="{items, index}">
+                <header>{{index}}</header>
+              </template>
+            </search-demo2>
+          </template>
+        </div>
+      </el-row>
+    </div>
     <!--    <table-a></table-a>-->
   </div>
 </template>
@@ -67,6 +72,7 @@ import {defineAsyncComponent, defineComponent} from "vue";
 import GridRow from "@/views/about/components/grid-row.vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
+import JsonCodeEditor from "@/components/CodeEditor/JsonCodeEditor.vue";
 
 let formDesignerMixin = {
   components: {
@@ -296,6 +302,7 @@ export default defineComponent({
   },
   methods: {},
   components: {
+    JsonCodeEditor,
     PlumbLayout,
     RenderLayout,
     GridRow,
