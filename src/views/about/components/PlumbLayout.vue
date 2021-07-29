@@ -110,10 +110,105 @@ import {jsPlumb} from 'jsplumb'
 import {v4 as uuidv4} from 'uuid';
 import {groupManagerMixin} from "./PlumbLayout/groupDialog";
 
+let itemsManagerMixin = {
+  methods: {
+    /**
+     * deleteItem
+     * @param dep
+     * @param item
+     * @param index
+     */
+    deleteItem(dep, item, index) {
+      this.removeItem(item)
+      dep.items.splice(index,1)
+      this.$nextTick(() => {
+        this.instance.repaintEverything()
+      })
+    },
+    /**
+     * deleteItem
+     * @param item
+     */
+    removeItem(item) {
+      let instance = this.instance
+      instance.removeAllEndpoints(item.id)
+    },
+    /**
+     * renderItem
+     * @param item
+     */
+    renderItem(item) {
+      let instance = this.instance
+      let config = this.config
+      instance.addEndpoint(item.id , {
+        anchors: ['Left']
+      }, config.baseStyle)
+      instance.addEndpoint(item.id , {
+        anchors: ['Right']
+      }, config.baseStyle)
+    },
+    /**
+     * appendItem
+     * @param dep
+     */
+    appendItem(dep) {
+      let opt = dep
+      let newItem = {
+        id: opt.id + '-' + uuidv4(),
+      }
+      if (this.handleAppend) {
+        this.handleAppend(newItem, dep)
+      }
+      opt.items.push(newItem)
+      this.$nextTick(() => {
+        this.renderItem(newItem)
+        this.instance.repaintEverything()
+      })
+    },
+  }
+}
+
+let actionMixins = {
+  methods: {
+    /**
+     * getVisibleConnections
+     */
+    getVisibleConnections() {
+      let allConnections = this.instance.getConnections({
+
+      });
+      let ret = []
+      ret = allConnections.filter(v => {
+        return v.target && v.source
+      })
+      return ret
+    },
+    /**
+     * getLinkRealtions
+     */
+    getLinkRealtions() {
+      let allVisibleConnections = this.getVisibleConnections()
+      let ret = []
+      ret = allVisibleConnections.map(v => {
+        return {
+          toPID: v.target.dataset.pid,
+          fromPID: v.source.dataset.pid,
+          from: v.sourceId,
+          to: v.targetId
+        }
+      })
+      // console.log(ret)
+      return ret
+    }
+  }
+}
+
 export default {
   name: "PlumbLayout",
   mixins: [
-    groupManagerMixin
+    groupManagerMixin,
+    actionMixins,
+    itemsManagerMixin,
   ],
   props: {
     rootId: String,
@@ -221,9 +316,15 @@ export default {
     })
   },
   methods: {
+    /**
+     * init
+     */
     init({deps = []} = {}) {
       this.deps = deps
     },
+    /**
+     * insDeps
+     */
     insDeps(deps) {
       let self = this
       let instance = this.instance
@@ -231,6 +332,9 @@ export default {
         self.insDep(dep.id, instance, dep.items)
       })
     },
+    /**
+     * insDep
+     */
     insDep(id, instance, items = []) {
       let self = this
       let config = this.config
@@ -276,54 +380,16 @@ export default {
         this.insDep(id, this.instance, dep.items)
       })
     },
+    /**
+     * editDep
+     * @param dep {{}}
+     */
     editDep(dep) {
       this.$emit('edit-dep', dep)
     },
-    deleteItem(dep, item, index) {
-      this.removeItem(item)
-      dep.items.splice(index,1)
-      this.$nextTick(() => {
-        this.instance.repaintEverything()
-      })
-    },
-    removeItem(item) {
-      let instance = this.instance
-      instance.removeAllEndpoints(item.id)
-    },
-    renderItem(item) {
-      let instance = this.instance
-      let config = this.config
-      instance.addEndpoint(item.id , {
-        anchors: ['Left']
-      }, config.baseStyle)
-      instance.addEndpoint(item.id , {
-        anchors: ['Right']
-      }, config.baseStyle)
-    },
-    appendItem(dep) {
-      let opt = dep
-      let newItem = {
-        id: opt.id + '-' + uuidv4(),
-      }
-      if (this.handleAppend) {
-        this.handleAppend(newItem, dep)
-      }
-      opt.items.push(newItem)
-      this.$nextTick(() => {
-        this.renderItem(newItem)
-        this.instance.repaintEverything()
-      })
-    },
-    getVisibleConnections() {
-      let allConnections = this.instance.getConnections({
-
-      });
-      let ret = []
-      ret = allConnections.filter(v => {
-        return v.target && v.source
-      })
-      return ret
-    },
+    /**
+     * save
+     */
     save() {
       let links = this.getLinkRealtions()
       let notCanLinks = [
@@ -335,7 +401,7 @@ export default {
         let isMatched = notCanLinks.some(v => {
           return from.endsWith(v)
         })
-        console.log('v', isMatched)
+        // console.log('v', isMatched)
         return v.to.endsWith('top') && !isMatched
       })
       console.log('links', this.deps, links)
@@ -344,20 +410,6 @@ export default {
         links
       }
       this.$emit('save-data', ret)
-    },
-    getLinkRealtions() {
-      let allVisibleConnections = this.getVisibleConnections()
-      let ret = []
-      ret = allVisibleConnections.map(v => {
-        return {
-          toPID: v.target.dataset.pid,
-          fromPID: v.source.dataset.pid,
-          from: v.sourceId,
-          to: v.targetId
-        }
-      })
-      // console.log(ret)
-      return ret
     }
   }
 }
