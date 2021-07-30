@@ -229,6 +229,7 @@ let plumbLayoutMixin = {
             version: 'v1',
             closure: true
           },
+          template: 'comformscr.twig',
           content: JSON.stringify({
             row: {
               type: 'object',
