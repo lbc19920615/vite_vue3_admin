@@ -223,6 +223,21 @@ let plumbLayoutMixin = {
           ]
         },
         {
+          id: 'i4',
+          type: 'events',
+          sub: 'form',
+          config: {
+            version: 'v1',
+            closure: false
+          },
+          items: [
+            {
+              id: 'i4-0',
+              name: 'submit'
+            },
+          ]
+        },
+        {
           id: 'i3',
           type: 'form',
           config: {
