@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import * as monaco from 'monaco-editor';
 
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
@@ -35,17 +35,48 @@ const dom = ref();
 
 let instance;
 
+
+
+let _lock = false
+// watch(() => props.modelValue, (newval) => {
+//   console.log('props.modelValue', newval)
+//
+//
+// })
+
+function insertText(newval) {
+  var line = instance.getPosition();
+  var range = new monaco.Range(line.lineNumber, 1, line.lineNumber, 1);
+  var id = { major: 1, minor: 1 };
+  var op = {range: range, text: newval};
+  instance.executeEdits("my-source", [op]);
+}
+
+function handlePropChange(newval) {
+  if (!_lock) {
+    // jsonModel.setValue(newval)
+    _lock = true
+
+    // jsonModel.setValue(newval)
+    // instance.setValue(newval)
+    insertText(newval)
+
+    setTimeout(() => {
+      _lock = false
+    }, 1000)
+  }
+}
+
+defineExpose({
+  handlePropChange
+})
+
 onMounted(() => {
   const jsonModel = monaco.editor.createModel(
       props.modelValue,
       'json',
       // monaco.Uri.parse('{}')
   );
-
-  watch(() => props.modelValue, (newval) => {
-    console.log('props.modelValue', newval)
-    jsonModel.setValue(newval)
-  })
 
 
   instance = monaco.editor.create(dom.value, {
@@ -55,11 +86,26 @@ onMounted(() => {
     scrollBeyondLastLine: false,
   });
 
+  // instance.onDidFocusEditorText(() => {
+  //   console.log('onFocus')
+  //   _lock = true
+  // })
+  //
+  // instance.onDidBlurEditorText(() => {
+  //   setTimeout(() => {
+  //     _lock = false
+  //   }, 1000)
+  // })
+
   instance.onDidChangeModelContent(() => {
-    const value = instance.getValue();
-    if (emit) {
-      emit('update:modelValue', value);
-    }
+    console.log('onDidChangeModelContent _lock', _lock)
+    // if (!_lock) {
+      const value = instance.getValue();
+
+      if (emit) {
+        emit('update:modelValue', value);
+      }
+    // }
   });
 
   window.addEventListener('resize', function () {

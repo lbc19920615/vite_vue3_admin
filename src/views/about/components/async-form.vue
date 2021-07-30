@@ -35,6 +35,7 @@ export default {
   watch: {
     json: {
       handler(newVal) {
+        console.log('json changes', newVal)
         try {
           this.formDef = JSON.parse(newVal)
         } catch (e) {
@@ -49,6 +50,7 @@ export default {
     async fetch() {
       let self = this
       try {
+        console.log('this.formDef', this.formDef)
         let tpl = await fetchContentV3(this.formDef, {
           src: this.template
         })
