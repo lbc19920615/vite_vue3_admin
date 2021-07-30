@@ -263,7 +263,24 @@ let plumbLayoutMixin = {
       self.$nextTick(() => {
         self.insDeps(self.deps)
         setTimeout(() => {
-          self.insLinks()
+          self.insComLinks(
+              [
+                {
+                  "toPID": "i3",
+                  "fromPID": "i1",
+                  "from": "i1-0",
+                  "to": "i3-top"
+                }
+              ]
+          )
+          self.insEventLinks([
+            {
+              "toPID": "i4",
+              "fromPID": "i3",
+              "from": "i3-evt",
+              "to": "i4-0"
+            }
+          ])
         }, 300)
       })
     },

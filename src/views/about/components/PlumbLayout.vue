@@ -360,16 +360,28 @@ export default {
         self.insDep(dep.id, instance, dep.items)
       })
     },
-    insLinks() {
-      let self = this
+    insEventLinks(links = []) {
       let instance = this.instance
-      let config = this.config
-      let endPoints1 = instance.getEndpoints('i1-0')
-      let endPoints2 = instance.getEndpoints('i3-top')
-      console.log(endPoints1, endPoints2)
-      instance.connect({
-        source: endPoints1[1],
-        target: endPoints2[1]
+      links.forEach(link => {
+        let endPoints1 = instance.getEndpoints(link.from)
+        let endPoints2 = instance.getEndpoints(link.to)
+        console.log(endPoints1, endPoints2)
+        instance.connect({
+          source: endPoints1[0],
+          target: endPoints2[0]
+        })
+      })
+    },
+    insComLinks(links = []) {
+      let instance = this.instance
+      links.forEach(link => {
+        let endPoints1 = instance.getEndpoints(link.from)
+        let endPoints2 = instance.getEndpoints(link.to)
+        // console.log(endPoints1, endPoints2)
+        instance.connect({
+          source: endPoints1[1],
+          target: endPoints2[1]
+        })
       })
     },
     addEndpoint(id, options) {
@@ -440,11 +452,20 @@ export default {
      */
     save() {
       let links = this.getLinkRealtions()
+
+      let eventLinks = []
+
+      eventLinks = links.filter(v => {
+        let from = v.from
+        return from.endsWith('-evt')
+      })
+
+      let comLinks = []
       let notCanLinks = [
           'evt',
           'fun'
       ]
-      links = links.filter(v => {
+      comLinks = links.filter(v => {
         let from = v.from
         let isMatched = notCanLinks.some(v => {
           return from.endsWith(v)
@@ -452,11 +473,14 @@ export default {
         // console.log('v', isMatched)
         return v.to.endsWith('top') && !isMatched
       })
-      console.log('links', this.deps, links)
       let ret = {
         deps: this.deps,
-        links
+        eventLinks: eventLinks,
+        links: comLinks,
       }
+
+      console.log('links', comLinks, eventLinks)
+
       this.$emit('save-data', ret)
     }
   }
