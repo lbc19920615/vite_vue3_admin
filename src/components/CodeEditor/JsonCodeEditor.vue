@@ -45,11 +45,15 @@ let _lock = false
 // })
 
 function insertText(newval) {
-  var line = instance.getPosition();
-  var range = new monaco.Range(line.lineNumber, 1, line.lineNumber, 1);
-  var id = { major: 1, minor: 1 };
-  var op = {range: range, text: newval};
-  instance.executeEdits("my-source", [op]);
+  let editor = instance
+  let selection = editor.getSelection();
+  let range = new monaco.Range(selection.startLineNumber, selection.startColumn,
+      selection.endLineNumber, selection.endColumn);
+  // let line = instance.getPosition();
+  // let range = new monaco.Range(line.lineNumber, 1, line.lineNumber, 1);
+  let id = { major: 1, minor: 1 };
+  let op = {range: range, text: newval, forceMoveMarkers: true};
+  editor.executeEdits("my-source", [op]);
 }
 
 function handlePropChange(newval) {
@@ -60,6 +64,7 @@ function handlePropChange(newval) {
     // jsonModel.setValue(newval)
     // instance.setValue(newval)
     insertText(newval)
+    instance.focus()
 
     setTimeout(() => {
       _lock = false
