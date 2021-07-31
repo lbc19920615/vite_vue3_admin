@@ -5,7 +5,7 @@ $cls: "async-form";
 </style>
 
 <template>
-  <div class="async-form">async-forms
+  <div class="async-form">
     <component :is="comName"></component>
   </div>
 </template>
@@ -50,7 +50,7 @@ export default {
     async fetch() {
       let self = this
       try {
-        console.log('this.formDef', this.formDef)
+        // console.log('this.formDef', this.formDef)
         let tpl = await fetchContentV3(this.formDef, {
           src: this.template
         })
@@ -61,7 +61,7 @@ export default {
         globalThis.initTemplate(templateId, globalThis, {
           html: sfc.template.content,
         });
-        console.log(sfc.script.content)
+        console.log(sfc.template.content)
 
         const objectURL = URL.createObjectURL(
             new Blob([sfc.script.content],

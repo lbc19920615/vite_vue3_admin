@@ -23,10 +23,15 @@
       </grid-row>
       <AsyncForm :class="levelItemCls"
                  :obj="curObj"
-                 :template="'comformscr.twig'"
+                 :template="curObj.template"
                  :json="curObj.content"
                  v-if="curObj.type === 'form'">
-
+      </AsyncForm>
+      <AsyncForm :class="levelItemCls"
+                 :obj="curObj"
+                 :template="curObj.template"
+                 :json="curObj.content"
+                 v-if="curObj.type === 'table'">
       </AsyncForm>
   </div>
 </template>

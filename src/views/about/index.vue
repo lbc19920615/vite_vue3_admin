@@ -238,6 +238,32 @@ let plumbLayoutMixin = {
           ]
         },
         {
+          id: 'i5',
+          type: 'table',
+          config: {
+            version: 'v1',
+            closure: false
+          },
+          template: 'comtablescr.twig',
+          content: JSON.stringify({
+            tableDef: [
+              {
+                label: '日期',
+                prop: 'date',
+                width: 100
+              },
+              {
+                label: '姓名', prop: 'name'
+              },
+              {
+                label: '邮编', prop: 'zip'
+              }
+            ]
+          }, null, 2),
+          items: [
+          ]
+        },
+        {
           id: 'i3',
           type: 'form',
           config: {
@@ -270,6 +296,12 @@ let plumbLayoutMixin = {
                   "fromPID": "i1",
                   "from": "i1-0",
                   "to": "i3-top"
+                },
+                {
+                  "toPID": "i5",
+                  "fromPID": "i1",
+                  "from": "i1-1",
+                  "to": "i5-top"
                 }
               ]
           )
