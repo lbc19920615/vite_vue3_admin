@@ -32,6 +32,11 @@ export default defineComponent({
     let serviceNames = ref([
     ])
 
+    /**
+     * installService
+     * @param serviceName {string}
+     * @param path {string}
+     */
     function installService(serviceName = '', path = '') {
       if (serviceNames.value.indexOf(serviceName) < 0) {
         globalThis.importScripts(path)
@@ -45,12 +50,23 @@ export default defineComponent({
       }
     }
 
+    /**
+     * installExposeServices
+     * @param serviceEnties [[string, object]]
+     */
     function installExposeServices(serviceEnties = []) {
       for (let [serviceName, path] of serviceEnties) {
         installService(serviceName, REMOTE_ORIGIN + path)
       }
     }
 
+    /**
+     * run
+     * @param name
+     * @param method
+     * @param args
+     * @returns {Promise<*>}
+     */
     async function run(name, method, ...args) {
       if (this.$refs[name] && this.$refs[name][method]) {
         let [err, ret] = await to(
@@ -67,6 +83,11 @@ export default defineComponent({
     }
 
     let num = ref(0)
+
+    /**
+     * setNum
+     * @param v
+     */
     function setNum(v) {
       num.value = v
     }
