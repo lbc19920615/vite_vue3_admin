@@ -365,7 +365,7 @@ export default {
       links.forEach(link => {
         let endPoints1 = instance.getEndpoints(link.from)
         let endPoints2 = instance.getEndpoints(link.to)
-        console.log(endPoints1, endPoints2)
+        // console.log(endPoints1, endPoints2)
         instance.connect({
           source: endPoints1[0],
           target: endPoints2[0]

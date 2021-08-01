@@ -9,7 +9,7 @@
 import {defineComponent, getCurrentInstance, ref} from "vue";
 import * as Vue from "vue";
 import { REMOTE_ORIGIN } from '@expose/main.js'
-console.log(REMOTE_ORIGIN)
+// console.log(REMOTE_ORIGIN)
 
 export default defineComponent({
   components: {
