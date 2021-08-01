@@ -1,0 +1,290 @@
+{
+  "type": "stylesheet",
+  "value": [
+    {
+      "type": "rule",
+      "value": [
+        {
+          "type": "selector",
+          "value": [
+            {
+              "type": "identifier",
+              "value": "root",
+              "start": {
+                "cursor": 0,
+                "line": 1,
+                "column": 0
+              },
+              "next": {
+                "cursor": 4,
+                "line": 1,
+                "column": 4
+              }
+            },
+            {
+              "type": "space",
+              "value": " ",
+              "start": {
+                "cursor": 4,
+                "line": 1,
+                "column": 4
+              },
+              "next": {
+                "cursor": 5,
+                "line": 1,
+                "column": 5
+              }
+            }
+          ],
+          "start": {
+            "cursor": 0,
+            "line": 1,
+            "column": 0
+          },
+          "next": {
+            "cursor": 5,
+            "line": 1,
+            "column": 5
+          }
+        },
+        {
+          "type": "block",
+          "value": [
+            {
+              "type": "space",
+              "value": " ",
+              "start": {
+                "cursor": 6,
+                "line": 1,
+                "column": 6
+              },
+              "next": {
+                "cursor": 7,
+                "line": 1,
+                "column": 7
+              }
+            },
+            {
+              "type": "atrule",
+              "value": [
+                {
+                  "type": "atkeyword",
+                  "value": "call",
+                  "start": {
+                    "cursor": 7,
+                    "line": 1,
+                    "column": 7
+                  },
+                  "next": {
+                    "cursor": 12,
+                    "line": 1,
+                    "column": 12
+                  }
+                },
+                {
+                  "type": "space",
+                  "value": " ",
+                  "start": {
+                    "cursor": 12,
+                    "line": 1,
+                    "column": 12
+                  },
+                  "next": {
+                    "cursor": 13,
+                    "line": 1,
+                    "column": 13
+                  }
+                },
+                {
+                  "type": "identifier",
+                  "value": "sds",
+                  "start": {
+                    "cursor": 13,
+                    "line": 1,
+                    "column": 13
+                  },
+                  "next": {
+                    "cursor": 16,
+                    "line": 1,
+                    "column": 16
+                  }
+                },
+                {
+                  "type": "space",
+                  "value": " ",
+                  "start": {
+                    "cursor": 16,
+                    "line": 1,
+                    "column": 16
+                  },
+                  "next": {
+                    "cursor": 17,
+                    "line": 1,
+                    "column": 17
+                  }
+                },
+                {
+                  "type": "string_double",
+                  "value": "sdsd=1",
+                  "start": {
+                    "cursor": 17,
+                    "line": 1,
+                    "column": 17
+                  },
+                  "next": {
+                    "cursor": 25,
+                    "line": 1,
+                    "column": 25
+                  }
+                },
+                {
+                  "type": "punctuation",
+                  "value": ";",
+                  "start": {
+                    "cursor": 25,
+                    "line": 1,
+                    "column": 25
+                  },
+                  "next": {
+                    "cursor": 26,
+                    "line": 1,
+                    "column": 26
+                  }
+                }
+              ],
+              "start": {
+                "cursor": 7,
+                "line": 1,
+                "column": 7
+              },
+              "next": {
+                "cursor": 26,
+                "line": 1,
+                "column": 26
+              }
+            },
+            {
+              "type": "space",
+              "value": " ",
+              "start": {
+                "cursor": 26,
+                "line": 1,
+                "column": 26
+              },
+              "next": {
+                "cursor": 27,
+                "line": 1,
+                "column": 27
+              }
+            },
+            {
+              "type": "atrule",
+              "value": [
+                {
+                  "type": "atkeyword",
+                  "value": "all",
+                  "start": {
+                    "cursor": 27,
+                    "line": 1,
+                    "column": 27
+                  },
+                  "next": {
+                    "cursor": 31,
+                    "line": 1,
+                    "column": 31
+                  }
+                },
+                {
+                  "type": "space",
+                  "value": " ",
+                  "start": {
+                    "cursor": 31,
+                    "line": 1,
+                    "column": 31
+                  },
+                  "next": {
+                    "cursor": 32,
+                    "line": 1,
+                    "column": 32
+                  }
+                },
+                {
+                  "type": "string_double",
+                  "value": "sdsds",
+                  "start": {
+                    "cursor": 32,
+                    "line": 1,
+                    "column": 32
+                  },
+                  "next": {
+                    "cursor": 39,
+                    "line": 1,
+                    "column": 39
+                  }
+                },
+                {
+                  "type": "punctuation",
+                  "value": ";",
+                  "start": {
+                    "cursor": 39,
+                    "line": 1,
+                    "column": 39
+                  },
+                  "next": {
+                    "cursor": 40,
+                    "line": 1,
+                    "column": 40
+                  }
+                }
+              ],
+              "start": {
+                "cursor": 27,
+                "line": 1,
+                "column": 27
+              },
+              "next": {
+                "cursor": 40,
+                "line": 1,
+                "column": 40
+              }
+            },
+            {
+              "type": "space",
+              "value": " ",
+              "start": {
+                "cursor": 40,
+                "line": 1,
+                "column": 40
+              },
+              "next": {
+                "cursor": 41,
+                "line": 1,
+                "column": 41
+              }
+            }
+          ],
+          "start": {
+            "cursor": 5,
+            "line": 1,
+            "column": 5
+          },
+          "next": {
+            "cursor": 42,
+            "line": 1,
+            "column": 42
+          }
+        }
+      ],
+      "start": {
+        "cursor": 0,
+        "line": 1,
+        "column": 0
+      },
+      "next": {
+        "cursor": 42,
+        "line": 1,
+        "column": 42
+      }
+    }
+  ]
+}
