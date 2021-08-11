@@ -1,30 +1,29 @@
 <template>
-<!--  <div>-->
-<!--    <div>{{model}}</div>-->
-<!--    <el-form ref="form" :model="model" label-width="80px">-->
-<!--      <async-cm-field v-model="model.a" prop="a" label="sds" type="string"></async-cm-field>-->
-<!--    </el-form>-->
-<!--  </div>-->
   <AboutView></AboutView>
+  <HttpComponent
+                 :is="storeA.componentStep"></HttpComponent>
 </template>
 
-<script lang="ts">
-import { reactive } from "vue";
-import { useStore } from "vuex";
+<script lang="jsx">
+import {reactive} from "vue";
+import HttpComponent from "../../components/HttpComponent.vue";
 
 export default {
   components: {
-    'AsyncCmField': globalThis.loadComponent('fieldset.vue'),
-    AboutView: globalThis.loadComponent('container.vue')
+    HttpComponent,
+    AboutView: globalThis.loadComponent('container.vue'),
   },
   setup() {
-    const store = useStore();
-    const model = reactive({
-      a:1
+    let storeA = reactive({
+      componentStep: 'container'
     })
+    function render() {
+      return (<div>222232323232</div>)
+    }
+
     return {
-      model,
-      increment: () => store.commit("increment"),
+      storeA,
+      render,
     };
   },
 };
