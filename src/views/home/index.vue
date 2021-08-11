@@ -1,11 +1,13 @@
 <template>
-  <AboutView></AboutView>
-  <HttpComponent
-                 :is="storeA.componentStep"></HttpComponent>
+  <el-button type="primary" @click="reload">reload</el-button>
+  <template v-if="showCom">
+    <HttpComponent
+        :is="storeA.componentStep"></HttpComponent>
+  </template>
 </template>
 
 <script lang="jsx">
-import {reactive} from "vue";
+import {computed, reactive} from "vue";
 import HttpComponent from "../../components/HttpComponent.vue";
 
 export default {
@@ -15,15 +17,27 @@ export default {
   },
   setup() {
     let storeA = reactive({
-      componentStep: 'container'
+      componentStep: 'container',
+      reload: false
+    })
+    let showCom = computed(() => {
+      return !storeA.reload
     })
     function render() {
       return (<div>222232323232</div>)
     }
+    function reload() {
+      storeA.reload = true
+      setTimeout(() => {
+        storeA.reload = false
+      }, 1000)
+    }
 
     return {
       storeA,
+      showCom,
       render,
+      reload,
     };
   },
 };
