@@ -2,6 +2,7 @@
   <el-button type="primary" @click="reload">reload</el-button>
   <template v-if="showCom">
     <HttpComponent
+        :defs="allDef"
         :is="storeA.componentStep"></HttpComponent>
   </template>
 </template>
@@ -16,8 +17,29 @@ export default {
     AboutView: globalThis.loadComponent('container.vue'),
   },
   setup() {
+    let allDef = new Map()
+    allDef.set('process-step1',  {
+      init: {
+        def: {
+          row: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'string',
+                ui: {}
+              },
+            }
+          }
+        },
+        args: {
+          src: 'comformscr.twig'
+        }
+      }
+    })
+
+
     let storeA = reactive({
-      componentStep: 'container',
+      componentStep: 'process-step1',
       reload: false
     })
     let showCom = computed(() => {
@@ -34,6 +56,7 @@ export default {
     }
 
     return {
+      allDef,
       storeA,
       showCom,
       render,

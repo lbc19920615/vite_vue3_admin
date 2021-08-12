@@ -6,6 +6,8 @@ import {fetchComponent} from "../hooks/remote.js";
 import PubSub from 'pubsub-js'
 import { FETCH_COMPONENT_READY} from "../utils/event-types.js";
 import CustomRender from "./CustomRender.vue";
+import { v4 } from 'uuid'
+import {log} from "../utils/logger";
 
 export default defineComponent({
   name: "HttpComponent",
@@ -15,7 +17,17 @@ export default defineComponent({
       type: String,
       required: true
     },
-    slotContent: null
+    slotContent: null,
+    defs: {
+      type: Map,
+      default() {
+        return new Map();
+      }
+    },
+    comPrefix: {
+      type: String,
+      default: 'http-com-'
+    }
   },
   setup(props, ctx) {
     let ui = reactive({
@@ -24,23 +36,14 @@ export default defineComponent({
 
     let comName = ''
     watch(() => props.is, (newVal) => {
-      comName = 'test-' + Date.now()
-      fetchComponent(comName, {
-        def: {
-          row: {
-            type: 'object',
-            properties: {
-              id: {
-                type: 'string',
-                ui: {}
-              },
-            }
-          }
-        },
-        args: {
-          src: 'comformscr.twig'
-        }
-      })
+      comName = props.comPrefix + v4()
+      let config = props.defs.get(props.is)
+      // console.log('fetchComponent', props.is, config)
+      log(['fetchComponent', props.is, config])
+
+      if (config && config.init) {
+        fetchComponent(comName, config.init)
+      }
     }, {
       immediate: true
     })

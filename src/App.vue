@@ -22,6 +22,7 @@
 
 <script>
 import {defineComponent, inject} from "vue";
+import {setupLoggerHandler} from "./utils/logger";
 
 export default defineComponent({
   setup() {
@@ -38,6 +39,8 @@ export default defineComponent({
         ])
       }
     })
+
+    setupLoggerHandler()
   }
 })
 </script>
