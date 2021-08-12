@@ -9,6 +9,7 @@
 import {defineComponent, getCurrentInstance, ref} from "vue";
 import * as Vue from "vue";
 import { REMOTE_ORIGIN } from '@expose/main.js'
+import to from 'await-to-js'
 // console.log(REMOTE_ORIGIN)
 
 export default defineComponent({
@@ -67,38 +68,29 @@ export default defineComponent({
      * @param args
      * @returns {Promise<*>}
      */
-    async function run(name, method, ...args) {
+    function run(name, method, ...args) {
       if (this.$refs[name] && this.$refs[name][method]) {
-        let [err, ret] = await to(
-            this.$refs[name][method].apply(null, args)
-        )
-        if (err) {
-          return Promise.reject(err)
-        } else {
-          return ret
-        }
+        // let [err, ret] = await to(
+        //     this.$refs[name][method].apply(null, args)
+        // )
+        // console.log('run',  name, [err, ret])
+        // if (err) {
+        //   return Promise.reject(err)
+        // } else {
+        //   return ret
+        // }
+        return this.$refs[name][method].apply(null, args)
       } else {
-        console.error('no service')
+        // console.error('no service')
+        // return Promise.reject(new Error('no service'))
       }
-    }
-
-    let num = ref(0)
-
-    /**
-     * setNum
-     * @param v
-     */
-    function setNum(v) {
-      num.value = v
     }
 
     return {
       serviceNames,
-      num,
       installExposeServices,
       installService,
       run,
-      setNum
     }
   }
 })

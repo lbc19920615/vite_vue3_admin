@@ -28,15 +28,14 @@ export default defineComponent({
   setup() {
     const globalStore = inject('globalStore')
 
-    globalStore.installExposeServices([
-      ['serviceA', '/public/service.js']
-    ])
+    let serviceArr = [
+      ['serviceA', '/public/services/serviceA.js']
+    ]
+    globalStore.installExposeServices(serviceArr)
 
     document.addEventListener('visibilitychange', function (newVal) {
       if (document.visibilityState === 'visible') {
-        globalStore.installExposeServices([
-          ['serviceA', '/public/service.js']
-        ])
+        globalStore.installExposeServices(serviceArr)
       }
     })
 

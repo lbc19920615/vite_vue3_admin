@@ -13,7 +13,11 @@ import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 
-import { fetchContentV2, fetchContentV3 } from '@expose/main.js'
+import * as ZY from '@expose/main.js'
+
+const { fetchContentV3 } = ZY
+
+globalThis.ZY = ZY
 
 import router from './router'
 import store from './store'
@@ -103,7 +107,7 @@ window.testQuery = function () {
   // fetchContentV2(query).then((res) => {
   //   console.log('fetchreq', res)
   // })
-  fetchContentV3(data, query).then((res) => {
+  ZY.fetchContentV3(data, query).then((res) => {
     console.log('fetchreq', res)
   })
 }

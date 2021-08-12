@@ -19,6 +19,11 @@ export default {
   setup() {
     let allDef = new Map()
     allDef.set('process-step1',  {
+      services: [
+        {
+          name: 'serviceA'
+        }
+      ],
       init: {
         def: {
           row: {
@@ -29,6 +34,9 @@ export default {
                 ui: {}
               },
             }
+          },
+          computed: {
+            doubled: "GET('id') * 3"
           }
         },
         args: {
