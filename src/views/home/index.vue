@@ -1,5 +1,6 @@
 <template>
   <el-button type="primary" @click="reload">reload</el-button>
+  <el-button type="primary" @click="updateData">回填数据</el-button>
   <template v-if="showCom">
     <HttpComponent
         :defs="allDef"
@@ -19,24 +20,32 @@ export default {
   setup() {
     let allDef = new Map()
     allDef.set('process-step1',  {
-      services: [
-        {
-          name: 'serviceA'
-        }
-      ],
       init: {
         def: {
+          service: 'serviceA',
           row: {
             type: 'object',
             properties: {
-              id: {
+              name: {
                 type: 'string',
-                ui: {}
+                ui: {
+                  label: '姓名'
+                }
+              },
+              date: {
+                type: 'string',
+                ui: {
+                  label: '范围',
+                  widget: 'CusDateTimePicker',
+                  widgetConfig: {
+                    type: "datetimerange"
+                  }
+                }
               },
             }
           },
           computed: {
-            doubled: "GET('id') * 3"
+            doubled: "GET('name', '') + ',s'"
           }
         },
         args: {
@@ -63,9 +72,16 @@ export default {
       }, 1000)
     }
 
+    function updateData() {
+      global.storeApp.run('serviceA', 'setModel', {
+        name: 'namssds'
+      })
+    }
+
     return {
       allDef,
       storeA,
+      updateData,
       showCom,
       render,
       reload,

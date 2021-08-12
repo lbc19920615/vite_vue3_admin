@@ -41,7 +41,7 @@ export default defineComponent({
     }, { immediate: true })
 
     function onUpdateModelValue(e) {
-      console.log('custom render onChange', e, widgetInstance)
+      // console.log('custom render onChange', e, widgetInstance)
       emit('update:modelValue', e)
     }
 
@@ -49,7 +49,7 @@ export default defineComponent({
       console.log('onChange', e)
     }
 
-    return () => (<widgetDef ui={props.ui} ref={widgetInstance}  onChange={onChange} onUpdate:modelValue={onUpdateModelValue}
+    return () => (<widgetDef ui={props.ui} ref={widgetInstance} onValueChange={onUpdateModelValue} onUpdate:modelValue={onUpdateModelValue}
                              modelValue={obj.value} config={widgetConfig}></widgetDef>)
   }
 })

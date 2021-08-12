@@ -9,8 +9,6 @@
 import {defineComponent, getCurrentInstance, ref} from "vue";
 import * as Vue from "vue";
 import { REMOTE_ORIGIN } from '@expose/main.js'
-import to from 'await-to-js'
-// console.log(REMOTE_ORIGIN)
 
 export default defineComponent({
   components: {
@@ -27,6 +25,7 @@ export default defineComponent({
       //     .config.globalProperties)
     }
     globalThis.storeApp = this
+    Vue.provide('globalStore', this)
   },
   setup(props, ctx){
     let appInstance = getCurrentInstance()
@@ -86,9 +85,14 @@ export default defineComponent({
       }
     }
 
+    function servicePublish() {
+      console.log('servicePublish')
+    }
+
     return {
       serviceNames,
       installExposeServices,
+      servicePublish,
       installService,
       run,
     }
