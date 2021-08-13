@@ -39,6 +39,24 @@ export default {
                 },
                 debug: "VAL('name', '').length"
               },
+              linkName: {
+                type: 'string',
+                computedProp: 'doubled'
+              },
+              level1: {
+                type: "array",
+                items: {
+                  type: 'object',
+                  properties: {
+                    level1name: {
+                      type: 'string',
+                      ui: {
+                        label: 'level1 name'
+                      }
+                    }
+                  }
+                }
+              },
               date: {
                 type: 'string',
                 ui: {

@@ -13,7 +13,10 @@ import {FETCH_COMPONENT_READY} from "../utils/event-types.js";
 export async function fetchComponent(comName = '', {def, args } = {}) {
     try {
         // console.log('this.formDef', this.formDef)
-        let tpl = await fetchContentV3(def, args)
+        let data = new FormData()
+        // console.log('Y.JSON5.stringify(def)', JSON.stringify(def))
+        data.append('source', JSON.stringify(def))
+        let tpl = await fetchContentV3(data, args)
         let sfc = parseComponent(tpl)
         const templateId = comName + '-tpl';
         globalThis.initTemplate(templateId, globalThis, {
