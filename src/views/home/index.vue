@@ -32,6 +32,13 @@ export default {
                   label: '姓名'
                 }
               },
+              controls: {
+                type: 'string',
+                ui: {
+                  hidden: "lt(VAL('name', '').length, 1)",
+                },
+                debug: "VAL('name', '').length"
+              },
               date: {
                 type: 'string',
                 ui: {
@@ -45,7 +52,7 @@ export default {
             }
           },
           computed: {
-            doubled: "GET('name', '') + ',s'"
+            doubled: "VAL('name', '') + ',s'"
           }
         },
         args: {

@@ -29,7 +29,7 @@ export async function fetchComponent(comName = '', {def, args } = {}) {
                 ...res.default
             })
             setTimeout(() => {
-                console.log('publish', sfc)
+                // console.log('publish', sfc)
                 PubSub.publish(FETCH_COMPONENT_READY, {
                     sfc,
                     comDef

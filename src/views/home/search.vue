@@ -62,9 +62,9 @@ export default {
   name: "Form",
   components: {
     MyHighlight,
-    ['search-demo1']: defineAsyncComponent(() => {
-      return import("__remote/getscript?src=searchdemodef/index.twigvue&config_id=search.json5")
-    })
+    // ['search-demo1']: defineAsyncComponent(() => {
+    //   return import("__remote/getscript?src=searchdemodef/index.twigvue&config_id=search.json5")
+    // })
   },
   setup() {
     let instance = getCurrentInstance()

@@ -85,14 +85,15 @@ export default defineComponent({
       }
     }
 
-    function servicePublish() {
-      console.log('servicePublish')
+    const EVENT_TYPES = {
+      INIT_MODEL_READY: Symbol('INIT_MODEL_READY'),
+      SET_MODEL_READY: Symbol('SET_MODEL_READY')
     }
 
     return {
       serviceNames,
       installExposeServices,
-      servicePublish,
+      EVENT_TYPES,
       installService,
       run,
     }

@@ -1,8 +1,7 @@
 <script lang="jsx">
-import {defineComponent, h, onMounted, watch, reactive, resolveComponent, ref} from "vue";
+import {defineComponent, watch, reactive, resolveComponent, ref} from "vue";
 
 export default defineComponent({
-  // template: '#' + templateId,
   name: "CustomFormRender",
   props: {
     ui: {
@@ -17,9 +16,7 @@ export default defineComponent({
     let { widget, widgetConfig } = props.ui
     const widgetInstance = ref()
     const widgetDef = resolveComponent(widget)
-    // onMounted(() => {
-    //   console.log('widgetDef', props)
-    // })
+
     const obj = reactive({
       value: props.modelValue
     })
@@ -43,10 +40,6 @@ export default defineComponent({
     function onUpdateModelValue(e) {
       // console.log('custom render onChange', e, widgetInstance)
       emit('update:modelValue', e)
-    }
-
-    function onChange(e) {
-      console.log('onChange', e)
     }
 
     return () => (<widgetDef ui={props.ui} ref={widgetInstance} onValueChange={onUpdateModelValue} onUpdate:modelValue={onUpdateModelValue}
