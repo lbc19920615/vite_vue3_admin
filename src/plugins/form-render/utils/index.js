@@ -1,4 +1,4 @@
-import {reactive, watch} from "vue";
+import {reactive, watch, inject} from "vue";
 
 export let CustomRenderControlMixin = {
     props: {
@@ -17,23 +17,34 @@ export let CustomRenderControlMixin = {
         }
     },
     emits: [
-        'value-change'
-    ]
+        'valuechange'
+    ],
+    data() {
+      return {
+          curFormCon: null,
+          inited: false
+      }
+    },
+    mounted() {
+        this.curFormCon = inject('curFormCon')
+        this.inited = true
+        // console.log(this.curFormCon)
+    }
 }
 
 export function defineCustomRender(props = {}, ctx) {
 
     let lock = new ZY.Lock(/* optional lock name, should be unique */)
     let model = null
-    let data = function () {
+    let data = function (opt) {
         model = reactive({
-            value: ''
+            value: '',
+            ...opt
         })
         return model
     }
 
     watch(() => props.modelValue, (newVal) => {
-
         if (!lock.isLocked) {
             model.value = newVal
         }
@@ -41,11 +52,11 @@ export function defineCustomRender(props = {}, ctx) {
 
     let methods = {
         onChange(v) {
-            // console.log('sdsdsds', v)
             lock.lock(async () => {
 
-
-                ctx.emit('value-change', v)
+                // console.log('sdsdsds', v)
+                // ZY.PubSub.publish('value-change', v)
+                ctx.emit('valuechange', v)
             }, 1000)
         }
     }

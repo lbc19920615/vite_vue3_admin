@@ -42,8 +42,12 @@ export default defineComponent({
       emit('update:modelValue', e)
     }
 
-    return () => (<widgetDef ui={props.ui} ref={widgetInstance} onValueChange={onUpdateModelValue} onUpdate:modelValue={onUpdateModelValue}
-                             modelValue={obj.value} config={widgetConfig}></widgetDef>)
+    function onValueChange(e) {
+      emit('update:modelValue', e)
+      emit('change', e)
+    }
+
+    return () => (<widgetDef ui={props.ui} ref={widgetInstance} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
   }
 })
 </script>

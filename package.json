@@ -1,10 +1,10 @@
 {
-   "name": "my-vue-app",
-   "version": "0.0.0",
-   "scripts": {
-      "dev": "vite",
-      "build": "vite build",
-      "serve": "vite preview"
+  "name": "my-vue-app",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
   },
   "dependencies": {
     "await-to-js": "^3.0.0",
@@ -24,6 +24,7 @@
     "sortablejs": "^1.14.0",
     "twig": "^1.15.4",
     "uuid": "^8.3.2",
+    "vant": "^3.2.0",
     "vue": "^3.2.1",
     "vue-resizable": "^2.0.5",
     "vue-router": "^4.0.6",

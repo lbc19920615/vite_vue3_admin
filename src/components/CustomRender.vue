@@ -47,6 +47,7 @@ export default defineComponent({
 
     function onChange(e) {
       console.log('onChange', e)
+      emit('update:modelValue', e)
     }
 
     return () => (

@@ -23,6 +23,18 @@ export default {
       init: {
         def: {
           service: 'serviceA',
+          constants: {
+            types: [
+              {
+                label: '事假',
+                value: 'sds1212121sds'
+              },
+              {
+                label: '病假',
+                value: 'sds121212ds'
+              }
+            ]
+          },
           row: {
             type: 'object',
             properties: {
@@ -35,13 +47,23 @@ export default {
               controls: {
                 type: 'string',
                 ui: {
-                  hidden: "lt(LENGTH(VAL('name', '')), 1)",
+                  hidden: "lt(LENGTH(MODEL('name', '')), 1)",
                 },
-                debug: "LENGTH(VAL('name', ''))"
+                debug: "LENGTH(MODEL('name', ''))"
+              },
+              select1: {
+                type: 'string',
+                ui: {
+                  label: '请假类型',
+                  widget: 'CusSelect',
+                  widgetConfig: {
+                    enums: "VAL('config.constants.types', [])"
+                  }
+                },
               },
               linkName: {
                 type: 'string',
-                computedProp: 'doubled'
+                computedProp: 'doubled',
               },
               level1: {
                 type: "array",
@@ -58,20 +80,52 @@ export default {
                   }
                 }
               },
-              date: {
+              startTime: {
                 type: 'string',
                 ui: {
-                  label: '范围',
+                  label: '开始时间',
                   widget: 'CusDateTimePicker',
                   widgetConfig: {
-                    type: "datetimerange"
+                    type: "datetime",
+                    valueFormat: 'YYYY-MM-DD HH:mm:ss',
                   }
                 }
               },
+              endTime: {
+                type: 'string',
+                ui: {
+                  label: '结束时间',
+                  widget: 'CusDateTimePicker',
+                  widgetConfig: {
+                    type: "datetime",
+                    valueFormat: 'YYYY-MM-DD HH:mm:ss'
+                  }
+                }
+              },
+              vantTime: {
+                type: 'string',
+                ui: {
+                  label: 'vant时间',
+                  widget: 'VantDateTimePicker',
+                  widgetConfig: {
+                    drawer: {
+                      direction: 'btt',
+                      title: "我是标题"
+                    },
+                    picker: {
+                      type: "year-month",
+                      title: "选择年月"
+                    }
+                  }
+                }
+              }
             }
           },
           computed: {
-            doubled: "VAL('name', '') + ',s'"
+            doubled: "MODEL('name', '') + ',s'",
+            selectedOption: "MODEL('select1', '')",
+            haha: "find(VAL('config.constants.types', []), ['value', MODEL('select1', '')])",
+            fullRange: "filter([MODEL('startTime', ''), MODEL('endTime', '')])",
           }
         },
         args: {

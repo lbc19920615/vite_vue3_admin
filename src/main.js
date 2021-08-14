@@ -13,6 +13,9 @@ import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 
+// vant
+import vant from 'vant/es/index'
+
 import * as ZY from '@expose/main.js'
 
 const { fetchContentV3 } = ZY
@@ -61,6 +64,7 @@ window.startApp = function () {
 
   app.use(moduleConfig)
   app.use(remote)
+  app.use(vant)
   app.use(ElementPlus, {
     size: 'medium',
     locale
