@@ -35,9 +35,9 @@ export default {
               controls: {
                 type: 'string',
                 ui: {
-                  hidden: "lt(VAL('name', '').length, 1)",
+                  hidden: "lt(LENGTH(VAL('name', '')), 1)",
                 },
-                debug: "VAL('name', '').length"
+                debug: "LENGTH(VAL('name', ''))"
               },
               linkName: {
                 type: 'string',
