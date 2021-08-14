@@ -48,10 +48,11 @@ export default {
                 items: {
                   type: 'object',
                   properties: {
-                    level1name: {
+                    linkName1: {
                       type: 'string',
+                      computedProp: 'doubled',
                       ui: {
-                        label: 'level1 name'
+                        label: 'level1 linkName'
                       }
                     }
                   }
