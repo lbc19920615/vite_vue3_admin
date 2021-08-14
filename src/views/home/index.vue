@@ -95,7 +95,7 @@ export default {
       storeA.reload = true
       setTimeout(() => {
         storeA.reload = false
-      }, 1000)
+      }, 300)
     }
 
     function updateData() {
