@@ -54,6 +54,7 @@ export default defineComponent({
     } = {}) => {
       // console.log(msg, sfc, comDef)
       ui.widget = comName
+      ctx.emit('fetched')
     })
 
     return {

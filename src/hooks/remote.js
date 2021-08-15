@@ -14,7 +14,6 @@ export async function fetchComponent(comName = '', {def, args } = {}) {
     try {
         // console.log('this.formDef', this.formDef)
         let data = new FormData()
-        // console.log('Y.JSON5.stringify(def)', JSON.stringify(def))
         data.append('source', JSON.stringify(def))
         let tpl = await fetchContentV3(data, args)
         let sfc = parseComponent(tpl)
@@ -37,7 +36,7 @@ export async function fetchComponent(comName = '', {def, args } = {}) {
                     sfc,
                     comDef
                 })
-            }, 300)
+            }, 30)
         })
     } catch (e) {
         console.error(e)

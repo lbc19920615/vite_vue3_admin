@@ -2,13 +2,20 @@
   <div>
     {{store}}
   </div>
-  <el-button type="primary" @click="reload">reload</el-button>
-  <el-button type="primary" @click="updateData">回填数据</el-button>
-  <template v-if="filter('showCom')">
-    <HttpComponent
-        :defs="allDef"
-        :is="store.model.componentStep"></HttpComponent>
-  </template>
+  <div>
+    <el-button type="primary" @click="reload">reload</el-button>
+    <el-button type="primary" @click="updateData">回填数据</el-button>
+  </div>
+  <div style="min-height: 300px;"
+       v-loading="store.model.loading">
+    <template v-if="filter('showCom')">
+      <HttpComponent
+          :defs="allDef"
+          :is="store.model.componentStep"
+          @fetched="controllers.onFetched"
+      ></HttpComponent>
+    </template>
+  </div>
 </template>
 
 <script lang="jsx">
@@ -44,11 +51,14 @@ export default {
           },
           reload: {
             type: Boolean
+          },
+          loading: {
+            type: Boolean
           }
         }
       },
       computed: {
-        showCom: "ZY_NOT(MODEL('reload'))",
+        // showCom: "ZY_NOT(MODEL('reload'))",
         option1: "nth(CONST('types'), 0)"
       },
       filters: {
@@ -56,11 +66,19 @@ export default {
       }
     })
 
-
     storeControl.set({
       componentStep: '',
-      reload: false
+      reload: false,
+      loading: false,
     })
+
+    let controllers = {
+      async onFetched() {
+        storeControl.set({
+          loading: false,
+        })
+      }
+    }
 
     import('./step1.js').then(res => {
       const config = res.default
@@ -78,9 +96,10 @@ export default {
 
     async function reload() {
       storeControl.set({
-        reload: true
+        reload: true,
+        loading: true,
       })
-      await ZY.sleep(1000)
+      await ZY.sleep(300)
       storeControl.set({
         reload: false
       })
@@ -98,6 +117,7 @@ export default {
       allDef,
       updateData,
       render,
+      controllers,
       reload,
     };
   },
