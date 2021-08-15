@@ -75,7 +75,7 @@ export function defineCustomRender(props = {}, ctx) {
         }
     }
 
-    console.log('events', events)
+    // console.log('events', events)
 
     let listeners = {
     }
