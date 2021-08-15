@@ -1,4 +1,4 @@
-import { moduleConfig, initBrowserVueSFCLoader } from '__remote/public/vue-bs-loader.js'
+import { moduleConfig } from '__remote/public/vue-bs-loader.js'
 import { initTemplate } from '__remote/public/template-loader.js'
 globalThis.initTemplate = initTemplate
 
@@ -14,11 +14,8 @@ import 'element-plus/lib/theme-chalk/index.css';
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 
 // vant
-import vant from 'vant/es/index'
 
 import * as ZY from '@expose/main.js'
-
-const { fetchContentV3 } = ZY
 
 globalThis.ZY = ZY
 
@@ -44,7 +41,7 @@ import VueGridLayout from '@/plugins/grid-layout'
 import CustomFormRenderPlugin from "@/plugins/form-render";
 // console.log(VueGridLayout)
 
-initBrowserVueSFCLoader(Vue)
+
 
 window.startApp = function () {
 
@@ -64,7 +61,7 @@ window.startApp = function () {
 
   app.use(moduleConfig)
   app.use(remote)
-  app.use(vant)
+  // app.use(vant)
   app.use(ElementPlus, {
     size: 'medium',
     locale
@@ -79,6 +76,11 @@ window.startApp = function () {
 
   storeApp.mount('#storeApp')
   app.mount('#app')
+
+  import('vant/es/index').then(res => {
+    // console.log(res.default)
+    app.use(res.default)
+  })
   return app
 }
 

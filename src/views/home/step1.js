@@ -89,23 +89,23 @@ export default {
               label: '时长(小时)',
             }
           },
-          vantTime: {
-            type: 'string',
-              ui: {
-              label: 'vant时间',
-                widget: 'VantDateTimePicker',
-                widgetConfig: {
-                drawer: {
-                  direction: 'btt',
-                    title: "我是标题"
-                },
-                picker: {
-                  type: "year-month",
-                    title: "选择年月"
-                }
-              }
-            }
-          },
+          // vantTime: {
+          //   type: 'string',
+          //     ui: {
+          //     label: 'vant时间',
+          //       widget: 'VantDateTimePicker',
+          //       widgetConfig: {
+          //       drawer: {
+          //         direction: 'btt',
+          //           title: "我是标题"
+          //       },
+          //       picker: {
+          //         type: "year-month",
+          //           title: "选择年月"
+          //       }
+          //     }
+          //   }
+          // },
           descripton: {
             type: 'string',
               ui: {

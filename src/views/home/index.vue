@@ -12,14 +12,12 @@
 </template>
 
 <script lang="jsx">
-// import {computed, reactive} from "vue";
 import HttpComponent from "../../components/HttpComponent.vue";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
 
 export default {
   components: {
     HttpComponent,
-    AboutView: globalThis.loadComponent('container.vue'),
   },
   setup(props, ctx) {
     let allDef = new Map()
@@ -82,7 +80,7 @@ export default {
       storeControl.set({
         reload: true
       })
-      await ZY.sleep(2000)
+      await ZY.sleep(1000)
       storeControl.set({
         reload: false
       })
