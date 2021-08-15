@@ -21,6 +21,7 @@
     "path-to-regexp": "^6.2.0",
     "pretty": "^2.0.0",
     "pubsub-js": "^1.9.3",
+    "sleep-promise": "^9.1.0",
     "sortablejs": "^1.14.0",
     "twig": "^1.15.4",
     "uuid": "^8.3.2",
