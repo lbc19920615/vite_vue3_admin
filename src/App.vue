@@ -21,11 +21,14 @@
 </template>
 
 <script>
-import {defineComponent, inject} from "vue";
+import {defineComponent, inject, provide} from "vue";
 import {setupLoggerHandler} from "./utils/logger";
+import {createRefManager} from "@/hooks/ref";
+import {useRouter} from "vue-router";
 
 export default defineComponent({
   setup() {
+    const router = useRouter()
     const globalStore = inject('globalStore')
 
     let serviceArr = [
@@ -41,6 +44,26 @@ export default defineComponent({
     })
 
     setupLoggerHandler()
+
+    let pageManager = createRefManager({
+      eventHandler({type, e}) {
+        // console.log('eventHandler', type, e)
+      }
+    })
+
+    pageManager.getCurrentPage = function () {
+      let currentRoute = router.currentRoute.value
+      if (currentRoute) {
+        console.log(pageManager.Refs)
+        if (pageManager.Refs.has(currentRoute.fullPath)) {
+          return pageManager.Refs.get(currentRoute.fullPath).context
+        }
+      }
+      return null
+    }
+
+    provide('pageManager', pageManager)
+
   }
 })
 </script>

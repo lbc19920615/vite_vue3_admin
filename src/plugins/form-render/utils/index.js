@@ -28,12 +28,11 @@ export let CustomRenderControlMixin = {
     mounted() {
         this.curFormCon = inject('curFormCon')
         this.inited = true
-        // console.log(this.curFormCon)
+        // console.log(this.comManager)
     }
 }
 
 export function defineCustomRender(props = {}, ctx) {
-
     let lock = new ZY.Lock(/* optional lock name, should be unique */)
     let model = null
     let data = function (opt) {
@@ -50,7 +49,15 @@ export function defineCustomRender(props = {}, ctx) {
         }
     })
 
+    let comManager = inject('comManager')
+
+    function callComManager(name,e ) {
+        // console.log('comManager', comManager)
+        comManager.context.sendEvent(name,e)
+    }
+
     let methods = {
+        callComManager: callComManager,
         onChange(v) {
             lock.lock(async () => {
 

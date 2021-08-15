@@ -1,13 +1,14 @@
 <template><custom-render v-if="ui.widget" :render="render" :ui="ui"></custom-render></template>
 
 <script lang="jsx">
-import {defineComponent, watch, reactive} from "vue";
+import {defineComponent, watch, reactive, provide} from "vue";
 import {fetchComponent} from "../hooks/remote.js";
 import PubSub from 'pubsub-js'
 import { FETCH_COMPONENT_READY} from "../utils/event-types.js";
 import CustomRender from "./CustomRender.vue";
 import { v4 } from 'uuid'
 import {log} from "../utils/logger";
+import {createRefManager, useRefsManager} from "@/hooks/ref";
 
 export default defineComponent({
   name: "HttpComponent",
@@ -29,7 +30,17 @@ export default defineComponent({
       default: 'http-com-'
     }
   },
+  created() {
+    let comManager = createRefManager({
+      eventHandler({type, e}) {
+        // console.log('eventHandler', type, e)
+      }
+    })
+    comManager.context = this
+    provide('comManager', comManager)
+  },
   setup(props, ctx) {
+
     let ui = reactive({
       widget: ''
     })
@@ -48,19 +59,40 @@ export default defineComponent({
       immediate: true
     })
 
-    PubSub.subscribe(FETCH_COMPONENT_READY, (msg, {
+    let obj;
+
+    function sendEvent(name, args) {
+      obj.emit(name, args)
+    }
+
+    let ret = {
+      ui,
+      render: props.slotContent ? props.slotContent : () => {},
+      sendEvent
+    }
+
+
+    function handler(msg, {
       sfc,
       comDef
-    } = {}) => {
+    } = {}) {
       // console.log(msg, sfc, comDef)
       ui.widget = comName
-      ctx.emit('fetched')
-    })
-
-    return {
-      ui,
-      render: props.slotContent ? props.slotContent : () => {}
+      obj.emit('self:fecthed')
     }
+
+    useRefsManager(ret, [
+      function (def) {
+        obj  = def
+        PubSub.subscribe(FETCH_COMPONENT_READY, handler)
+      },
+      function () {
+        PubSub.unsubscribe(FETCH_COMPONENT_READY, handler)
+      }
+    ])
+
+
+    return ret
   }
 })
 </script>

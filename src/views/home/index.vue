@@ -3,8 +3,8 @@
     {{store}}
   </div>
   <div>
-    <el-button type="primary" @click="reload">reload</el-button>
-    <el-button type="primary" @click="updateData">回填数据</el-button>
+    <el-button type="primary" :disabled="store.model.loading" @click="reload">reload</el-button>
+    <el-button type="primary"  :disabled="store.model.loading" @click="updateData">回填数据</el-button>
   </div>
   <div style="min-height: 300px;"
        v-loading="store.model.loading">
@@ -12,7 +12,6 @@
       <HttpComponent
           :defs="allDef"
           :is="store.model.componentStep"
-          @fetched="controllers.onFetched"
       ></HttpComponent>
     </template>
   </div>
@@ -21,15 +20,33 @@
 <script lang="jsx">
 import HttpComponent from "../../components/HttpComponent.vue";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
+import {provideRefManager} from "@/hooks/ref";
+import {inject} from "vue";
+import {PageControl} from "@/mixins/framework";
 
 export default {
   components: {
     HttpComponent,
   },
+  mixins: [
+    PageControl
+  ],
   setup(props, ctx) {
+    let storeControl;
+    provideRefManager({
+      eventHandler({type, e}) {
+        console.log('eventHandler', type, e)
+        if (type === 'self:fecthed') {
+          storeControl.set({
+            loading: false
+          })
+        }
+      }
+    })
+
     let allDef = new Map()
 
-    let storeControl = defineAutoStoreControl({
+    storeControl = defineAutoStoreControl({
       service: 'serviceB',
       constants: {
         types: [
@@ -72,14 +89,6 @@ export default {
       loading: false,
     })
 
-    let controllers = {
-      async onFetched() {
-        storeControl.set({
-          loading: false,
-        })
-      }
-    }
-
     import('./step1.js').then(res => {
       const config = res.default
       allDef.set(config.name, config)
@@ -117,7 +126,6 @@ export default {
       allDef,
       updateData,
       render,
-      controllers,
       reload,
     };
   },
