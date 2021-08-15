@@ -116,7 +116,17 @@ export default {
 
     function updateData() {
       global.storeApp.run('serviceA', 'setModel', {
-        name: 'namssds'
+        name: 'namssds',
+        level1: [
+          {
+            level1Name1: ZY.nid(),
+            level1Name2: ZY.nid(),
+          },
+          {
+            level1Name1: ZY.nid(),
+            level1Name2: ZY.nid(),
+          },
+        ]
       })
     }
 

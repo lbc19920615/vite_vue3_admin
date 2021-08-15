@@ -53,13 +53,18 @@ export default {
               items: {
               type: 'object',
                 properties: {
-                linkName1: {
-                  type: 'string',
-                    computedProp: 'doubled',
+                  level1Name1: {
+                    type: 'string',
                     ui: {
-                    label: 'level1 linkName'
+
+                    }
+                  },
+                  level1Name2: {
+                    type: 'string',
+                    ui: {
+
+                    }
                   }
-                }
               }
             }
           },
