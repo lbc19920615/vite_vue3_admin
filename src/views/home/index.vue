@@ -26,6 +26,18 @@ export default {
 
     let storeControl = defineAutoStoreControl({
       service: 'serviceB',
+      constants: {
+        types: [
+          {
+            label: '事假',
+            value: 'sds1212121sds'
+          },
+          {
+            label: '病假',
+            value: 'sds121212ds'
+          }
+        ]
+      },
       data: {
         type: 'object',
         properties: {
@@ -38,7 +50,8 @@ export default {
         }
       },
       computed: {
-        showCom: "ZY_NOT(MODEL('reload'))"
+        showCom: "ZY_NOT(MODEL('reload'))",
+        option1: "nth(CONST('types'), 0)"
       },
       filters: {
         showCom: "ZY_NOT(MODEL('reload'))"

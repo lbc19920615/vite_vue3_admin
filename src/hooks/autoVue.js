@@ -50,7 +50,7 @@ let commonFun = `
 export function defineAutoStoreControl(config = { data: {}, computed: {}}) {
   const globalStore = inject('globalStore')
 
-  console.log('globalStore', globalStore)
+  // console.log('globalStore', globalStore)
 
   let ret = {
   }
@@ -58,9 +58,16 @@ export function defineAutoStoreControl(config = { data: {}, computed: {}}) {
   for (let key in config.computed) {
     computed[key] = new Function('model', 'options', `
         ${commonFun}
+        let context = options.context ? options.context : {}
         
         function MODEL(v, defaultVal) {
           return ZY.lodash.get(model, v, defaultVal)
+        }
+        
+        // console.log('context', context)
+        
+        function CONST(v, defaultVal) {
+          return ZY.lodash.get(context.config.constants, v, defaultVal)
         }
         
         return () => {
@@ -125,7 +132,9 @@ export function defineAutoStoreControl(config = { data: {}, computed: {}}) {
         }
       }
     },
-    context: {}
+    context: {
+      config
+    }
   })
   model = ret.model
 
