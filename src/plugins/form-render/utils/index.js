@@ -34,7 +34,7 @@ export let CustomRenderControlMixin = {
 
 export function defineCustomRender(props = {}, ctx) {
     let lock = new ZY.Lock(/* optional lock name, should be unique */)
-    let model = null
+    let model = null;
     let data = function (opt) {
         model = reactive({
             value: '',
@@ -42,6 +42,7 @@ export function defineCustomRender(props = {}, ctx) {
         })
         return model
     }
+    let events = props.ui.events ? props.ui.events : {};
 
     watch(() => props.modelValue, (newVal) => {
         if (!lock.isLocked) {
@@ -60,7 +61,13 @@ export function defineCustomRender(props = {}, ctx) {
         callComManager: callComManager,
         onChange(v) {
             lock.lock(async () => {
-
+                // console.log('sdsdsds', v)
+                // ZY.PubSub.publish('value-change', v)
+                ctx.emit('valuechange', v)
+            }, 1000)
+        },
+        on_change(v) {
+            lock.lock(async () => {
                 // console.log('sdsdsds', v)
                 // ZY.PubSub.publish('value-change', v)
                 ctx.emit('valuechange', v)
@@ -68,8 +75,37 @@ export function defineCustomRender(props = {}, ctx) {
         }
     }
 
+    console.log('events', events)
+
+    let listeners = {
+    }
+
+    for (let k of ['change']) {
+        let fun = new Function('options', `
+                return function(v) {
+                    if (options.handler ) {
+                        options.handler(v)
+                    }
+                }
+            `)
+
+        let handleName = 'on_' + k
+        listeners[k] = fun({
+            methods,
+            handler(v) {
+                if (methods[handleName]) {
+                    if (events[k]) {
+                        methods.callComManager(`${events[k]}`, v)
+                    }
+                    methods[handleName](v)
+                }
+            }
+        })
+    }
+
     return {
         data,
+        listeners,
         methods
     }
 }

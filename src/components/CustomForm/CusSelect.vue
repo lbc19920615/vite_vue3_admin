@@ -2,7 +2,7 @@
   <template v-if="inited">
     <el-select v-model="state.value"
                v-bind="widgetConfig"
-               @change="onChange"
+               v-on="listeners"
     >
       <el-option v-for="(option, key) in curFormCon.dxEval(widgetConfig.enums)"
                  :label="option.label" :value="option.value"
@@ -20,19 +20,15 @@ export default {
       CustomRenderControlMixin
   ],
   setup(props, ctx) {
-    let { data, methods } = defineCustomRender(props, ctx)
+    let { data, methods, listeners } = defineCustomRender(props, ctx)
     let state = data()
 
-    function onChange(v) {
-      methods.callComManager('cus_select:change', v)
-      methods.onChange(v)
-    }
 
     return {
       state,
       widgetConfig: props.ui.widgetConfig,
       methods,
-      onChange
+      listeners,
     }
   },
 }

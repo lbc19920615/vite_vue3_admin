@@ -33,11 +33,14 @@ export default {
           },
           select1: {
             type: 'string',
-              ui: {
+            ui: {
               label: '请假类型',
-                widget: 'CusSelect',
-                widgetConfig: {
-                enums: "VAL('config.constants.types', [])"
+              widget: 'CusSelect',
+              widgetConfig: {
+                enums: "VAL('config.constants.types', [])",
+              },
+              events: {
+                'change': 'cus_select:change'
               }
             },
           },
