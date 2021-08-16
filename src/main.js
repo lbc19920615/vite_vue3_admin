@@ -42,8 +42,7 @@ import * as highlightPlugin from '@/plugins/highlight'
 
 import VueGridLayout from '@/plugins/grid-layout'
 import CustomFormRenderPlugin from "@/plugins/form-render";
-// console.log(VueGridLayout)
-
+import {initStoreApp} from "@/storeApp";
 
 
 window.startApp = function () {
@@ -76,14 +75,13 @@ window.startApp = function () {
   app.use(icons)
   app.use(router)
   app.use(store)
-
-  storeApp.mount('#storeApp')
-  app.mount('#app')
-
   import('vant/es/index').then(res => {
     // console.log(res.default)
     app.use(res.default)
   })
+  initStoreApp(storeApp)
+  app.mount('#app')
+
   return app
 }
 

@@ -10,14 +10,21 @@ import {defineComponent, getCurrentInstance, ref, inject} from "vue";
 import * as Vue from "vue";
 import { REMOTE_ORIGIN } from '@expose/main.js'
 import {createRefManager} from "@/hooks/ref";
+import {useStore} from "vuex";
 
 export default defineComponent({
-  components: {
-  },
   created() {
+    let vuexStore = useStore()
+
+    let self = this
     let servicesManager = createRefManager({
       eventHandler({type, e}) {
-        // console.log('eventHandler', type, e)
+        if (type === self.EVENT_TYPES.SET_MODEL_READY) {
+          // const {ctx, model} = e
+          // vuexStore.commit('increment')
+          // vuexStore.dispatch('storeApp/ToggleSideBar')
+          // console.log('SET_MODEL_READY', ctx)
+        }
       }
     })
 
@@ -38,6 +45,8 @@ export default defineComponent({
     Vue.provide('globalStore', this)
   },
   setup(props, ctx){
+
+
     let appInstance = getCurrentInstance()
     let serviceNames = ref([
     ])
