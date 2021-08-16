@@ -58,14 +58,19 @@ export default defineComponent({
           service.mixins.push({
             data() {
               return {
-                serviceName
+                serviceName,
+                RefsManager: null
               }
             },
             created() {
               const servicesManager = inject('servicesManager');
-              servicesManager.register(this, serviceName)
+              this.RefsManager = servicesManager.register(this, serviceName)
               // console.log(serviceName, servicesManager.Refs)
-            }
+            },
+            beforeUnmount() {
+              const servicesManager = inject('servicesManager');
+              servicesManager.destory(this.RefsManager.uuid)
+            },
           })
           appInstance.appContext.app.component(serviceName, service)
           setTimeout(() => {
