@@ -30,7 +30,7 @@ export default {
               label: '请假类型',
               widget: 'CusSelect',
               widgetConfig: {
-                enums: "VAL('config.constants.types', [])",
+                enums: "ROOT_STATE('sapp.constants.types', [])",
               },
               events: {
                 'change': 'cus_select:change'

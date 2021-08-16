@@ -9,6 +9,8 @@
                :disabled="store.model.loading" @click="updateData">回填数据</el-button>
     <el-button type="primary"
                :disabled="store.model.loading" @click="nextStep">nextStep</el-button>
+    <el-button type="primary"
+               :disabled="store.model.loading" @click="chengeVuex">change vuex</el-button>
   </div>
   <div style="min-height: 300px;"
        v-loading="store.model.loading">
@@ -27,6 +29,7 @@ import {defineAutoStoreControl} from "@/hooks/autoVue";
 import {provideRefManager} from "@/hooks/ref";
 import {inject, nextTick} from "vue";
 import {PageControl} from "@/mixins/framework";
+import {useStore} from "vuex";
 
 export default {
   components: {
@@ -36,6 +39,7 @@ export default {
     PageControl
   ],
   setup(props, ctx) {
+    let rootStore = useStore()
     let storeControl;
     provideRefManager({
       eventHandler({type, e}) {
@@ -62,7 +66,7 @@ export default {
             label: '病假',
             value: 'sds121212ds'
           }
-        ]
+        ],
       },
       data: {
         type: 'object',
@@ -80,7 +84,9 @@ export default {
       },
       computed: {
         // showCom: "ZY_NOT(MODEL('reload'))",
-        option1: "nth(CONST('types'), 0)"
+        option1: "nth(ROOT_STATE('sapp.constants.types'), 0)",
+        vuexOptions: "ROOT_STATE('sapp.constants.types')",
+        vuexAction: "ROOT_STATE('sapp.count')"
       },
       filters: {
         showCom: "ZY_NOT(MODEL('reload'))"
@@ -147,10 +153,15 @@ export default {
       await reload()
     }
 
+    async function chengeVuex() {
+      rootStore.dispatch('SetStoreAppCount', ZY.lodash.random(1, 10000))
+    }
+
     return {
       store: storeControl.store,
       filter: storeControl.filter,
       allDef,
+      chengeVuex,
       updateData,
       nextStep,
       reload,

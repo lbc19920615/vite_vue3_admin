@@ -14,7 +14,7 @@ import {useStore} from "vuex";
 
 export default defineComponent({
   created() {
-    let vuexStore = useStore()
+    let store = useStore()
 
     let self = this
     let servicesManager = createRefManager({

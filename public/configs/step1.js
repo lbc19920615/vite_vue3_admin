@@ -37,7 +37,7 @@ export default {
               label: '请假类型',
               widget: 'CusSelect',
               widgetConfig: {
-                enums: "VAL('config.constants.types', [])",
+                enums: "ROOT_STATE('sapp.constants.types', [])",
               },
               events: {
                 'change': 'cus_select:change'
@@ -128,9 +128,9 @@ export default {
       },
       computed: {
         doubled: "MODEL('name', '') + ',s'",
-          selectedOption: "find(VAL('config.constants.types', []), ['value', MODEL('select1', '')])",
-          fullRange: "filter([MODEL('startTime', ''), MODEL('endTime', '')])",
-          hours: "ZY_floor(ZY_hour_between_2_date(MODEL('startTime', ''), MODEL('endTime', '')), 1)"
+        selectedOption: "find(ROOT_STATE('sapp.constants.types', []), ['value', MODEL('select1', '')])",
+        fullRange: "filter([MODEL('startTime', ''), MODEL('endTime', '')])",
+        hours: "ZY_floor(ZY_hour_between_2_date(MODEL('startTime', ''), MODEL('endTime', '')), 1)"
       }
     },
     args: {

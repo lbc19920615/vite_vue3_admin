@@ -1,4 +1,5 @@
 import {inject} from "vue";
+import {useStore} from "vuex";
 
 let templateFun = ''
 for (let funName in ZY.lodash) {
@@ -48,6 +49,7 @@ let commonFun = `
  * @returns {{}}
  */
 export function defineAutoStoreControl(config = { data: {}, computed: {}}) {
+  const rootStore = useStore()
   const globalStore = inject('globalStore')
 
   // console.log('globalStore', globalStore)
@@ -68,6 +70,11 @@ export function defineAutoStoreControl(config = { data: {}, computed: {}}) {
         
         function CONST(v, defaultVal) {
           return ZY.lodash.get(context.config.constants, v, defaultVal)
+        }
+        
+        function ROOT_STATE(v, defaultVal) {
+        console.log('ROOT_STATE', v)
+          return ZY.lodash.get(context.rootStore.state, v, defaultVal)
         }
         
         return () => {
@@ -108,6 +115,7 @@ export function defineAutoStoreControl(config = { data: {}, computed: {}}) {
 
   formDefTravase(dataDef, computedLinks);
 
+
   // console.log('obj', obj)
 
   let model = null
@@ -133,7 +141,8 @@ export function defineAutoStoreControl(config = { data: {}, computed: {}}) {
       }
     },
     context: {
-      config
+      config,
+      rootStore
     }
   })
   model = ret.model

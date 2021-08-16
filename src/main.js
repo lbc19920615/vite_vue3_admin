@@ -5,6 +5,9 @@ globalThis.initTemplate = initTemplate
 import * as Vue from 'vue/dist/vue.cjs'
 globalThis.Vue = Vue
 
+import * as vuex from 'vuex'
+globalThis.Vuex = vuex
+
 import App from './App.vue'
 import 'normalize.css/normalize.css'
 
