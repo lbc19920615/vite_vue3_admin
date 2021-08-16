@@ -6,12 +6,22 @@
 </template>
 
 <script>
-import {defineComponent, getCurrentInstance, ref} from "vue";
+import {defineComponent, getCurrentInstance, ref, inject} from "vue";
 import * as Vue from "vue";
 import { REMOTE_ORIGIN } from '@expose/main.js'
+import {createRefManager} from "@/hooks/ref";
 
 export default defineComponent({
   components: {
+  },
+  created() {
+    let servicesManager = createRefManager({
+      eventHandler({type, e}) {
+        // console.log('eventHandler', type, e)
+      }
+    })
+
+    Vue.provide('servicesManager', servicesManager)
   },
   mounted() {
     let app = getCurrentInstance()
@@ -42,6 +52,21 @@ export default defineComponent({
         globalThis.importScripts(path)
             .then(res => {
           const service = res.install(Vue)
+          if (!service.mixins) {
+            service.mixins = []
+          }
+          service.mixins.push({
+            data() {
+              return {
+                serviceName
+              }
+            },
+            created() {
+              const servicesManager = inject('servicesManager');
+              servicesManager.register(this, serviceName)
+              // console.log(serviceName, servicesManager.Refs)
+            }
+          })
           appInstance.appContext.app.component(serviceName, service)
           setTimeout(() => {
             serviceNames.value.push(serviceName)

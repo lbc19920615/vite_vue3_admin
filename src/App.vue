@@ -32,8 +32,9 @@ export default defineComponent({
     const globalStore = inject('globalStore')
 
     let serviceArr = [
-      ['serviceA', '/public/services/serviceA.js'],
-      ['serviceB', '/public/services/serviceB.js']
+      ['serviceA', '/public/services/work/serviceA.js'],
+      ['serviceB', '/public/services/work/serviceB.js'],
+      ['serviceC', '/public/services/work/serviceC.js'],
     ]
     globalStore.installExposeServices(serviceArr)
 

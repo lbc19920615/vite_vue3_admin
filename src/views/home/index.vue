@@ -3,8 +3,12 @@
     {{store}}
   </div>
   <div>
-    <el-button type="primary" :disabled="store.model.loading" @click="reload">reload</el-button>
-    <el-button type="primary"  :disabled="store.model.loading" @click="updateData">回填数据</el-button>
+    <el-button type="primary"
+               :disabled="store.model.loading" @click="reload">reload</el-button>
+    <el-button type="primary"
+               :disabled="store.model.loading" @click="updateData">回填数据</el-button>
+    <el-button type="primary"
+               :disabled="store.model.loading" @click="nextStep">nextStep</el-button>
   </div>
   <div style="min-height: 300px;"
        v-loading="store.model.loading">
@@ -21,7 +25,7 @@
 import HttpComponent from "../../components/HttpComponent.vue";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
 import {provideRefManager} from "@/hooks/ref";
-import {inject} from "vue";
+import {inject, nextTick} from "vue";
 import {PageControl} from "@/mixins/framework";
 
 export default {
@@ -89,19 +93,23 @@ export default {
       loading: false,
     })
 
-    import('./step1.js').then(res => {
-      const config = res.default
-      allDef.set(config.name, config)
-      // storeA.componentStep = config.name
-      storeControl.set({
-        componentStep: config.name
+    function loadStep(path) {
+      return new Promise(resolve => {
+        globalThis.importScripts(path).then(res => {
+          const config = res.default
+          allDef.set(config.name, config)
+          // storeA.componentStep = config.name
+          storeControl.set({
+            componentStep: config.name
+          })
+          nextTick(() => {
+            resolve()
+          })
+        })
       })
-    })
-
-
-    function render() {
-      return (<div>222232323232</div>)
     }
+
+    loadStep('./configs/step1.js')
 
     async function reload() {
       storeControl.set({
@@ -130,12 +138,21 @@ export default {
       })
     }
 
+    async function nextStep() {
+      // 请求下一步
+      let nextStepPath = ''
+      await ZY.sleep(100)
+      nextStepPath = './configs/step2.js'
+      await loadStep(nextStepPath)
+      await reload()
+    }
+
     return {
       store: storeControl.store,
       filter: storeControl.filter,
       allDef,
       updateData,
-      render,
+      nextStep,
       reload,
     };
   },
