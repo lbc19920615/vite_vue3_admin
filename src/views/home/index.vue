@@ -11,9 +11,10 @@
                :disabled="store.model.loading" @click="nextStep">nextStep</el-button>
     <el-button type="primary"
                :disabled="store.model.loading" @click="chengeVuex">change vuex</el-button>
+    <el-button type="primary"
+               :disabled="store.model.loading" @click="openDialog">打开dialog</el-button>
   </div>
-  <div style="min-height: 300px;"
-       v-loading="store.model.loading">
+  <div style="min-height: 300px;">
     <template v-if="filter('showCom')">
       <HttpComponent
           :defs="allDef"
@@ -21,24 +22,45 @@
       ></HttpComponent>
     </template>
   </div>
+<!--  <my-vue-dialog @inited="onInit" :style="consts.style">-->
+<!--    <div style="background: #fff">sdsdsdsds</div>-->
+<!--  </my-vue-dialog>-->
+  <CustomElement is="my-vue-dialog" name="dialog" :params="consts"
+  >
+    <template v-slot:default>
+      <h3 slot="title" style="margin: 0">title</h3>
+      <template v-if="filter('showCom')">
+        <HttpComponent
+            :defs="allDef"
+            :is="store.model.dialogStep"
+        ></HttpComponent>
+      </template>
+      <div slot="footer">footer</div>
+    </template>
+  </CustomElement>
 </template>
 
 <script lang="jsx">
 import HttpComponent from "../../components/HttpComponent.vue";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
 import {provideRefManager} from "@/hooks/ref";
-import {inject, nextTick} from "vue";
+import {inject, nextTick, ref, onMounted, provide} from "vue";
 import {PageControl} from "@/mixins/framework";
 import {useStore} from "vuex";
+import CustomElement from "@/components/CustomElement.vue";
+import { createRefManager} from "@/hooks/ref";
 
 export default {
   components: {
+    CustomElement,
     HttpComponent,
   },
   mixins: [
     PageControl
   ],
   setup(props, ctx) {
+
+
     let rootStore = useStore()
     let storeControl;
     provideRefManager({
@@ -79,6 +101,15 @@ export default {
           },
           loading: {
             type: Boolean
+          },
+          dialogStep: {
+            type: String,
+          },
+          dialogReload: {
+            type: Boolean
+          },
+          dialogLoading: {
+            type: Boolean
           }
         }
       },
@@ -99,14 +130,14 @@ export default {
       loading: false,
     })
 
-    function loadStep(path) {
+    function loadStep(path, varName = 'componentStep') {
       return new Promise(resolve => {
         globalThis.importScripts(path).then(res => {
           const config = res.default
           allDef.set(config.name, config)
           // storeA.componentStep = config.name
           storeControl.set({
-            componentStep: config.name
+            [varName]: config.name
           })
           nextTick(() => {
             resolve()
@@ -157,7 +188,34 @@ export default {
       rootStore.dispatch('SetStoreAppCount', ZY.lodash.random(1, 10000))
     }
 
-    return {
+    let webComponentRef = createRefManager({
+      eventHandler({type, e}) {
+        console.log('eventHandler', type, e)
+      }
+    })
+
+    webComponentRef.selectEle = function (name) {
+      if (this.Refs.has(name)) {
+        let obj = this.Refs.get(name)
+        return obj.context
+      }
+      return null
+    }
+
+    provide('webComponentRef', webComponentRef)
+
+
+    async function openDialog() {
+      let dialog = webComponentRef.selectEle('dialog')
+      if (dialog) {
+        let nextStepPath = './configs/step2.js'
+        await loadStep(nextStepPath, 'dialogStep')
+        dialog.toggleOpen(true)
+        await reload()
+      }
+    }
+
+    let ret = {
       store: storeControl.store,
       filter: storeControl.filter,
       allDef,
@@ -165,7 +223,20 @@ export default {
       updateData,
       nextStep,
       reload,
+      openDialog,
+      consts: {
+        style: {
+          ['--dialog-inner-top']: '10vh'
+        },
+        sstyle: "width: 700px"
+      },
     };
+
+    onMounted(() => {
+
+    })
+
+    return ret
   },
 };
 </script>

@@ -11,6 +11,8 @@ globalThis.Vuex = vuex
 import App from './App.vue'
 import 'normalize.css/normalize.css'
 
+import 'font-awesome/css/font-awesome.css'
+
 // element
 import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
@@ -37,6 +39,8 @@ import '@/styles/index.scss' // global css
 import '@/styles/app.scss'
 
 import eventBus from 'vue3-eventbus'
+
+import '@/components/WebElements/dialog'
 
 import * as remote from '@/plugins/remote'
 import StoreApp from "./StoreApp.vue";

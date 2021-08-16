@@ -1,0 +1,89 @@
+$com: ".dialog";
+
+@keyframes upToDown {
+  0% {
+    transform: translateY(-50px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@mixin button-reset($sel) {
+  #{$sel} {
+    display: inline-block;
+    border: none;
+    padding: .5rem 1rem;
+    margin: 0;
+    text-decoration: none;
+    background: #0069ed;
+    color: #ffffff;
+    font-family: sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background 250ms ease-in-out,
+    transform 150ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  #{$sel}:hover,
+  #{$sel}:focus {
+    background: #0053ba;
+  }
+
+  #{$sel}:focus {
+    outline: 1px solid #fff;
+    outline-offset: -4px;
+  }
+
+  #{$sel}:active {
+    transform: scale(0.99);
+  }
+}
+
+:host {
+  --dialog-inner-top: 0;
+  --dialog-body-padding: 1rem 2rem;
+}
+
+#{$com} {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0, 0.5);
+  z-index: 1111;
+  display: none;
+  &-body {
+    padding: var(--dialog-body-padding);
+  }
+}
+
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dialog-inner {
+  background-color: #ffffff;
+  margin: 0 auto;
+  position: relative;
+  top: 0;
+}
+
+.dialog--opened {
+  display: block;
+}
+
+.dialog--opened .dialog-inner {
+  top: var(--dialog-inner-top);
+  animation: upToDown 1s;
+  padding: var(--dialog-inner-padding);
+}
+
+@include button-reset($com + '-close')
