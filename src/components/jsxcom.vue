@@ -1,13 +1,16 @@
 <script lang="jsx">
-import { defineComponent } from "vue";
+import { defineComponent, h } from "vue";
 
 export default defineComponent( {
   name: 'jsx-com',
-  render(h) {
-    let name = 'h1'
-    return (
-        <name>111</name>
-    )
+  props: {
+    childs: null
+  },
+  setup(props) {
+    console.log('props', props)
+    return () => {
+      return h('div', {}, props.childs)
+    }
   }
 })
 </script>

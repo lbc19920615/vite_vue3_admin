@@ -41,6 +41,15 @@ export default defineComponent({
   },
   setup(props, ctx) {
 
+
+    function render() {
+      let ret = []
+      if (ctx.slots.default) {
+        ret = ctx.slots.default()
+      }
+      return ret
+    }
+
     let ui = reactive({
       widget: ''
     })
@@ -67,7 +76,7 @@ export default defineComponent({
 
     let ret = {
       ui,
-      render: props.slotContent ? props.slotContent : () => {},
+      render: render,
       sendEvent
     }
 

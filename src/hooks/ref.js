@@ -5,6 +5,12 @@ export function createRefManager({eventHandler}) {
   let RefsManager = {
     Refs: new Map(),
   }
+  /**
+   * register
+   * @param context
+   * @param uuid
+   * @returns {{emit: {<T=any>(type: EventType, event?: T): void, (type: "*", event?: any): void}, uuid: *}}
+   */
   RefsManager.register = function (context, uuid = ZY.nid()) {
     const emitter = mitt()
     emitter.on('*', (type, e) => {
@@ -29,6 +35,10 @@ export function createRefManager({eventHandler}) {
       emit: emitter.emit
     }
   }
+  /**
+   * destory
+   * @param uuid {string}
+   */
   RefsManager.destory = function (uuid) {
     if ( RefsManager.Refs.has(uuid)) {
       let obj =  RefsManager.Refs.get(uuid)
@@ -36,12 +46,25 @@ export function createRefManager({eventHandler}) {
       RefsManager.Refs.set(uuid, obj)
     }
   }
+  /**
+   * find
+   * @param name
+   * @returns {null|*}
+   */
+  RefsManager.find = function (name) {
+    if (this.Refs.has(name)) {
+      let obj = this.Refs.get(name)
+      return obj.context
+    }
+    return null
+  }
   return RefsManager
 }
 
 export function provideRefManager( {name = 'RefsManager', eventHandler} = {}) {
   let RefsManager = createRefManager({eventHandler})
   provide(name, RefsManager)
+  return RefsManager
 }
 
 export function useRefsManager(ret, [catchMOunted, catchUnMOunted] ) {

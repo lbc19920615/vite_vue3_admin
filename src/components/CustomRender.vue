@@ -52,11 +52,10 @@ export default defineComponent({
 
     return () => (
         <>
-        <widgetDef ui={props.ui} ref={widgetInstance}  onChange={onChange} onUpdate:modelValue={onUpdateModelValue}
+        <widgetDef ui={props.ui} render={render} ref={widgetInstance}  onChange={onChange} onUpdate:modelValue={onUpdateModelValue}
                              modelValue={obj.value} config={widgetConfig}>
 
     </widgetDef>
-          <render></render>
     </>
   )
   }

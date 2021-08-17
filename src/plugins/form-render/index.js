@@ -5,6 +5,8 @@ import CusSelect from "@/components/CustomForm/CusSelect.vue";
 
 import VantDateTimePicker from "@/components/CustomVant/VantDateTimePicker.vue";
 
+import jsxCom from '@/components/jsxcom.vue'
+
 const plugin = {
     install(app) {
         import('@/components/CodeEditor/JsonCodeEditor.vue').then(res => {
@@ -17,6 +19,8 @@ const plugin = {
         app.component(CusDateTimePicker.name, CusDateTimePicker)
         app.component(CusSelect.name, CusSelect)
         app.component(VantDateTimePicker.name, VantDateTimePicker)
+
+        app.component(jsxCom.name, jsxCom)
     }
 };
 

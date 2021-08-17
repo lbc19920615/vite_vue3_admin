@@ -18,14 +18,18 @@ export async function fetchComponent(comName = '', {def, args } = {}) {
         let tpl = await fetchContentV3(data, args)
         let sfc = parseComponent(tpl)
         const templateId = comName + '-tpl';
-        globalThis.initTemplate(templateId, globalThis, {
-            html: sfc.template.content,
-        });
+        let template = function () {
+            return sfc.template.content
+        }
         const objectURL = URL.createObjectURL(
             new Blob([sfc.script.content],
                 { type: 'text/javascript' })
         );
         globalThis.importScripts(objectURL).then(res => {
+            globalThis.initTemplate(templateId, globalThis, {
+                html: `${template()}`,
+            });
+
             let comDef = globalThis.app.component(comName, {
                 template: '#' + templateId,
                 ...res.default

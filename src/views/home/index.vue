@@ -19,23 +19,37 @@
       <HttpComponent
           :defs="allDef"
           :is="store.model.componentStep"
-      ></HttpComponent>
+      >
+        <template v-slot:default>
+          <el-button @click="updateData">回填数据</el-button>
+        </template>
+      </HttpComponent>
     </template>
   </div>
 <!--  <my-vue-dialog @inited="onInit" :style="consts.style">-->
 <!--    <div style="background: #fff">sdsdsdsds</div>-->
 <!--  </my-vue-dialog>-->
-  <CustomElement is="my-vue-dialog" name="dialog" :params="consts"
-  >
+  <CustomElement is="my-vue-dialog" name="dialog" :params="consts">
     <template v-slot:default>
-      <h3 slot="title" style="margin: 0">title</h3>
+      <h3 slot="title" style="margin: 0">表单</h3>
       <template v-if="filter('showCom')">
         <HttpComponent
             :defs="allDef"
             :is="store.model.dialogStep"
-        ></HttpComponent>
+        >
+        </HttpComponent>
       </template>
-      <div slot="footer">footer</div>
+      <el-row type="flex" justify="space-between"
+              style="padding: 1rem"
+              slot="footer">
+        <div>&nbsp;</div>
+        <div>
+          <el-button type="primary"
+                     @click="dispatchEvent('submit:dialog')">提交</el-button>
+          <el-button
+              @click="dispatchEvent('close:dialog')">关闭</el-button>
+        </div>
+      </el-row>
     </template>
   </CustomElement>
 </template>
@@ -63,9 +77,9 @@ export default {
 
     let rootStore = useStore()
     let storeControl;
-    provideRefManager({
+    let refsManager = provideRefManager({
       eventHandler({type, e}) {
-        console.log('eventHandler', type, e)
+        console.log('page eventHandler', type, e)
         if (type === 'self:fecthed') {
           storeControl.set({
             loading: false
@@ -194,24 +208,37 @@ export default {
       }
     })
 
-    webComponentRef.selectEle = function (name) {
-      if (this.Refs.has(name)) {
-        let obj = this.Refs.get(name)
-        return obj.context
-      }
-      return null
-    }
-
     provide('webComponentRef', webComponentRef)
 
 
     async function openDialog() {
-      let dialog = webComponentRef.selectEle('dialog')
+      let dialog = webComponentRef.find('dialog')
       if (dialog) {
         let nextStepPath = './configs/step2.js'
         await loadStep(nextStepPath, 'dialogStep')
         dialog.toggleOpen(true)
         await reload()
+      }
+    }
+
+    let eventHandler = {
+      ['close:dialog']: function () {
+        console.log('dispatchEvent')
+        let dialog = webComponentRef.find('dialog')
+        if (dialog) {
+          dialog.toggleOpen(false)
+        }
+      },
+      ['submit:dialog']: function () {
+        console.log(
+            refsManager
+        )
+      }
+    }
+
+    function dispatchEvent(name, ...args) {
+      if (eventHandler[name]) {
+        eventHandler[name](...args)
       }
     }
 
@@ -224,6 +251,7 @@ export default {
       nextStep,
       reload,
       openDialog,
+      dispatchEvent,
       consts: {
         style: {
           ['--dialog-inner-top']: '10vh'
