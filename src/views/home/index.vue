@@ -7,8 +7,8 @@
                :disabled="store.model.loading" @click="reload">reload</el-button>
     <el-button type="primary"
                :disabled="store.model.loading" @click="updateData">回填数据</el-button>
-    <el-button type="primary"
-               :disabled="store.model.loading" @click="nextStep">nextStep</el-button>
+<!--    <el-button type="primary"-->
+<!--               :disabled="store.model.loading" @click="nextStep">nextStep</el-button>-->
     <el-button type="primary"
                :disabled="store.model.loading" @click="chengeVuex">change vuex</el-button>
     <el-button type="primary"
@@ -37,24 +37,24 @@
   <CustomElement is="my-vue-dialog" name="dialog" :params="consts">
     <template v-slot:default>
       <h3 slot="title" style="margin: 0">表单</h3>
-      <template v-if="filter('showCom')">
+      <template v-if="filter('showDialogCom')">
         <HttpComponent
             :defs="allDef"
             :is="store.model.dialogStep"
         >
         </HttpComponent>
       </template>
-      <el-row type="flex" justify="space-between"
-              style="padding: 1rem"
-              slot="footer">
-        <div>&nbsp;</div>
-        <div>
-          <el-button type="primary"
-                     @click="dispatchEvent('submit:dialog')">提交</el-button>
-          <el-button
-              @click="dispatchEvent('close:dialog')">关闭</el-button>
-        </div>
-      </el-row>
+<!--      <el-row type="flex" justify="space-between"-->
+<!--              style="padding: 1rem"-->
+<!--              slot="footer">-->
+<!--        <div>&nbsp;</div>-->
+<!--        <div>-->
+<!--          <el-button type="primary"-->
+<!--                     @click="dispatchEvent('submit:dialog')">提交</el-button>-->
+<!--          <el-button-->
+<!--              @click="dispatchEvent('close:dialog')">关闭</el-button>-->
+<!--        </div>-->
+<!--      </el-row>-->
     </template>
   </CustomElement>
 </template>
@@ -88,11 +88,17 @@ export default {
     let storeControl;
     let refsManager = provideRefManager({
       eventHandler({type, e}) {
-        console.log('page eventHandler', type, e)
+        // console.log('page eventHandler', type, e)
         if (type === 'self:fecthed') {
           storeControl.set({
             loading: false
           })
+        }
+        if (type === 'submit:form') {
+          let { form } = e
+          if (form) {
+            console.log('e', form.getRawState())
+          }
         }
       }
     })
@@ -143,7 +149,8 @@ export default {
         vuexAction: "ROOT_STATE('sapp.count')"
       },
       filters: {
-        showCom: "ZY_NOT(MODEL('reload'))"
+        showCom: "ZY_NOT(MODEL('reload'))",
+        showDialogCom: "ZY_NOT(MODEL('dialogReload'))",
       }
     })
 
@@ -226,7 +233,14 @@ export default {
         let nextStepPath = './configs/step2.js'
         await loadStep(nextStepPath, 'dialogStep')
         dialog.toggleOpen(true)
-        await reload()
+        storeControl.set({
+          dialogReload: true,
+          dialogLoading: true,
+        })
+        await ZY.sleep(300)
+        storeControl.set({
+          dialogReload: false
+        })
       }
     }
 
