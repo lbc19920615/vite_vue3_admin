@@ -14,7 +14,7 @@
     <el-button type="primary"
                :disabled="store.model.loading" @click="openDialog">打开dialog</el-button>
   </div>
-  <div style="min-height: 300px;">
+  <div style="min-height: 300px;" v-loading="store.model.loading">
     <template v-if="filter('showCom')">
       <HttpComponent
           :defs="allDef"
@@ -171,23 +171,21 @@ export default {
       loading: false,
     })
 
-    function loadStep(path, varName = 'componentStep') {
-      return new Promise(resolve => {
-        globalThis.importScripts(path).then(res => {
-          const config = res.default
-          allDef.set(config.name, config)
-          // storeA.componentStep = config.name
-          storeControl.set({
-            [varName]: config.name
-          })
-          nextTick(() => {
-            resolve()
-          })
-        })
-      })
-    }
+    async function loadStep(path, varName = 'componentStep') {
+      let [,res] = await ZY.awaitTo(globalThis.importScripts(path))
+      const config = res.default
+      allDef.set(config.name, config)
 
-    loadStep('./configs/step1.js')
+      storeControl.set({
+        [varName]: config.name
+      })
+
+      // ZY.sleep(10)
+
+      await nextTick()
+
+      return '';
+    }
 
     async function reload() {
       storeControl.set({
@@ -277,6 +275,7 @@ export default {
       }
     }
 
+
     let ret = {
       store: storeControl.store,
       filter: storeControl.filter,
@@ -295,8 +294,15 @@ export default {
       },
     };
 
-    onMounted(() => {
-
+    onMounted(async () => {
+      storeControl.set({
+        loading: true,
+      })
+      await loadStep('./configs/step1.js')
+      await ZY.sleep(300)
+      storeControl.set({
+        loading: false,
+      })
     })
 
     return ret
