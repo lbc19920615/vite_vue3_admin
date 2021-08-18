@@ -247,11 +247,12 @@ export default {
           dialogReload: true,
           dialogLoading: true,
         })
-        dialog.toggleOpen(true)
         await ZY.sleep(300)
         storeControl.set({
           dialogReload: false
         })
+
+        dialog.toggleOpen(true)
       }
     }
 
