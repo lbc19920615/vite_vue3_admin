@@ -102,6 +102,9 @@ export default {
                         computedProp: 'hours',
                         ui: {
                             label: '时长(小时)',
+                        },
+                        rules: {
+                            type: 'number',
                         }
                     },
                     // vantTime: {
