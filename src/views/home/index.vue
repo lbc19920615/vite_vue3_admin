@@ -106,7 +106,8 @@ export default {
             // console.log('e', form.formCom.validate())
             let [err, res] = await form.callCom('validate')
             if (!err) {
-             console.log('validated')
+
+              // await globalStore.run('serviceA')
             }
           }
         }

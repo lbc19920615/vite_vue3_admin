@@ -1,5 +1,10 @@
 import {onMounted, watch} from "vue";
 
+/**
+ *
+ * @param refVar
+ * @returns {{search: (function(...[*]): *), update: update, del: del}}
+ */
 export function useArrHandler(refVar) {
   function del(index) {
     refVar.splice(index, 1)
@@ -22,6 +27,11 @@ export function useArrHandler(refVar) {
   }
 }
 
+/**
+ *
+ * @param refVar
+ * @param storageName
+ */
 export function storeVar(refVar, storageName) {
   if (Array.isArray(refVar)) {
     onMounted(() => {
