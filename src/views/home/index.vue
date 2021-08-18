@@ -42,6 +42,12 @@
             :defs="allDef"
             :is="store.model.dialogStep"
         >
+          <template v-slot:default>
+            <!--          <el-button @click="updateData">回填数据</el-button>-->
+
+            <!--          <slot-button></slot-button>-->
+            <CusSubmitButton>提交</CusSubmitButton>
+          </template>
         </HttpComponent>
       </template>
 <!--      <el-row type="flex" justify="space-between"-->
@@ -87,7 +93,7 @@ export default {
     let rootStore = useStore()
     let storeControl;
     let refsManager = provideRefManager({
-      eventHandler({type, e}) {
+      async eventHandler({type, e}) {
         // console.log('page eventHandler', type, e)
         if (type === 'self:fecthed') {
           storeControl.set({
@@ -97,7 +103,11 @@ export default {
         if (type === 'submit:form') {
           let { form } = e
           if (form) {
-            console.log('e', form.getRawState())
+            // console.log('e', form.formCom.validate())
+            let [err, res] = await form.callCom('validate')
+            if (!err) {
+             console.log('validated')
+            }
           }
         }
       }
@@ -232,11 +242,11 @@ export default {
       if (dialog) {
         let nextStepPath = './configs/step2.js'
         await loadStep(nextStepPath, 'dialogStep')
-        dialog.toggleOpen(true)
         storeControl.set({
           dialogReload: true,
           dialogLoading: true,
         })
+        dialog.toggleOpen(true)
         await ZY.sleep(300)
         storeControl.set({
           dialogReload: false

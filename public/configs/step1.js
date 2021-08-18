@@ -24,9 +24,12 @@ export default {
         type: 'object',
           properties: {
           name: {
-            type: 'string',
-              ui: {
+          type: 'string',
+            ui: {
               label: '姓名'
+            },
+            rules: {
+              "required": true,
             }
           },
           controls: {
@@ -48,6 +51,9 @@ export default {
                 'change': 'cus_select:change'
               }
             },
+            rules: {
+              "required": true,
+            }
           },
           linkName: {
             type: 'string',

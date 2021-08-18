@@ -10,6 +10,13 @@ export default defineComponent({
         return {}
       }
     },
+    props: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    rules: null,
     modelValue: null
   },
   setup(props, {emit}) {
@@ -47,7 +54,7 @@ export default defineComponent({
       emit('change', e)
     }
 
-    return () => (<widgetDef ui={props.ui} ref={widgetInstance} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
+    return () => (<widgetDef ui={props.ui} props={props} rules={props.rules} ref={widgetInstance} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
   }
 })
 </script>
