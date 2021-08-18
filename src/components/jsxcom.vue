@@ -1,15 +1,33 @@
 <script lang="jsx">
-import { defineComponent, h } from "vue";
+import {defineComponent, h, inject, provide} from "vue";
+import { createRefManager } from "@/hooks/ref";
 
 export default defineComponent( {
-  name: 'jsx-com',
+  name: 'slot-com',
   props: {
-    childs: null
+    defs: null,
+    name: {
+      type: String,
+      default: "default"
+    }
   },
-  setup(props) {
-    console.log('props', props)
+  setup(props, ctx) {
+    // let curFormCon = inject('curFormCon')
+    // provide('curFormCon', curFormCon)
+    let RefsManager = createRefManager({
+      eventHandler({type, e}) {
+        // console.log('slot-com', type, e)
+        ctx.emit('fires', {type, e})
+      }
+    })
+    provide('slotComRefManager', RefsManager)
+    let slotContents = []
+    if (props.defs && ZY.lodash.isFunction(props.defs[props.name])) {
+      slotContents = props.defs[props.name]()
+    }
+    // console.log(slotContents)
     return () => {
-      return h('div', {}, props.childs)
+      return h('div', {}, slotContents)
     }
   }
 })

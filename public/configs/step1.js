@@ -2,6 +2,11 @@ export default {
   name: 'process-step1',
   init: {
     def: {
+      attrs: {
+        form: [
+          ['label-width', '100px']
+        ]
+      },
       service: 'serviceA',
         constants: {
         types: [

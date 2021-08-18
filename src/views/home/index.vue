@@ -21,7 +21,12 @@
           :is="store.model.componentStep"
       >
         <template v-slot:default>
-          <el-button @click="updateData">回填数据</el-button>
+<!--          <el-button @click="updateData">回填数据</el-button>-->
+
+<!--          <slot-button></slot-button>-->
+          <CusSubmitButton>提交sdsds</CusSubmitButton>
+        </template>
+        <template v-slot:option>
         </template>
       </HttpComponent>
     </template>
@@ -63,9 +68,13 @@ import {PageControl} from "@/mixins/framework";
 import {useStore} from "vuex";
 import CustomElement from "@/components/CustomElement.vue";
 import { createRefManager} from "@/hooks/ref";
+import SlotButton from "@/components/SlotButton.vue";
+import CusSubmitButton from "@/components/CustomForm/CusSubmitButton.vue";
 
 export default {
   components: {
+    CusSubmitButton,
+    SlotButton,
     CustomElement,
     HttpComponent,
   },
