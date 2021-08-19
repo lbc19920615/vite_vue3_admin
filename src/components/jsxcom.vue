@@ -43,9 +43,10 @@ export default defineComponent( {
       // console.log('sdsdsds', props.defs[props.name].toString())
       slotContents = props.defs[props.name]()
     }
-    // console.log(slotContents)
+    console.log(props.defs, slotContents)
     return () => {
-      return h('div', {}, slotContents)
+      // return h('div', {}, slotContents)
+      return slotContents
     }
   }
 })

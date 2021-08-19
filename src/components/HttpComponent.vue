@@ -44,7 +44,7 @@ export default defineComponent({
 
     function render() {
       let ret = []
-      if (ctx.slots.default) {
+      if (Object.keys(ctx.slots).length > 0) {
         ret = ctx.slots
       }
       return ret

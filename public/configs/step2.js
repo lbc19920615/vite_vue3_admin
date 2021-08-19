@@ -25,6 +25,14 @@ export default {
                   "required": true,
                 }
               },
+              controls: {
+                type: 'string',
+                ui: {
+                  hidden: "lt(LENGTH(MODEL('name', '')), 1)",
+                  // column: 'auto',
+                },
+                debug: "LENGTH(MODEL('name', ''))"
+              },
               select1: {
                 type: 'string',
                 ui: {

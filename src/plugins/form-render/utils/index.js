@@ -16,6 +16,7 @@ export let CustomRenderControlMixin = {
             }
         },
         rules: null,
+        context: null,
         config: {
             type: Object,
             default() {
@@ -36,7 +37,12 @@ export let CustomRenderControlMixin = {
         this.curFormCon = inject('curFormCon')
         this.inited = true
         // console.log(this.comManager)
-        console.log('this.props', this.rules)
+        // console.log('this.props', this.rules)
+    },
+    methods: {
+        dxValueTemplate(v) {
+            return this.curFormCon.dxValue(this.context, v)
+        }
     }
 }
 

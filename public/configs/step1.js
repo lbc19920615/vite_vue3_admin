@@ -12,6 +12,7 @@ export default {
             type: 'object',
             ui: {
               attrs: [
+                ['class', 'search-form'],
                 ['label-width', '100px']
               ],
             },
@@ -29,7 +30,7 @@ export default {
                   hidden: "lt(LENGTH(MODEL('name', '')), 1)",
                   column: 'auto',
                 },
-                debug: "LENGTH(MODEL('name', ''))"
+                debug: "MODEL('name', '')"
               },
               select1: {
                 type: 'string',
@@ -92,7 +93,7 @@ export default {
           service: 'serviceA',
           computed: {
             doubled: "MODEL('name', '') + ',s'",
-            // selectedOption: "find(ROOT_STATE('sapp.constants.types', []), ['value', MODEL('select1', '')])",
+            selectedOption: "find(ROOT_STATE('sapp.constants.types', []), ['value', MODEL('select1', '')])",
             // fullRange: "filter([MODEL('startTime', ''), MODEL('endTime', '')])",
             hours: "ZY_floor(ZY_hour_between_2_date(MODEL('startTime', ''), MODEL('endTime', '')), 1)"
           }

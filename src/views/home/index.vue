@@ -20,15 +20,12 @@
           :defs="allDef"
           :is="store.model.componentStep"
       >
-        <template v-slot:default>
-          <CusSubmitButton>搜索</CusSubmitButton>
+        <template v-slot:form>
+          <CusSubmitButton class="el-col search-form__button">搜索</CusSubmitButton>
         </template>
       </HttpComponent>
     </template>
   </div>
-<!--  <my-vue-dialog @inited="onInit" :style="consts.style">-->
-<!--    <div style="background: #fff">sdsdsdsds</div>-->
-<!--  </my-vue-dialog>-->
   <CustomElement is="my-vue-dialog" name="dialog" :params="consts">
     <template v-slot:default>
       <h3 slot="title" style="margin: 0">表单</h3>
@@ -38,7 +35,7 @@
             :is="store.model.dialogStep"
         >
           <template v-slot:default>
-<!--            <CusSubmitButton>提交</CusSubmitButton>-->
+            <CusSubmitButton>提交</CusSubmitButton>
           </template>
         </HttpComponent>
       </template>
@@ -115,7 +112,7 @@ export default {
 
             let [err, res] = await parts.form.callEl('validate')
             if (!err) {
-              let state = parts.form.getRawState()
+              let state = parts.form.getModel()
               console.log(state)
               // await globalStore.run('serviceA')
             } else {

@@ -4,7 +4,7 @@
                v-bind="widgetConfig"
                v-on="listeners"
     >
-      <el-option v-for="(option, key) in curFormCon.dxEval(widgetConfig.enums)"
+      <el-option v-for="(option, key) in dxValueTemplate(widgetConfig.enums)"
                  :label="option.label" :value="option.value"
       ></el-option>
     </el-select>
@@ -22,7 +22,6 @@ export default {
   setup(props, ctx) {
     let { data, methods, listeners } = defineCustomRender(props, ctx)
     let state = data()
-
 
     return {
       state,

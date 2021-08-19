@@ -18,3 +18,13 @@
     }
   }
 }
+
+
+.search-form {
+  > .el-row {
+    align-items: flex-start;
+  }
+  &__button {
+    margin-left: 15px;
+  }
+}

@@ -16,6 +16,7 @@ export default defineComponent({
         return {}
       }
     },
+    context: null,
     rules: null,
     modelValue: null
   },
@@ -23,6 +24,8 @@ export default defineComponent({
     let { widget, widgetConfig } = props.ui
     const widgetInstance = ref()
     const widgetDef = resolveComponent(widget)
+
+    // console.log('context', props.context)
 
     const obj = reactive({
       value: props.modelValue
@@ -54,7 +57,7 @@ export default defineComponent({
       emit('change', e)
     }
 
-    return () => (<widgetDef ui={props.ui} props={props} rules={props.rules} ref={widgetInstance} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
+    return () => (<widgetDef ui={props.ui} props={props} context={props.context} rules={props.rules} ref={widgetInstance} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
   }
 })
 </script>
