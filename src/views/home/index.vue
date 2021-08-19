@@ -23,6 +23,10 @@
         <template v-slot:form>
           <CusSubmitButton class="el-col search-form__button">搜索</CusSubmitButton>
         </template>
+        <template #actions>
+<!--          <el-button type="primary" @click="openDialog">buttonCont</el-button>-->
+          <CusTableAction>action1</CusTableAction>
+        </template>
       </HttpComponent>
     </template>
   </div>
@@ -54,9 +58,11 @@ import CustomElement from "@/components/CustomElement.vue";
 import { createRefManager} from "@/hooks/ref";
 import SlotButton from "@/components/SlotButton.vue";
 import CusSubmitButton from "@/components/CustomForm/CusSubmitButton.vue";
+import CusTableAction from "@/components/CustomForm/CusTableAction.vue";
 
 export default {
   components: {
+    CusTableAction,
     CusSubmitButton,
     SlotButton,
     CustomElement,
@@ -119,6 +125,11 @@ export default {
               console.log(err)
             }
           }
+        }
+        else if (type === 'table:action') {
+          let { context, attrs, parts } = e
+          console.log(attrs.scope)
+          openDialog()
         }
         else {
           console.log('page eventHandler', type, e)

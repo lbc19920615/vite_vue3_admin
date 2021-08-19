@@ -15,7 +15,7 @@ export let RefsManagerMixin = function ({
       this[InstanceName] = RefsManager.register(this, this.uuid)
       this[InstanceName].emit('self:created', function (attrs) {
         this[InstanceName].attrs = attrs
-        console.log(this[InstanceName])
+        // console.log(this[InstanceName])
       })
     },
     beforeUnmount() {
@@ -42,7 +42,7 @@ export let slotComEventMixin = function () {
     methods: {
       fireEvent(name, params) {
         let attrs = this.slotContainer.attrs ? this.slotContainer.attrs : {}
-        this.RefInstance.emit('submit:form', {
+        this.RefInstance.emit(name, {
           context: this.context,
           attrs: attrs,
           parts: attrs.parts,

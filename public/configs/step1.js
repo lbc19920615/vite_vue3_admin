@@ -157,6 +157,26 @@ export default {
                         label: "level3"
                       }
                     },
+                    actions: {
+                      type: "string",
+                      useSlotTemplate: true,
+                      template: [
+                        {
+                          tag: "el-button",
+                          attrs: [
+                            ['type', 'primary'],
+                            // [':disabled', 'store.model.loading'],
+                            ['@click', 'openDialog']
+                          ],
+                          children: [
+                            'sdsdsds'
+                          ]
+                        }
+                      ],
+                      ui: {
+                        label: "action",
+                      }
+                    }
                   }
                 }
               },
