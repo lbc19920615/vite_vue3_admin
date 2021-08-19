@@ -35,6 +35,7 @@ export default defineComponent({
       ['serviceA', '/public/services/work/serviceA.js'],
       ['serviceB', '/public/services/work/serviceB.js'],
       ['serviceC', '/public/services/work/serviceC.js'],
+      ['serviceD', '/public/services/work/serviceD.js'],
     ]
     globalStore.installExposeServices(serviceArr)
 

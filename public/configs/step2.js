@@ -7,14 +7,22 @@ export default {
       parts: [
         {
           type: "form",
-          service: 'serviceC',
+          name: "form",
           def: {
             type: 'object',
+            ui: {
+              attrs: [
+                ['label-width', '100px']
+              ],
+            },
             properties: {
               name: {
                 type: 'string',
                 ui: {
                   label: '姓名'
+                },
+                rules: {
+                  "required": true,
                 }
               },
               select1: {
@@ -29,6 +37,41 @@ export default {
                     'change': 'cus_select:change'
                   }
                 },
+                rules: {
+                  "required": true,
+                }
+              },
+              startTime: {
+                type: 'string',
+                ui: {
+                  label: '开始时间',
+                  widget: 'CusDateTimePicker',
+                  widgetConfig: {
+                    type: "datetime",
+                    valueFormat: 'YYYY-MM-DD HH:mm:ss',
+                  }
+                }
+              },
+              endTime: {
+                type: 'string',
+                ui: {
+                  label: '结束时间',
+                  widget: 'CusDateTimePicker',
+                  widgetConfig: {
+                    type: "datetime",
+                    valueFormat: 'YYYY-MM-DD HH:mm:ss'
+                  }
+                }
+              },
+              between: {
+                type: 'number',
+                computedProp: 'hours',
+                ui: {
+                  label: '时长(小时)',
+                },
+                rules: {
+                  type: 'number',
+                }
               },
               descripton: {
                 type: 'string',
@@ -42,10 +85,12 @@ export default {
               },
             }
           },
+          service: 'serviceA',
           computed: {
             doubled: "MODEL('name', '') + ',s'",
+            hours: "ZY_floor(ZY_hour_between_2_date(MODEL('startTime', ''), MODEL('endTime', '')), 1)"
           }
-        }
+        },
       ],
     },
     args: {

@@ -45,7 +45,7 @@ export let slotComEventMixin = function () {
         this.RefInstance.emit('submit:form', {
           context: this.context,
           attrs: attrs,
-          partKey: attrs.partKey,
+          parts: attrs.parts,
           params
         })
       }

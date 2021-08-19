@@ -3,20 +3,11 @@ export default {
   init: {
     def: {
       constants: {
-        // types: [
-        //   {
-        //     label: '事假',
-        //     value: 'sds1212121sds'
-        //   },
-        //   {
-        //     label: '病假',
-        //     value: 'sds121212ds'
-        //   }
-        // ]
       },
       parts: [
         {
           type: "form",
+          name: "form",
           def: {
             type: 'object',
             ui: {
@@ -28,16 +19,15 @@ export default {
               name: {
                 type: 'string',
                 ui: {
-                  label: '姓名'
+                  label: '姓名',
+                  column: 'auto',
                 },
-                rules: {
-                  "required": true,
-                }
               },
               controls: {
                 type: 'string',
                 ui: {
                   hidden: "lt(LENGTH(MODEL('name', '')), 1)",
+                  column: 'auto',
                 },
                 debug: "LENGTH(MODEL('name', ''))"
               },
@@ -45,6 +35,7 @@ export default {
                 type: 'string',
                 ui: {
                   label: '请假类型',
+                  column: 'auto',
                   widget: 'CusSelect',
                   widgetConfig: {
                     enums: "ROOT_STATE('sapp.constants.types', [])",
@@ -53,34 +44,19 @@ export default {
                     'change': 'cus_select:change'
                   }
                 },
-                rules: {
-                  "required": true,
-                }
               },
               linkName: {
                 type: 'string',
                 computedProp: 'doubled',
-              },
-              level1: {
-                type: "array",
-                items: {
-                  type: 'object',
-                  properties: {
-                    level1Name1: {
-                      type: 'string',
-                      ui: {}
-                    },
-                    level1Name2: {
-                      type: 'string',
-                      ui: {}
-                    }
-                  }
+                ui: {
+                  column: 'auto',
                 }
               },
               startTime: {
                 type: 'string',
                 ui: {
                   label: '开始时间',
+                  column: 'auto',
                   widget: 'CusDateTimePicker',
                   widgetConfig: {
                     type: "datetime",
@@ -92,6 +68,7 @@ export default {
                 type: 'string',
                 ui: {
                   label: '结束时间',
+                  column: 'auto',
                   widget: 'CusDateTimePicker',
                   widgetConfig: {
                     type: "datetime",
@@ -104,36 +81,10 @@ export default {
                 computedProp: 'hours',
                 ui: {
                   label: '时长(小时)',
+                  column: 'auto',
                 },
                 rules: {
                   type: 'number',
-                }
-              },
-              // vantTime: {
-              //   type: 'string',
-              //     ui: {
-              //     label: 'vant时间',
-              //       widget: 'VantDateTimePicker',
-              //       widgetConfig: {
-              //       drawer: {
-              //         direction: 'btt',
-              //           title: "我是标题"
-              //       },
-              //       picker: {
-              //         type: "year-month",
-              //           title: "选择年月"
-              //       }
-              //     }
-              //   }
-              // },
-              descripton: {
-                type: 'string',
-                ui: {
-                  label: '请假事由',
-                  widgetConfig: {
-                    type: "textarea",
-                    rows: 3
-                  }
                 }
               },
             }
@@ -141,9 +92,74 @@ export default {
           service: 'serviceA',
           computed: {
             doubled: "MODEL('name', '') + ',s'",
-            selectedOption: "find(ROOT_STATE('sapp.constants.types', []), ['value', MODEL('select1', '')])",
-            fullRange: "filter([MODEL('startTime', ''), MODEL('endTime', '')])",
+            // selectedOption: "find(ROOT_STATE('sapp.constants.types', []), ['value', MODEL('select1', '')])",
+            // fullRange: "filter([MODEL('startTime', ''), MODEL('endTime', '')])",
             hours: "ZY_floor(ZY_hour_between_2_date(MODEL('startTime', ''), MODEL('endTime', '')), 1)"
+          }
+        },
+        {
+          type: "table",
+          name: "table",
+          service: 'serviceD',
+          def: {
+            type: 'object',
+            ui: {
+              attrs: [
+                ['label-width', '100px']
+              ],
+            },
+            properties: {
+              page: {
+                type: 'number',
+                ui: {
+                },
+                rules: {
+                  type: 'number',
+                }
+              },
+              limit: {
+                type: 'number',
+                ui: {
+                },
+                rules: {
+                  type: 'number',
+                }
+              },
+              total: {
+                type: 'number',
+                ui: {
+                },
+                rules: {
+                  type: 'number',
+                }
+              },
+              records: {
+                type: "array",
+                items: {
+                  type: 'object',
+                  properties: {
+                    level1Name1: {
+                      type: 'string',
+                      ui: {
+                        label: "level1"
+                      }
+                    },
+                    level1Name2: {
+                      type: 'string',
+                      ui: {
+                        label: "level2"
+                      }
+                    },
+                    level1Name3: {
+                      type: 'string',
+                      ui: {
+                        label: "level3"
+                      }
+                    },
+                  }
+                }
+              },
+            }
           }
         }
       ],

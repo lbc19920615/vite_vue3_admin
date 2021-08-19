@@ -21,12 +21,7 @@
           :is="store.model.componentStep"
       >
         <template v-slot:default>
-<!--          <el-button @click="updateData">回填数据</el-button>-->
-
-<!--          <slot-button></slot-button>-->
-          <CusSubmitButton>提交</CusSubmitButton>
-        </template>
-        <template v-slot:option>
+          <CusSubmitButton>搜索</CusSubmitButton>
         </template>
       </HttpComponent>
     </template>
@@ -43,24 +38,10 @@
             :is="store.model.dialogStep"
         >
           <template v-slot:default>
-            <!--          <el-button @click="updateData">回填数据</el-button>-->
-
-            <!--          <slot-button></slot-button>-->
-            <CusSubmitButton>提交</CusSubmitButton>
+<!--            <CusSubmitButton>提交</CusSubmitButton>-->
           </template>
         </HttpComponent>
       </template>
-<!--      <el-row type="flex" justify="space-between"-->
-<!--              style="padding: 1rem"-->
-<!--              slot="footer">-->
-<!--        <div>&nbsp;</div>-->
-<!--        <div>-->
-<!--          <el-button type="primary"-->
-<!--                     @click="dispatchEvent('submit:dialog')">提交</el-button>-->
-<!--          <el-button-->
-<!--              @click="dispatchEvent('close:dialog')">关闭</el-button>-->
-<!--        </div>-->
-<!--      </el-row>-->
     </template>
   </CustomElement>
 </template>
@@ -100,13 +81,45 @@ export default {
           })
         }
         else if (type === 'submit:form') {
-          let { context, attrs, partKey } = e
+          let { context, parts } = e
           if (context) {
-            // console.log('e', form.formCom.validate())
-            let [err, res] = await context.callCom(partKey, 'validate')
+            // function buildAsyncpipe() {
+            //   const steps = Array.from(arguments);
+            //   return function asyncpipe(arg) {
+            //     return steps.reduce(function(result, nextStep) {
+            //       return result.then(nextStep);
+            //     }, Promise.resolve(arg));
+            //   };
+            // }
+            //
+            //
+            //
+            // const a = x => x + 1;
+            // const b = x => Promise.resolve(x * 2);
+            // const c = async x => {
+            //   let [err, res]  = await parts.form.callEl('validate')
+            //   if (!err) {
+            //     return x * 100
+            //   } else {
+            //     console.error(err)
+            //   }
+            // }
+            // const runMethod = buildAsyncpipe(a, b, c);
+            //
+            //
+            // console.log(
+            //     await runMethod(1)
+            // )
+
+
+
+            let [err, res] = await parts.form.callEl('validate')
             if (!err) {
-              console.log(context.getRawState(partKey))
+              let state = parts.form.getRawState()
+              console.log(state)
               // await globalStore.run('serviceA')
+            } else {
+              console.log(err)
             }
           }
         }
@@ -203,16 +216,6 @@ export default {
     function updateData() {
       global.storeApp.run('serviceA', 'setModel', {
         name: 'namssds',
-        level1: [
-          {
-            level1Name1: ZY.nid(),
-            level1Name2: ZY.nid(),
-          },
-          {
-            level1Name1: ZY.nid(),
-            level1Name2: ZY.nid(),
-          },
-        ]
       })
     }
 
@@ -296,6 +299,26 @@ export default {
       },
     };
 
+    function setTable() {
+      global.storeApp.run('serviceD', 'setModel', {
+        page: 1,
+        limit: 10,
+        total: 1000,
+        records: [
+          {
+            level1Name1: ZY.nid(),
+            level1Name2: ZY.nid(),
+            level1Name3: ZY.nid(),
+          },
+          {
+            level1Name1: ZY.nid(),
+            level1Name2: ZY.nid(),
+            level1Name3: ZY.nid(),
+          },
+        ]
+      })
+    }
+
     onMounted(async () => {
       storeControl.set({
         loading: true,
@@ -305,6 +328,9 @@ export default {
       storeControl.set({
         loading: false,
       })
+      await nextTick()
+      await ZY.sleep(100)
+      setTable()
     })
 
     return ret
