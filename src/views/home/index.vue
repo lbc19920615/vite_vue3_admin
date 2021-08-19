@@ -24,7 +24,7 @@
 <!--          <el-button @click="updateData">回填数据</el-button>-->
 
 <!--          <slot-button></slot-button>-->
-          <CusSubmitButton>提交sdsds</CusSubmitButton>
+          <CusSubmitButton>提交</CusSubmitButton>
         </template>
         <template v-slot:option>
         </template>
@@ -94,22 +94,24 @@ export default {
     let storeControl;
     let refsManager = provideRefManager({
       async eventHandler({type, e}) {
-        // console.log('page eventHandler', type, e)
         if (type === 'self:fecthed') {
           storeControl.set({
             loading: false
           })
         }
-        if (type === 'submit:form') {
-          let { form } = e
-          if (form) {
+        else if (type === 'submit:form') {
+          let { context, attrs, partKey } = e
+          if (context) {
             // console.log('e', form.formCom.validate())
-            let [err, res] = await form.callCom('validate')
+            let [err, res] = await context.callCom(partKey, 'validate')
             if (!err) {
-
+              console.log(context.getRawState(partKey))
               // await globalStore.run('serviceA')
             }
           }
+        }
+        else {
+          console.log('page eventHandler', type, e)
         }
       }
     })

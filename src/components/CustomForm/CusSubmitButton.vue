@@ -3,30 +3,18 @@
 </template>
 
 <script>
-import {inject} from "vue";
-import {RefsManagerMixin} from "@/plugins/form-render/mixins";
+import {RefsManagerMixin, slotComEventMixin} from "@/plugins/form-render/mixins";
 
 export default {
   name: "CusSubmitButton",
   mixins: [
     RefsManagerMixin({
-    })
+    }),
+    slotComEventMixin()
   ],
-  data() {
-    return {
-      form: null
-    }
-  },
-  created() {
-    let curFormCon = inject('curFormCon')
-    this.form = curFormCon
-  },
   methods: {
     submit() {
-      // console.log('RefInstance', this.form, this.RefInstance)
-      this.RefInstance.emit('submit:form', {
-        form: this.form
-      })
+      this.fireEvent('submit:form')
     }
   }
 }

@@ -6,23 +6,41 @@ export default defineComponent( {
   name: 'slot-com',
   props: {
     defs: null,
+    attrs: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
     name: {
       type: String,
       default: "default"
-    }
+    },
   },
   setup(props, ctx) {
     // let curFormCon = inject('curFormCon')
     // provide('curFormCon', curFormCon)
     let RefsManager = createRefManager({
       eventHandler({type, e}) {
-        // console.log('slot-com', type, e)
+        // console.log(type, e)
+        // if (type.startsWith('self:')) {
+        //   if (type === 'self:created') {
+        //     // if (ZY.lodash.isFunction(e)) {
+        //     //   e(props.attrs)
+        //     // }
+        //   }
+        // } else {
+        //   ctx.emit('fires', {type, e})
+        // }
         ctx.emit('fires', {type, e})
+        // console.log('slot-com', type, e)
       }
     })
+    RefsManager.attrs = props.attrs
     provide('slotComRefManager', RefsManager)
     let slotContents = []
     if (props.defs && ZY.lodash.isFunction(props.defs[props.name])) {
+      // console.log('sdsdsds', props.defs[props.name].toString())
       slotContents = props.defs[props.name]()
     }
     // console.log(slotContents)
