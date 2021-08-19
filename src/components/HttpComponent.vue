@@ -40,6 +40,13 @@ export default defineComponent({
     comManager.context = this
     provide('comManager', comManager)
   },
+  mounted() {
+    // this.sendEvent('http-component:com:mounted', {
+    //   is: this.is
+    //   // httpComponentComContext: this,
+    //   // httpComponentContext: comManager,
+    // })
+  },
   setup(props, ctx) {
 
 

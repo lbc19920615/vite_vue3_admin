@@ -34,7 +34,7 @@
       <h3 slot="title" style="margin: 0">表单</h3>
 <!--      {{store.model}}-->
       <div v-loading="store.model.dialogLoading">
-        <div v-if="!store.model.dialogReload">
+        <div v-if="filter('showDialogCom')">
           <HttpComponent
               :defs="allDef"
               :is="store.model.dialogStep"
@@ -80,11 +80,12 @@ export default {
     let storeControl;
     let refsManager = provideRefManager({
       async eventHandler({type, e}) {
+        console.log('page eventHandler', type, e)
         if (type === 'http-component:fetch:ready') {
           // console.log('http-component:fetch:ready', e)
         }
         else if (type === 'http-component:com:mounted') {
-          // console.log(e.httpComponentContext)
+          console.log(e.httpComponentContext.context.is)
           if (e.httpComponentContext.context.is === 'process-step1') {
             setTable()
             await nextTick()
@@ -93,6 +94,9 @@ export default {
             })
           }
           if (e.httpComponentContext.context.is === 'process-step2') {
+            console.log('process-step2')
+            await nextTick()
+            await ZY.sleep(1000)
             storeControl.set({
               dialogLoading: false
             })
@@ -134,7 +138,7 @@ export default {
           openDialog()
         }
         else {
-          console.log('page eventHandler', type, e)
+          // console.log('page eventHandler', type, e)
         }
       }
     })
@@ -260,13 +264,12 @@ export default {
         })
         let nextStepPath = './configs/step2.js?v=' + Date.now()
         await loadStep(nextStepPath, 'dialogStep')
-        dialog.toggleOpen(true)
         // await ZY.sleep(300)
-        await nextTick()
         storeControl.set({
           dialogReload: false,
           // dialogLoading: false,
         })
+        dialog.toggleOpen(true)
 
       }
     }

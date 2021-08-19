@@ -148,7 +148,7 @@ export function defineAutoStoreControl(config = { data: {}, computed: {}}) {
   model = ret.model
 
   function set(def) {
-    globalStore.run('serviceB', 'setModel', def)
+    globalStore.run(config.service, 'setModel', def)
   }
 
   function _dxValue(v) {
