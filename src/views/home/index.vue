@@ -15,25 +15,25 @@
                :disabled="store.model.loading" @click="openDialog">打开dialog</el-button>
   </div>
   <div style="min-height: 300px;" v-loading="store.model.loading">
-    <template v-if="filter('showCom')">
-      <HttpComponent
-          :defs="allDef"
-          :is="store.model.componentStep"
-      >
-        <template v-slot:form>
-          <CusSubmitButton class="el-col search-form__button">搜索</CusSubmitButton>
-        </template>
-        <template #actions>
-<!--          <el-button type="primary" @click="openDialog">buttonCont</el-button>-->
-          <CusTableAction>action1</CusTableAction>
-        </template>
-      </HttpComponent>
-    </template>
+    <HttpComponent
+        :defs="allDef"
+        :is="store.model.componentStep"
+        v-if="filter('showCom')"
+    >
+      <template v-slot:form>
+        <CusSubmitButton class="el-col search-form__button">搜索</CusSubmitButton>
+      </template>
+      <template #actions>
+        <!--          <el-button type="primary" @click="openDialog">buttonCont</el-button>-->
+        <CusTableAction>action1</CusTableAction>
+      </template>
+    </HttpComponent>
   </div>
   <CustomElement is="my-vue-dialog" name="dialog" :params="consts">
     <template v-slot:default>
       <h3 slot="title" style="margin: 0">表单</h3>
-      <template v-if="filter('showDialogCom')">
+<!--      {{store.model}}-->
+      <div v-loading="store.model.dialogLoading">
         <HttpComponent
             :defs="allDef"
             :is="store.model.dialogStep"
@@ -42,7 +42,7 @@
             <CusSubmitButton>提交</CusSubmitButton>
           </template>
         </HttpComponent>
-      </template>
+      </div>
     </template>
   </CustomElement>
 </template>
@@ -78,7 +78,10 @@ export default {
     let storeControl;
     let refsManager = provideRefManager({
       async eventHandler({type, e}) {
-        if (type === 'self:fecthed') {
+        if (type === 'http-component:fetch:ready') {
+          // console.log('http-component:fetch:ready', e)
+        }
+        else if (type === 'http-component:com:mounted') {
           storeControl.set({
             loading: false
           })
@@ -86,17 +89,6 @@ export default {
         else if (type === 'submit:form') {
           let { context, parts } = e
           if (context) {
-            // function buildAsyncpipe() {
-            //   const steps = Array.from(arguments);
-            //   return function asyncpipe(arg) {
-            //     return steps.reduce(function(result, nextStep) {
-            //       return result.then(nextStep);
-            //     }, Promise.resolve(arg));
-            //   };
-            // }
-            //
-            //
-            //
             // const a = x => x + 1;
             // const b = x => Promise.resolve(x * 2);
             // const c = async x => {
@@ -114,8 +106,6 @@ export default {
             //     await runMethod(1)
             // )
 
-
-
             let [err, res] = await parts.form.callEl('validate')
             if (!err) {
               let state = parts.form.getModel()
@@ -128,7 +118,7 @@ export default {
         }
         else if (type === 'table:action') {
           let { context, attrs, parts } = e
-          console.log(attrs.scope)
+          // console.log(attrs.scope)
           openDialog()
         }
         else {
@@ -258,12 +248,14 @@ export default {
           dialogReload: true,
           dialogLoading: true,
         })
+        await nextTick()
+        dialog.toggleOpen(true)
         await ZY.sleep(300)
         storeControl.set({
-          dialogReload: false
+          dialogReload: false,
+          dialogLoading: false,
         })
 
-        dialog.toggleOpen(true)
       }
     }
 

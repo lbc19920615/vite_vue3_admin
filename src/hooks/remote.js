@@ -10,7 +10,7 @@ import {FETCH_COMPONENT_READY} from "../utils/event-types.js";
  * @param cb
  * @returns {Promise<void>}
  */
-export async function fetchComponent(comName = '', {def, args } = {}) {
+export async function fetchComponent(comName = '', {def, args, onReady } = {}) {
     try {
         // console.log('this.formDef', this.formDef)
         let data = new FormData()
@@ -36,10 +36,18 @@ export async function fetchComponent(comName = '', {def, args } = {}) {
             })
             setTimeout(() => {
                 // console.log('publish', sfc)
-                PubSub.publish(FETCH_COMPONENT_READY, {
-                    sfc,
-                    comDef
-                })
+                // PubSub.publish(FETCH_COMPONENT_READY, {
+                //     sfc,
+                //     name: comName,
+                //     comDef
+                // })
+                if (onReady) {
+                    onReady({
+                        sfc,
+                        name: comName,
+                        comDef
+                    })
+                }
             }, 30)
         })
     } catch (e) {

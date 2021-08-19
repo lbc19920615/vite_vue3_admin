@@ -3,8 +3,6 @@
 <script lang="jsx">
 import {defineComponent, watch, reactive, provide} from "vue";
 import {fetchComponent} from "../hooks/remote.js";
-import PubSub from 'pubsub-js'
-import { FETCH_COMPONENT_READY} from "../utils/event-types.js";
 import CustomRender from "./CustomRender.vue";
 import { v4 } from 'uuid'
 import {log} from "../utils/logger";
@@ -30,6 +28,9 @@ export default defineComponent({
       default: 'http-com-'
     }
   },
+  data() {
+
+  },
   created() {
     let comManager = createRefManager({
       eventHandler({type, e}) {
@@ -41,6 +42,8 @@ export default defineComponent({
   },
   setup(props, ctx) {
 
+
+    let obj;
 
     function render() {
       let ret = []
@@ -54,6 +57,18 @@ export default defineComponent({
       widget: ''
     })
 
+    function handler({
+      sfc,
+      comDef,
+      name,
+    } = {}) {
+      // console.log(name === comName, sfc, comDef)
+      // if (name === comName) {
+        ui.widget = comName
+        obj.emit('http-component:fetch:ready', props)
+      // }
+    }
+
     let comName = ''
     watch(() => props.is, (newVal) => {
       comName = props.comPrefix + v4()
@@ -61,14 +76,14 @@ export default defineComponent({
       // console.log('fetchComponent', props.is, config)
       log(['fetchComponent', props.is, config])
 
+
       if (config && config.init) {
+        config.init.onReady = handler
         fetchComponent(comName, config.init)
       }
     }, {
-      immediate: true
+      // immediate: true
     })
-
-    let obj;
 
     function sendEvent(name, args) {
       obj.emit(name, args)
@@ -81,22 +96,13 @@ export default defineComponent({
     }
 
 
-    function handler(msg, {
-      sfc,
-      comDef
-    } = {}) {
-      // console.log(msg, sfc, comDef)
-      ui.widget = comName
-      obj.emit('self:fecthed')
-    }
-
     useRefsManager(ret, [
       function (def) {
         obj  = def
-        PubSub.subscribe(FETCH_COMPONENT_READY, handler)
+        // PubSub.subscribe(FETCH_COMPONENT_READY, handler)
       },
       function () {
-        PubSub.unsubscribe(FETCH_COMPONENT_READY, handler)
+        // PubSub.unsubscribe(FETCH_COMPONENT_READY, handler)
       }
     ])
 
