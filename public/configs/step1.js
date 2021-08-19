@@ -2,18 +2,17 @@ export default {
   name: 'process-step1',
   init: {
     def: {
-      service: 'serviceA',
       constants: {
-        types: [
-          {
-            label: '事假',
-            value: 'sds1212121sds'
-          },
-          {
-            label: '病假',
-            value: 'sds121212ds'
-          }
-        ]
+        // types: [
+        //   {
+        //     label: '事假',
+        //     value: 'sds1212121sds'
+        //   },
+        //   {
+        //     label: '病假',
+        //     value: 'sds121212ds'
+        //   }
+        // ]
       },
       parts: [
         {
@@ -139,14 +138,15 @@ export default {
               },
             }
           },
+          service: 'serviceA',
+          computed: {
+            doubled: "MODEL('name', '') + ',s'",
+            selectedOption: "find(ROOT_STATE('sapp.constants.types', []), ['value', MODEL('select1', '')])",
+            fullRange: "filter([MODEL('startTime', ''), MODEL('endTime', '')])",
+            hours: "ZY_floor(ZY_hour_between_2_date(MODEL('startTime', ''), MODEL('endTime', '')), 1)"
+          }
         }
       ],
-      computed: {
-        doubled: "MODEL('name', '') + ',s'",
-        selectedOption: "find(ROOT_STATE('sapp.constants.types', []), ['value', MODEL('select1', '')])",
-        fullRange: "filter([MODEL('startTime', ''), MODEL('endTime', '')])",
-        hours: "ZY_floor(ZY_hour_between_2_date(MODEL('startTime', ''), MODEL('endTime', '')), 1)"
-      }
     },
     args: {
       src: 'comformscr.twig'

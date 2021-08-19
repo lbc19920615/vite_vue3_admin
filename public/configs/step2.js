@@ -2,22 +2,12 @@ export default {
   name: 'process-step2',
   init: {
     def: {
-      service: 'serviceC',
       constants: {
-        types: [
-          {
-            label: '事假',
-            value: 'sds1212121sds'
-          },
-          {
-            label: '病假',
-            value: 'sds121212ds'
-          }
-        ]
       },
       parts: [
         {
           type: "form",
+          service: 'serviceC',
           def: {
             type: 'object',
             properties: {
@@ -51,12 +41,12 @@ export default {
                 }
               },
             }
+          },
+          computed: {
+            doubled: "MODEL('name', '') + ',s'",
           }
         }
       ],
-      computed: {
-        doubled: "MODEL('name', '') + ',s'",
-      }
     },
     args: {
       src: 'comformscr.twig'
