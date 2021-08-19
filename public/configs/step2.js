@@ -7,7 +7,7 @@ export default {
       parts: [
         {
           type: "form",
-          name: "form",
+          name: "form2",
           def: {
             type: 'object',
             ui: {
@@ -93,10 +93,10 @@ export default {
               },
             }
           },
-          service: 'serviceA',
+          service: 'serviceB',
           computed: {
             doubled: "MODEL('name', '') + ',s'",
-            hours: "ZY_floor(ZY_hour_between_2_date(MODEL('startTime', ''), MODEL('endTime', '')), 1)"
+            // hours: "ZY_floor(ZY_hour_between_2_date(MODEL('startTime', ''), MODEL('endTime', '')), 1)"
           }
         },
       ],

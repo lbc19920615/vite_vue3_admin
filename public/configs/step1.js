@@ -95,7 +95,7 @@ export default {
             doubled: "MODEL('name', '') + ',s'",
             selectedOption: "find(ROOT_STATE('sapp.constants.types', []), ['value', MODEL('select1', '')])",
             // fullRange: "filter([MODEL('startTime', ''), MODEL('endTime', '')])",
-            hours: "ZY_floor(ZY_hour_between_2_date(MODEL('startTime', ''), MODEL('endTime', '')), 1)"
+            hours: "ZY_floor(ZY_hour_between_2_date(MODEL('endTime', ''), MODEL('startTime', '')), 1)"
           }
         },
         {
