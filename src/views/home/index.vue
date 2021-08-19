@@ -34,14 +34,16 @@
       <h3 slot="title" style="margin: 0">表单</h3>
 <!--      {{store.model}}-->
       <div v-loading="store.model.dialogLoading">
-        <HttpComponent
-            :defs="allDef"
-            :is="store.model.dialogStep"
-        >
-          <template v-slot:default>
-            <CusSubmitButton>提交</CusSubmitButton>
-          </template>
-        </HttpComponent>
+        <div v-if="!store.model.dialogReload">
+          <HttpComponent
+              :defs="allDef"
+              :is="store.model.dialogStep"
+          >
+            <template v-slot:default>
+              <CusSubmitButton>提交</CusSubmitButton>
+            </template>
+          </HttpComponent>
+        </div>
       </div>
     </template>
   </CustomElement>
@@ -82,9 +84,19 @@ export default {
           // console.log('http-component:fetch:ready', e)
         }
         else if (type === 'http-component:com:mounted') {
-          storeControl.set({
-            loading: false
-          })
+          // console.log(e.httpComponentContext)
+          if (e.httpComponentContext.context.is === 'process-step1') {
+            setTable()
+            await nextTick()
+            storeControl.set({
+              loading: false
+            })
+          }
+          if (e.httpComponentContext.context.is === 'process-step2') {
+            storeControl.set({
+              dialogLoading: false
+            })
+          }
         }
         else if (type === 'submit:form') {
           let { context, parts } = e
@@ -242,18 +254,18 @@ export default {
     async function openDialog() {
       let dialog = webComponentRef.find('dialog')
       if (dialog) {
-        let nextStepPath = './configs/step2.js'
-        await loadStep(nextStepPath, 'dialogStep')
         storeControl.set({
           dialogReload: true,
           dialogLoading: true,
         })
-        await nextTick()
+        let nextStepPath = './configs/step2.js?v=' + Date.now()
+        await loadStep(nextStepPath, 'dialogStep')
         dialog.toggleOpen(true)
-        await ZY.sleep(300)
+        // await ZY.sleep(300)
+        await nextTick()
         storeControl.set({
           dialogReload: false,
-          dialogLoading: false,
+          // dialogLoading: false,
         })
 
       }
@@ -328,9 +340,6 @@ export default {
       storeControl.set({
         loading: false,
       })
-      await nextTick()
-      await ZY.sleep(100)
-      setTable()
     })
 
     return ret

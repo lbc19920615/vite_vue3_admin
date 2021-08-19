@@ -82,7 +82,7 @@ export default defineComponent({
         fetchComponent(comName, config.init)
       }
     }, {
-      // immediate: true
+      immediate: true
     })
 
     function sendEvent(name, args) {
