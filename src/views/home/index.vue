@@ -20,7 +20,7 @@
         :is="store.model.componentStep"
         v-if="filter('showCom')"
     >
-      <template v-slot:form>
+      <template #form>
         <CusSubmitButton class="el-col search-form__button">搜索</CusSubmitButton>
       </template>
       <template #actions>
@@ -30,7 +30,7 @@
     </HttpComponent>
   </div>
   <CustomElement is="my-vue-dialog" name="dialog" :params="consts">
-    <template v-slot:default>
+    <template #default>
       <h3 slot="title" style="margin: 0">表单</h3>
 <!--      {{store.model}}-->
       <div v-loading="store.model.dialogLoading">
@@ -40,7 +40,7 @@
               :defs="allDef"
               :is="store.model.dialogStep"
           >
-            <template v-slot:default>
+            <template #process-step2_default>
               <CusSubmitButton>提交</CusSubmitButton>
             </template>
           </HttpComponent>
@@ -76,9 +76,10 @@ export default {
   ],
   setup(props, ctx) {
 
-
     let rootStore = useStore()
     let storeControl;
+    let httpComContext = {}
+
     let refsManager = provideRefManager({
       async eventHandler({type, e}) {
         // console.log('page eventHandler', type, e)
@@ -86,22 +87,26 @@ export default {
           // console.log('http-component:fetch:ready', e)
         }
         else if (type === 'http-component:com:mounted') {
-          console.log(e.httpComponentContext.context.is)
-          if (e.httpComponentContext.context.is === 'process-step1') {
+          // console.log(e.httpComponentContext)
+          httpComContext[e.httpComponentContext.is] = e.httpComponentContext
+          if (e.httpComponentContext.is === 'process-step1') {
             setTable(e)
             await nextTick()
             storeControl.set({
               loading: false
             })
           }
-          if (e.httpComponentContext.context.is === 'process-step2') {
-            console.log('process-step2')
-            await nextTick()
-            await ZY.sleep(1000)
+          if (e.httpComponentContext.is === 'process-step2') {
             storeControl.set({
               dialogLoading: false
             })
           }
+        }
+        else if (type === 'process-step3@http-component:com:mounted') {
+          console.log('process-step3')
+          storeControl.set({
+            dialogLoading: false
+          })
         }
         else if (type === 'submit:form') {
           let { context, parts } = e
@@ -229,19 +234,11 @@ export default {
     }
 
     function updateData() {
-      // global.storeApp.run('serviceA', 'setModel', {
-      //   name: 'namssds',
-      // })
-    }
-
-    async function nextStep() {
-      alert('nextStep')
-      // 请求下一步
-      // let nextStepPath = ''
-      // await ZY.sleep(100)
-      // nextStepPath = './configs/step2.js'
-      // await loadStep(nextStepPath)
-      // await reload()
+      httpComContext['process-step1'].runPart('form', 'setModel',
+          {
+            name: 'namssds',
+          }
+      )
     }
 
     async function chengeVuex() {
@@ -257,23 +254,30 @@ export default {
     provide('webComponentRef', webComponentRef)
 
 
+    async function loadDialog(p) {
+      storeControl.set({
+        dialogReload: true,
+        dialogLoading: true,
+      })
+      let nextStepPath = p + '?v=' + Date.now()
+      await loadStep(nextStepPath, 'dialogStep')
+      // await ZY.sleep(300)
+      storeControl.set({
+        dialogReload: false,
+        // dialogLoading: false,
+      })
+    }
+
     async function openDialog() {
       let dialog = webComponentRef.find('dialog')
       if (dialog) {
-        storeControl.set({
-          dialogReload: true,
-          dialogLoading: true,
-        })
-        let nextStepPath = './configs/step2.js?v=' + Date.now()
-        await loadStep(nextStepPath, 'dialogStep')
-        // await ZY.sleep(300)
-        storeControl.set({
-          dialogReload: false,
-          // dialogLoading: false,
-        })
+        await loadDialog('./configs/step2.js')
         dialog.toggleOpen(true)
-
       }
+    }
+
+    async function nextStep() {
+      await loadDialog('./configs/step3.js')
     }
 
     let eventHandler = {
@@ -317,24 +321,26 @@ export default {
     };
 
     function setTable(e) {
-      console.log(e)
-      global.storeApp.run('serviceD', 'setModel', {
-        page: 1,
-        limit: 10,
-        total: 1000,
-        records: [
+      // console.log(e)
+      httpComContext['process-step1'].runPart('table', 'setModel',
           {
-            level1Name1: ZY.nid(),
-            level1Name2: ZY.nid(),
-            level1Name3: ZY.nid(),
-          },
-          {
-            level1Name1: ZY.nid(),
-            level1Name2: ZY.nid(),
-            level1Name3: ZY.nid(),
-          },
-        ]
-      })
+            page: 1,
+            limit: 10,
+            total: 1000,
+            records: [
+              {
+                level1Name1: ZY.nid(),
+                level1Name2: ZY.nid(),
+                level1Name3: ZY.nid(),
+              },
+              {
+                level1Name1: ZY.nid(),
+                level1Name2: ZY.nid(),
+                level1Name3: ZY.nid(),
+              },
+            ]
+          }
+      )
     }
 
     onMounted(async () => {

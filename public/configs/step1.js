@@ -107,7 +107,13 @@ export default {
         {
           type: "table",
           name: "table",
-          service: 'serviceD',
+          serviceTpl: {
+            def: {},
+            args: {
+              src: "bservice.twig"
+            }
+          },
+          // service: 'serviceD',
           def: {
             type: 'object',
             ui: {

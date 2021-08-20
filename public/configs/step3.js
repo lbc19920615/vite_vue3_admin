@@ -1,5 +1,5 @@
 export default {
-  name: 'process-step2',
+  name: 'process-step3',
   init: {
     def: {
       constants: {
@@ -8,7 +8,12 @@ export default {
         {
           type: "form",
           name: "form",
-          service: 'serviceC',
+          serviceTpl: {
+            def: {},
+            args: {
+              src: "bservice.twig"
+            }
+          },
           def: {
             type: 'object',
             properties: {
@@ -31,10 +36,18 @@ export default {
                   }
                 },
               },
-              descripton: {
+              prop1: {
                 type: 'string',
                 ui: {
-                  label: '请假事由',
+                  widgetConfig: {
+                    type: "textarea",
+                    rows: 3
+                  }
+                }
+              },
+              prop2: {
+                type: 'string',
+                ui: {
                   widgetConfig: {
                     type: "textarea",
                     rows: 3

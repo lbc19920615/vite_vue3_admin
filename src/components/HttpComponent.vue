@@ -1,7 +1,7 @@
 <template><custom-render v-if="ui.widget" :render="render" :ui="ui"></custom-render></template>
 
 <script lang="jsx">
-import {defineComponent, watch, reactive, provide, ref, getCurrentInstance} from "vue";
+import {defineComponent, watch, reactive, provide, ref, getCurrentInstance, inject} from "vue";
 import {fetchComponent} from "@/hooks/remote.js";
 import CustomRender from "./CustomRender.vue";
 import { v4 } from 'uuid'
@@ -44,6 +44,7 @@ export default defineComponent({
     provide('comManager', comManager)
   },
   async setup(props, ctx) {
+    const globalStore = inject('globalStore')
     let self = getCurrentInstance().ctx
     // console.log(self)
     let obj;
@@ -82,6 +83,7 @@ export default defineComponent({
 
       if (config) {
         if (config.init) {
+          config.init.def.process = props.is
           config.init.onReady = handler
           config.init.def.servicePartLink = servicePartLink
           let parts = config.init.def.parts
@@ -122,22 +124,26 @@ export default defineComponent({
       currentComUUID.value = comUUID
     }
 
-    function getCurrentCom () {
-      return self.comManager.find(currentComUUID)
+    function runPart(partKey, ...args) {
+      if (!servicePartLink[partKey]) {
+        throw new Error('now service', partKey)
+      }
+      let service = servicePartLink[partKey]
+      globalStore.run(service, ...args)
     }
 
     let ret = {
       uuid: ZY.nid(),
       ui,
       servicePartLink,
-      getCurrentCom,
+      runPart,
       currentComUUID,
       setCurrentChild,
       render: render,
       sendEvent
     }
 
-    console.log('http uuid', ret.uuid)
+    // console.log('http uuid', ret.uuid)
 
     useRefsManager(ret, [
       function (def) {
