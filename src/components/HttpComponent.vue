@@ -73,6 +73,7 @@ export default defineComponent({
     }
 
     let comName = ''
+    let servicePartLink = {}
 
     async function handleIsChanged(newVal) {
       comName = props.comPrefix + v4()
@@ -82,7 +83,6 @@ export default defineComponent({
       if (config) {
         if (config.init) {
           config.init.onReady = handler
-          let servicePartLink = {}
           config.init.def.servicePartLink = servicePartLink
           let parts = config.init.def.parts
           let pArr = []
@@ -129,6 +129,7 @@ export default defineComponent({
     let ret = {
       uuid: ZY.nid(),
       ui,
+      servicePartLink,
       getCurrentCom,
       currentComUUID,
       setCurrentChild,
