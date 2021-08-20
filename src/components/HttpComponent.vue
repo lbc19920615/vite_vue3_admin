@@ -121,6 +121,7 @@ export default defineComponent({
     }
 
     let ret = {
+      uuid: ZY.nid(),
       ui,
       getCurrentCom,
       currentComUUID,
@@ -129,6 +130,7 @@ export default defineComponent({
       sendEvent
     }
 
+    console.log('http uuid', ret.uuid)
 
     useRefsManager(ret, [
       function (def) {
@@ -138,7 +140,9 @@ export default defineComponent({
       function () {
         // PubSub.unsubscribe(FETCH_COMPONENT_READY, handler)
       }
-    ])
+    ], {
+      type: 'httpCom'
+    })
 
 
     return ret
