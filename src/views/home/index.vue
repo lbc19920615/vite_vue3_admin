@@ -34,6 +34,7 @@
       <h3 slot="title" style="margin: 0">表单</h3>
 <!--      {{store.model}}-->
       <div v-loading="store.model.dialogLoading">
+        <el-button type="primary" @click="nextStep">下一步</el-button>
         <div v-if="filter('showDialogCom')">
           <HttpComponent
               :defs="allDef"
@@ -234,12 +235,13 @@ export default {
     }
 
     async function nextStep() {
+      alert('nextStep')
       // 请求下一步
-      let nextStepPath = ''
-      await ZY.sleep(100)
-      nextStepPath = './configs/step2.js'
-      await loadStep(nextStepPath)
-      await reload()
+      // let nextStepPath = ''
+      // await ZY.sleep(100)
+      // nextStepPath = './configs/step2.js'
+      // await loadStep(nextStepPath)
+      // await reload()
     }
 
     async function chengeVuex() {

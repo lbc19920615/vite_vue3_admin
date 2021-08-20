@@ -1,7 +1,7 @@
 import axios from 'axios'
-import handleError from './handleError'
-import setConfig from './setConfig'
-import handleResponse from '@/utils/request/handleResponse'
+import handleError from './handleError.js'
+import setConfig from './setConfig.js'
+import handleResponse from './handleResponse.js'
 
 function showTip(msg = '') {
   console.dir({

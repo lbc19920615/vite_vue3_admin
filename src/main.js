@@ -27,6 +27,9 @@ globalThis.ZY = ZY
 import * as ZY_EXT from '@expose/ext.js'
 globalThis.ZY_EXT = ZY_EXT
 
+import request from '@/requests/index.js'
+globalThis.Req = request
+
 import router from './router'
 import store from './store'
 
