@@ -13,11 +13,11 @@
           :key="todo.id"
           :class="{'todo--done': todo.done}"
       >
-        <header>{{todo.title}} </header>
-<!--        <el-row type="flex">-->
-<!--          <header>{{todo.title}} </header>-->
-<!--          <button v-if="!todo.done" @click="doneTodo(index)">结束</button>-->
-<!--        </el-row>-->
+<!--        <header>{{todo.title}} </header>-->
+        <el-row type="flex">
+          <header>{{todo.title}} </header>
+          <button v-if="!todo.done" @click="doneTodo(index)">结束</button>
+        </el-row>
       </li>
     </ul>
   </div>
@@ -48,13 +48,11 @@ function addTodo(){
 storeVar(todos, 'app:todos')
 
 let handler = useArrHandler(todos)
-
 function doneTodo(index) {
   handler.update(index, {
     done: true
   })
 }
-
 function handleSearch() {
   console.log('handleSearch')
   //

@@ -1,8 +1,8 @@
 <template>
   <div>
-<!--    <DemoTodo></DemoTodo>-->
+    <DemoTodo></DemoTodo>
 <!--    <DemoTeleport></DemoTeleport>-->
-    <DemoProxy></DemoProxy>
+<!--    <DemoProxy></DemoProxy>-->
   </div>
 </template>
 <script>
