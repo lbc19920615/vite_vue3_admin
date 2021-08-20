@@ -96,7 +96,7 @@ export default {
           service: 'serviceC',
           computed: {
             doubled: "MODEL('name', '') + ',s'",
-            // hours: "ZY_floor(ZY_hour_between_2_date(MODEL('startTime', ''), MODEL('endTime', '')), 1)"
+            hours: "ZY_floor(ZY_hour_between_2_date(MODEL('endTime', ''), MODEL('startTime', '')), 1)"
           }
         },
       ],
