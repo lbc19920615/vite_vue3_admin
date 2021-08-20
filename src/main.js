@@ -50,7 +50,7 @@ import StoreApp from "./StoreApp.vue";
 
 import * as highlightPlugin from '@/plugins/highlight'
 
-import VueGridLayout from '@/plugins/grid-layout'
+// import VueGridLayout from '@/plugins/grid-layout'
 import CustomFormRenderPlugin from "@/plugins/form-render";
 import {initStoreApp} from "@/storeApp";
 
@@ -78,7 +78,7 @@ window.startApp = function () {
     size: 'medium',
     locale
   })
-  app.use(VueGridLayout)
+  // app.use(VueGridLayout)
   app.use(CustomFormRenderPlugin)
   app.use(highlightPlugin)
   app.use(eventBus)
