@@ -82,15 +82,21 @@ export default defineComponent({
       if (config) {
         if (config.init) {
           config.init.onReady = handler
+          let servicePartLink = {}
+          config.init.def.servicePartLink = servicePartLink
           let parts = config.init.def.parts
           let pArr = []
           if (Array.isArray(parts)) {
             parts.forEach(part => {
+              if (part.service) {
+                servicePartLink[part.name] = part.service
+              }
               if (part.serviceTpl) {
                pArr.push(new Promise(async (resolve) => {
                  let res = await global.createServiceCom(part.serviceTpl)
                  // console.log(res, part)
                  part.service = res.name
+                 servicePartLink[part.name] = res.name
                  resolve()
                }))
               }

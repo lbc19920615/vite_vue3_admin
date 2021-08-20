@@ -88,7 +88,7 @@ export default {
         else if (type === 'http-component:com:mounted') {
           console.log(e.httpComponentContext.context.is)
           if (e.httpComponentContext.context.is === 'process-step1') {
-            setTable()
+            setTable(e)
             await nextTick()
             storeControl.set({
               loading: false
@@ -316,7 +316,8 @@ export default {
       },
     };
 
-    function setTable() {
+    function setTable(e) {
+      console.log(e)
       global.storeApp.run('serviceD', 'setModel', {
         page: 1,
         limit: 10,
