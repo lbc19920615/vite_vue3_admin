@@ -1,7 +1,7 @@
 <template><custom-render v-if="ui.widget" :render="render" :ui="ui"></custom-render></template>
 
 <script lang="jsx">
-import {defineComponent, watch, reactive, provide} from "vue";
+import {defineComponent, watch, reactive, provide, ref, getCurrentInstance} from "vue";
 import {fetchComponent} from "@/hooks/remote.js";
 import CustomRender from "./CustomRender.vue";
 import { v4 } from 'uuid'
@@ -28,6 +28,11 @@ export default defineComponent({
       default: 'http-com-'
     }
   },
+  data() {
+    return {
+      comManager: null
+    }
+  },
   created() {
     let comManager = createRefManager({
       eventHandler({type, e}) {
@@ -35,18 +40,12 @@ export default defineComponent({
       }
     })
     comManager.context = this
+    this.comManager = comManager
     provide('comManager', comManager)
   },
-  mounted() {
-    // this.sendEvent('http-component:com:mounted', {
-    //   is: this.is
-    //   // httpComponentComContext: this,
-    //   // httpComponentContext: comManager,
-    // })
-  },
   async setup(props, ctx) {
-
-
+    let self = getCurrentInstance().ctx
+    // console.log(self)
     let obj;
 
     function render() {
@@ -111,8 +110,21 @@ export default defineComponent({
       obj.emit(name, args)
     }
 
+    let currentComUUID = ref('')
+    function setCurrentChild(comUUID) {
+      // console.log(comUUID)
+      currentComUUID.value = comUUID
+    }
+
+    function getCurrentCom () {
+      return self.comManager.find(currentComUUID)
+    }
+
     let ret = {
       ui,
+      getCurrentCom,
+      currentComUUID,
+      setCurrentChild,
       render: render,
       sendEvent
     }
