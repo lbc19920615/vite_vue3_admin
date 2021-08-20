@@ -28,9 +28,6 @@ export default defineComponent({
       default: 'http-com-'
     }
   },
-  data() {
-
-  },
   created() {
     let comManager = createRefManager({
       eventHandler({type, e}) {
@@ -77,7 +74,8 @@ export default defineComponent({
     }
 
     let comName = ''
-    watch(() => props.is, (newVal) => {
+
+    async function handleIsChanged(newVal) {
       comName = props.comPrefix + v4()
       let config = props.defs.get(props.is)
       log(['fetchComponent', props.is, config])
@@ -85,10 +83,27 @@ export default defineComponent({
       if (config) {
         if (config.init) {
           config.init.onReady = handler
-          fetchComponent(comName, config.init)
+          let parts = config.init.def.parts
+          let pArr = []
+          if (Array.isArray(parts)) {
+            parts.forEach(part => {
+              if (part.serviceTpl) {
+               pArr.push(new Promise(async (resolve) => {
+                 let res = await global.createServiceCom(part.serviceTpl)
+                 // console.log(res, part)
+                 part.service = res.name
+                 resolve()
+               }))
+              }
+            })
+          }
+          await Promise.allSettled(pArr)
+          await fetchComponent(comName, config.init)
         }
       }
-    }, {
+    }
+
+    watch(() => props.is, handleIsChanged, {
       immediate: true
     })
 

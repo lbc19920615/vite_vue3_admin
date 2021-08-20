@@ -31,6 +31,7 @@ export async function fetchTwigComponent(comName = '', {def, args } = {}) {
         return {
             script: res,
             sfc,
+            templateId,
             name: comName,
         }
     } catch (e) {
@@ -49,40 +50,29 @@ export async function fetchTwigComponent(comName = '', {def, args } = {}) {
 export async function fetchComponent(comName = '', {def, args, onReady } = {}) {
     try {
         // console.log('this.formDef', this.formDef)
-        let data = new FormData()
-        data.append('source', JSON.stringify(def))
-        let tpl = await fetchContentV3(data, args)
-        let sfc = parseComponent(tpl)
-        const templateId = comName + '-tpl';
-        const objectURL = URL.createObjectURL(
-            new Blob([sfc.script.content],
-                { type: 'text/javascript' })
-        );
-        globalThis.importScripts(objectURL).then(res => {
-            globalThis.initTemplate(templateId, globalThis, {
-                html: `${templateSfc(sfc)}`,
-            });
-
-            let comDef = globalThis.app.component(comName, {
-                template: '#' + templateId,
-                ...res.default
-            })
-            setTimeout(() => {
-                // console.log('publish', sfc)
-                // PubSub.publish(FETCH_COMPONENT_READY, {
-                //     sfc,
-                //     name: comName,
-                //     comDef
-                // })
-                if (onReady) {
-                    onReady({
-                        sfc,
-                        name: comName,
-                        comDef
-                    })
-                }
-            }, 30)
+        // let data = new FormData()
+        // data.append('source', JSON.stringify(def))
+        // let tpl = await fetchContentV3(data, args)
+        // let sfc = parseComponent(tpl)
+        // const templateId = comName + '-tpl';
+        // let res = await ZY.importJsStr(sfc.script.content)
+        // globalThis.initTemplate(templateId, globalThis, {
+        //     html: `${templateSfc(sfc)}`,
+        // });
+        let {script, sfc, templateId} = await fetchTwigComponent(comName, {def, args})
+        let comDef = globalThis.app.component(comName, {
+            template: '#' + templateId,
+            ...script.default
         })
+        setTimeout(() => {
+            if (onReady) {
+                onReady({
+                    sfc,
+                    name: comName,
+                    comDef
+                })
+            }
+        }, 30)
     } catch (e) {
         console.error(e)
     } finally {

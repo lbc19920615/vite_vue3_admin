@@ -229,9 +229,9 @@ export default {
     }
 
     function updateData() {
-      global.storeApp.run('serviceA', 'setModel', {
-        name: 'namssds',
-      })
+      // global.storeApp.run('serviceA', 'setModel', {
+      //   name: 'namssds',
+      // })
     }
 
     async function nextStep() {

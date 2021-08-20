@@ -33,19 +33,26 @@ export default defineComponent({
     const globalStore = inject('globalStore')
 
     let serviceArr = [
-      ['serviceA', '/public/services/work/serviceA.js'],
+      // ['serviceA', '/public/services/work/serviceA.js'],
       ['serviceB', '/public/services/work/serviceB.js'],
       ['serviceC', '/public/services/work/serviceC.js'],
       ['serviceD', '/public/services/work/serviceD.js'],
     ]
     globalStore.installExposeServices(serviceArr)
     // global.fetchTwigComponent = fetchTwigComponent
-    global.createServiceCom = async function () {
+    /**
+     * createServiceCom
+     * @param def
+     * @param args
+     * @returns {Promise<*>}
+     */
+    global.createServiceCom = async function ({def = {}, args = {}} = {}) {
       let [err, res] = await ZY.awaitTo(
           fetchTwigComponent('Service' + ZY.nid(), {
-            def: {},
+            def: def,
             args: {
-              src: 'bservice.twig'
+              src: 'bservice.twig',
+              ...args
             },
           })
       )

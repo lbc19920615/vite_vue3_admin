@@ -8,6 +8,12 @@ export default {
         {
           type: "form",
           name: "form",
+          serviceTpl: {
+            def: {},
+            args: {
+              src: "bservice.twig"
+            }
+          },
           def: {
             type: 'object',
             ui: {
@@ -90,7 +96,7 @@ export default {
               },
             }
           },
-          service: 'serviceA',
+          // service: 'serviceA',
           computed: {
             doubled: "MODEL('name', '') + ',s'",
             selectedOption: "find(ROOT_STATE('sapp.constants.types', []), ['value', MODEL('select1', '')])",
