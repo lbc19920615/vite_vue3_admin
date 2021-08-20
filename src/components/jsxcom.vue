@@ -16,6 +16,12 @@ export default defineComponent( {
       type: String,
       default: "default"
     },
+    binds:{
+      type: Object,
+      default() {
+        return {}
+      }
+    }
   },
   setup(props, ctx) {
     // let curFormCon = inject('curFormCon')
@@ -40,8 +46,8 @@ export default defineComponent( {
     provide('slotComRefManager', RefsManager)
     let slotContents = []
     if (props.defs && ZY.lodash.isFunction(props.defs[props.name])) {
-      // console.log('sdsdsds', props.defs[props.name].toString())
-      slotContents = props.defs[props.name]()
+      // console.log('sdsdsds', props.binds)
+      slotContents = props.defs[props.name](props.binds)
     }
     // console.log(props.defs, slotContents)
     return () => {
