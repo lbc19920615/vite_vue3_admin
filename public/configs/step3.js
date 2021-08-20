@@ -16,6 +16,11 @@ export default {
           },
           def: {
             type: 'object',
+            ui: {
+              attrs: [
+                ['label-width', '100px']
+              ],
+            },
             properties: {
               name: {
                 type: 'string',
