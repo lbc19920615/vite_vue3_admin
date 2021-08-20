@@ -81,7 +81,7 @@ export default {
     let storeControl;
     let refsManager = provideRefManager({
       async eventHandler({type, e}) {
-        console.log('page eventHandler', type, e)
+        // console.log('page eventHandler', type, e)
         if (type === 'http-component:fetch:ready') {
           // console.log('http-component:fetch:ready', e)
         }

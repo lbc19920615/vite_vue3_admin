@@ -25,6 +25,7 @@ import {defineComponent, inject, provide} from "vue";
 import {setupLoggerHandler} from "./utils/logger";
 import {createRefManager} from "@/hooks/ref";
 import {useRouter} from "vue-router";
+import {fetchComponent, fetchTwigComponent} from "@/hooks/remote.js";
 
 export default defineComponent({
   setup() {
@@ -38,6 +39,23 @@ export default defineComponent({
       ['serviceD', '/public/services/work/serviceD.js'],
     ]
     globalStore.installExposeServices(serviceArr)
+    // global.fetchTwigComponent = fetchTwigComponent
+    global.createServiceCom = async function () {
+      let [err, res] = await ZY.awaitTo(
+          fetchTwigComponent('Service' + ZY.nid(), {
+            def: {},
+            args: {
+              src: 'bservice.twig'
+            },
+          })
+      )
+      if (err) {
+        console.log('fetchTwigComponent err')
+        return Promise.reject(err);
+      }
+      globalStore.installServiceComponent(res.name, res.script)
+      return res
+    }
 
     document.addEventListener('visibilitychange', function (newVal) {
       if (document.visibilityState === 'visible') {
@@ -65,7 +83,6 @@ export default defineComponent({
     }
 
     provide('pageManager', pageManager)
-
   }
 })
 </script>

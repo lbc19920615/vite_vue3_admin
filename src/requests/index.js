@@ -4,8 +4,8 @@ serviceOptions.axios = request
 
 import { ProductsTestService } from "@/requests/services";
 
-console.log(ProductsTestService)
+// console.log(ProductsTestService)
 
-ProductsTestService.productsTest()
+// ProductsTestService.productsTest()
 
 export default request

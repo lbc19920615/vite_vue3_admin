@@ -2,10 +2,10 @@
 
 <script lang="jsx">
 import {defineComponent, watch, reactive, provide} from "vue";
-import {fetchComponent} from "../hooks/remote.js";
+import {fetchComponent} from "@/hooks/remote.js";
 import CustomRender from "./CustomRender.vue";
 import { v4 } from 'uuid'
-import {log} from "../utils/logger";
+import {log} from "@/utils/logger";
 import {createRefManager, useRefsManager} from "@/hooks/ref";
 
 export default defineComponent({
@@ -47,7 +47,7 @@ export default defineComponent({
     //   // httpComponentContext: comManager,
     // })
   },
-  setup(props, ctx) {
+  async setup(props, ctx) {
 
 
     let obj;
@@ -80,13 +80,13 @@ export default defineComponent({
     watch(() => props.is, (newVal) => {
       comName = props.comPrefix + v4()
       let config = props.defs.get(props.is)
-      // console.log('fetchComponent', props.is, config)
       log(['fetchComponent', props.is, config])
 
-
-      if (config && config.init) {
-        config.init.onReady = handler
-        fetchComponent(comName, config.init)
+      if (config) {
+        if (config.init) {
+          config.init.onReady = handler
+          fetchComponent(comName, config.init)
+        }
       }
     }, {
       immediate: true

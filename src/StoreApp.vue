@@ -51,6 +51,34 @@ export default defineComponent({
     let serviceNames = ref([
     ])
 
+    function installServiceComponent(serviceName, res) {
+      const service = res.install(Vue)
+      if (!service.mixins) {
+        service.mixins = []
+      }
+      service.mixins.push({
+        data() {
+          return {
+            serviceName,
+            RefsManager: null
+          }
+        },
+        created() {
+          const servicesManager = inject('servicesManager');
+          this.RefsManager = servicesManager.register(this, serviceName)
+          // console.log(serviceName, servicesManager.Refs)
+        },
+        beforeUnmount() {
+          const servicesManager = inject('servicesManager');
+          servicesManager.destory(this.RefsManager.uuid)
+        },
+      })
+      appInstance.appContext.app.component(serviceName, service)
+      setTimeout(() => {
+        serviceNames.value.push(serviceName)
+      }, 16)
+    }
+
     /**
      * installService
      * @param serviceName {string}
@@ -60,32 +88,9 @@ export default defineComponent({
       if (serviceNames.value.indexOf(serviceName) < 0) {
         globalThis.importScripts(path)
             .then(res => {
-          const service = res.install(Vue)
-          if (!service.mixins) {
-            service.mixins = []
-          }
-          service.mixins.push({
-            data() {
-              return {
-                serviceName,
-                RefsManager: null
-              }
-            },
-            created() {
-              const servicesManager = inject('servicesManager');
-              this.RefsManager = servicesManager.register(this, serviceName)
-              // console.log(serviceName, servicesManager.Refs)
-            },
-            beforeUnmount() {
-              const servicesManager = inject('servicesManager');
-              servicesManager.destory(this.RefsManager.uuid)
-            },
-          })
-          appInstance.appContext.app.component(serviceName, service)
-          setTimeout(() => {
-            serviceNames.value.push(serviceName)
-          }, 16)
-        })
+              installServiceComponent(serviceName, res)
+            }
+        )
       }
     }
 
@@ -98,6 +103,8 @@ export default defineComponent({
         installService(serviceName, REMOTE_ORIGIN + path)
       }
     }
+
+
 
     /**
      * run
@@ -131,6 +138,7 @@ export default defineComponent({
 
     return {
       serviceNames,
+      installServiceComponent,
       installExposeServices,
       EVENT_TYPES,
       installService,

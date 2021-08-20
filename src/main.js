@@ -94,37 +94,3 @@ window.startApp = function () {
 
   return app
 }
-
-window.testQuery = function () {
-  let query = {
-    src: 'stable.twig',
-  }
-  let data = {
-    tableDef: [
-      {
-        label: '日期',
-        prop: 'date',
-        width: 100,
-        rules: [
-          {
-            age: 111,
-            name: {
-              validator() {
-                console.log('111')
-              }
-            }
-          }
-        ]
-      },
-      {
-        label: '姓名', prop: 'name' },
-      { label: '邮编', prop: 'zip' }
-    ],
-  }
-  // fetchContentV2(query).then((res) => {
-  //   console.log('fetchreq', res)
-  // })
-  ZY.fetchContentV3(data, query).then((res) => {
-    console.log('fetchreq', res)
-  })
-}

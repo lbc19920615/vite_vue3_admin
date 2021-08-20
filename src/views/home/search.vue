@@ -7,7 +7,6 @@
 </template>
 <script>
 import DemoTodo from "@/views/home/components/DemoTodo.vue";
-import {ref} from "vue";
 import DemoTeleport from "@/views/home/components/DemoTeleport.vue";
 import DemoProxy from "@/views/home/components/DemoProxy.vue";
 export default {
