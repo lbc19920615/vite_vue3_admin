@@ -4,7 +4,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "ser": "pm2 start server.js --name vite_vue3_admin",
+    "stop:ser": "pm2 stop vite_vue3_admin",
+    "rm": "pm2 delete vite_vue3_admin",
+    "stop": "npm run stop:ser && npm run rm"
   },
   "dependencies": {
     "await-to-js": "^3.0.0",
