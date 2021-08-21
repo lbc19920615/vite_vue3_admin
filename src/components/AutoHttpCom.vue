@@ -22,6 +22,7 @@ export default defineComponent( {
 
     function load() {
       config = ZY.JSON5.parse(props.def)
+      // config = props.def
       page.setDef(config, function ({done}) {
         // console.log('on fomeerered')
         done()

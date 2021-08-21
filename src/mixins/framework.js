@@ -2,6 +2,7 @@ import {inject} from "vue";
 import {provideRefManager} from "@/hooks/ref";
 import mitt from "mitt";
 import {useRouter} from "vue-router";
+import {defineAutoStoreControl} from "@/hooks/autoVue";
 
 export let PageControl = {
   created() {
@@ -13,8 +14,15 @@ export let PageControl = {
   },
 }
 
-export let usePage  = function () {
+/**
+ *
+ * @param data
+ * @param filters
+ * @returns {{setDef: setDef, refsManager: {Refs: Map<unknown, unknown>}, meta: {}, getPartModel: (function(*=, *=): void), setPartModel: (function(*, *=, *=): void), storeControl: {}, setEventHandler: setEventHandler, httpComContext: {}, allDef: Map<any, any>}}
+ */
+export let usePage  = function ({data = {} , filters = {}} = {}) {
   let router = useRouter()
+  let self = this
   let meta = {}
   if (router.currentRoute && router.currentRoute.value) {
     meta = router.currentRoute.value.meta
@@ -22,7 +30,7 @@ export let usePage  = function () {
   let httpComContext = {}
   let allDef = new Map()
   let events = new Map()
-
+  let storeControl;
   let eventHandleMap = {}
 
   let refsManager = provideRefManager({
@@ -69,11 +77,23 @@ export let usePage  = function () {
     events.set(config.name, fun)
     // events[name] = new Function('options', `fun()`)
   }
+
+  storeControl = defineAutoStoreControl({
+    service: meta.pageServiceName,
+    data: {
+      type: 'object',
+      properties: {
+        data
+      }
+    },
+    filters: filters
+  })
   return {
     allDef,
     setEventHandler,
     // addListener,
     meta,
+    storeControl,
     setDef,
     getPartModel,
     setPartModel,

@@ -42,7 +42,7 @@
         <template #form_after="scope">
           <CusSubmitButton
               :scope="scope"
-              class="el-col search-form__button">搜索</CusSubmitButton>
+              class="el-col z-submit-btn"></CusSubmitButton>
         </template>
       </render-layout>
       <el-row type="flex" style="flex-wrap: nowrap;">
@@ -57,14 +57,20 @@
         ></PlumbLayout>
 
         <div style="width: 600px" v-loading="renderFormLoading">
-<!--          {{currentEditDep ? currentEditDep.content : ''}}-->
+<!--          {{currentEditDep}}-->
           <template v-if="renderFormDesigner">
             <HttpComponent
                 :defs="allDef"
                 :is="store.model.editor_step"
             >
-              <template #form>form</template>
-
+              <template #form_array_before="scope">
+                <h3>{{scope.index}}</h3>
+              </template>
+              <template #form_after="scope">
+                <CusSubmitButton
+                    :scope="scope"
+                    class="el-col z-submit-btn"></CusSubmitButton>
+              </template>
             </HttpComponent>
           </template>
         </div>
@@ -75,45 +81,10 @@
 </template>
 
 <script>
-import {defineAsyncComponent, defineComponent, nextTick, onMounted} from "vue";
+import {defineAsyncComponent, defineComponent, nextTick, getCurrentInstance} from "vue";
 import GridRow from "@/views/about/components/grid-row.vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
-import JsonCodeEditor from "@/components/CodeEditor/JsonCodeEditor.vue";
-
-let formDesignerMixin = {
-  components: {
-    ['search-demo1']: defineAsyncComponent(() => {
-      return import("__remote/getscript?src=formDesigner/index.twigvue&config_id=layoutDesigner.json5")
-    }),
-    ['form-prop-editor']: defineAsyncComponent(() => {
-      return import("__remote/getscript?src=formDesigner/index.twigvue&config_id=layoutForm.json5")
-    }),
-    ['search-demo2']: defineAsyncComponent(() => {
-      return import("__remote/getscript?src=formDesigner/index.twigvue&config_id=layoutColumn.json5")
-    })
-  },
-  data() {
-    return {
-      searchDemo1Ref: null
-    }
-  },
-  methods: {
-    onInitDemo1(context) {
-      this.searchDemo1Ref = context
-      // console.log( this.currentEditDep )
-      context.setModel(this.currentEditDep)
-    },
-    onUpdateModelValue(e) {
-      // console.log('onUpdateModelValue', key, value)
-      let key = 'content'
-      if (key && e[key]) {
-        this.currentEditDep[key] = e[key]
-      }
-      console.log('onUpdateModelValue', e,  this.currentEditDep)
-    }
-  }
-}
 
 let depManagerMixin = {
   data() {
@@ -179,6 +150,12 @@ let plumbLayoutMixin = {
             version: 'v1',
             closure: false
           },
+          editor: `
+${rowEditorConfig({
+            form2: {}
+          })}
+          `,
+          name: '',
           items: [
             {
               id: 'i1-0',
@@ -201,6 +178,12 @@ let plumbLayoutMixin = {
             version: 'v1',
             closure: false
           },
+          editor: `
+${rowEditorConfig({
+            form2: {}
+          })}
+          `,
+          name: '',
           items: [
             {
               id: 'i2-0',
@@ -219,47 +202,50 @@ let plumbLayoutMixin = {
             }
           ]
         },
-        {
-          id: 'i4',
-          type: 'events',
-          sub: 'form',
-          config: {
-            version: 'v1',
-            closure: false
-          },
-          items: [
-            {
-              id: 'i4-0',
-              name: 'submit'
-            },
-          ]
-        },
-        {
-          id: 'i5',
-          type: 'table',
-          config: {
-            version: 'v1',
-            closure: false
-          },
-          template: 'comtablescr.twig',
-          content: JSON.stringify({
-            tableDef: [
-              {
-                label: '日期',
-                prop: 'date',
-                width: 100
-              },
-              {
-                label: '姓名', prop: 'name'
-              },
-              {
-                label: '邮编', prop: 'zip'
-              }
-            ]
-          }, null, 2),
-          items: [
-          ]
-        },
+//         {
+//           id: 'i4',
+//           type: 'events',
+//           sub: 'form',
+//           config: {
+//             version: 'v1',
+//             closure: false
+//           },
+//           editor: `
+// ${formEditorConfig}
+//           `,
+//           items: [
+//             {
+//               id: 'i4-0',
+//               name: 'submit'
+//             },
+//           ]
+//         },
+        // {
+        //   id: 'i5',
+        //   type: 'table',
+        //   config: {
+        //     version: 'v1',
+        //     closure: false
+        //   },
+        //   template: 'comtablescr.twig',
+        //   content: JSON.stringify({
+        //     tableDef: [
+        //       {
+        //         label: '日期',
+        //         prop: 'date',
+        //         width: 100
+        //       },
+        //       {
+        //         label: '姓名', prop: 'name'
+        //       },
+        //       {
+        //         label: '邮编', prop: 'zip'
+        //       }
+        //     ]
+        //   }, null, 2),
+        //   items: [
+        //   ]
+        // },
         {
           id: 'i3',
           type: 'form',
@@ -268,117 +254,57 @@ let plumbLayoutMixin = {
             closure: true
           },
           editor: `
-export default {
-  name: 'form-editor',
-  init: {
-    def: {
-      constants: {
-      },
-      parts: [
-        {
-          type: "form",
-          name: "form2",
-          serviceTpl: {
-            def: {},
-            args: {
-              src: "bservice.twig"
-            }
-          },
-          def: {
-            type: 'object',
-            ui: {
-              attrs: [
-                ['label-width', '100px']
-              ],
+${formEditorConfig({
+            form2: {}
+          })}
+          `,
+          def: ZY.JSON5.stringify({
+            constants: {
             },
-            properties: {
-              name: {
-                type: 'string',
-                ui: {
-                  label: '名称'
-                },
-              },
-              content: {
-                type: 'string',
-                ui: {
-                  label: '代码',
-                  widgetConfig: {
-                    type: "textarea",
-                    rows: 10
+            parts: [
+              {
+                type: "form",
+                name: "form2",
+                serviceTpl: {
+                  def: {},
+                  args: {
+                    src: "bservice.twig"
                   }
+                },
+                def: {
+                  type: 'object',
+                  ui: {
+                    attrs: [
+                      ['label-width', '100px']
+                    ],
+                  },
+                  properties: {
+                    name: {
+                      type: 'string',
+                      ui: {
+                        label: '名称'
+                      },
+                    },
+                    content: {
+                      type: 'string',
+                      ui: {
+                        label: '代码',
+                        // widget: 'JsonCodeEditor',
+                        widgetConfig: {
+                          type: "textarea",
+                          rows: 10
+                        }
+                      }
+                    },
+                  }
+                },
+                computed: {
+                  doubled: "MODEL('name', '') + ',s'"
                 }
               },
-            }
-          },
-          computed: {
-            doubled: "MODEL('name', '') + ',s'"
-          }
-        },
-      ],
-    },
-    args: {
-      src: 'comformscr.twig'
-    }
-  }
-}
-          `,
-
-          content: ZY.JSON5.stringify( {
-            name: 'process-step1',
-            slots: `
-      <template #form>sdsdsds</template>sdsdsdssdsdsdssdsdsds
-`,
-            init: {
-              def: {
-                constants: {
-                },
-                parts: [
-                  {
-                    type: "form",
-                    name: "form2",
-                    serviceTpl: {
-                      def: {},
-                      args: {
-                        src: "bservice.twig"
-                      }
-                    },
-                    def: {
-                      type: 'object',
-                      ui: {
-                        attrs: [
-                          ['label-width', '100px']
-                        ],
-                      },
-                      properties: {
-                        name: {
-                          type: 'string',
-                          ui: {
-                            label: '名称'
-                          },
-                        },
-                        content: {
-                          type: 'string',
-                          ui: {
-                            label: '代码',
-                            widgetConfig: {
-                              type: "textarea",
-                              rows: 10
-                            }
-                          }
-                        },
-                      }
-                    },
-                    computed: {
-                      doubled: "MODEL('name', '') + ',s'"
-                    }
-                  },
-                ],
-              },
-              args: {
-                src: 'comformscr.twig'
-              }
-            }
-          }),
+            ],
+          }, null, 2),
+          content: '',
           items: [
           ]
         }
@@ -450,14 +376,12 @@ export default {
   }
 }
 
-import {defineAutoStoreControl} from "@/hooks/autoVue";
 import {usePage} from "@/mixins/framework";
 import AutoHttpCom from "@/components/AutoHttpCom.vue";
-import { useRouter } from 'vue-router'
+import {formEditorConfig, rowEditorConfig} from "@/views/about/editorConfig";
 
 export default defineComponent({
   mixins: [
-    // formDesignerMixin,
     plumbLayoutMixin,
     renderLayoutMixin,
     depManagerMixin,
@@ -479,32 +403,50 @@ export default defineComponent({
     // GridRow,
   },
   setup() {
-    let page = usePage()
-    let storeControl;
-
-    // console.log('page', page.meta)
-
-    storeControl = defineAutoStoreControl({
-      service: page.meta.pageServiceName,
+    let self = getCurrentInstance().ctx
+    let page = usePage({
       data: {
-        type: 'object',
-        properties: {
-          editor_step: {
-            type: String,
-          },
-        }
+        editor_step: {
+          type: String,
+        },
       },
       filters: {
         showCom: "ZY_NOT(MODEL('reload'))",
       }
     })
 
-
     page.setEventHandler({
       ['submit:form'](e) {
         let { scope, parts } = e
         let model = parts[scope.name].getModel()
         console.log('submit:form',e, model)
+      },
+      ['model:update'](e) {
+        let { model, key, newVal, config } = e
+        let oldVal = self.currentEditDep[key]
+        if (oldVal !== newVal) {
+          self.currentEditDep[key] = newVal
+        }
+        if (self.currentEditDep.type === 'form') {
+          let contentTpl = function ({def} = {}) {
+            let obj = {
+              name: 'process-step1',
+              init: {
+                def: def,
+                args: {
+                  src: 'comformscr.twig'
+                }
+              }
+            }
+            return ZY.JSON5.stringify(obj)
+          }
+          self.currentEditDep.content = contentTpl(
+              {
+                def: ZY.JSON5.parse(model.def)
+              }
+          )
+          console.log(self.currentEditDep.content )
+        }
       }
     })
 
@@ -519,43 +461,40 @@ export default defineComponent({
       // console.log(config)
       // allDef.set(config.name, config)
       let ret = {
-        updateData() {
-          page.setPartModel( config.name,'form2',
-              {
-                name: 'namssds',
-                content: 'hello world'
-              }
+        updateData(part, data) {
+          page.setPartModel( config.name, part,
+             data
           )
         }
       };
 
       page.setDef(config, function ({done}) {
-        // console.log('sdsdsds')
-        ret.updateData()
+        // console.log('sdsdsds', config, self)
+        // ret.updateData()
+        for (let [partName, depPath] of Object.entries(config.defaultVal)) {
+          // console.log(partName, depPath)
+          // console.log(self.currentEditDep, depPath, ZY.lodash.get( self.currentEditDep, depPath))
+          ret.updateData(partName,  self.currentEditDep)
+        }
+
         done()
       })
 
 
       await nextTick()
-      storeControl.set({
+      page.storeControl.set({
         [varName]: config.name
       })
 
       return ret;
     }
 
-    // onMounted(async () => {
-    //   await loadStep()
-    // })
-
-
-
 
     return {
       loadStepByContent,
-      store: storeControl.store,
+      store: page.storeControl.store,
       page,
-      filter: storeControl.filter,
+      filter: page.storeControl.filter,
       allDef: page.allDef,
     }
   }

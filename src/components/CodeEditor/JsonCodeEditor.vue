@@ -14,11 +14,21 @@ import * as monaco from 'monaco-editor';
 
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import JsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
+import TsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
+
+monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+  noSemanticValidation: true,
+  noSyntaxValidation: true,
+});
 
 self.MonacoEnvironment = {
   getWorker(workerId, label) {
+    // console.log('getWorker', workerId, label)
     if (label === 'json') {
       return new JsonWorker();
+    }
+    if (label === 'typescript') {
+      return new TsWorker();
     }
     return new EditorWorker();
   },
@@ -36,13 +46,8 @@ const dom = ref();
 let instance;
 
 
-
 let _lock = false
-// watch(() => props.modelValue, (newval) => {
-//   console.log('props.modelValue', newval)
-//
-//
-// })
+
 
 function insertText(newval) {
   let editor = instance
@@ -79,7 +84,7 @@ defineExpose({
 onMounted(() => {
   const jsonModel = monaco.editor.createModel(
       props.modelValue,
-      'json',
+      'typescript',
       // monaco.Uri.parse('{}')
   );
 
@@ -103,7 +108,7 @@ onMounted(() => {
   // })
 
   instance.onDidChangeModelContent(() => {
-    console.log('onDidChangeModelContent _lock', _lock)
+    // console.log('onDidChangeModelContent _lock', _lock)
     // if (!_lock) {
       const value = instance.getValue();
 
