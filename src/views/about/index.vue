@@ -37,7 +37,17 @@
       <render-layout :map="currentLayoutMap"
                      :id="rootId"
                      :handleNext="handleNext"
-      ></render-layout>
+      >
+        <template #default="scope">
+          <div v-if="scope.type">
+            {{scope}}
+          </div>
+        </template>
+<!--        <HttpComponent-->
+<!--            :defs="allDef"-->
+<!--            :is="store.model.editor_step"-->
+<!--        ></HttpComponent>-->
+      </render-layout>
       <el-row type="flex" style="flex-wrap: nowrap;">
         <PlumbLayout
             style="flex: 1"
@@ -325,7 +335,56 @@ export default {
   }
 }
           `,
-          content: '',
+          content: `
+export default {
+  name: 'form-editor',
+  init: {
+    def: {
+      constants: {
+      },
+      parts: [
+        {
+          type: "form",
+          name: "form2",
+          def: {
+            type: 'object',
+            ui: {
+              attrs: [
+                ['label-width', '100px']
+              ],
+            },
+            properties: {
+              name: {
+                type: 'string',
+                ui: {
+                  label: '名称'
+                },
+              },
+              content: {
+                type: 'string',
+                ui: {
+                  label: '代码',
+                  widgetConfig: {
+                    type: "textarea",
+                    rows: 10
+                  }
+                }
+              },
+            }
+          },
+          service: 'serviceC',
+          computed: {
+            doubled: "MODEL('name', '') + ',s'"
+          }
+        },
+      ],
+    },
+    args: {
+      src: 'comformscr.twig'
+    }
+  }
+}
+          `,
           items: [
           ]
         }
