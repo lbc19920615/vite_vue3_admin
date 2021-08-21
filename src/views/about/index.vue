@@ -40,13 +40,18 @@
       >
         <template #default="scope">
           <div v-if="scope.type">
-            {{scope}}
+<!--            {{scope}}-->
+            <AutoHttpCom
+            :page="page"
+            :def="scope.content"
+            ></AutoHttpCom>
+<!--            <HttpComponent-->
+<!--                :defs="allDef"-->
+<!--                :is="store.model.editor_step"-->
+<!--            ></HttpComponent>-->
           </div>
         </template>
-<!--        <HttpComponent-->
-<!--            :defs="allDef"-->
-<!--            :is="store.model.editor_step"-->
-<!--        ></HttpComponent>-->
+
       </render-layout>
       <el-row type="flex" style="flex-wrap: nowrap;">
         <PlumbLayout
@@ -150,7 +155,10 @@ let depManagerMixin = {
       this.renderFormLoading = true
       this.renderFormDesigner = false
       this.currentEditDep = dep
-      let currentHtc = await this.loadStepByContent(dep.editor, 'editor_step')
+      if (dep.editor) {
+
+        let currentHtc = await this.loadStepByContent(dep.editor, 'editor_step')
+      }
       // console.log(currentHtc)
       this.$nextTick(() => {
         setTimeout(() => {
@@ -296,6 +304,12 @@ export default {
         {
           type: "form",
           name: "form2",
+          serviceTpl: {
+            def: {},
+            args: {
+              src: "bservice.twig"
+            }
+          },
           def: {
             type: 'object',
             ui: {
@@ -322,7 +336,6 @@ export default {
               },
             }
           },
-          service: 'serviceC',
           computed: {
             doubled: "MODEL('name', '') + ',s'"
           }
@@ -335,56 +348,60 @@ export default {
   }
 }
           `,
-          content: `
-export default {
-  name: 'form-editor',
-  init: {
-    def: {
-      constants: {
-      },
-      parts: [
-        {
-          type: "form",
-          name: "form2",
-          def: {
-            type: 'object',
-            ui: {
-              attrs: [
-                ['label-width', '100px']
-              ],
-            },
-            properties: {
-              name: {
-                type: 'string',
-                ui: {
-                  label: '名称'
+
+          content: ZY.JSON5.stringify( {
+            name: 'process-step1',
+            init: {
+              def: {
+                constants: {
                 },
+                parts: [
+                  {
+                    type: "form",
+                    name: "form2",
+                    serviceTpl: {
+                      def: {},
+                      args: {
+                        src: "bservice.twig"
+                      }
+                    },
+                    def: {
+                      type: 'object',
+                      ui: {
+                        attrs: [
+                          ['label-width', '100px']
+                        ],
+                      },
+                      properties: {
+                        name: {
+                          type: 'string',
+                          ui: {
+                            label: '名称'
+                          },
+                        },
+                        content: {
+                          type: 'string',
+                          ui: {
+                            label: '代码',
+                            widgetConfig: {
+                              type: "textarea",
+                              rows: 10
+                            }
+                          }
+                        },
+                      }
+                    },
+                    computed: {
+                      doubled: "MODEL('name', '') + ',s'"
+                    }
+                  },
+                ],
               },
-              content: {
-                type: 'string',
-                ui: {
-                  label: '代码',
-                  widgetConfig: {
-                    type: "textarea",
-                    rows: 10
-                  }
-                }
-              },
+              args: {
+                src: 'comformscr.twig'
+              }
             }
-          },
-          service: 'serviceC',
-          computed: {
-            doubled: "MODEL('name', '') + ',s'"
-          }
-        },
-      ],
-    },
-    args: {
-      src: 'comformscr.twig'
-    }
-  }
-}
-          `,
+          }),
           items: [
           ]
         }
@@ -459,6 +476,7 @@ export default {
 import HttpComponent from "@/components/HttpComponent.vue";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
 import {usePage} from "@/mixins/framework";
+import AutoHttpCom from "@/components/AutoHttpCom.vue";
 
 let httpMixin = {
   components: {
@@ -484,6 +502,7 @@ export default defineComponent({
     }
   },
   components: {
+    AutoHttpCom,
     JsonCodeEditor,
     PlumbLayout,
     RenderLayout,

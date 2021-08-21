@@ -34,6 +34,7 @@ export default defineComponent({
     }
   },
   created() {
+    console.log('HttpComponent created', this.is)
     let comManager = createRefManager({
       eventHandler({type, e}) {
         // console.log('eventHandler', type, e)

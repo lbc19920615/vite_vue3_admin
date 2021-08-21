@@ -34,7 +34,7 @@ export let usePage  = function () {
     }
   })
   function setPartModel(stepName, partName, model) {
-    console.log('httpComContext', stepName, partName)
+    // console.log('httpComContext', stepName, partName)
     return httpComContext[stepName].runPart(partName, 'setModel',
         model
     )
