@@ -50,30 +50,33 @@
         ></PlumbLayout>
 
         <div style="width: 600px" v-loading="renderFormLoading">
-          {{currentEditDep}}
+<!--          {{currentEditDep ? currentEditDep.content : ''}}-->
           <template v-if="renderFormDesigner">
-            <!--          {{currentEditDep.type}}-->
-            <search-demo1 v-if="currentEditDep.type === 'row'"
-                          @init="onInitDemo1" :modelValue="currentEditDep"
-                          @model:update="onUpdateModelValue"
-            >
-              <template v-slot:key1__array__before="{items, index}">
-                <header>{{index}}</header>
-              </template>
-            </search-demo1>
-            <search-demo2 v-if="currentEditDep.type === 'column'"
-                          @init="onInitDemo1" :modelValue="currentEditDep"
-                          @model:update="onUpdateModelValue"
-            >
-              <template v-slot:key1__array__before="{items, index}">
-                <header>{{index}}</header>
-              </template>
-            </search-demo2>
-            <form-prop-editor v-if="currentEditDep.type === 'form'"
-                          @init="onInitDemo1" :modelValue="currentEditDep"
-                @model:update="onUpdateModelValue"
-            >
-            </form-prop-editor>
+<!--            <search-demo1 v-if="currentEditDep.type === 'row'"-->
+<!--                          @init="onInitDemo1" :modelValue="currentEditDep"-->
+<!--                          @model:update="onUpdateModelValue"-->
+<!--            >-->
+<!--              <template v-slot:key1__array__before="{items, index}">-->
+<!--                <header>{{index}}</header>-->
+<!--              </template>-->
+<!--            </search-demo1>-->
+<!--            <search-demo2 v-if="currentEditDep.type === 'column'"-->
+<!--                          @init="onInitDemo1" :modelValue="currentEditDep"-->
+<!--                          @model:update="onUpdateModelValue"-->
+<!--            >-->
+<!--              <template v-slot:key1__array__before="{items, index}">-->
+<!--                <header>{{index}}</header>-->
+<!--              </template>-->
+<!--            </search-demo2>-->
+            <HttpComponent
+                :defs="allDef"
+                :is="store.model.editor_step"
+            ></HttpComponent>
+<!--            <form-prop-editor v-if="currentEditDep.type === 'form'"-->
+<!--                          @init="onInitDemo1" :modelValue="currentEditDep"-->
+<!--                @model:update="onUpdateModelValue"-->
+<!--            >-->
+<!--            </form-prop-editor>-->
           </template>
         </div>
       </el-row>
@@ -83,7 +86,7 @@
 </template>
 
 <script>
-import {defineAsyncComponent, defineComponent} from "vue";
+import {defineAsyncComponent, defineComponent, nextTick, onMounted} from "vue";
 import GridRow from "@/views/about/components/grid-row.vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
@@ -109,7 +112,7 @@ let formDesignerMixin = {
   methods: {
     onInitDemo1(context) {
       this.searchDemo1Ref = context
-      console.log( this.currentEditDep )
+      // console.log( this.currentEditDep )
       context.setModel(this.currentEditDep)
     },
     onUpdateModelValue(e) {
@@ -132,11 +135,13 @@ let depManagerMixin = {
     }
   },
   methods: {
-    onEditDep(dep) {
-      // console.log('onEditDep', dep)
+    async onEditDep(dep) {
+      console.log('onEditDep', dep)
       this.renderFormLoading = true
       this.renderFormDesigner = false
       this.currentEditDep = dep
+      let currentHtc = await this.loadStepByContent(dep.editor, 'editor_step')
+      // console.log(currentHtc)
       this.$nextTick(() => {
         setTimeout(() => {
           this.renderFormLoading = false
@@ -270,18 +275,57 @@ let plumbLayoutMixin = {
             version: 'v1',
             closure: true
           },
-          template: 'comformscr.twig',
-          content: JSON.stringify({
-            row: {
-              type: 'object',
-              properties: {
-                id: {
-                  type: 'string',
-                  ui: {}
+          editor: `
+export default {
+  name: 'form-editor',
+  init: {
+    def: {
+      constants: {
+      },
+      parts: [
+        {
+          type: "form",
+          name: "form2",
+          def: {
+            type: 'object',
+            ui: {
+              attrs: [
+                ['label-width', '100px']
+              ],
+            },
+            properties: {
+              name: {
+                type: 'string',
+                ui: {
+                  label: '名称'
                 },
-              }
+              },
+              content: {
+                type: 'string',
+                ui: {
+                  label: '代码',
+                  widgetConfig: {
+                    type: "textarea",
+                    rows: 10
+                  }
+                }
+              },
             }
-          }, null, 2),
+          },
+          service: 'serviceC',
+          computed: {
+            doubled: "MODEL('name', '') + ',s'"
+          }
+        },
+      ],
+    },
+    args: {
+      src: 'comformscr.twig'
+    }
+  }
+}
+          `,
+          content: '',
           items: [
           ]
         }
@@ -297,21 +341,21 @@ let plumbLayoutMixin = {
                   "from": "i1-0",
                   "to": "i3-top"
                 },
-                {
-                  "toPID": "i5",
-                  "fromPID": "i1",
-                  "from": "i1-1",
-                  "to": "i5-top"
-                }
+                // {
+                //   "toPID": "i5",
+                //   "fromPID": "i1",
+                //   "from": "i1-1",
+                //   "to": "i5-top"
+                // }
               ]
           )
           self.insEventLinks([
-            {
-              "toPID": "i4",
-              "fromPID": "i3",
-              "from": "i3-evt",
-              "to": "i4-0"
-            }
+            // {
+            //   "toPID": "i4",
+            //   "fromPID": "i3",
+            //   "from": "i3-evt",
+            //   "to": "i4-0"
+            // }
           ])
         }, 300)
       })
@@ -353,10 +397,21 @@ let plumbLayoutMixin = {
   }
 }
 
+import HttpComponent from "@/components/HttpComponent.vue";
+import {defineAutoStoreControl} from "@/hooks/autoVue";
+import {usePage} from "@/mixins/framework";
+
+let httpMixin = {
+  components: {
+    HttpComponent
+  }
+}
+
 export default defineComponent({
   mixins: [
     formDesignerMixin,
     plumbLayoutMixin,
+    httpMixin,
     renderLayoutMixin,
     depManagerMixin,
   ],
@@ -369,13 +424,84 @@ export default defineComponent({
       ],
     }
   },
-  methods: {},
   components: {
     JsonCodeEditor,
     PlumbLayout,
     RenderLayout,
     GridRow,
     // 'tableA': globalThis.loadComponent('tabledef.vue', '&config_id=s1212121222sss1212121')
+  },
+  setup() {
+    let page = usePage()
+    let allDef = new Map()
+    let storeControl;
+
+    storeControl = defineAutoStoreControl({
+      service: 'serviceB',
+      data: {
+        type: 'object',
+        properties: {
+          editor_step: {
+            type: String,
+          },
+        }
+      },
+      filters: {
+        showCom: "ZY_NOT(MODEL('reload'))",
+      }
+    })
+
+
+    async function loadStepByContent(content = '', varName = '') {
+      let [,res] = await ZY.awaitTo(
+          ZY.importJsStr(content)
+      )
+      if (!res || !res.default) {
+        throw new Error('loadStepByContent res')
+      }
+      const config = res.default
+      // console.log(config)
+      // allDef.set(config.name, config)
+      let ret = {
+        updateData() {
+          page.setPartModel( config.name,'form2',
+              {
+                name: 'namssds',
+                content: 'hello world'
+              }
+          )
+        }
+      };
+
+      page.setDef(config, function ({done}) {
+        console.log('sdsdsds')
+        ret.updateData()
+        done()
+      })
+
+
+      await nextTick()
+      storeControl.set({
+        [varName]: config.name
+      })
+
+      return ret;
+    }
+
+    // onMounted(async () => {
+    //   await loadStep()
+    // })
+
+
+
+
+    return {
+      loadStepByContent,
+      store: storeControl.store,
+      page,
+      filter: storeControl.filter,
+      allDef: page.allDef,
+    }
   }
 })
 </script>
