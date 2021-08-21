@@ -52,7 +52,7 @@
 </template>
 
 <script lang="jsx">
-import HttpComponent from "../../components/HttpComponent.vue";
+import HttpComponent from "@/components/HttpComponent.vue";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
 import {provideRefManager} from "@/hooks/ref";
 import {inject, nextTick, ref, onMounted, provide} from "vue";
