@@ -34,17 +34,19 @@
 <template>
   <div class="page-search">
     <div>
-      <render-layout :map="currentLayoutMap"
-                     :id="rootId"
-                     :handleNext="handleNext"
-                     :page="page"
-      >
-        <template #form_after="scope">
-          <CusSubmitButton
-              :scope="scope"
-              class="el-col z-submit-btn"></CusSubmitButton>
-        </template>
-      </render-layout>
+      <div v-if="showCurrent">
+        <render-layout :map="currentLayoutMap"
+                       :id="rootId"
+                       :handleNext="handleNext"
+                       :page="page"
+        >
+          <template #form_after="scope">
+            <CusSubmitButton
+                :scope="scope"
+                class="el-col z-submit-btn"></CusSubmitButton>
+          </template>
+        </render-layout>
+      </div>
       <el-row type="flex" style="flex-wrap: nowrap;">
         <PlumbLayout
             style="flex: 1"
@@ -136,6 +138,7 @@ let renderLayoutMixin = {
 let plumbLayoutMixin = {
   data() {
     return {
+      showCurrent: true,
       currentLinks: [],
       currentLayoutMap: {},
     }
@@ -372,6 +375,10 @@ ${formEditorConfig({
       })
       this.currentLayoutMap = JSON.parse(JSON.stringify(map))
       this.currentLinks = JSON.parse(JSON.stringify(links))
+      this.showCurrent = false
+      setTimeout(() => {
+        this.showCurrent = true
+      }, 500)
     }
   }
 }
