@@ -261,52 +261,37 @@ ${formEditorConfig({
             form2: {}
           })}
           `,
-          def: ZY.JSON5.stringify({
-            constants: {
+          def: ZY.JSON5.stringify(
+          {
+            type: 'object',
+            ui: {
+              attrs: [
+                [
+                  'label-width',
+                  '100px',
+                ],
+              ],
             },
-            parts: [
-              {
-                type: "form",
-                name: "form2",
-                serviceTpl: {
-                  def: {},
-                  args: {
-                    src: "bservice.twig"
-                  }
+            properties: {
+              name: {
+                type: 'string',
+                ui: {
+                  label: '名称',
                 },
-                def: {
-                  type: 'object',
-                  ui: {
-                    attrs: [
-                      ['label-width', '100px']
-                    ],
-                  },
-                  properties: {
-                    name: {
-                      type: 'string',
-                      ui: {
-                        label: '名称'
-                      },
-                    },
-                    content: {
-                      type: 'string',
-                      ui: {
-                        label: '代码',
-                        // widget: 'JsonCodeEditor',
-                        widgetConfig: {
-                          type: "textarea",
-                          rows: 10
-                        }
-                      }
-                    },
-                  }
-                },
-                computed: {
-                  doubled: "MODEL('name', '') + ',s'"
-                }
               },
-            ],
-          }, null, 2),
+              content: {
+                type: 'string',
+                ui: {
+                  label: '代码',
+                  widgetConfig: {
+                    type: 'textarea',
+                    rows: 10,
+                  },
+                },
+              },
+            },
+          }
+          , null, 2),
           content: '',
           items: [
           ]
@@ -439,7 +424,25 @@ export default defineComponent({
             let obj = {
               name: 'process-step1',
               init: {
-                def: def,
+                def: {
+                  constants: {},
+                  parts: [
+                    {
+                      type: "form",
+                      name: "form2",
+                      serviceTpl: {
+                        def: {},
+                        args: {
+                          src: 'bservice.twig',
+                        },
+                      },
+                      def: def,
+                      computed: {
+                        doubled: "MODEL('name', '') + ',s'",
+                      },
+                    }
+                  ]
+                },
                 args: {
                   src: 'comformscr.twig'
                 }
