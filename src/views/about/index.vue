@@ -59,22 +59,6 @@
         <div style="width: 600px" v-loading="renderFormLoading">
 <!--          {{currentEditDep ? currentEditDep.content : ''}}-->
           <template v-if="renderFormDesigner">
-<!--            <search-demo1 v-if="currentEditDep.type === 'row'"-->
-<!--                          @init="onInitDemo1" :modelValue="currentEditDep"-->
-<!--                          @model:update="onUpdateModelValue"-->
-<!--            >-->
-<!--              <template v-slot:key1__array__before="{items, index}">-->
-<!--                <header>{{index}}</header>-->
-<!--              </template>-->
-<!--            </search-demo1>-->
-<!--            <search-demo2 v-if="currentEditDep.type === 'column'"-->
-<!--                          @init="onInitDemo1" :modelValue="currentEditDep"-->
-<!--                          @model:update="onUpdateModelValue"-->
-<!--            >-->
-<!--              <template v-slot:key1__array__before="{items, index}">-->
-<!--                <header>{{index}}</header>-->
-<!--              </template>-->
-<!--            </search-demo2>-->
             <HttpComponent
                 :defs="allDef"
                 :is="store.model.editor_step"
@@ -82,11 +66,6 @@
               <template #form>form</template>
 
             </HttpComponent>
-<!--            <form-prop-editor v-if="currentEditDep.type === 'form'"-->
-<!--                          @init="onInitDemo1" :modelValue="currentEditDep"-->
-<!--                @model:update="onUpdateModelValue"-->
-<!--            >-->
-<!--            </form-prop-editor>-->
           </template>
         </div>
       </el-row>
@@ -471,22 +450,15 @@ export default {
   }
 }
 
-import HttpComponent from "@/components/HttpComponent.vue";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
 import {usePage} from "@/mixins/framework";
 import AutoHttpCom from "@/components/AutoHttpCom.vue";
-
-let httpMixin = {
-  components: {
-    HttpComponent
-  }
-}
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   mixins: [
-    formDesignerMixin,
+    // formDesignerMixin,
     plumbLayoutMixin,
-    httpMixin,
     renderLayoutMixin,
     depManagerMixin,
   ],
@@ -501,19 +473,19 @@ export default defineComponent({
   },
   components: {
     AutoHttpCom,
-    JsonCodeEditor,
+    // JsonCodeEditor,
     PlumbLayout,
     RenderLayout,
-    GridRow,
-    // 'tableA': globalThis.loadComponent('tabledef.vue', '&config_id=s1212121222sss1212121')
+    // GridRow,
   },
   setup() {
     let page = usePage()
-    let allDef = new Map()
     let storeControl;
 
+    // console.log('page', page.meta)
+
     storeControl = defineAutoStoreControl({
-      service: 'serviceB',
+      service: page.meta.pageServiceName,
       data: {
         type: 'object',
         properties: {

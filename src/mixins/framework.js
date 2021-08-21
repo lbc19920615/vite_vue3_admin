@@ -1,6 +1,7 @@
 import {inject} from "vue";
 import {provideRefManager} from "@/hooks/ref";
 import mitt from "mitt";
+import {useRouter} from "vue-router";
 
 export let PageControl = {
   created() {
@@ -13,6 +14,11 @@ export let PageControl = {
 }
 
 export let usePage  = function () {
+  let router = useRouter()
+  let meta = {}
+  if (router.currentRoute && router.currentRoute.value) {
+    meta = router.currentRoute.value.meta
+  }
   let httpComContext = {}
   let allDef = new Map()
   let events = new Map()
@@ -67,6 +73,7 @@ export let usePage  = function () {
     allDef,
     setEventHandler,
     // addListener,
+    meta,
     setDef,
     getPartModel,
     setPartModel,

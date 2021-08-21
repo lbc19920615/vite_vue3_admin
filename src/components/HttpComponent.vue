@@ -103,10 +103,6 @@ export default defineComponent({
               if (part.serviceTpl) {
                pArr.push(new Promise(async (resolve) => {
                  let serviceName = 'Service' + ZY.nid()
-                 if (!part.serviceTpl.def) {
-                   part.serviceTpl.def = {}
-                 }
-                 part.serviceTpl.def = {$SELF_NAME: serviceName}
                  let res = await global.createServiceCom(part.serviceTpl, serviceName)
                  // console.log(res, part)
                  part.service = res.name

@@ -54,4 +54,30 @@ const router = createRouter({
   routes: constantRouterMap,
 });
 
+let metaCache = new Map()
+router.beforeEach(async (to, from, next) => {
+  // ...
+  // 返回 false 以取消导航
+
+
+  if (!to.meta) {
+    to.meta = {}
+  }
+
+  if (!metaCache.has(to.name)) {
+    to.meta.pageServiceName = `Page${to.name}Service`
+    global.createServiceCom({
+      def: {},
+      args: {}
+    },  to.meta.pageServiceName)
+    metaCache.set(to.name, to)
+  } else {
+    to.meta = Object.assign({}, to.meta, metaCache.get(to.name))
+  }
+
+  console.log(to.name, to.meta)
+
+  next()
+})
+
 export default router;

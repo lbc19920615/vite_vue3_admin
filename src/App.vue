@@ -48,6 +48,8 @@ export default defineComponent({
      * @returns {Promise<*>}
      */
     global.createServiceCom = async function ({def = {}, args = {}} = {}, serviceID = ZY.nid()) {
+
+      def.$SELF_NAME = serviceID
       let [err, res] = await ZY.awaitTo(
           fetchTwigComponent( serviceID, {
             def: def,
@@ -64,6 +66,11 @@ export default defineComponent({
       globalStore.installServiceComponent(res.name, res.script)
       return res
     }
+
+    global.createServiceCom({
+      def: {},
+      args: {}
+    }, "ServicePage")
 
     document.addEventListener('visibilitychange', function (newVal) {
       if (document.visibilityState === 'visible') {
