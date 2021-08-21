@@ -261,40 +261,46 @@ ${formEditorConfig({
             form2: {}
           })}
           `,
-          def: ZY.JSON5.stringify(
-          {
-            type: 'object',
-            ui: {
-              attrs: [
-                [
-                  'label-width',
-                  '100px',
-                ],
-              ],
-            },
-            properties: {
-              name: {
-                type: 'string',
-                ui: {
-                  label: '名称',
-                },
-              },
-              content: {
-                type: 'string',
-                ui: {
-                  label: '代码',
-                  widgetConfig: {
-                    type: 'textarea',
-                    rows: 10,
-                  },
-                },
-              },
-            },
-          }
-          , null, 2),
           content: '',
           items: [
+          ],
+         data: {
+          parts: [
+            {
+              uis: ZY.JSON5.stringify(
+                  {
+                    attrs: [
+                      [
+                        'label-width',
+                        '100px',
+                      ],
+                    ],
+                  }
+                  , null, 2),
+              properties: ZY.JSON5.stringify(
+                  {
+                    name: {
+                      type: 'string',
+                      ui: {
+                        label: '名称',
+                      },
+                    },
+                    content: {
+                      type: 'string',
+                      ui: {
+                        label: '代码',
+                        widgetConfig: {
+                          type: 'textarea',
+                          rows: 10,
+                        },
+                      },
+                    },
+                  }
+                  , null, 2),
+
+            }
           ]
+         }
         }
       ]
       self.$nextTick(() => {
@@ -420,7 +426,7 @@ export default defineComponent({
           self.currentEditDep[key] = newVal
         }
         if (self.currentEditDep.type === 'form') {
-          let contentTpl = function ({def} = {}) {
+          let contentTpl = function ({ui, properties} = {}) {
             let obj = {
               name: 'process-step1',
               init: {
@@ -436,7 +442,13 @@ export default defineComponent({
                           src: 'bservice.twig',
                         },
                       },
-                      def: def,
+                      def: {
+                        def: {
+                          type: 'object',
+                          ui,
+                          properties
+                        }
+                      },
                       computed: {
                         doubled: "MODEL('name', '') + ',s'",
                       },
@@ -450,9 +462,11 @@ export default defineComponent({
             }
             return ZY.JSON5.stringify(obj)
           }
+          // console.log(model)
           self.currentEditDep.content = contentTpl(
               {
-                def: ZY.JSON5.parse(model.def)
+                ui: ZY.JSON5.parse(model.parts[0].uis),
+                properties: ZY.JSON5.parse(model.parts[0].properties)
               }
           )
           console.log(self.currentEditDep.content )
@@ -484,7 +498,13 @@ export default defineComponent({
         for (let [partName, depPath] of Object.entries(config.defaultVal)) {
           // console.log(partName, depPath)
           // console.log(self.currentEditDep, depPath, ZY.lodash.get( self.currentEditDep, depPath))
-          ret.updateData(partName,  self.currentEditDep)
+
+          if (self.currentEditDep.data) {
+            ret.updateData(partName,  self.currentEditDep.data)
+          } else {
+
+            ret.updateData(partName,  self.currentEditDep)
+          }
         }
 
         done()

@@ -47,14 +47,33 @@ export let formEditorConfig = function (defaultVal = {}) {
                     label: '名称'
                 },
             },
-            def: {
-                type: 'string',
-                ui: {
-                    label: '代码',
-                    widget: 'JsonCodeEditor',
-                    widgetConfig: {
-                        type: "textarea",
-                        rows: 10
+            parts: {
+                type: 'array',
+                items: {
+                    type: "object",
+                    properties: {
+                        uis: {
+                            type: 'string',
+                            ui: {
+                                label: 'UI',
+                                widget: 'JsonCodeEditor',
+                                widgetConfig: {
+                                    type: "textarea",
+                                    rows: 10
+                                }
+                            }
+                        },
+                        properties: {
+                            type: 'string',
+                            ui: {
+                                label: 'SCHEMA',
+                                widget: 'JsonCodeEditor',
+                                widgetConfig: {
+                                    type: "textarea",
+                                    rows: 10
+                                }
+                            }
+                        },
                     }
                 }
             },
