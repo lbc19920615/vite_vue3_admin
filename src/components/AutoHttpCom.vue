@@ -10,19 +10,20 @@ export default defineComponent( {
   props: {
     // defs: null,
     def: String,
-    page: null
+    slotContent: null,
+    page: null,
   },
   setup(props, ctx) {
     let page = props.page
-    // console.log('porps', props.def)
-    // console.log('parsed', parsed)
+    // console.log('props', props.render)
     let step = ref('')
+    let config
     let httpCtx = null
 
     function load() {
-      let config = ZY.JSON5.parse(props.def)
+      config = ZY.JSON5.parse(props.def)
       page.setDef(config, function ({done}) {
-        console.log('on fomeerered')
+        // console.log('on fomeerered')
         done()
       })
       step.value = config.name
@@ -30,19 +31,18 @@ export default defineComponent( {
 
     load()
 
-    // console.log(page.allDef)
-
-    // return {
-    //   defs: page.allDef,
-    //   step,
-    // }
 
     let HttpComponent = resolveComponent('HttpComponent')
     // console.log(HttpComponent)
     return () => {
+
+      let children = props.render ? props.render() : []
+      // console.log(children)
+      // console.log(config.slots)
       httpCtx = h(HttpComponent, {
         defs: page.allDef,
-        is:  step.value
+        is:  step.value,
+        slotContent: props.slotContent ? props.slotContent : ctx.slots
       })
       return httpCtx
     }

@@ -11,10 +11,12 @@
                 :layout="curObj.items">
         <template v-slot:default="{item}">
           <render-layout :level="level + 1" :map="map" :handle-next="handleNext"
+                         :page="page"
+                         :slotContent="innerSlots"
                          :id="getNext(item)">
-            <template #other="curObj">
-              <slot v-bind="curObj"></slot>
-            </template>
+<!--            <template #other="curObj">-->
+<!--              <slot v-bind="curObj"></slot>-->
+<!--            </template>-->
           </render-layout>
         </template>
       </grid-column>
@@ -22,37 +24,33 @@
                 :layout="curObj.items">
         <template v-slot:default="{item}">
           <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"
+                         :page="page"
+                         :slotContent="innerSlots"
                          :id="getNext(item)">
-            <template #other="curObj">
-              <slot v-bind="curObj"></slot>
-            </template>
+<!--            <template #other="curObj">-->
+<!--              <slot v-bind="curObj"></slot>-->
+<!--            </template>-->
           </render-layout>
         </template>
       </grid-row>
       <template v-else>
-         <slot name="other" v-bind="curObj"></slot>
+        <template v-if="curObj && curObj.type && curObj.content">
+          <AutoHttpCom
+              :slotContent="innerSlots"
+              :page="page"
+              :def="curObj.content"
+          >
+          </AutoHttpCom>
+        </template>
       </template>
-<!--      <AsyncForm :class="levelItemCls"-->
-<!--                 :obj="curObj"-->
-<!--                 :template="curObj.template"-->
-<!--                 :json="curObj.content"-->
-<!--                 v-if="curObj.type === 'form'">-->
-<!--      </AsyncForm>-->
-<!--      <AsyncForm :class="levelItemCls"-->
-<!--                 :obj="curObj"-->
-<!--                 :template="curObj.template"-->
-<!--                 :json="curObj.content"-->
-<!--                 v-if="curObj.type === 'table'">-->
-<!--      </AsyncForm>-->
   </div>
 </template>
 
 <script>
 import GridRow from "@/views/about/components/grid-row.vue";
-// import LayoutGrid from "@/views/about/components/layout-grid.vue";
 import Sortable from "sortablejs";
 import GridColumn from "@/views/about/components/grid-column.vue";
-// import AsyncForm from "@/views/about/components/async-form.vue";
+import AutoHttpCom from "@/components/AutoHttpCom.vue";
 
 export default {
   name: 'RenderLayout',
@@ -67,22 +65,27 @@ export default {
         return {}
       }
     },
+    page: null,
     id: {
       type: String,
     },
     handleNext: {
       type: Function,
       default: null
-    }
+    },
+    slotContent: null
   },
   components: {
+    AutoHttpCom,
     // AsyncForm,
     GridColumn,
     // LayoutGrid,
     GridRow,
   },
   data() {
-    return {}
+    return {
+      innerSlots: this.slotContent ? this.slotContent : this.$slots
+    }
   },
   computed: {
     curObj() {
@@ -99,6 +102,9 @@ export default {
     }
   },
   methods: {
+    render() {
+      return this.$slots
+    },
     getNext(item) {
       let id = ''
       // console.log('getNext')

@@ -1,8 +1,9 @@
+import {inject} from "vue";
+
 export let RefsManagerMixin = function ({
     RefName = 'RefsManager',
     InstanceName = 'RefInstance'
 } = {}) {
-  const { inject } = global.Vue
   return {
     data() {
       return {
@@ -26,8 +27,10 @@ export let RefsManagerMixin = function ({
 }
 
 export let slotComEventMixin = function () {
-  const { inject } = global.Vue
   return {
+    props: {
+      scope: null
+    },
     data() {
       return {
         context: null,
@@ -43,6 +46,7 @@ export let slotComEventMixin = function () {
       fireEvent(name, params) {
         let attrs = this.slotContainer.attrs ? this.slotContainer.attrs : {}
         this.RefInstance.emit(name, {
+          scope: this.scope,
           context: this.context,
           attrs: attrs,
           parts: attrs.parts,

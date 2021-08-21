@@ -37,21 +37,13 @@
       <render-layout :map="currentLayoutMap"
                      :id="rootId"
                      :handleNext="handleNext"
+                     :page="page"
       >
-        <template #default="scope">
-          <div v-if="scope.type">
-<!--            {{scope}}-->
-            <AutoHttpCom
-            :page="page"
-            :def="scope.content"
-            ></AutoHttpCom>
-<!--            <HttpComponent-->
-<!--                :defs="allDef"-->
-<!--                :is="store.model.editor_step"-->
-<!--            ></HttpComponent>-->
-          </div>
+        <template #form_after="scope">
+          <CusSubmitButton
+              :scope="scope"
+              class="el-col search-form__button">搜索</CusSubmitButton>
         </template>
-
       </render-layout>
       <el-row type="flex" style="flex-wrap: nowrap;">
         <PlumbLayout
@@ -86,7 +78,10 @@
             <HttpComponent
                 :defs="allDef"
                 :is="store.model.editor_step"
-            ></HttpComponent>
+            >
+              <template #form>form</template>
+
+            </HttpComponent>
 <!--            <form-prop-editor v-if="currentEditDep.type === 'form'"-->
 <!--                          @init="onInitDemo1" :modelValue="currentEditDep"-->
 <!--                @model:update="onUpdateModelValue"-->
@@ -208,7 +203,7 @@ let plumbLayoutMixin = {
           items: [
             {
               id: 'i1-0',
-              h: 120
+              h: 700
             },
             {
               id: 'i1-1',
@@ -351,6 +346,9 @@ export default {
 
           content: ZY.JSON5.stringify( {
             name: 'process-step1',
+            slots: `
+      <template #form>sdsdsds</template>sdsdsdssdsdsdssdsdsds
+`,
             init: {
               def: {
                 constants: {
@@ -530,6 +528,14 @@ export default defineComponent({
     })
 
 
+    page.setEventHandler({
+      ['submit:form'](e) {
+        let { scope, parts } = e
+        let model = parts[scope.name].getModel()
+        console.log('submit:form',e, model)
+      }
+    })
+
     async function loadStepByContent(content = '', varName = '') {
       let [,res] = await ZY.awaitTo(
           ZY.importJsStr(content)
@@ -552,7 +558,7 @@ export default defineComponent({
       };
 
       page.setDef(config, function ({done}) {
-        console.log('sdsdsds')
+        // console.log('sdsdsds')
         ret.updateData()
         done()
       })

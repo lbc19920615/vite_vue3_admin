@@ -34,7 +34,7 @@ export default defineComponent({
     }
   },
   created() {
-    console.log('HttpComponent created', this.is)
+    // console.log('HttpComponent created', this.is)
     let comManager = createRefManager({
       eventHandler({type, e}) {
         // console.log('eventHandler', type, e)
@@ -51,10 +51,16 @@ export default defineComponent({
     let obj;
 
     function render() {
+      // console.log(props.slotContent, ctx.slots)
       let ret = []
-      if (Object.keys(ctx.slots).length > 0) {
+      // console.log(ctx.slots)
+      if (props.slotContent) {
+        ret = props.slotContent
+      }
+      else if (Object.keys(ctx.slots).length > 0) {
         ret = ctx.slots
       }
+      else {}
       return ret
     }
 
@@ -96,7 +102,12 @@ export default defineComponent({
               }
               if (part.serviceTpl) {
                pArr.push(new Promise(async (resolve) => {
-                 let res = await global.createServiceCom(part.serviceTpl)
+                 let serviceName = 'Service' + ZY.nid()
+                 if (!part.serviceTpl.def) {
+                   part.serviceTpl.def = {}
+                 }
+                 part.serviceTpl.def = {$SELF_NAME: serviceName}
+                 let res = await global.createServiceCom(part.serviceTpl, serviceName)
                  // console.log(res, part)
                  part.service = res.name
                  servicePartLink[part.name] = res.name
@@ -130,6 +141,7 @@ export default defineComponent({
         throw new Error('now service', partKey)
       }
       let service = servicePartLink[partKey]
+      console.log('service', service)
       globalStore.run(service, ...args)
     }
 

@@ -2,6 +2,7 @@ import CustomFormRender from './components/CustomFormRender.vue'
 import UnitInput from "@/components/UnitInput.vue";
 import CusDateTimePicker from "@/components/CustomForm/CusDateTimePicker.vue";
 import CusSelect from "@/components/CustomForm/CusSelect.vue";
+import CusSubmitButton from "@/components/CustomForm/CusSubmitButton.vue";
 
 import VantDateTimePicker from "@/components/CustomVant/VantDateTimePicker.vue";
 
@@ -21,6 +22,8 @@ const plugin = {
         app.component(CusSelect.name, CusSelect)
         app.component(VantDateTimePicker.name, VantDateTimePicker)
 
+
+        app.component(CusSubmitButton.name, CusSubmitButton)
         app.component(jsxCom.name, jsxCom)
         app.component(HttpComponent.name, HttpComponent)
     }

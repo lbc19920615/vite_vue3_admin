@@ -44,11 +44,12 @@ export default defineComponent({
      * createServiceCom
      * @param def
      * @param args
+     * @param serviceID
      * @returns {Promise<*>}
      */
-    global.createServiceCom = async function ({def = {}, args = {}} = {}) {
+    global.createServiceCom = async function ({def = {}, args = {}} = {}, serviceID = ZY.nid()) {
       let [err, res] = await ZY.awaitTo(
-          fetchTwigComponent('Service' + ZY.nid(), {
+          fetchTwigComponent( serviceID, {
             def: def,
             args: {
               src: 'bservice.twig',

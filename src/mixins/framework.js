@@ -17,8 +17,11 @@ export let usePage  = function () {
   let allDef = new Map()
   let events = new Map()
 
+  let eventHandleMap = {}
+
   let refsManager = provideRefManager({
     async eventHandler({type, e}) {
+      // console.log('page eventHandler', type, e)
       if (type === 'http-component:com:mounted') {
         let name = e.httpComponentContext.is
         httpComContext[name] = e.httpComponentContext
@@ -30,6 +33,10 @@ export let usePage  = function () {
             }
           })
         }
+      } else {
+        if (eventHandleMap[type]) {
+          eventHandleMap[type](e)
+        }
       }
     }
   })
@@ -39,6 +46,18 @@ export let usePage  = function () {
         model
     )
   }
+
+  function getPartModel(stepName, partName) {
+    console.log('httpComContext', stepName, partName, httpComContext[stepName])
+    return httpComContext[stepName].runPart(partName, 'getModel',
+
+    )
+  }
+
+  function setEventHandler(_eventHandler) {
+    eventHandleMap = _eventHandler
+  }
+
   function setDef(config, fun) {
     allDef.set(config.name, config)
     events.set(config.name, fun)
@@ -46,8 +65,10 @@ export let usePage  = function () {
   }
   return {
     allDef,
+    setEventHandler,
     // addListener,
     setDef,
+    getPartModel,
     setPartModel,
     httpComContext,
     refsManager
