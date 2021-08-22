@@ -421,9 +421,10 @@ export default defineComponent({
       },
       ['model:update'](e) {
         let { model, key, newVal, config } = e
-        let oldVal = self.currentEditDep[key]
+        let oldVal = ZY.lodash.get(self.currentEditDep, key)
         if (oldVal !== newVal) {
           self.currentEditDep[key] = newVal
+          console.log(key, newVal)
         }
         if (self.currentEditDep.type === 'form') {
           let contentTpl = function ({ui, properties} = {}) {
@@ -443,11 +444,9 @@ export default defineComponent({
                         },
                       },
                       def: {
-                        def: {
-                          type: 'object',
-                          ui,
-                          properties
-                        }
+                        type: 'object',
+                        ui,
+                        properties
                       },
                       computed: {
                         doubled: "MODEL('name', '') + ',s'",
@@ -460,16 +459,17 @@ export default defineComponent({
                 }
               }
             }
+            // console.log(obj)
             return ZY.JSON5.stringify(obj)
           }
-          // console.log(model)
+          // console.log(model.parts[0])
           self.currentEditDep.content = contentTpl(
               {
                 ui: ZY.JSON5.parse(model.parts[0].uis),
                 properties: ZY.JSON5.parse(model.parts[0].properties)
               }
           )
-          console.log(self.currentEditDep.content )
+          // console.log(self.currentEditDep.content )
         }
       }
     })
