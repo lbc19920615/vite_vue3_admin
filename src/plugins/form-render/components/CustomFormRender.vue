@@ -31,19 +31,33 @@ export default defineComponent({
       value: props.modelValue
     })
 
-    let insertOnce = false
+    let lock = new ZY.Lock()
+    let lockTime = 1000
+
+    // let insertOnce = false
 
     watch(() => props.modelValue, (newVal) => {
       // console.log('custom', newVal, widgetInstance)
       obj.value = newVal
-      if (!insertOnce) {
-        if (widgetInstance && widgetInstance.value) {
-          // console.log('widgetInstance', widgetInstance.value.handlePropChange)
-          if (widgetInstance.value.handlePropChange) {
-            insertOnce = true
-            widgetInstance.value.handlePropChange(newVal)
+      if (!lock.isLocked) {
+        // if (widgetInstance && widgetInstance.value) {
+        //   // console.log('widgetInstance', widgetInstance.value.handlePropChange)
+        //   if (widgetInstance.value.handlePropChange) {
+        //     insertOnce = true
+        //     widgetInstance.value.handlePropChange(newVal)
+        //     setTimeout(() => {
+        //       insertOnce = false
+        //     }, 30)
+        //   }
+        // }
+        lock.lock(() => {
+          if (widgetInstance && widgetInstance.value) {
+            // console.log('widgetInstance', widgetInstance.value.handlePropChange)
+            if (widgetInstance.value.handlePropChange) {
+              widgetInstance.value.handlePropChange(newVal)
+            }
           }
-        }
+        }, lockTime)
       }
     }, { immediate: true })
 

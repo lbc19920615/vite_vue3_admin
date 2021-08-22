@@ -33,6 +33,8 @@
 
 <template>
   <div class="page-search">
+    {{store.model}}
+    <CodeMirror v-model="store.model.code_str" mode="text/javascript" />
     <div>
       <div v-if="showCurrent">
         <render-layout :map="currentLayoutMap"
@@ -441,9 +443,16 @@ export default defineComponent({
         editor_step: {
           type: String,
         },
+        code_str: {
+          type: String,
+        }
       },
       filters: {
         showCom: "ZY_NOT(MODEL('reload'))",
+      },
+      defaultVal: {
+        editor_step: '',
+        code_str: '',
       }
     })
 

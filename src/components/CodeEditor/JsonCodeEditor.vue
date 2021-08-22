@@ -58,7 +58,7 @@ const dom = ref();
 let instance;
 
 
-let _lock = false
+let _edited = false
 
 
 function insertText(newval) {
@@ -74,18 +74,21 @@ function insertText(newval) {
 }
 
 function handlePropChange(newval) {
-  if (!_lock) {
+  if (!_edited) {
     // jsonModel.setValue(newval)
-    _lock = true
+    // _edited = true
 
     // jsonModel.setValue(newval)
     // instance.setValue(newval)
     insertText(newval)
     instance.focus()
 
-    setTimeout(() => {
-      _lock = false
-    }, 1000)
+    // setTimeout(() => {
+    //   _edited = false
+    // }, 1000)
+  } else {
+    console.log('handlePropChange locked')
+    _edited = false
   }
 }
 
@@ -107,25 +110,17 @@ onMounted(() => {
     scrollBeyondLastLine: false,
   });
 
-  // instance.onDidFocusEditorText(() => {
-  //   console.log('onFocus')
-  //   _lock = true
-  // })
-  //
-  // instance.onDidBlurEditorText(() => {
-  //   setTimeout(() => {
-  //     _lock = false
-  //   }, 1000)
-  // })
-
   instance.onDidChangeModelContent(() => {
-    // console.log('onDidChangeModelContent _lock', _lock)
-    // if (!_lock) {
+    // console.log('onDidChangeModelContent _edited', _edited)
+    // if (!_edited) {
       const value = instance.getValue();
 
       if (emit) {
         emit('update:modelValue', value);
       }
+
+      _edited = true
+
     // }
   });
 

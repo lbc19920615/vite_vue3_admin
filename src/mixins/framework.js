@@ -20,7 +20,7 @@ export let PageControl = {
  * @param filters
  * @returns {{setDef: setDef, refsManager: {Refs: Map<unknown, unknown>}, meta: {}, getPartModel: (function(*=, *=): void), setPartModel: (function(*, *=, *=): void), storeControl: {}, setEventHandler: setEventHandler, httpComContext: {}, allDef: Map<any, any>}}
  */
-export let usePage  = function ({data = {} , filters = {}} = {}) {
+export let usePage  = function ({data = {} , filters = {}, defaultVal = {}} = {}) {
   let router = useRouter()
   let self = this
   let meta = {}
@@ -88,12 +88,17 @@ export let usePage  = function ({data = {} , filters = {}} = {}) {
     },
     filters: filters
   })
+
+  storeControl.set(defaultVal)
+
   return {
     allDef,
     setEventHandler,
     // addListener,
     meta,
     storeControl,
+    store: storeControl.store,
+    filter: storeControl.filter,
     setDef,
     getPartModel,
     setPartModel,
