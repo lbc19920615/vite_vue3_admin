@@ -32,6 +32,8 @@
 </style>
 
 <template>
+  <DeepPropEditor></DeepPropEditor>
+
   <div class="page-search">
     {{store.model}}
 <!--    <CodeMirror v-model="store.model.code_str" mode="text/javascript" />-->
@@ -85,8 +87,7 @@
 </template>
 
 <script>
-import {defineAsyncComponent, defineComponent, nextTick, getCurrentInstance} from "vue";
-import GridRow from "@/views/about/components/grid-row.vue";
+import {defineComponent, nextTick, getCurrentInstance} from "vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
 
@@ -413,6 +414,8 @@ ${formEditorConfig({
 import {usePage} from "@/mixins/framework";
 import AutoHttpCom from "@/components/AutoHttpCom.vue";
 import {formEditorConfig, rowEditorConfig} from "@/views/about/editorConfig";
+import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
+import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
 
 export default defineComponent({
   mixins: [
@@ -430,6 +433,8 @@ export default defineComponent({
     }
   },
   components: {
+    DeepPropEditor,
+    AsyncPlumbLayout,
     AutoHttpCom,
     // JsonCodeEditor,
     PlumbLayout,
@@ -527,6 +532,7 @@ export default defineComponent({
               }
           )
           // console.log(self.currentEditDep.content )
+          localStorage.setItem('currentEditDepContent', self.currentEditDep.content)
         }
       }
     })
@@ -550,7 +556,7 @@ export default defineComponent({
       };
 
       page.setDef(config, function ({done}) {
-        console.log('sdsdsds', config, self)
+        // console.log('sdsdsds', config, self)
         // ret.updateData()
         for (let [partName, depPath] of Object.entries(config.defaultVal)) {
           // console.log(partName, depPath)

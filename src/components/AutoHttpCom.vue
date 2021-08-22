@@ -24,13 +24,14 @@ export default defineComponent( {
       config = ZY.JSON5.parse(props.def)
       // config = props.def
       page.setDef(config, function ({done}) {
-        console.log('on fomeerered', config)
+        // console.log('on fomeerered', config)
 
         for (let [partName, data] of Object.entries(config.defaultVal)) {
+          let defaultObj = ZY.JSON5.parse(ZY.JSON5.stringify(data))
           // console.log(partName, depPath)
           // console.log(self.currentEditDep, depPath, ZY.lodash.get( self.currentEditDep, depPath))
           page.setPartModel( config.name, partName,
-              data
+              defaultObj
           )
         }
 
