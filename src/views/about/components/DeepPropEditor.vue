@@ -1,6 +1,6 @@
 <template>
 <div>
-  {{store.model}}
+<!--  {{store.model}}-->
   <el-row type="flex">
     <AsyncPlumbLayout
         style="flex: 1"
@@ -9,6 +9,7 @@
         :handleAppend="handleAppend"
         :handle-dep="handleDep"
         @edit-dep="onEditDep"
+        @save-data="onSaveDep"
     ></AsyncPlumbLayout>
     <div style="width: 600px">
       <template v-if="renderFormDesigner && currentEditDep">
@@ -32,7 +33,6 @@
 
 <script>
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
-import {formEditorConfig, rowEditorConfig} from "@/views/about/editorConfig";
 import {getCurrentInstance, nextTick} from "vue";
 import {usePage} from "@/mixins/framework";
 
@@ -79,6 +79,25 @@ let plumbLayoutMixin = {
       self.deps = [
         {
           id: 'i111',
+          type: 'object',
+          config: {
+            version: 'v1',
+            closure: false,
+            root: true
+          },
+          editor: `editor`,
+          content: '',
+          items: [
+            {
+              id: 'i111-0',
+              key: 'parts',
+              data: '',
+              root: true
+            },
+          ],
+        },
+        {
+          id: 'i222',
           type: 'array',
           config: {
             version: 'v1',
@@ -88,17 +107,10 @@ let plumbLayoutMixin = {
           name: '',
           items: [
             {
-              id: 'i111-0',
+              id: 'i222-0',
+              key: 'items',
               data: '',
             },
-            {
-              id: 'i111-1',
-              data: '',
-            },
-            {
-              id: 'i111-2',
-              data: '',
-            }
           ]
         },
         {
@@ -113,84 +125,15 @@ let plumbLayoutMixin = {
           items: [
             {
               id: 'i333-0',
+              key: 'name1',
               data: '',
             },
             {
-              id: 'i333-1',
+              id: 'i333-0',
+              key: 'name2',
               data: '',
             },
           ],
-          data: {
-            parts: [
-              {
-                uis: ZY.JSON5.stringify(
-                    {
-                      attrs: [
-                        [
-                          'label-width',
-                          '100px',
-                        ],
-                      ],
-                    }
-                    , null, 2),
-                properties: ZY.JSON5.stringify(
-                    {
-                      parts: {
-                        type: 'array',
-                        items: {
-                          type: "object",
-                          properties: {
-                            key: {
-                              type: 'string',
-                              ui: {
-                              }
-                            },
-                            ui_type: {
-                              type: 'string',
-                              ui: {
-                              }
-                            },
-                            ui_label: {
-                              type: 'string',
-                              ui: {
-                              }
-                            },
-                            ui_widget: {
-                              type: 'string',
-                              ui: {
-                              }
-                            },
-                            ui_widgetConfig: {
-                              type: 'string',
-                              ui: {
-                                widget: 'CodeJsEditor',
-                                widgetConfig: {
-                                  style: {
-                                    // height: "200px",
-                                  }
-                                }
-                              }
-                            },
-                            rules: {
-                              type: 'string',
-                              ui: {
-                                widget: 'JsonCodeEditor',
-                                widgetConfig: {
-                                  style: {
-                                    height: "200px",
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      },
-                    }
-                    , null, 2),
-
-              }
-            ]
-          }
         }
       ]
       self.$nextTick(() => {
@@ -199,9 +142,15 @@ let plumbLayoutMixin = {
           self.insComLinks(
               [
                 {
-                  "toPID": "i333",
+                  "toPID": "i222",
                   "fromPID": "i111",
                   "from": "i111-0",
+                  "to": "i222-top"
+                },
+                {
+                  "toPID": "i333",
+                  "fromPID": "i222",
+                  "from": "i222-0",
                   "to": "i333-top"
                 },
               ]
@@ -226,8 +175,57 @@ let plumbLayoutMixin = {
         newItem.h = 50
       }
     },
-    onGetData({deps, links = []}) {
-      console.log('onGetData', deps, links)
+    onSaveDep({deps, links = []}) {
+      // console.log('onGetData', deps, links)
+      let deepObj = {}
+      let cur =  deps.find(v => v.id === this.rootId)
+
+      function handleDeep(cur, deepPoint) {
+        if (cur.type === 'array') {
+          // console.log('array')
+
+
+        }
+        if (cur.type === 'object') {
+          deepPoint = {
+            type: 'object',
+            properties: {
+            }
+          }
+          for (let item of cur.items) {
+            let parsedData = {}
+            try {
+              parsedData = ZY.JSON5.parse(item.data)
+            } catch (e) {
+              //
+            }
+            // if (item.root) {
+            //
+            // } else {
+            //   let keys = Object.keys(parsedData)
+            //   if (keys.length > 0) {
+            //
+            //   }
+            //   keys.forEach(key => {
+            //     deepPoint[key] = parsedData[key]
+            //   })
+            // }
+
+            // console.log(links)
+            console.log(deepPoint)
+            // let link = links.find(v => v.from === item.id)
+            // if (link) {
+            //   let dep = deps.find(v => v.id === link.toPID)
+            //   if (dep) {
+            //     handleDeep(dep, deepPoint.properties)
+            //   }
+            // }
+          }
+        }
+      }
+
+      handleDeep(cur, deepObj)
+
       let map = {
         [this.rootId]: deps.find(v => v.id === this.rootId)
       }
@@ -242,10 +240,11 @@ let plumbLayoutMixin = {
       })
       this.currentLayoutMap = JSON.parse(JSON.stringify(map))
       this.currentLinks = JSON.parse(JSON.stringify(links))
-      this.showCurrent = false
-      setTimeout(() => {
-        this.showCurrent = true
-      }, 500)
+      // console.log(deepObj)
+      // this.showCurrent = false
+      // setTimeout(() => {
+      //   this.showCurrent = true
+      // }, 500)
     }
   }
 }

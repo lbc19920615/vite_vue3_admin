@@ -1,0 +1,28 @@
+<el-row class="level_1 object" v-if="{{ modelKey }}">
+    <el-row class="level_2 object" v-if="{{ modelKey }}['def']">
+        <el-col class="level_3 prop">
+            <cm-field v-model="{{ modelKey }}['def']['name']" label="name" prop="name" form-path="{{ modelKey }}['def']['name']" type="string" :ui="{{ partConfigKey }}.properties['def'].properties['name'].ui" :rules="{{ partConfigKey }}.properties['def'].properties['name'].rules">
+            </cm-field>
+        </el-col>
+    </el-row>
+    <el-col class="level_2 prop">
+        <cm-field v-model="{{ modelKey }}['ui_type']" label="ui_type" prop="ui_type" form-path="{{ modelKey }}['ui_type']" type="string" :ui="{{ partConfigKey }}.properties['ui_type'].ui" :rules="{{ partConfigKey }}.properties['ui_type'].rules">
+        </cm-field>
+    </el-col>
+    <el-col class="level_2 prop">
+        <cm-field v-model="{{ modelKey }}['ui_label']" label="ui_label" prop="ui_label" form-path="{{ modelKey }}['ui_label']" type="string" :ui="{{ partConfigKey }}.properties['ui_label'].ui" :rules="{{ partConfigKey }}.properties['ui_label'].rules">
+        </cm-field>
+    </el-col>
+    <el-col class="level_2 prop">
+        <cm-field v-model="{{ modelKey }}['ui_widget']" label="ui_widget" prop="ui_widget" form-path="{{ modelKey }}['ui_widget']" type="string" :ui="{{ partConfigKey }}.properties['ui_widget'].ui" :rules="{{ partConfigKey }}.properties['ui_widget'].rules">
+        </cm-field>
+    </el-col>
+    <el-col class="level_2 prop">
+        <cm-field v-model="{{ modelKey }}['ui_widgetConfig']" label="ui_widgetConfig" prop="ui_widgetConfig" form-path="{{ modelKey }}['ui_widgetConfig']" type="string" :ui="{{ partConfigKey }}.properties['ui_widgetConfig'].ui" :rules="{{ partConfigKey }}.properties['ui_widgetConfig'].rules">
+        </cm-field>
+    </el-col>
+    <el-col class="level_2 prop">
+        <cm-field v-model="{{ modelKey }}['rules']" label="rules" prop="rules" form-path="{{ modelKey }}['rules']" type="string" :ui="{{ partConfigKey }}.properties['rules'].ui" :rules="{{ partConfigKey }}.properties['rules'].rules">
+        </cm-field>
+    </el-col>
+</el-row>

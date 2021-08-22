@@ -76,14 +76,16 @@ $sel: "." + $tag;
           <h3 style="margin: 10px 0;">items</h3>
           <template v-for="(item, index) in dep.items" :key="item.id">
             <div :id="item.id" :data-pid="dep.id" class="item content-item">
-              <div>{{item.id}}</div>
+              <div>{{item.id}} {{item.key}}</div>
               <template v-if="dep.type === 'array'">
-                <button @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>
+<!--                <button @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>-->
               </template>
-              <button @click="editDep(dep, item)"><i class="el-icon-edit" ></i></button>
+              <template v-else>
+                <button @click="editDep(dep, item)"><i class="el-icon-edit" ></i></button>
+              </template>
             </div>
           </template>
-          <el-button size="small"
+          <el-button size="small" v-if="dep.type === 'object'"
                      @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
         </template>
         <div v-show="dep.data" style="height: 150px; overflow: auto;">{{dep.data}}</div>
@@ -439,7 +441,7 @@ export default {
         links: comLinks,
       }
 
-      console.log('links', comLinks, eventLinks)
+      // console.log('links', comLinks, eventLinks)
 
       this.$emit('save-data', ret)
     }

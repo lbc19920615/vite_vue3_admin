@@ -106,8 +106,7 @@ let depManagerMixin = {
       this.renderFormDesigner = false
       this.currentEditDep = dep
       if (dep.editor) {
-
-        let currentHtc = await this.loadStepByContent(dep.editor, 'editor_step')
+        await this.loadStepByContent(dep.editor, 'editor_step')
       }
       // console.log(currentHtc)
       this.$nextTick(() => {
@@ -575,6 +574,8 @@ export default defineComponent({
 
 
       await nextTick()
+      console.log('config', config)
+
       page.storeControl.set({
         [varName]: config.name
       })

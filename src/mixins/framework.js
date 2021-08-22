@@ -22,7 +22,6 @@ export let PageControl = {
  */
 export let usePage  = function ({data = {} , filters = {}, defaultVal = {}} = {}) {
   let router = useRouter()
-  let self = this
   let meta = {}
   if (router.currentRoute && router.currentRoute.value) {
     meta = router.currentRoute.value.meta
@@ -62,7 +61,7 @@ export let usePage  = function ({data = {} , filters = {}, defaultVal = {}} = {}
   }
 
   function getPartModel(stepName, partName) {
-    console.log('httpComContext', stepName, partName, httpComContext[stepName])
+    // console.log('httpComContext', stepName, partName, httpComContext[stepName])
     return httpComContext[stepName].runPart(partName, 'getModel',
 
     )
