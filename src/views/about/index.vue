@@ -318,7 +318,7 @@ ${formEditorConfig({
                           rules: {
                             type: 'string',
                             ui: {
-                              widget: 'AceJsEditor',
+                              widget: 'JsonCodeEditor',
                               widgetConfig: {
                                 style: {
                                   height: "200px",
@@ -458,12 +458,13 @@ export default defineComponent({
         let oldVal = ZY.lodash.get(self.currentEditDep, key)
         if (oldVal !== newVal) {
           self.currentEditDep[key] = newVal
-          console.log(key, newVal)
+          // console.log(key, newVal)
         }
         if (self.currentEditDep.type === 'form') {
-          let contentTpl = function ({ui, properties} = {}) {
+          let contentTpl = function ({ui, properties} = {}, defaultVal) {
             let obj = {
               name: 'process-step1',
+              defaultVal: defaultVal,
               init: {
                 def: {
                   constants: {},
@@ -501,6 +502,19 @@ export default defineComponent({
               {
                 ui: ZY.JSON5.parse(model.parts[0].uis),
                 properties: ZY.JSON5.parse(model.parts[0].properties)
+              },
+              {
+                form2: {
+                  parts: [
+                    {
+                      key: '',
+                      ui_type: '',
+                      ui_label: '',
+                      ui_widgetConfig: '{}',
+                      rules: '{}'
+                    }
+                  ]
+                }
               }
           )
           // console.log(self.currentEditDep.content )
@@ -527,7 +541,7 @@ export default defineComponent({
       };
 
       page.setDef(config, function ({done}) {
-        // console.log('sdsdsds', config, self)
+        console.log('sdsdsds', config, self)
         // ret.updateData()
         for (let [partName, depPath] of Object.entries(config.defaultVal)) {
           // console.log(partName, depPath)
