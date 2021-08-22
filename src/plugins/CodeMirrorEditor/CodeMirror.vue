@@ -148,16 +148,16 @@ const createMirror = () => {
   codeEditor.on("change", (code, change) => {
     //获取值
     emit("update:modelValue", code.getValue());
-    if (
-        change.origin === "+input" &&
-        change.text[0] !== ";" &&
-        change.text[0].trim() !== "" &&
-        change.text[1] !== ""
-    ) {
-      codeEditor.showHint({
-        completeSingle: false,
-      });
-    }
+    // if (
+    //     change.origin === "+input" &&
+    //     change.text[0] !== ";" &&
+    //     change.text[0].trim() !== "" &&
+    //     change.text[1] !== ""
+    // ) {
+    //   codeEditor.showHint({
+    //     completeSingle: false,
+    //   });
+    // }
   });
 };
 onMounted(() => {
