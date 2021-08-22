@@ -1,26 +1,21 @@
 <template>
-  <v-ace-editor
-      v-model:value="content"
-      @init="editorInit"
-      @update:value="editorChange"
-      lang="javascript"
-      theme="chrome"
-      :style="styleObj" />
+<!--  <v-ace-editor-->
+<!--      v-model:value="content"-->
+<!--      @init="editorInit"-->
+<!--      @update:value="editorChange"-->
+<!--      lang="javascript"-->
+<!--      theme="chrome"-->
+<!--      :style="styleObj" />-->
+  <CodeMirror v-model="content"
+              @update:modelValue="editorChange"
+              :height="styleObj.height"
+              mode="text/javascript" />
 </template>
 
 <script>
-import { VAceEditor } from 'vue3-ace-editor';
-// import 'brace/ext/language_tools' //language extension prerequsite...
-import 'brace/mode/html'
-import 'brace/mode/javascript'    //language
-import 'brace/mode/less'
-import 'brace/theme/chrome'
-import 'brace/snippets/javascript' //snippet
-
 export default {
-  name: 'AceJsEditor',
+  name: 'CodeJsEditor',
   components: {
-    VAceEditor
   },
   emits: ['update:value', 'init'],
   props: {
@@ -30,7 +25,6 @@ export default {
   data() {
     let lock = new ZY.Lock(/* optional lock name, should be unique */)
     let widgetConfigStyle = ZY.lodash.get(this, 'ui.widgetConfig.style')
-    console.log(this)
     return {
       content: '',
       lock,
@@ -50,10 +44,6 @@ export default {
     }
   },
   methods: {
-    editorInit: function (editor) {
-      // console.log('editorInit', editor)
-      import('./AceEditor/ext')
-    },
     editorChange: function (e) {
       // console.log('editorChange', e)
       this.lock.lock( () => {

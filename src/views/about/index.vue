@@ -34,7 +34,7 @@
 <template>
   <div class="page-search">
     {{store.model}}
-    <CodeMirror v-model="store.model.code_str" mode="text/javascript" />
+<!--    <CodeMirror v-model="store.model.code_str" mode="text/javascript" />-->
     <div>
       <div v-if="showCurrent">
         <render-layout :map="currentLayoutMap"
@@ -309,10 +309,10 @@ ${formEditorConfig({
                           ui_widgetConfig: {
                             type: 'string',
                             ui: {
-                              widget: 'AceJsEditor',
+                              widget: 'CodeJsEditor',
                               widgetConfig: {
                                 style: {
-                                  height: "100px",
+                                  // height: "200px",
                                 }
                               }
                             }

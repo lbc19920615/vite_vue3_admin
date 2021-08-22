@@ -7,6 +7,7 @@ import CusSubmitButton from "@/components/CustomForm/CusSubmitButton.vue";
 import VantDateTimePicker from "@/components/CustomVant/VantDateTimePicker.vue";
 
 import jsxCom from '@/components/jsxcom.vue'
+import CodeJsEditor from '@/components/CodeEditor/CodeJsEditor.vue'
 import HttpComponent from '@/components/HttpComponent.vue'
 import AceJsEditor from '@/components/CodeEditor/AceJsEditor.vue'
 
@@ -21,6 +22,7 @@ const plugin = {
         app.component(UnitInput.name, UnitInput)
         app.component(CusDateTimePicker.name, CusDateTimePicker)
         app.component(CusSelect.name, CusSelect)
+        app.component(CodeJsEditor.name, CodeJsEditor)
         app.component(VantDateTimePicker.name, VantDateTimePicker)
         app.component(AceJsEditor.name, AceJsEditor)
 

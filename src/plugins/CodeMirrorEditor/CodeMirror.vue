@@ -1,9 +1,9 @@
 <template>
-  <textarea id="editor" class="code-mirror" />
+  <textarea ref="editorRef" class="code-mirror" />
 </template>
 
 <script setup>
-import { onMounted, watch } from "vue";
+import {onMounted, ref, watch} from "vue";
 import CodeMirrorLib from "codemirror/lib/codemirror";
 // base style
 import "codemirror/lib/codemirror.css";
@@ -127,9 +127,16 @@ const props = defineProps({
   options: Object,
   modelValue: String,
   table: Array,
+  width: null,
+  height: {
+    type: [Number],
+    default: 200,
+  }
 });
 const emit = defineEmits();
-let editor = document.getElementById("editor");
+// let editor = document.getElementById("editor");
+let editorRef = ref(null)
+let editor = null
 let codeEditor = null;
 const createMirror = () => {
   codeEditor = CodeMirror.fromTextArea(editor, {
@@ -143,8 +150,9 @@ const createMirror = () => {
     ...modeOption[props.mode.split("/")[1]],
     ...props.options,
   });
+  codeEditor.setSize(props.width, props.height);
   //赋值 SELECT * FROM s as a WHERE a.i
-  codeEditor.setValue(props.modelValue);
+  codeEditor.setValue(props.modelValue ? props.modelValue : '');
   codeEditor.on("change", (code, change) => {
     //获取值
     emit("update:modelValue", code.getValue());
@@ -161,8 +169,9 @@ const createMirror = () => {
   });
 };
 onMounted(() => {
-  editor = document.getElementById("editor");
-  editor.value = "";
+  // editor = document.getElementById("editor");
+  // editor.value = "";
+  editor = editorRef.value
   createMirror();
 });
 watch(
@@ -176,8 +185,10 @@ watch(
 </script>
 
 <style>
-.code-mirror {
-  width: 100%;
-  height: 100%;
+.code-mirror + .CodeMirror {
+  /*width: 100%;*/
+  /*height: 100%;*/
+  line-height: 1.15;
+  line-height: initial;
 }
 </style>
