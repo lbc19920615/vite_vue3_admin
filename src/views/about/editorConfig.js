@@ -58,8 +58,9 @@ export let formEditorConfig = function (defaultVal = {}) {
                                 label: 'UI',
                                 widget: 'JsonCodeEditor',
                                 widgetConfig: {
-                                    type: "textarea",
-                                    rows: 10
+                                    style: {
+                                        height: "100px",
+                                    }
                                 }
                             }
                         },
@@ -69,8 +70,9 @@ export let formEditorConfig = function (defaultVal = {}) {
                                 label: 'SCHEMA',
                                 widget: 'JsonCodeEditor',
                                 widgetConfig: {
-                                    type: "textarea",
-                                    rows: 10
+                                    style: {
+                                        height: "500px",
+                                    }
                                 }
                             }
                         },

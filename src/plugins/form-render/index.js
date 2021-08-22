@@ -8,6 +8,7 @@ import VantDateTimePicker from "@/components/CustomVant/VantDateTimePicker.vue";
 
 import jsxCom from '@/components/jsxcom.vue'
 import HttpComponent from '@/components/HttpComponent.vue'
+import AceJsEditor from '@/components/CodeEditor/AceJsEditor.vue'
 
 const plugin = {
     install(app) {
@@ -21,7 +22,7 @@ const plugin = {
         app.component(CusDateTimePicker.name, CusDateTimePicker)
         app.component(CusSelect.name, CusSelect)
         app.component(VantDateTimePicker.name, VantDateTimePicker)
-
+        app.component(AceJsEditor.name, AceJsEditor)
 
         app.component(CusSubmitButton.name, CusSubmitButton)
         app.component(jsxCom.name, jsxCom)

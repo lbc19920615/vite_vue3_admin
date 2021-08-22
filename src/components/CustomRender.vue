@@ -11,6 +11,9 @@ export default defineComponent({
         return {}
       }
     },
+    debug: {
+      type: Boolean
+    },
     modelValue: null,
     render: null
   },
@@ -50,9 +53,11 @@ export default defineComponent({
       emit('update:modelValue', e)
     }
 
+    console.log('custom render', props)
+
     return () => (
         <>
-        <widgetDef ui={props.ui} render={render} ref={widgetInstance}  onChange={onChange} onUpdate:modelValue={onUpdateModelValue}
+        <widgetDef ui={props.ui} debug={props.debug} render={render} ref={widgetInstance}  onChange={onChange} onUpdate:modelValue={onUpdateModelValue}
                              modelValue={obj.value} config={widgetConfig}>
 
     </widgetDef>

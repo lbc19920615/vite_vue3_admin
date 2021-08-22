@@ -43,7 +43,8 @@ export default defineComponent( {
       httpCtx = h(HttpComponent, {
         defs: page.allDef,
         is:  step.value,
-        slotContent: props.slotContent ? props.slotContent : ctx.slots
+        slotContent: props.slotContent ? props.slotContent : ctx.slots,
+        debug: true,
       })
       return httpCtx
     }

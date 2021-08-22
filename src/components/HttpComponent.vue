@@ -1,4 +1,4 @@
-<template><custom-render v-if="ui.widget" :render="render" :ui="ui"></custom-render></template>
+<template><custom-render v-if="ui.widget" :debug="debug" :render="render" :ui="ui"></custom-render></template>
 
 <script lang="jsx">
 import {defineComponent, watch, reactive, provide, ref, getCurrentInstance, inject} from "vue";
@@ -17,6 +17,9 @@ export default defineComponent({
       required: true
     },
     slotContent: null,
+    debug: {
+      type: Boolean
+    },
     defs: {
       type: Map,
       default() {

@@ -279,21 +279,55 @@ ${formEditorConfig({
                   , null, 2),
               properties: ZY.JSON5.stringify(
                   {
-                    name: {
-                      type: 'string',
-                      ui: {
-                        label: '名称',
-                      },
-                    },
-                    content: {
-                      type: 'string',
-                      ui: {
-                        label: '代码',
-                        widgetConfig: {
-                          type: 'textarea',
-                          rows: 10,
-                        },
-                      },
+                    parts: {
+                      type: 'array',
+                      items: {
+                        type: "object",
+                        properties: {
+                          key: {
+                            type: 'string',
+                            ui: {
+                            }
+                          },
+                          ui_type: {
+                            type: 'string',
+                            ui: {
+                            }
+                          },
+                          ui_label: {
+                            type: 'string',
+                            ui: {
+                            }
+                          },
+                          ui_widget: {
+                            type: 'string',
+                            ui: {
+                            }
+                          },
+                          ui_widgetConfig: {
+                            type: 'string',
+                            ui: {
+                              widget: 'AceJsEditor',
+                              widgetConfig: {
+                                style: {
+                                  height: "100px",
+                                }
+                              }
+                            }
+                          },
+                          rules: {
+                            type: 'string',
+                            ui: {
+                              widget: 'AceJsEditor',
+                              widgetConfig: {
+                                style: {
+                                  height: "200px",
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
                     },
                   }
                   , null, 2),

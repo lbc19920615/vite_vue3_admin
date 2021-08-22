@@ -1,15 +1,14 @@
 <style scoped>
 .editor {
-  height: 300px;
 }
 </style>
 
 <template>
-  <div class="editor" ref="dom"></div>
+  <div class="editor" :style="styleObj" ref="dom"></div>
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import {onMounted, ref, reactive} from 'vue';
 import * as monaco from 'monaco-editor';
 
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
@@ -37,7 +36,20 @@ self.MonacoEnvironment = {
 
 const props = defineProps({
   modelValue: String,
+  height: {
+    type: String,
+    default: '300px'
+  },
+  ui: null
 });
+
+
+let widgetConfigStyle = ZY.lodash.get(props, 'ui.widgetConfig.style')
+
+let styleObj = reactive({
+  height: props.height,
+  ...widgetConfigStyle
+})
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -87,7 +99,6 @@ onMounted(() => {
       'typescript',
       // monaco.Uri.parse('{}')
   );
-
 
   instance = monaco.editor.create(dom.value, {
     model: jsonModel,
