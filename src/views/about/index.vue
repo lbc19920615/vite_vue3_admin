@@ -46,8 +46,10 @@
         :is="store.model.textarea_step"
     >
       <template #array_before="scope">
-<!--         {{scope}}-->
-        <el-button @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>
+        <el-row class="u-sizeFull" type="flex" justify="space-between" align="middle">
+          <h3>{{scope.selfpath}}</h3>
+          <el-button @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>
+        </el-row>
       </template>
       <template #array_item_after="scope">
 <!--                 {{scope}}-->
@@ -502,7 +504,7 @@ export default defineComponent({
 
     page.setEventHandler({
       ['add:event'](e) {
-        // console.log('sdsdsdsdsdsds', e)
+        console.log('sdsdsdsdsdsds', e)
         let { parts, partName, selfpath, process } = e
         // console.log('add:event', e, model)
 
