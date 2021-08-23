@@ -7,6 +7,6 @@ export function log(...args) {
 
 export function setupLoggerHandler() {
     PubSub.subscribe(SYSTEM_CONSOLE_LOG, function (msg, ...args) {
-        console.log(...args)
+        // console.log(...args)
     })
 }
