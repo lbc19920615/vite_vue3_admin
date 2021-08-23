@@ -347,6 +347,9 @@ let plumbLayoutMixin = {
 export default {
   name: "DeepPropEditor",
   components: {AsyncPlumbLayout},
+  props: {
+    serviceName: String
+  },
   mixins: [
     plumbLayoutMixin,
     depManagerMixin
@@ -356,8 +359,12 @@ export default {
       rootId: 'i111',
     }
   },
-  setup() {
+  setup(props) {
     let self = getCurrentInstance().ctx
+    // console.log('serviceName', props.serviceName)
+    // let { $SERVICE_ID } = await globalThis.createServiceCom()
+    // let serviceName = globalThis.createServiceComSync()
+    let serviceName = props.serviceName
     let page = usePage({
       data: {
         editor_step: {
@@ -369,7 +376,8 @@ export default {
       },
       defaultVal: {
         editor_step: '',
-      }
+      },
+      serviceName,
     })
 
     page.setEventHandler({

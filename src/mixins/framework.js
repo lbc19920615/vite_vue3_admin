@@ -1,6 +1,5 @@
 import {inject} from "vue";
 import {provideRefManager} from "@/hooks/ref";
-import mitt from "mitt";
 import {useRouter} from "vue-router";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
 
@@ -18,12 +17,14 @@ export let PageControl = {
  *
  * @param data
  * @param filters
+ * @param defaultVal
+ * @param serviceName
  * @returns {{setDef: setDef, refsManager: {Refs: Map<unknown, unknown>}, meta: {}, getPartModel: (function(*=, *=): void), setPartModel: (function(*, *=, *=): void), storeControl: {}, setEventHandler: setEventHandler, httpComContext: {}, allDef: Map<any, any>}}
  */
-export let usePage  = function ({data = {} , filters = {}, defaultVal = {}} = {}) {
+export let usePage  = function ({data = {} , filters = {}, defaultVal = {}, serviceName = ''} = {}) {
   let router = useRouter()
   let meta = {}
-  if (router.currentRoute && router.currentRoute.value) {
+  if (router && router.currentRoute && router.currentRoute.value) {
     meta = router.currentRoute.value.meta
   }
   let httpComContext = {}
@@ -77,8 +78,13 @@ export let usePage  = function ({data = {} , filters = {}, defaultVal = {}} = {}
     // events[name] = new Function('options', `fun()`)
   }
 
+
+  let service = serviceName ? serviceName : meta.pageServiceName
+
+  // console.log(serviceName, meta, service)
+
   storeControl = defineAutoStoreControl({
-    service: meta.pageServiceName,
+    service: service,
     data: {
       type: 'object',
       properties: {

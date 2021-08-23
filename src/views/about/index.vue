@@ -32,7 +32,13 @@
 </style>
 
 <template>
-  <DeepPropEditor></DeepPropEditor>
+  <AsyncComponent>
+    <template #default="scope">
+<!--      {{scope.serviceName}}-->
+      <DeepPropEditor :service-name="scope.serviceName"></DeepPropEditor>
+    </template>
+  </AsyncComponent>
+<!--  <DeepPropEditor ></DeepPropEditor>-->
 
   <div class="page-search">
     {{store.model}}
@@ -415,6 +421,7 @@ import AutoHttpCom from "@/components/AutoHttpCom.vue";
 import {formEditorConfig, rowEditorConfig} from "@/views/about/editorConfig";
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
 import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
+import AsyncComponent from "@/components/AsyncComponent.vue";
 
 export default defineComponent({
   mixins: [
@@ -432,6 +439,7 @@ export default defineComponent({
     }
   },
   components: {
+    AsyncComponent,
     DeepPropEditor,
     AsyncPlumbLayout,
     AutoHttpCom,

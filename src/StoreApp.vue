@@ -46,12 +46,11 @@ export default defineComponent({
   },
   setup(props, ctx){
 
-
     let appInstance = getCurrentInstance()
     let serviceNames = ref([
     ])
 
-    function installServiceComponent(serviceName, res) {
+    function installServiceComponent(serviceName, res, {onMounted} = {}) {
       const service = res.install(Vue)
       if (!service.mixins) {
         service.mixins = []
@@ -68,15 +67,22 @@ export default defineComponent({
           this.RefsManager = servicesManager.register(this, serviceName)
           // console.log(serviceName, servicesManager.Refs)
         },
+        mounted() {
+          console.log('mounted')
+          if (onMounted) {
+            onMounted()
+          }
+        },
         beforeUnmount() {
           const servicesManager = inject('servicesManager');
           servicesManager.destory(this.RefsManager.uuid)
         },
       })
       appInstance.appContext.app.component(serviceName, service)
-      setTimeout(() => {
-        serviceNames.value.push(serviceName)
-      }, 16)
+      // setTimeout(() => {
+      //   serviceNames.value.push(serviceName)
+      // }, 16)
+      serviceNames.value.push(serviceName)
     }
 
     /**

@@ -39,7 +39,28 @@ export default defineComponent({
       ['serviceD', '/public/services/work/serviceD.js'],
     ]
     globalStore.installExposeServices(serviceArr)
+    let cachedServiceDef = null
     // global.fetchTwigComponent = fetchTwigComponent
+    globalThis.ServiceID = function (prefix = 'Service') {
+      return prefix + ZY.nid(6)
+    }
+
+    globalThis.createServiceComFromCache = function (id = ServiceID()) {
+      // console.log('cachedServiceDef', cachedServiceDef)
+       return new Promise(resolve => {
+         if (cachedServiceDef) {
+           let name = id
+           // console.log(name)
+           globalStore.installServiceComponent(name, cachedServiceDef.script, {
+             onMounted() {
+               console.log('onMounted')
+               resolve(name)
+             }
+           })
+         }
+       })
+    }
+
     /**
      * createServiceCom
      * @param def
@@ -47,8 +68,7 @@ export default defineComponent({
      * @param serviceID
      * @returns {Promise<*>}
      */
-    global.createServiceCom = async function ({def = {}, args = {}} = {}, serviceID = ZY.nid()) {
-
+    globalThis.createServiceCom = async function ({def = {}, args = {}} = {}, serviceID = ZY.nid()) {
       def.$SELF_NAME = serviceID
       let [err, res] = await ZY.awaitTo(
           fetchTwigComponent( serviceID, {
@@ -63,6 +83,9 @@ export default defineComponent({
         console.log('fetchTwigComponent err')
         return Promise.reject(err);
       }
+      res.$SERVICE_ID = serviceID
+      cachedServiceDef = res
+      // console.log('res.script', res.script)
       globalStore.installServiceComponent(res.name, res.script)
       return res
     }
