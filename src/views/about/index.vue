@@ -47,7 +47,16 @@
     >
       <template #array_before="scope">
 <!--         {{scope}}-->
-        <el-button @click="page.callEvent('add:event', scope)">添加event</el-button>
+        <el-button @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>
+      </template>
+      <template #array_item_after="scope">
+<!--                 {{scope}}-->
+        <el-button @click="page.callEvent('remove:event', scope)">删除{{ scope.key }}</el-button>
+      </template>
+      <template #form_after="scope">
+        <CusSubmitButton
+            :scope="scope"
+            class="el-col z-submit-btn"></CusSubmitButton>
       </template>
     </HttpComponent>
   </template>
@@ -493,16 +502,20 @@ export default defineComponent({
 
     page.setEventHandler({
       ['add:event'](e) {
-        let { parts, partName, key, process } = e
-        let model = parts[partName].getModel()
+        // console.log('sdsdsdsdsdsds', e)
+        let { parts, partName, selfpath, process } = e
         // console.log('add:event', e, model)
 
-        let target = ZY.lodash.get(model, key)
-        target.push({})
-
-        console.log(target)
-
-        page.setPartModel(process, partName, target)
+        parts[partName].arrAppend(selfpath)
+        // console.log(parts[partName])
+        // let target = ZY.lodash.get(model, key)
+        // target.push({})
+        // page.setPartModel(process, partName, target)
+      },
+      ['remove:event'](e) {
+        console.log('sdsdsdsdsdsds', e)
+        let { parts, partName, fromPath, indexKey } = e
+        parts[partName].appSplice(fromPath, indexKey)
       },
       ['submit:form'](e) {
         let { scope, parts } = e
