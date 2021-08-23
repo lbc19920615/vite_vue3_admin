@@ -136,10 +136,16 @@ export let usePage  = function ({data = {} , filters = {}, defaultVal = {}, serv
     }
   }
 
+  let EVENT_TYPES = {
+    ARR_APPEND: 'arr_append_' + ZY.nid(6),
+    ARR_SPLICE: 'arr_splice_' + ZY.nid(6),
+  }
+
   return {
     allDef,
     setEventHandler,
     // addListener,
+    EVENT_TYPES,
     meta,
     storeControl,
     callEvent,
