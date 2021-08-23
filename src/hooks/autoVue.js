@@ -117,7 +117,7 @@ export function defineAutoStoreControl(config = { data: {}, computed: {}}) {
 
 
   // console.log('obj', obj)
-  console.log(config, globalStore.serviceNames)
+  // console.log(config, globalStore.serviceNames)
 
   let model = null
   ret = globalStore.run(config.service, 'initModel', {

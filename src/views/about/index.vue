@@ -32,17 +32,26 @@
 </style>
 
 <template>
-  <AsyncComponent>
-    <template #default="scope">
-<!--      {{scope.serviceName}}-->
-      <DeepPropEditor :service-name="scope.serviceName"></DeepPropEditor>
-    </template>
-  </AsyncComponent>
-<!--  <DeepPropEditor ></DeepPropEditor>-->
+<!--  <AsyncComponent>-->
+<!--    <template #default="scope">-->
+<!--&lt;!&ndash;      {{scope.serviceName}}&ndash;&gt;-->
+<!--      <DeepPropEditor :service-name="scope.serviceName"></DeepPropEditor>-->
+<!--    </template>-->
+<!--  </AsyncComponent>-->
 
   <div class="page-search">
-    {{store.model}}
-<!--    <CodeMirror v-model="store.model.code_str" mode="text/javascript" />-->
+  <template v-if="store.model.textarea_step">
+    <HttpComponent
+        :defs="allDef"
+        :is="store.model.textarea_step"
+    >
+      <template #array_before="scope">
+<!--         {{scope}}-->
+        <el-button @click="page.callEvent('add:event', scope)">添加event</el-button>
+      </template>
+    </HttpComponent>
+  </template>
+<!--    {{store.model}}-->
     <div>
       <div v-if="showCurrent">
         <render-layout :map="currentLayoutMap"
@@ -457,6 +466,9 @@ export default defineComponent({
         },
         code_str: {
           type: String,
+        },
+        textarea_step: {
+          type: String
         }
       },
       filters: {
@@ -465,10 +477,33 @@ export default defineComponent({
       defaultVal: {
         editor_step: '',
         code_str: '',
+        textarea_step: '',
       }
     })
 
+    page.commonLoadStepByContent(
+        import('./EventEditorConfig'),
+        'textarea_step',
+        {
+          onMounted(config) {
+            console.log('sdsdsdsds')
+          }
+        }
+    )
+
     page.setEventHandler({
+      ['add:event'](e) {
+        let { parts, partName, key, process } = e
+        let model = parts[partName].getModel()
+        // console.log('add:event', e, model)
+
+        let target = ZY.lodash.get(model, key)
+        target.push({})
+
+        console.log(target)
+
+        page.setPartModel(process, partName, target)
+      },
       ['submit:form'](e) {
         let { scope, parts } = e
         let model = parts[scope.name].getModel()
@@ -476,70 +511,73 @@ export default defineComponent({
       },
       ['model:update'](e) {
         let { model, key, newVal, config } = e
-        let oldVal = ZY.lodash.get(self.currentEditDep, key)
-        if (oldVal !== newVal) {
-          self.currentEditDep[key] = newVal
-          // console.log(key, newVal)
-        }
-        if (self.currentEditDep.type === 'form') {
-          let contentTpl = function ({ui, properties} = {}, defaultVal) {
-            let obj = {
-              name: 'process-step1',
-              defaultVal: defaultVal,
-              init: {
-                def: {
-                  constants: {},
-                  parts: [
-                    {
-                      type: "form",
-                      name: "form2",
-                      serviceTpl: {
-                        def: {},
-                        args: {
-                          src: 'bservice.twig',
-                        },
-                      },
-                      def: {
-                        type: 'object',
-                        ui,
-                        properties
-                      },
-                      computed: {
-                        doubled: "MODEL('name', '') + ',s'",
-                      },
-                    }
-                  ]
-                },
-                args: {
-                  src: 'comformscr.twig'
-                }
-              }
-            }
-            // console.log(obj)
-            return ZY.JSON5.stringify(obj)
+        // console.log(config, page.store.model)
+        if (config.process === page.store.model.editor_step) {
+          let oldVal = ZY.lodash.get(self.currentEditDep, key)
+          if (oldVal !== newVal) {
+            self.currentEditDep[key] = newVal
+            // console.log(key, newVal)
           }
-          // console.log(model.parts[0])
-          self.currentEditDep.content = contentTpl(
-              {
-                ui: ZY.JSON5.parse(model.parts[0].uis),
-                properties: ZY.JSON5.parse(model.parts[0].properties)
-              },
-              {
-                form2: {
-                  parts: [
-                    {
-                      key: '',
-                      ui_type: '',
-                      ui_label: '',
-                      ui_widgetConfig: '{}',
-                      rules: '{}'
-                    }
-                  ]
+          if (self.currentEditDep.type === 'form') {
+            let contentTpl = function ({ui, properties} = {}, defaultVal) {
+              let obj = {
+                name: 'process-step1',
+                defaultVal: defaultVal,
+                init: {
+                  def: {
+                    constants: {},
+                    parts: [
+                      {
+                        type: "form",
+                        name: "form2",
+                        serviceTpl: {
+                          def: {},
+                          args: {
+                            src: 'bservice.twig',
+                          },
+                        },
+                        def: {
+                          type: 'object',
+                          ui,
+                          properties
+                        },
+                        computed: {
+                          doubled: "MODEL('name', '') + ',s'",
+                        },
+                      }
+                    ]
+                  },
+                  args: {
+                    src: 'comformscr.twig'
+                  }
                 }
               }
-          )
-          // console.log(self.currentEditDep.content )
-          localStorage.setItem('currentEditDepContent', self.currentEditDep.content)
+              // console.log(obj)
+              return ZY.JSON5.stringify(obj)
+            }
+            // console.log(model.parts[0])
+            self.currentEditDep.content = contentTpl(
+                {
+                  ui: ZY.JSON5.parse(model.parts[0].uis),
+                  properties: ZY.JSON5.parse(model.parts[0].properties)
+                },
+                {
+                  form2: {
+                    parts: [
+                      {
+                        key: '',
+                        ui_type: '',
+                        ui_label: '',
+                        ui_widgetConfig: '{}',
+                        rules: '{}'
+                      }
+                    ]
+                  }
+                }
+            )
+            // console.log(self.currentEditDep.content )
+            localStorage.setItem('currentEditDepContent', self.currentEditDep.content)
+          }
         }
       }
     })
@@ -582,7 +620,7 @@ export default defineComponent({
 
 
       await nextTick()
-      console.log('config', config)
+      // console.log('config', config)
 
       page.storeControl.set({
         [varName]: config.name

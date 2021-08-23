@@ -89,7 +89,7 @@ export default defineComponent({
     async function handleIsChanged(newVal) {
       comName = props.comPrefix + v4()
       let config = props.defs.get(props.is)
-      log(['fetchComponent', props.is, config])
+      log(['fetchComponent', props.is, props.defs])
 
       if (config) {
         if (config.init) {

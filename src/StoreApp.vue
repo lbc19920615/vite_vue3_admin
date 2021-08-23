@@ -68,7 +68,7 @@ export default defineComponent({
           // console.log(serviceName, servicesManager.Refs)
         },
         mounted() {
-          console.log('mounted')
+          // console.log('mounted')
           if (onMounted) {
             onMounted()
           }

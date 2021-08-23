@@ -1,4 +1,4 @@
-import {inject} from "vue";
+import {inject, nextTick} from "vue";
 import {provideRefManager} from "@/hooks/ref";
 import {useRouter} from "vue-router";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
@@ -96,12 +96,54 @@ export let usePage  = function ({data = {} , filters = {}, defaultVal = {}, serv
 
   storeControl.set(defaultVal)
 
+  async function commonLoadStepByContent( loadPromise, varName = '', {
+    onMounted
+  }) {
+    let [,res] = await ZY.awaitTo(
+      loadPromise
+    )
+    const config = res.default
+    config.name = ZY.nid()
+
+    setDef(config, function ({done}) {
+      // let cached = null
+      // if (item.data) {
+      //   cached = JSON5.parse(item.data)
+      // }
+      let JSON5 = ZY.JSON5
+      for (let [partName, data] of Object.entries(config.defaultVal)) {
+        let defaultObj = JSON5.parse(JSON5.stringify(data))
+
+        setPartModel( config.name, partName,
+          defaultObj
+        )
+      }
+      if (onMounted) {
+        onMounted(config)
+      }
+      done()
+    })
+    await nextTick()
+    storeControl.set({
+      [varName]: config.name
+    })
+    console.log(storeControl.store)
+  }
+
+  function callEvent(name, e) {
+    if (eventHandleMap[name]) {
+      eventHandleMap[name](e)
+    }
+  }
+
   return {
     allDef,
     setEventHandler,
     // addListener,
     meta,
     storeControl,
+    callEvent,
+    commonLoadStepByContent,
     store: storeControl.store,
     filter: storeControl.filter,
     setDef,
