@@ -2,7 +2,7 @@
   "name": "vite_vue3_admin",
   "version": "0.1.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "serve": "vite preview",
     "ser": "pm2 start server.js --name vite_vue3_admin",
