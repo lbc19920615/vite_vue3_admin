@@ -151,6 +151,7 @@ export default {
     })
 
     let allDef = new Map()
+    const globalStore = inject('globalStore')
 
     storeControl = defineAutoStoreControl({
       service: 'serviceB',
@@ -198,7 +199,9 @@ export default {
       filters: {
         showCom: "ZY_NOT(MODEL('reload'))",
         showDialogCom: "ZY_NOT(MODEL('dialogReload'))",
-      }
+      },
+      globalStore,
+      rootStore
     })
 
     storeControl.set({

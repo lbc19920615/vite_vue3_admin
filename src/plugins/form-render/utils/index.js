@@ -16,6 +16,7 @@ export let CustomRenderControlMixin = {
             }
         },
         rules: null,
+        // context 是一个com
         context: null,
         config: {
             type: Object,
