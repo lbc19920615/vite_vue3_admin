@@ -4,26 +4,36 @@
 <!--    <div>{{store.model}}</div>-->
     <div>{{store.computedModel}}</div>
 
-    <el-input v-model="store.model.swaggerOrigin" placeholder="placeholder"></el-input>
-    <submit-button @submit="onSubmit">开始分析</submit-button>
+    <el-row type="flex" align="middle">
+      <el-input style="width: 600px" v-model="store.model.swaggerOrigin" placeholder="placeholder"></el-input>
+      <submit-button @submit="onSubmit">开始分析</submit-button>
+    </el-row>
 
     <div v-if="page.val('options')">
+      <h3>服务</h3>
       <EwSelect v-model="store.model.selectedValue" :options="store.model.options"></EwSelect>
     </div>
 
-    <div v-if="page.val('currentSwagger')">
-      <textarea style="width: 100%; height: 30vh" v-model="store.model.currentSwagger"></textarea>
-    </div>
+    <el-row type="flex" align="start" v-if="page.val('currentSwagger')">
+      <el-col :span="12">
+        <h3>JSON</h3>
+        <textarea style="width: 100%; height: 30vh" v-model="store.model.currentSwagger"></textarea>
+      </el-col>
 
-    <div v-for="file in store.model.files">
-      <a :href="file" target="_blank" download>{{file}}</a>
-    </div>
+      <el-col :span="12">
+        <h3>JS文件</h3>
+        <div v-for="file in store.model.files">
+          <a  :href="file" target="_blank" download>{{file}}</a>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script setup>
 import SubmitButton from "@/components/SubmitButton.vue"
 import EwSelect from "@/components/Ew/EwSelect.vue"
-import {onMounted, reactive, ref} from "vue";
+import {getCurrentInstance, nextTick, onMounted, reactive, ref} from "vue";
+import { ElMessage } from 'element-plus'
 import {useControl} from "@/mixins/framework";
 
 let SEVER_ORIGIN = `http://192.168.1.67:7001/`
@@ -74,10 +84,14 @@ let page = useControl({properties, computed}, {
 })
 let store = page.store
 
+let ctx = getCurrentInstance().ctx
+
 let computedChange = {
   async ['selectedOption'](newVal) {
     console.log('newVal', newVal)
     if (newVal) {
+      page.setByPath('files', [])
+      await nextTick()
       let jsonOrigin = `${page.val('swaggerOrigin')}${newVal.value}`
       let [,{data}] = await ZY.awaitTo(
           globalThis.Req.get(jsonOrigin)
@@ -87,9 +101,15 @@ let computedChange = {
       // console.log(JSON.stringify(data, null, 2))
       // http://192.168.1.67:7001/?url=http://192.168.1.60:7888/api-system/v2/api-docs&folder=folder3
       let folder = 'folder-' + newVal.label
-      let [,res] = await ZY.awaitTo(
+      let [err,res] = await ZY.awaitTo(
         globalThis.Req.get(`${SEVER_ORIGIN}?url=${jsonOrigin}&folder=${folder}`)
       )
+
+      if (err) {
+        // ctx.$message.error(err)
+        ElMessage.error(err.message ?? '')
+        return;
+      }
       console.log('res', res)
       page.setByPath('files', res.data.files)
     }
