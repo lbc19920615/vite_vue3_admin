@@ -42,6 +42,16 @@ export const constantRouterMap = [
         },
         component: () => import('@/views/home/search.vue'),
       },
+      {
+        path: "demo",
+        name: "Demo",
+
+        meta: {
+          title: 'Demo',
+          // icon: 'shangdian'
+        },
+        component: () => import('@/views/home/demo.vue'),
+      },
     ]
   },
 ];
@@ -72,10 +82,10 @@ router.beforeEach(async (to, from, next) => {
     },  to.meta.pageServiceName)
     metaCache.set(to.name, to)
   } else {
-    to.meta = Object.assign({}, to.meta, metaCache.get(to.name))
+    to.meta = Object.assign({}, to.meta, metaCache.get(to.name).meta)
   }
 
-  console.log(to.name, to.meta)
+  // console.log(to.name, to.meta)
 
   next()
 })
