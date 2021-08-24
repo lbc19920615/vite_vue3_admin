@@ -17,7 +17,8 @@
     <el-row type="flex" align="start" v-if="page.val('currentSwagger')">
       <el-col :span="12">
         <h3>JSON</h3>
-        <textarea style="width: 100%; height: 30vh" v-model="store.model.currentSwagger"></textarea>
+        <json-viewer :value="store.model.currentSwagger" copyable boxed sort />
+<!--        <textarea style="width: 100%; height: 30vh" v-model="store.model.currentSwagger"></textarea>-->
       </el-col>
 
       <el-col :span="12">

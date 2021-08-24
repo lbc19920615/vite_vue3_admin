@@ -14,6 +14,8 @@ import 'normalize.css/normalize.css'
 import 'suitcss-utils-size/index.css'
 import 'font-awesome/css/font-awesome.css'
 
+import JsonViewer from "vue3-json-viewer";
+
 // element
 import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
@@ -84,6 +86,7 @@ window.startApp = function () {
   // app.use(VueGridLayout)
   app.use(CustomFormRenderPlugin)
   app.use(highlightPlugin)
+  app.use(JsonViewer)
   app.use(CodeMirrorPlugin)
   app.use(eventBus)
   app.use(icons)
