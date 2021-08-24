@@ -1,7 +1,8 @@
-import {inject, nextTick} from "vue";
+import {inject, nextTick, onMounted, reactive, ref} from "vue";
 import {provideRefManager} from "@/hooks/ref";
 import {useRouter} from "vue-router";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
+import {useStore} from "vuex";
 
 export let PageControl = {
   created() {
@@ -13,6 +14,109 @@ export let PageControl = {
   },
 }
 
+
+export function useControl({properties, computed, filters}, {onInited}) {
+  const rootStore = useStore()
+  const globalStore = inject('globalStore')
+
+  let inited = ref(false)
+  let store = reactive({
+    model: {},
+    computedModel: {}
+  })
+  let eventHandleMap = {}
+
+  const EVENT_TYPES = {
+    ARR_APPEND: 'arr_append_' + ZY.nid(6),
+    ARR_SPLICE: 'arr_splice_' + ZY.nid(6),
+    COMPUTED_CHANGE: 'COMPUTED_CHANGE_' + ZY.nid(6),
+  }
+
+  function log(...args) {
+    console.log(...args)
+  }
+  let storeControl
+  let serviceId = 'AsyncComService' + ZY.nid(8).toLowerCase()
+    .replace('_', '')
+    .replace('-', '')
+
+  console.log(globalStore)
+  function init() {
+    globalThis.createServiceComFromCache(serviceId).then((serviceName) => {
+      let router = useRouter()
+      let meta = {}
+      if (router && router.currentRoute && router.currentRoute.value) {
+        meta = router.currentRoute.value.meta
+      }
+      let service = serviceName ? serviceName : meta.pageServiceName
+      log(service)
+
+      storeControl = defineAutoStoreControl({
+        service: service,
+        data: {
+          type: 'object',
+          properties: properties
+        },
+        computed: computed ?? {},
+        filters: filters ?? {},
+        globalStore,
+        rootStore
+      })
+      storeControl.store.beforeAutoVal = function (key, newVal) {
+        // console.log('beforeAutoVal', key, newVal, eventHandleMap[EVENT_TYPES.COMPUTED_CHANGE])
+        if (eventHandleMap[EVENT_TYPES.COMPUTED_CHANGE]) {
+          eventHandleMap[EVENT_TYPES.COMPUTED_CHANGE]({
+            key, newVal
+          })
+        }
+      }
+      log(storeControl.store)
+      store.model = storeControl.store.model
+      store.computedModel = storeControl.store.computedModel
+      inited.value = true
+      if (onInited) {
+        onInited({storeControl})
+      }
+    })
+  }
+
+  onMounted(() => {
+    if (!inited.value) {
+      init.bind(this)()
+    }
+  })
+
+  function val(path) {
+    let hasModel = ZY.lodash.has(store.model, path)
+    if (hasModel) {
+      return ZY.lodash.get(store.model, path)
+    }
+    return ZY.lodash.has(store.computedModel, path)
+  }
+
+  function setByPath(path, v) {
+    let o = {}
+    ZY.lodash.set(o, path, v)
+    storeControl.set(o)
+  }
+
+  function setEventHandler(_eventHandler) {
+    for (let key in _eventHandler) {
+      eventHandleMap[key] = _eventHandler[key]
+    }
+    console.log(eventHandleMap)
+  }
+
+  return {
+    EVENT_TYPES,
+    store,
+    val,
+    setEventHandler,
+    setByPath,
+    inited,
+  }
+}
+
 /**
  *
  * @param data
@@ -22,11 +126,15 @@ export let PageControl = {
  * @returns {{setDef: setDef, refsManager: {Refs: Map<unknown, unknown>}, meta: {}, getPartModel: (function(*=, *=): void), setPartModel: (function(*, *=, *=): void), storeControl: {}, setEventHandler: setEventHandler, httpComContext: {}, allDef: Map<any, any>}}
  */
 export let usePage  = function ({data = {} , filters = {}, defaultVal = {}, serviceName = ''} = {}) {
+  const rootStore = useStore()
+  const globalStore = inject('globalStore')
+
   let router = useRouter()
   let meta = {}
   if (router && router.currentRoute && router.currentRoute.value) {
     meta = router.currentRoute.value.meta
   }
+  console.log('meta', meta)
   let httpComContext = {}
   let allDef = new Map()
   let events = new Map()
@@ -91,7 +199,9 @@ export let usePage  = function ({data = {} , filters = {}, defaultVal = {}, serv
         data
       }
     },
-    filters: filters
+    filters: filters,
+    globalStore,
+    rootStore
   })
 
   storeControl.set(defaultVal)

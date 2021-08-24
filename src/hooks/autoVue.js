@@ -48,11 +48,11 @@ let commonFun = `
  * @param config
  * @returns {{}}
  */
-export function defineAutoStoreControl(config = { data: {}, computed: {}}) {
-  const rootStore = useStore()
-  const globalStore = inject('globalStore')
+export function defineAutoStoreControl(config = { data: {}, computed: {}, globalStore, rootStore}) {
 
-  // console.log('globalStore', globalStore)
+
+  let rootStore = config.rootStore ?? null
+  let globalStore = config.globalStore ?? null
 
   let ret = {
   }
@@ -126,6 +126,9 @@ export function defineAutoStoreControl(config = { data: {}, computed: {}}) {
     callback: {
       onComputedChange(key, newVal) {
         // console.log('onComputedChange', key, newVal)
+        if (ret.beforeAutoVal) {
+          ret.beforeAutoVal(key, newVal)
+        }
         let findKeys = computedLinks[key]
         if (Array.isArray(findKeys)) {
           findKeys.forEach(findKeyItem => {
