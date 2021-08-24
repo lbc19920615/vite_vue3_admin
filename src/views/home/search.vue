@@ -23,7 +23,7 @@
       <el-col :span="12">
         <h3>JS文件</h3>
         <div v-for="file in store.model.files">
-          <a  :href="file" target="_blank" download>{{file}}</a>
+          <a class="el-link" :href="file" target="_blank" download>{{file}}</a>
         </div>
       </el-col>
     </el-row>
