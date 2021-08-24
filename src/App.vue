@@ -53,7 +53,6 @@ export default defineComponent({
            // console.log(name)
            globalStore.installServiceComponent(name, cachedServiceDef.script, {
              onMounted() {
-               console.log('onMounted')
                resolve(name)
              }
            })
