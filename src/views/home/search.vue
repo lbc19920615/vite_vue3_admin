@@ -92,15 +92,15 @@ let computedChange = {
       page.setByPath('files', [])
       await nextTick()
       let jsonOrigin = `${page.val('swaggerOrigin')}${newVal.value}`
-      let [,{data}] = await ZY.awaitTo(
+      let [,{data: data1}] = await ZY.awaitTo(
           globalThis.Req.get(jsonOrigin)
       )
-      page.setByPath('currentSwagger', data)
+      page.setByPath('currentSwagger', data1)
 
       // console.log(JSON.stringify(data, null, 2))
       // http://192.168.1.67:7001/?url=http://192.168.1.60:7888/api-system/v2/api-docs&folder=folder3
       let folder = 'folder-' + newVal.label
-      let [err,res] = await ZY.awaitTo(
+      let [err,{data: data2}] = await ZY.awaitTo(
         globalThis.Req.get(`${SEVER_ORIGIN}?url=${jsonOrigin}&folder=${folder}`)
       )
 
@@ -108,8 +108,7 @@ let computedChange = {
         ElMessage.error(err.message ?? '')
         return;
       }
-      console.log('res', res)
-      page.setByPath('files', res.data.files)
+      page.setByPath('files', data2.files)
     }
   }
 }
@@ -117,10 +116,10 @@ let computedChange = {
 extendControlComputedWatch(page, computedChange)
 
 async function onSubmit() {
-  let [,response] = await ZY.awaitTo(
+  let {data: responseData1} = await ZY.U.awaitAxios(
       globalThis.Req.get(`${page.val('swaggerOrigin')}/swagger-resources`)
   )
-  let optionsM = ZY.U.objArr2OptionsManager(response.data, 'name', 'location')
+  let optionsM = ZY.U.objArr2OptionsManager(responseData1, 'name', 'location')
   // console.log(optionsM)
   page.setByPath('options', optionsM.options)
 }
