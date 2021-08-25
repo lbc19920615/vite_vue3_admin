@@ -32,6 +32,21 @@ let commonFun = `
     return !v
   }
 
+  function ZY_LENGTH(v) {
+    if (v && v.length) {
+      return v.length
+    }
+    return 0
+  }
+  
+  function ZY_ARRAY_EMPTY(v) {
+    return lt(ZY_LENGTH(keys(v)), 1)
+  }
+  
+  function ZY_ARRAY_NOT_EMPTY(v) {
+    return gt(ZY_LENGTH(keys(v)), 0)
+  }
+
   function LENGTH(v) {
     if (v && v.length) {
       return v.length
@@ -181,6 +196,7 @@ export function defineAutoStoreControl(config = { data: {}, computed: {}, global
 
 
   return {
+    dxValue: _dxValue,
     store: ret,
     set,
     filter,

@@ -9,7 +9,9 @@
       <submit-button @submit="onSubmit">开始分析</submit-button>
     </el-row>
 
-    <div v-if="page.val('options')">
+<!--    {{page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL("options"))')}}-->
+
+    <div v-if="page.val('options') && page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'options\'))')">
       <h3>服务</h3>
       <EwSelect v-model="store.model.selectedValue" :options="store.model.options"></EwSelect>
     </div>
@@ -41,16 +43,6 @@ let SEVER_ORIGIN = `http://192.168.1.67:7001/`
 
 let constObj = useConstObj()
 
-function onInited({storeControl}) {
-  storeControl.set({
-    haha: 111,
-    swaggerOrigin: 'http://192.168.1.60:7888',
-    selectedValue: '',
-    files: [],
-  })
-  // console.log('sdsdsds', storeControl.store)
-}
-
 let properties = {
   haha: {
     type: String
@@ -60,10 +52,10 @@ let properties = {
   },
   options: constObj.FINAL_PROP_DEFS.options(),
   selectedValue: {
-    type: String
+    type: String,
   },
   currentSwagger: {
-    type: null
+    type: null,
   },
   files: {
     type: Array,
@@ -71,6 +63,20 @@ let properties = {
 }
 let computed = {
   selectedOption: `find(MODEL('options', []), ['value', MODEL('selectedValue', '')])`
+}
+function onInited({storeControl}) {
+  storeControl.set({
+    haha: 111,
+    swaggerOrigin: 'http://192.168.1.60:7888',
+    selectedValue: '',
+    files: [],
+  })
+  let s = ZY.formModel.createFormModel({
+    type: 'object',
+    properties
+  })
+  console.log(s)
+  // console.log('sdsdsds', storeControl.store)
 }
 let page = useControl({properties, computed}, {
   onInited

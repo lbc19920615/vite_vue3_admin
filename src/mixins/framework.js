@@ -28,13 +28,16 @@ export function useConstObj() {
      */
     options() {
       return  {
-        type: Array,
-        properties: {
-          label: {
-            type: String,
-          },
-          value: {
-            type: null,
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            label: {
+              type: String,
+            },
+            value: {
+              type: null,
+            }
           }
         }
       }
@@ -108,6 +111,13 @@ export function useControl({properties, computed, filters}, {onInited}) {
     })
   }
 
+  function dxValue(t) {
+    if (!storeControl) {
+      return undefined
+    }
+    return storeControl.dxValue(t)
+  }
+
   function val(path) {
     let hasModel = ZY.lodash.has(store.model, path)
     if (hasModel) {
@@ -145,6 +155,7 @@ export function useControl({properties, computed, filters}, {onInited}) {
   return {
     EVENT_TYPES,
     store,
+    dxValue,
     val,
     callEvent,
     setEventHandler,
