@@ -71,7 +71,7 @@ let properties = {
     type: String
   },
   currentSwagger: {
-    type: String
+    type: null
   },
   files: {
     type: Array,
@@ -97,7 +97,7 @@ let computedChange = {
       let [,{data}] = await ZY.awaitTo(
           globalThis.Req.get(jsonOrigin)
       )
-      page.setByPath('currentSwagger', JSON.stringify(data, null, 2))
+      page.setByPath('currentSwagger', data)
 
       // console.log(JSON.stringify(data, null, 2))
       // http://192.168.1.67:7001/?url=http://192.168.1.60:7888/api-system/v2/api-docs&folder=folder3
