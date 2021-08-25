@@ -3,12 +3,23 @@ import handleError from './handleError.js'
 import setConfig from './setConfig.js'
 import handleResponse from './handleResponse.js'
 
+export let context = {
+  Message: null
+}
+
 function showTip(msg = '') {
-  console.dir({
-    message: msg,
-    type: 'error',
-    duration: 5 * 1000
-  })
+  // console.dir({
+  //   message: msg,
+  //   type: 'error',
+  //   duration: 5 * 1000
+  // })
+  if (context && context.Message) {
+    context.Message({
+      message: msg,
+      type: 'error',
+      duration: 5 * 1000
+    })
+  }
 }
 
 /**
