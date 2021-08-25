@@ -15,6 +15,34 @@ export let PageControl = {
 }
 
 
+export function useConstObj() {
+  let ret = {}
+  /**
+   * FINAL_PROP_DEFS
+   * @type {{options(): {type: Array | ArrayConstructor, properties: {label: {type: String | StringConstructor}, value: {type: null}}}}}
+   */
+  ret.FINAL_PROP_DEFS = {
+    /**
+     * 实现properties定义时options请求的ok
+     * @returns {{type: ArrayConstructor, properties: {label: {type: StringConstructor}, value: {type: null}}}}
+     */
+    options() {
+      return  {
+        type: Array,
+        properties: {
+          label: {
+            type: String,
+          },
+          value: {
+            type: null,
+          }
+        }
+      }
+    }
+  }
+  return ret
+}
+
 export function useControl({properties, computed, filters}, {onInited}) {
   const rootStore = useStore()
   const globalStore = inject('globalStore')

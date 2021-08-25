@@ -35,9 +35,11 @@ import SubmitButton from "@/components/SubmitButton.vue"
 import EwSelect from "@/components/Ew/EwSelect.vue"
 import {getCurrentInstance, nextTick, onMounted, reactive, ref} from "vue";
 import { ElMessage } from 'element-plus'
-import {extendControl2Page, extendControlComputedWatch, useControl} from "@/mixins/framework";
+import {extendControl2Page, extendControlComputedWatch, useConstObj, useControl} from "@/mixins/framework";
 
 let SEVER_ORIGIN = `http://192.168.1.67:7001/`
+
+let constObj = useConstObj()
 
 function onInited({storeControl}) {
   storeControl.set({
@@ -56,17 +58,7 @@ let properties = {
   swaggerOrigin: {
     type: String
   },
-  options: {
-    type: Array,
-    properties: {
-      label: {
-        type: String,
-      },
-      value: {
-        type: null,
-      }
-    }
-  },
+  options: constObj.FINAL_PROP_DEFS.options(),
   selectedValue: {
     type: String
   },
