@@ -1,4 +1,5 @@
 import { request, context } from '@/plugins/z-request/index.js'
+
 import { serviceOptions } from '@/requests/services/serviceOptions.js'
 serviceOptions.axios = request
 
@@ -6,9 +7,14 @@ import {ElMessage} from "element-plus";
 context.Message = ElMessage
 
 let services = {}
-import("@/requests/services").then(res => {
-  services['auth'] = res
-  console.log(services)
+let servicesConfig = new Map()
+
+Promise.all(
+ [import("@/requests/services/index.js"), import("@/requests/services/config.js")],
+).then(([index, config]) => {
+  services['auth'] = index
+  // console.log(services, index, config)
+  servicesConfig.set('auth', config)
 })
 let API = {}
 API.call = function (path, ...args) {
