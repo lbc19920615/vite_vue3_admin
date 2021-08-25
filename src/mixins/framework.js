@@ -1,4 +1,4 @@
-import {inject, nextTick, onMounted, reactive, ref} from "vue";
+import {getCurrentInstance, inject, nextTick, onMounted, reactive, ref} from "vue";
 import {provideRefManager} from "@/hooks/ref";
 import {useRouter} from "vue-router";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
@@ -40,7 +40,7 @@ export function useControl({properties, computed, filters}, {onInited}) {
     .replace('_', '')
     .replace('-', '')
 
-  console.log(globalStore)
+  // console.log(globalStore)
   function init() {
     globalThis.createServiceComFromCache(serviceId).then((serviceName) => {
       let router = useRouter()
@@ -80,12 +80,6 @@ export function useControl({properties, computed, filters}, {onInited}) {
     })
   }
 
-  onMounted(() => {
-    if (!inited.value) {
-      init.bind(this)()
-    }
-  })
-
   function val(path) {
     let hasModel = ZY.lodash.has(store.model, path)
     if (hasModel) {
@@ -107,14 +101,81 @@ export function useControl({properties, computed, filters}, {onInited}) {
     console.log(eventHandleMap)
   }
 
+  function callEvent(name, e) {
+    if (eventHandleMap[name]) {
+      eventHandleMap[name](e)
+    }
+  }
+
+
+  onMounted(() => {
+    if (!inited.value) {
+      init.bind(this)()
+    }
+  })
+
   return {
     EVENT_TYPES,
     store,
     val,
+    callEvent,
     setEventHandler,
     setByPath,
     inited,
   }
+}
+
+export function extendControl2Page(control = {eventHandleMap: {}}) {
+  let ctx = getCurrentInstance().ctx
+  control.ctx = ctx
+  let httpComContext = {}
+  let events = new Map()
+  let refsManager = provideRefManager({
+    async eventHandler({type, e}) {
+      // console.log('page eventHandler', type, e)
+      if (type === 'http-component:com:mounted') {
+        let name = e.httpComponentContext.is
+        httpComContext[name] = e.httpComponentContext
+        // console.log(name)
+        if (events.has(name)) {
+          events.get(name)({
+            done() {
+              events.delete(name)
+            }
+          })
+        }
+      } else {
+        if (control.eventHandleMap[type]) {
+          control.eventHandleMap[type](e)
+        }
+      }
+    }
+  })
+  control.refsManager = refsManager
+
+  function setPartModel(stepName, partName, model) {
+    // console.log('httpComContext', stepName, partName)
+    return httpComContext[stepName].runPart(partName, 'setModel',
+      model
+    )
+  }
+  control.setPartModel  = setPartModel
+
+  function getPartModel(stepName, partName) {
+    // console.log('httpComContext', stepName, partName, httpComContext[stepName])
+    return httpComContext[stepName].runPart(partName, 'getModel',
+    )
+  }
+  control.getPartModel  = getPartModel
+}
+
+export function extendControlComputedWatch(control = {setEventHandler}, computedChange = {}) {
+  control.setEventHandler({
+    [control.EVENT_TYPES.COMPUTED_CHANGE](e) {
+      console.log('  let [,response] = await ZY.awaitTo(', e)
+      computedChange[e.key] ? computedChange[e.key](e.newVal) : ''
+    }
+  })
 }
 
 /**
@@ -134,7 +195,7 @@ export let usePage  = function ({data = {} , filters = {}, defaultVal = {}, serv
   if (router && router.currentRoute && router.currentRoute.value) {
     meta = router.currentRoute.value.meta
   }
-  console.log('meta', meta)
+  // console.log('meta', meta)
   let httpComContext = {}
   let allDef = new Map()
   let events = new Map()

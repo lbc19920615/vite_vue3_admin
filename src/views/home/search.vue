@@ -35,7 +35,7 @@ import SubmitButton from "@/components/SubmitButton.vue"
 import EwSelect from "@/components/Ew/EwSelect.vue"
 import {getCurrentInstance, nextTick, onMounted, reactive, ref} from "vue";
 import { ElMessage } from 'element-plus'
-import {useControl} from "@/mixins/framework";
+import {extendControl2Page, extendControlComputedWatch, useControl} from "@/mixins/framework";
 
 let SEVER_ORIGIN = `http://192.168.1.67:7001/`
 
@@ -83,13 +83,11 @@ let computed = {
 let page = useControl({properties, computed}, {
   onInited
 })
+extendControl2Page(page)
 let store = page.store
-
-let ctx = getCurrentInstance().ctx
 
 let computedChange = {
   async ['selectedOption'](newVal) {
-    console.log('newVal', newVal)
     if (newVal) {
       page.setByPath('files', [])
       await nextTick()
@@ -107,7 +105,6 @@ let computedChange = {
       )
 
       if (err) {
-        // ctx.$message.error(err)
         ElMessage.error(err.message ?? '')
         return;
       }
@@ -117,11 +114,7 @@ let computedChange = {
   }
 }
 
-page.setEventHandler({
-  [page.EVENT_TYPES.COMPUTED_CHANGE](e) {
-    computedChange[e.key] ? computedChange[e.key](e.newVal) : ''
-  }
-})
+extendControlComputedWatch(page, computedChange)
 
 async function onSubmit() {
   let [,response] = await ZY.awaitTo(
