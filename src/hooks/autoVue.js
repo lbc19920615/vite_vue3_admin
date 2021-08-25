@@ -40,11 +40,13 @@ let commonFun = `
   }
   
   function ZY_ARRAY_EMPTY(v) {
-    return lt(ZY_LENGTH(keys(v)), 1)
+    // return lt(ZY_LENGTH(keys(v)), 1)
+    return isEmpty(v)
   }
   
   function ZY_ARRAY_NOT_EMPTY(v) {
-    return gt(ZY_LENGTH(keys(v)), 0)
+    // return gt(ZY_LENGTH(keys(v)), 0)
+     return !isEmpty(v)
   }
 
   function LENGTH(v) {
