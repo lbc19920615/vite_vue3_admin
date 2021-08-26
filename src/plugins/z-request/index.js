@@ -63,8 +63,13 @@ const responseInterceptorId = request.interceptors.response.use(
   response => {
     const { config } = response
     pendingPool.delete(config.url)
+    let res =       handleResponse(response)
+    if (res.hasOwnProperty('_error')) {
+      showTip(res.message)
+      return Promise.reject(new Error(res.message))
+    }
     return Promise.resolve(
-      handleResponse(response)
+      res
     )
   },
   error => {

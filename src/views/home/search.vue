@@ -90,23 +90,28 @@ let computedChange = {
       page.setByPath('files', [])
       await nextTick()
       let jsonOrigin = `${page.val('swaggerOrigin')}${newVal.value}`
-      let [,{data: data1}] = await ZY.awaitTo(
+      let [err,res] = await ZY.awaitTo(
           globalThis.Req.get(jsonOrigin)
       )
-      page.setByPath('currentSwagger', data1)
-
-      // console.log(JSON.stringify(data, null, 2))
-      // http://192.168.1.67:7001/?url=http://192.168.1.60:7888/api-system/v2/api-docs&folder=folder3
-      let folder = 'folder-' + newVal.label
-      let [err,{data: data2}] = await ZY.awaitTo(
-        globalThis.Req.get(`${SEVER_ORIGIN}?url=${jsonOrigin}&folder=${folder}`)
-      )
-
       if (err) {
-        ElMessage.error(err.message ?? '')
-        return;
+        return
       }
-      page.setByPath('files', data2.files)
+      if (res.data) {
+        page.setByPath('currentSwagger', res.data)
+
+        // console.log(JSON.stringify(data, null, 2))
+        // http://192.168.1.67:7001/?url=http://192.168.1.60:7888/api-system/v2/api-docs&folder=folder3
+        let folder = 'folder-' + newVal.label
+        let [err,{data: data2}] = await ZY.awaitTo(
+            globalThis.Req.get(`${SEVER_ORIGIN}?url=${jsonOrigin}&folder=${folder}`)
+        )
+
+        if (err) {
+          ElMessage.error(err.message ?? '')
+          return;
+        }
+        page.setByPath('files', data2.files)
+      }
     }
   }
 }

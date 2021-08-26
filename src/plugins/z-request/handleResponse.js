@@ -3,6 +3,25 @@ export default (response) => {
   const status = response.status
   // 如果http响应状态码response.status正常，则直接返回数据
   if ((status >= 200 && status <= 300) || status === 304) {
+    let responseData = response.data || {}
+    if (responseData.hasOwnProperty('status') && responseData.hasOwnProperty('code')) {
+
+      const status = responseData.status
+      const code = parseInt(responseData.code)
+      const message = responseData.msg
+      if (!status || status < 1) {
+        return {
+          _error: true,
+          code,
+          message
+        }
+      }
+
+
+
+      return response
+    }
+
     return response
     // eslint-disable-next-line brace-style
   }
@@ -36,6 +55,7 @@ export default (response) => {
     //     break
     // }
     return {
+      _error: true,
       code,
       message
     }
