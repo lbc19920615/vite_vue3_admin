@@ -1,1 +1,109 @@
-export default {"swagger":"2.0","info":{"description":"Api Documentation","version":"1.0","title":"Api Documentation","termsOfService":"urn:tos","contact":{},"license":{"name":"Apache 2.0","url":"http://www.apache.org/licenses/LICENSE-2.0"}},"host":"192.168.1.60:7888","basePath":"/api-case","tags":[{"name":"generate-case-monitoring-api-impl","description":"Generate Case Monitoring Api Impl"},{"name":"withhold-service-api-impl","description":"Withhold Service Api Impl"},{"name":"YiBanAnJianAPI","description":"Case Common Service Api Impl"},{"name":"ZhongDuiGuiTaiHao-GongYueApi","description":"Squadron Secret Api Impl"},{"name":"AnJianLaiYuanJieKou","description":"Case Source Api Impl"},{"name":"JianYiAnJianAPI","description":"Case Simple Service Api Impl"}],"paths":{"/caseMonitoring/caseStatusStatistics":{"post":{"tags":["generate-case-monitoring-api-impl"],"summary":"不同状态的数量的统计，根据时间和区域","operationId":"caseStatusStatisticsUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"in":"body","name":"caseMonitoring","description":"caseMonitoring","required":true,"schema":{"$ref":"#/definitions/GenerateCaseMonitoring"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}},"/caseMonitoring/casesNumberTrendChart":{"post":{"tags":["generate-case-monitoring-api-impl"],"summary":"从开始日期到结束日期，开始统计每月的数据，可以根据违法类型进行筛选，统计趋势走势图,编码时会筛选出案发时间为空或者格式不对的数据","operationId":"casesNumberTrendChartUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"in":"body","name":"caseMonitoring","description":"caseMonitoring","required":true,"schema":{"$ref":"#/definitions/GenerateCaseMonitoring"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}},"/caseMonitoring/differAreaCaseStatistics":{"post":{"tags":["generate-case-monitoring-api-impl"],"summary":"不同区域的案件占比","operationId":"differAreaCaseStatisticsUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"in":"body","name":"caseMonitoring","description":"caseMonitoring","required":true,"schema":{"$ref":"#/definitions/GenerateCaseMonitoring"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}},"/caseSource/add":{"post":{"tags":["AnJianLaiYuanJieKou"],"summary":"增加案件来源","operationId":"addCaseSourceUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"in":"body","name":"caseSourceRequest","description":"caseSourceRequest","required":true,"schema":{"$ref":"#/definitions/案件来源请求实体"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}},"/caseSource/list":{"post":{"tags":["AnJianLaiYuanJieKou"],"summary":"获取案件来源列表","operationId":"getCaseSourceListUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"in":"body","name":"caseSource","description":"caseSource","required":true,"schema":{"$ref":"#/definitions/CaseSource"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}},"/caseSource/upload":{"post":{"tags":["AnJianLaiYuanJieKou"],"summary":"文件上传","operationId":"uploadUsingPOST","consumes":["multipart/form-data"],"produces":["*/*"],"parameters":[{"name":"file","in":"formData","description":"file","required":false,"type":"file"}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}},"/commonCase/commonCaseList":{"post":{"tags":["YiBanAnJianAPI"],"summary":"一般案件列表","operationId":"getCommonCaseListUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"in":"body","name":"caseCommonRequest","description":"caseCommonRequest","required":true,"schema":{"$ref":"#/definitions/一般案件请求实体"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}},"/commonCase/getCommonCaseNumByType":{"get":{"tags":["YiBanAnJianAPI"],"summary":"一般案件分类明细","operationId":"getCommonCaseCountUsingGET","produces":["*/*"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result"}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}},"/simpleCase/list":{"post":{"tags":["JianYiAnJianAPI"],"summary":"获取简易案件列表","operationId":"getSimpleCaseListUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"in":"body","name":"caseSimpleRequest","description":"caseSimpleRequest","required":true,"schema":{"$ref":"#/definitions/简易案件请求实体"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}},"/simpleCase/punishmentSucceedCallback":{"post":{"tags":["JianYiAnJianAPI"],"summary":"简易案件罚款成功回调","operationId":"punishmentSucceedCallbackUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"in":"body","name":"request","description":"request","required":true,"schema":{"$ref":"#/definitions/SimpleCaseUpdateRequest"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result«Void»"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}},"/simpleCase/simpleCaseTotal":{"get":{"tags":["JianYiAnJianAPI"],"summary":"简易案件总数（无查询条件）","operationId":"getSimpleCaseTotalUsingGET","produces":["*/*"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result"}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}},"/squadronSecret/currentDeptSquadron":{"get":{"tags":["ZhongDuiGuiTaiHao-GongYueApi"],"summary":"查询当前中队的柜台号和公钥","operationId":"currentDeptSquadronUsingGET","produces":["*/*"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result«SquadronSecret»"}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}},"/withhold/getInfo":{"get":{"tags":["withhold-service-api-impl"],"summary":"暂扣详情","operationId":"getInfoUsingGET","produces":["*/*"],"parameters":[{"name":"id","in":"query","description":"id","required":false,"type":"string"}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result"}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}},"/withhold/list":{"post":{"tags":["withhold-service-api-impl"],"summary":"暂扣列表","operationId":"listUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"in":"body","name":"paramMap","description":"paramMap","required":true,"schema":{"type":"object"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}},"/withhold/saveWithHold":{"post":{"tags":["withhold-service-api-impl"],"summary":"暂扣保存","operationId":"saveWithHoldUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"in":"body","name":"withHoldRequest","description":"withHoldRequest","required":true,"schema":{"$ref":"#/definitions/WithHoldRequest"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Result"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}},"deprecated":false}}},"definitions":{"CaseSource":{"type":"object","properties":{"address":{"type":"string"},"caseId":{"type":"string"},"cellphone":{"type":"string"},"createDate":{"type":"string","format":"date-time"},"createUserId":{"type":"string"},"creditName":{"type":"string"},"creditNo":{"type":"string"},"creditType":{"type":"string"},"departId":{"type":"string"},"findDate":{"type":"string","format":"date-time"},"handDate":{"type":"string","format":"date-time"},"handMode":{"type":"string"},"hander":{"type":"string"},"id":{"type":"string"},"lawsAndRegulations":{"type":"string"},"linkUrl":{"type":"string"},"mediaName":{"type":"string"},"mediaType":{"type":"string"},"modifyDate":{"type":"string","format":"date-time"},"modifyUserId":{"type":"string"},"name":{"type":"string"},"outline":{"type":"string"},"phone":{"type":"string"},"postcode":{"type":"string"},"registDate":{"type":"string","format":"date-time"},"registerDept":{"type":"string"},"registerUser":{"type":"string"},"relationName":{"type":"string"},"reportDate":{"type":"string","format":"date-time"},"reportName":{"type":"string"},"reportType":{"type":"string"},"reportUser":{"type":"string"},"sourceDesc":{"type":"string"},"sourceImg":{"type":"string"},"transferDate":{"type":"string","format":"date-time"},"type":{"type":"string"}},"title":"CaseSource"},"GenerateCaseMonitoring":{"type":"object","required":["endTime","lawEnforcementSubjectFirst","lawEnforcementSubjectSecond","lawType","startTime"],"properties":{"endTime":{"type":"string","description":"结束时间"},"lawEnforcementSubjectFirst":{"type":"string","description":"一级单位"},"lawEnforcementSubjectSecond":{"type":"string","description":"二级单位"},"lawType":{"type":"string","description":"违法类型大类"},"startTime":{"type":"string","description":"开始时间"}},"title":"GenerateCaseMonitoring"},"Result":{"type":"object","properties":{"code":{"type":"integer","format":"int32"},"data":{"type":"object"},"msg":{"type":"string"},"status":{"type":"integer","format":"int32"},"type":{"type":"string"}},"title":"Result"},"Result«SquadronSecret»":{"type":"object","properties":{"code":{"type":"integer","format":"int32"},"data":{"$ref":"#/definitions/SquadronSecret"},"msg":{"type":"string"},"status":{"type":"integer","format":"int32"},"type":{"type":"string"}},"title":"Result«SquadronSecret»"},"Result«Void»":{"type":"object","properties":{"code":{"type":"integer","format":"int32"},"msg":{"type":"string"},"status":{"type":"integer","format":"int32"},"type":{"type":"string"}},"title":"Result«Void»"},"SeizureItemsEntity":{"type":"object","properties":{"createDate":{"type":"string","format":"date-time"},"createUserId":{"type":"string"},"id":{"type":"string"},"isDelete":{"type":"integer","format":"int32"},"itemAmount":{"type":"string"},"itemName":{"type":"string"},"itemSubgroup":{"type":"string"},"itemTypes":{"type":"string"},"itemsNit":{"type":"string"},"itemsStatus":{"type":"string"},"licenseNumber":{"type":"string"},"mainId":{"type":"string"},"modifyDate":{"type":"string","format":"date-time"},"modifyUserId":{"type":"string"},"remark":{"type":"string"},"specificationsModels":{"type":"string"},"status":{"type":"string"}},"title":"SeizureItemsEntity"},"SimpleCaseUpdateRequest":{"type":"object","properties":{"id":{"type":"string"},"orderNo":{"type":"string"},"paymentMethod":{"type":"string"}},"title":"SimpleCaseUpdateRequest"},"SquadronSecret":{"type":"object","properties":{"counterNumber":{"type":"string"},"id":{"type":"integer","format":"int32"},"publicKey":{"type":"string"},"squadronName":{"type":"string"}},"title":"SquadronSecret"},"WithHoldFileRequest":{"type":"object","properties":{"acquisitionTime":{"type":"string"},"gatherPlace":{"type":"string"},"gatherer":{"type":"string"},"pic":{"type":"array","items":{"type":"string"}},"picAnnotation":{"type":"string"},"picType":{"type":"string"}},"title":"WithHoldFileRequest"},"WithHoldRequest":{"type":"object","properties":{"IDNumber":{"type":"string"},"IDType":{"type":"string"},"applicableCase":{"type":"string"},"caseStatus":{"type":"string"},"caseType":{"type":"string"},"causeNumber":{"type":"string"},"contractorOpinions":{"type":"string"},"handoverOtherDepartment":{"type":"string"},"id":{"type":"string"},"identificationNumber":{"type":"string"},"investigateLocation":{"type":"string"},"investigatePunishDatetime":{"type":"string","format":"date-time"},"isPartner":{"type":"string"},"itemNoAct":{"type":"string"},"lawEnforcingDepartmentName":{"type":"string"},"lawEnforcingDepartmentName2":{"type":"string"},"lawEnforcingMemberName1":{"type":"string"},"lawEnforcingMemberName2":{"type":"string"},"legalBasis":{"type":"string"},"litigantCitizenAddress":{"type":"string"},"litigantCitizenEmail":{"type":"string"},"litigantCitizenGender":{"type":"string"},"litigantCitizenName":{"type":"string"},"litigantCitizenPhone":{"type":"string"},"litigantCitizenPostcode":{"type":"string"},"litigantOrgAddress":{"type":"string"},"litigantOrgCreditCode":{"type":"string"},"litigantOrgId":{"type":"string"},"litigantOrgLrName":{"type":"string"},"litigantOrgLrPost":{"type":"string"},"litigantOrgName":{"type":"string"},"litigantOrgPhone":{"type":"string"},"litigantType":{"type":"string"},"managementBasis":{"type":"string"},"notificationNumber":{"type":"string"},"picList":{"type":"array","items":{"$ref":"#/definitions/WithHoldFileRequest"}},"receiptType":{"type":"string"},"terminal":{"type":"string"},"unlawfulAct":{"type":"string"},"warehouseNumber":{"type":"string"},"withholdingItemsEntityList":{"type":"array","items":{"$ref":"#/definitions/SeizureItemsEntity"}}},"title":"WithHoldRequest"},"一般案件请求实体":{"type":"object","properties":{"caseStateId":{"type":"string","description":"案件状态id"},"dateField":{"type":"string"},"dateName":{"type":"string","description":"日期名"},"deptId":{"type":"string","description":"部门id"},"endDate":{"type":"string","description":"结束时间"},"keyword":{"type":"string","description":"关键字"},"limit":{"type":"integer","format":"int32"},"orderName":{"type":"string","description":"排序名"},"orderType":{"type":"integer","format":"int32","description":"排序类别 0升序，1降序"},"page":{"type":"integer","format":"int32"},"startDate":{"type":"string","description":"开始时间"},"userId":{"type":"string","description":"执法人员id"}},"title":"一般案件请求实体"},"案件来源请求实体":{"type":"object","properties":{"address":{"type":"string","description":"地址"},"caseId":{"type":"string","description":"案件id"},"cellphone":{"type":"string","description":"联系方式-手机"},"departId":{"type":"string","description":"移交部门id"},"handDate":{"type":"string","description":"交办日期"},"handMode":{"type":"string","description":"交办方式"},"hander":{"type":"string","description":"交办人"},"lawsAndRegulations":{"type":"string","description":"法律法规"},"name":{"type":"string","description":"来源分类名称"},"outline":{"type":"string","description":"概要"},"phone":{"type":"string","description":"联系方式-电话"},"postcode":{"type":"string","description":"联系方式-邮编"},"registerDept":{"type":"string","description":"登记部门"},"registerUser":{"type":"string","description":"登记人"},"reportDate":{"type":"string","description":"举报日期"},"reportName":{"type":"string","description":"举报方式名称"},"reportType":{"type":"string","description":"举报方式id"},"reportUser":{"type":"string","description":"举报人"},"sourceDesc":{"type":"string","description":"来源描述"},"sourceImg":{"type":"string","description":"照片url"},"transferDate":{"type":"string","description":"移交日期"},"type":{"type":"string","description":"来源分类id"}},"title":"案件来源请求实体"},"简易案件请求实体":{"type":"object","properties":{"addressOfCase":{"type":"string","description":"案发地点"},"caseNumber":{"type":"string","description":"案件编号"},"delictId":{"type":"string","description":"违法行为ID"},"delictName":{"type":"string"},"endDate":{"type":"string","description":"结束时间"},"fineAmount":{"type":"string","description":"处罚金额"},"id":{"type":"string"},"key":{"type":"string","description":"关键字"},"lawEnforcingDepartmentName1":{"type":"string","description":"执法部门1"},"lawEnforcingDepartmentName2":{"type":"string","description":"执法部门2"},"lawEnforcingMemberId1":{"type":"string","description":"执法人员id1"},"lawEnforcingMemberId2":{"type":"string","description":"执法人员id2"},"lawEnforcingMemberName1":{"type":"string","description":"执法人员1"},"lawEnforcingMemberName2":{"type":"string","description":"执法人员2"},"lawType":{"type":"string"},"limit":{"type":"integer","format":"int32"},"mattersOfPowerId":{"type":"string","description":"权力事项id"},"mattersOfPowerName":{"type":"string"},"orderType":{"type":"integer","format":"int32","description":"排序类型"},"page":{"type":"integer","format":"int32"},"partyName":{"type":"string","description":"当事人姓名"},"startDate":{"type":"string","description":"开始时间"},"timeOfCase":{"type":"string","format":"date-time","description":"案发日期"}},"title":"简易案件请求实体"}}}
+export default {
+  "swagger": "2.0",
+  "info": {
+    "description": "用户授权微服务，包括登录、注册、注销等",
+    "version": "2.1.1",
+    "title": "auth-service",
+    "contact": {"name": "yookey"}
+  },
+  "host": "192.168.1.60:7888",
+  "basePath": "/api-auth",
+  "tags": [{"name": "auth-api-impl", "description": "Auth Api Impl"}],
+  "paths": {
+    "/info": {
+      "get": {
+        "tags": ["auth-api-impl"],
+        "summary": "获取登录用户信息",
+        "operationId": "infoUsingGET",
+        "produces": ["*/*"],
+        "responses": {
+          "200": {"description": "OK", "schema": {"$ref": "#/definitions/Result"}},
+          "401": {"description": "Unauthorized"},
+          "403": {"description": "Forbidden"},
+          "404": {"description": "Not Found"}
+        },
+        "deprecated": false
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["auth-api-impl"],
+        "summary": "用户登录",
+        "operationId": "loginUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{
+          "in": "body",
+          "name": "loginRequest",
+          "description": "loginRequest",
+          "required": true,
+          "schema": {"$ref": "#/definitions/LoginRequest"}
+        }],
+        "responses": {
+          "200": {"description": "OK", "schema": {"$ref": "#/definitions/Result"}},
+          "201": {"description": "Created"},
+          "401": {"description": "Unauthorized"},
+          "403": {"description": "Forbidden"},
+          "404": {"description": "Not Found"}
+        },
+        "deprecated": false
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": ["auth-api-impl"],
+        "summary": "退出登录",
+        "operationId": "logoutUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{
+          "in": "body",
+          "name": "logoutRequest",
+          "description": "logoutRequest",
+          "required": true,
+          "schema": {"$ref": "#/definitions/LogoutRequest"}
+        }],
+        "responses": {
+          "200": {"description": "OK", "schema": {"$ref": "#/definitions/Result"}},
+          "201": {"description": "Created"},
+          "401": {"description": "Unauthorized"},
+          "403": {"description": "Forbidden"},
+          "404": {"description": "Not Found"}
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {
+    "LoginRequest": {
+      "type": "object",
+      "properties": {
+        "clientId": {"type": "string"},
+        "loginName": {"type": "string"},
+        "password": {"type": "string"},
+        "platform": {"type": "integer", "format": "int32"},
+        "project": {"type": "string"},
+        "rememberMe": {"type": "integer", "format": "int32"},
+        "userLoginType": {"type": "string"},
+        "verifyCode": {"type": "string"}
+      },
+      "title": "LoginRequest"
+    },
+    "LogoutRequest": {
+      "type": "object",
+      "properties": {"platform": {"type": "integer", "format": "int32"}, "userId": {"type": "string"}},
+      "title": "LogoutRequest"
+    },
+    "Result": {
+      "type": "object",
+      "properties": {
+        "code": {"type": "integer", "format": "int32"},
+        "data": {"type": "object"},
+        "msg": {"type": "string"},
+        "status": {"type": "integer", "format": "int32"},
+        "type": {"type": "string"}
+      },
+      "title": "Result"
+    }
+  }
+}
