@@ -8,7 +8,19 @@ import htmlPlugin from './plugins/html'
 // const projectRootDir = path.resolve(__dirname);
 import {initEnvConfig} from "./config";
 
-// https://vitejs.dev/config/
+//直接获取文件的text
+const rawTransform =  (fileRegex) => {
+  return {
+    name: 'get-file-raw',
+    transform: (src, id) => {
+      if (fileRegex.filter((re) => re.test(id)).length > 0) {
+        return `export default ${JSON.stringify(src)}`;
+      }
+    }
+  }
+}
+
+
 export default (({mode}) => {
   // console.log('mode', mode, loadEnv(mode, process.cwd()))
   const config = initEnvConfig(mode)
@@ -29,6 +41,7 @@ export default (({mode}) => {
         origin: 'http://localhost:7002/getcontent'
       }),
       vue(),
+      rawTransform([/\.bpmn$/]),
       vueJsx(),
     ],
   })
