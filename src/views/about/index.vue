@@ -40,28 +40,28 @@
 <!--  </AsyncComponent>-->
 
   <div class="page-search">
-<!--  <template v-if="store.model.textarea_step">-->
-<!--    <HttpComponent-->
-<!--        :defs="allDef"-->
-<!--        :is="store.model.textarea_step"-->
-<!--    >-->
-<!--      <template #array_before="scope">-->
-<!--        <el-row class="u-sizeFull" type="flex" justify="space-between" align="middle">-->
-<!--          <h3>{{scope.selfpath}}</h3>-->
-<!--          <el-button @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>-->
-<!--        </el-row>-->
-<!--      </template>-->
-<!--      <template #array_item_after="scope">-->
-<!--&lt;!&ndash;                 {{scope}}&ndash;&gt;-->
-<!--        <el-button @click="page.callEvent('remove:event', scope)">删除{{ scope.key }}</el-button>-->
-<!--      </template>-->
-<!--      <template #form_after="scope">-->
-<!--        <CusSubmitButton-->
-<!--            :scope="scope"-->
-<!--            class="el-col z-submit-btn"></CusSubmitButton>-->
-<!--      </template>-->
-<!--    </HttpComponent>-->
-<!--  </template>-->
+  <template v-if="store.model.textarea_step">
+    <HttpComponent
+        :defs="allDef"
+        :is="store.model.textarea_step"
+    >
+      <template #array_before="scope">
+        <el-row class="u-sizeFull" type="flex" justify="space-between" align="middle">
+          <h3>{{scope.selfpath}}</h3>
+          <el-button @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>
+        </el-row>
+      </template>
+      <template #array_item_after="scope">
+<!--                 {{scope}}-->
+        <el-button @click="page.callEvent('remove:event', scope)">删除{{ scope.key }}</el-button>
+      </template>
+      <template #form_after="scope">
+        <CusSubmitButton
+            :scope="scope"
+            class="el-col z-submit-btn"></CusSubmitButton>
+      </template>
+    </HttpComponent>
+  </template>
 <!--    {{store.model}}-->
     <div>
       <div v-if="showCurrent">
@@ -461,7 +461,6 @@ export default defineComponent({
         'textarea_step',
         {
           onMounted(config) {
-            console.log('sdsdsdsds')
           }
         }
     )
