@@ -81,7 +81,7 @@ export let formEditorConfig = function (defaultVal = {}) {
             },
         }
     }, {
-        doubled: "MODEL('name', '') + ',s'"
+        // doubled: "MODEL('parts', '')"
     }, {
         defaultVal
     })

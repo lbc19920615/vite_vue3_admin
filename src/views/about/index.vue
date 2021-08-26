@@ -40,28 +40,28 @@
 <!--  </AsyncComponent>-->
 
   <div class="page-search">
-  <template v-if="store.model.textarea_step">
-    <HttpComponent
-        :defs="allDef"
-        :is="store.model.textarea_step"
-    >
-      <template #array_before="scope">
-        <el-row class="u-sizeFull" type="flex" justify="space-between" align="middle">
-          <h3>{{scope.selfpath}}</h3>
-          <el-button @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>
-        </el-row>
-      </template>
-      <template #array_item_after="scope">
-<!--                 {{scope}}-->
-        <el-button @click="page.callEvent('remove:event', scope)">删除{{ scope.key }}</el-button>
-      </template>
-      <template #form_after="scope">
-        <CusSubmitButton
-            :scope="scope"
-            class="el-col z-submit-btn"></CusSubmitButton>
-      </template>
-    </HttpComponent>
-  </template>
+<!--  <template v-if="store.model.textarea_step">-->
+<!--    <HttpComponent-->
+<!--        :defs="allDef"-->
+<!--        :is="store.model.textarea_step"-->
+<!--    >-->
+<!--      <template #array_before="scope">-->
+<!--        <el-row class="u-sizeFull" type="flex" justify="space-between" align="middle">-->
+<!--          <h3>{{scope.selfpath}}</h3>-->
+<!--          <el-button @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>-->
+<!--        </el-row>-->
+<!--      </template>-->
+<!--      <template #array_item_after="scope">-->
+<!--&lt;!&ndash;                 {{scope}}&ndash;&gt;-->
+<!--        <el-button @click="page.callEvent('remove:event', scope)">删除{{ scope.key }}</el-button>-->
+<!--      </template>-->
+<!--      <template #form_after="scope">-->
+<!--        <CusSubmitButton-->
+<!--            :scope="scope"-->
+<!--            class="el-col z-submit-btn"></CusSubmitButton>-->
+<!--      </template>-->
+<!--    </HttpComponent>-->
+<!--  </template>-->
 <!--    {{store.model}}-->
     <div>
       <div v-if="showCurrent">
@@ -127,7 +127,7 @@ let depManagerMixin = {
   },
   methods: {
     async onEditDep(dep) {
-      console.log('onEditDep', dep)
+      // console.log('onEditDep', dep)
       this.renderFormLoading = true
       this.renderFormDesigner = false
       this.currentEditDep = dep
@@ -233,50 +233,6 @@ ${rowEditorConfig({
             }
           ]
         },
-//         {
-//           id: 'i4',
-//           type: 'events',
-//           sub: 'form',
-//           config: {
-//             version: 'v1',
-//             closure: false
-//           },
-//           editor: `
-// ${formEditorConfig}
-//           `,
-//           items: [
-//             {
-//               id: 'i4-0',
-//               name: 'submit'
-//             },
-//           ]
-//         },
-        // {
-        //   id: 'i5',
-        //   type: 'table',
-        //   config: {
-        //     version: 'v1',
-        //     closure: false
-        //   },
-        //   template: 'comtablescr.twig',
-        //   content: JSON.stringify({
-        //     tableDef: [
-        //       {
-        //         label: '日期',
-        //         prop: 'date',
-        //         width: 100
-        //       },
-        //       {
-        //         label: '姓名', prop: 'name'
-        //       },
-        //       {
-        //         label: '邮编', prop: 'zip'
-        //       }
-        //     ]
-        //   }, null, 2),
-        //   items: [
-        //   ]
-        // },
         {
           id: 'i3',
           type: 'form',
@@ -286,13 +242,22 @@ ${rowEditorConfig({
           },
           editor: `
 ${formEditorConfig({
-            form2: {}
+            form2: {
+              name: 'form1',
+              parts: [
+                {
+                  uis: '{}',
+                  properties: '{}',
+                }
+              ]
+            }
           })}
           `,
           content: '',
           items: [
           ],
          data: {
+           name: 'form1',
           parts: [
             {
               uis: ZY.JSON5.stringify(
@@ -359,7 +324,6 @@ ${formEditorConfig({
                     },
                   }
                   , null, 2),
-
             }
           ]
          }
@@ -515,7 +479,7 @@ export default defineComponent({
         // page.setPartModel(process, partName, target)
       },
       ['remove:event'](e) {
-        console.log('sdsdsdsdsdsds', e)
+        // console.log('sdsdsdsdsdsds', e)
         let { parts, partName, fromPath, indexKey } = e
         parts[partName].appSplice(fromPath, indexKey)
       },
@@ -526,13 +490,9 @@ export default defineComponent({
       },
       ['model:update'](e) {
         let { model, key, newVal, config } = e
-        // console.log(config, page.store.model)
+        // console.log(key, model, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
-          let oldVal = ZY.lodash.get(self.currentEditDep, key)
-          if (oldVal !== newVal) {
-            self.currentEditDep[key] = newVal
-            // console.log(key, newVal)
-          }
+          self.currentEditDep.data = model
           if (self.currentEditDep.type === 'form') {
             let contentTpl = function ({ui, properties} = {}, defaultVal) {
               let obj = {
@@ -557,7 +517,6 @@ export default defineComponent({
                           properties
                         },
                         computed: {
-                          doubled: "MODEL('name', '') + ',s'",
                         },
                       }
                     ]
@@ -570,7 +529,6 @@ export default defineComponent({
               // console.log(obj)
               return ZY.JSON5.stringify(obj)
             }
-            // console.log(model.parts[0])
             self.currentEditDep.content = contentTpl(
                 {
                   ui: ZY.JSON5.parse(model.parts[0].uis),

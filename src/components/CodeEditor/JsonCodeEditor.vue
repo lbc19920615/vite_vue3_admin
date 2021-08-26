@@ -1,14 +1,9 @@
-<style scoped>
-.editor {
-}
-</style>
-
 <template>
   <div class="editor" :style="styleObj" ref="dom"></div>
 </template>
 
 <script setup>
-import {onMounted, ref, reactive} from 'vue';
+import {onMounted, ref, reactive, inject} from 'vue';
 import * as monaco from 'monaco-editor';
 
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
@@ -51,7 +46,7 @@ let styleObj = reactive({
   ...widgetConfigStyle
 })
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'change']);
 
 const dom = ref();
 
@@ -116,7 +111,9 @@ onMounted(() => {
       const value = instance.getValue();
 
       if (emit) {
+        // console.log('sdsdsdsdsds', value)
         emit('update:modelValue', value);
+        emit('fchange', value);
       }
 
       _edited = true

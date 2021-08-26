@@ -20,6 +20,11 @@ export default defineComponent({
     rules: null,
     modelValue: null
   },
+  emits: [
+    'fchange',
+    'change',
+    'update:modelValue'
+  ],
   setup(props, {emit}) {
     let { widget, widgetConfig } = props.ui
     const widgetInstance = ref()
@@ -66,12 +71,17 @@ export default defineComponent({
       emit('update:modelValue', e)
     }
 
+    function onFchange(e) {
+      // console.log('fchange', e)
+      emit('fchange', e)
+    }
+
     function onValueChange(e) {
       emit('update:modelValue', e)
       emit('change', e)
     }
 
-    return () => (<widgetDef ui={props.ui} props={props} context={props.context} rules={props.rules} ref={widgetInstance} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
+    return () => (<widgetDef ui={props.ui} props={props} context={props.context} rules={props.rules} ref={widgetInstance} onFchange={onFchange} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
   }
 })
 </script>
