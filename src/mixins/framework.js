@@ -4,6 +4,10 @@ import {useRouter} from "vue-router";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
 import {useStore} from "vuex";
 
+/**
+ * PageControl
+ * @type {{created(): void}}
+ */
 export let PageControl = {
   created() {
     let pageManager = inject('pageManager')
@@ -12,6 +16,21 @@ export let PageControl = {
     pageManager.register(this, this.$router.currentRoute.value.fullPath)
     // console.log('pageManager', pageManager.getCurrentPage())
   },
+}
+
+/**
+ *
+ * @param page
+ */
+export let useAppPageControl = function (page) {
+  let ctx = getCurrentInstance().ctx
+  let router = useRouter()
+  let pageManager = inject('pageManager')
+  // console.log(pageManager, this.$router.currentRoute); // path is /post
+
+  pageManager.register(ctx, router.currentRoute.value.fullPath)
+
+  page.pageManager = pageManager
 }
 
 

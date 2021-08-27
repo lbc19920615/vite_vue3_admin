@@ -37,7 +37,15 @@ import SubmitButton from "@/components/SubmitButton.vue"
 import EwSelect from "@/components/Ew/EwSelect.vue"
 import {getCurrentInstance, nextTick, onMounted, reactive, ref} from "vue";
 import { ElMessage } from 'element-plus'
-import {extendControl2Page, extendControlComputedWatch, useConstObj, useControl} from "@/mixins/framework";
+import {
+  extendControl2Page,
+  extendControlComputedWatch,
+  useAppPageControl,
+  useConstObj,
+  useControl
+} from "@/mixins/framework";
+
+
 
 let SEVER_ORIGIN = `http://192.168.1.67:7001/`
 
@@ -117,6 +125,9 @@ let computedChange = {
 }
 
 extendControlComputedWatch(page, computedChange)
+useAppPageControl(page)
+
+console.log(page)
 
 async function onSubmit() {
   let {data: responseData1} = await ZY.U.awaitAxios(
