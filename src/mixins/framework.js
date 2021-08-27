@@ -210,6 +210,7 @@ export function useControl({properties, computed, filters}, {onInited}) {
     val,
     callEvent,
     eventHandleMap,
+    rootStore,
     setEventHandler,
     setData,
     setByPath,

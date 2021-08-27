@@ -1,3 +1,6 @@
+import * as NodeRefMap from '@/plugins/ComEditor/nodes.js'
+import {showMsgError} from "@/plugins/message";
+
 export let groupManagerMixin = {
     data() {
         return {
@@ -5,15 +8,18 @@ export let groupManagerMixin = {
             groups: [
                 {
                     type: 'row',
-                    desc: '横向布局'
+                    desc: '横向布局',
+                    cls: 'RowNode'
                 },
                 {
                     type: 'column',
-                    desc: '纵向布局'
+                    desc: '纵向布局',
+                    cls: 'ColumnNode'
                 },
                 {
                     type: 'form',
-                    desc: 'FORM布局'
+                    desc: 'FORM布局',
+                    cls: 'FormNode'
                 }
             ]
         }
@@ -34,10 +40,24 @@ export let groupManagerMixin = {
          */
         selectGroupTemplate(group = {}) {
             console.log('group', group)
-            this.appendDep({
-                type: group.type
-            })
+            if (!group.cls) {
+                showMsgError('no group.cls')
+            }
+            let id = 'i' + ZY.rid(6)
+            let dep
+            if (group.type === 'row' || group.type === 'column') {
+                dep = new NodeRefMap[group.cls](id, [])
+            } else {
+                dep = new NodeRefMap[group.cls](id, {})
+            }
+            this.appendDep(
+              dep
+            )
             this.dialogVisible = false
+            // this.appendDep({
+            //     type: group.type
+            // })
+            // this.dialogVisible = false
         }
     }
 }

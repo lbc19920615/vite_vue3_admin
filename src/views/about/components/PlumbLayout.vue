@@ -135,7 +135,6 @@ $sel: "." + $tag;
 
 <script>
 import {jsPlumb} from 'jsplumb'
-import {v4 as uuidv4} from 'uuid';
 import {groupManagerMixin} from "./PlumbLayout/groupDialog";
 
 let itemsManagerMixin = {
@@ -179,19 +178,18 @@ let itemsManagerMixin = {
      * appendItem
      * @param dep
      */
-    appendItem(dep) {
+    async appendItem(dep) {
       let opt = dep
       let newItem = {
-        id: opt.id + '-' + uuidv4(),
+        id: opt.id + '-' + ZY.rid(12),
       }
       if (this.handleAppend) {
         this.handleAppend(newItem, dep)
       }
       opt.items.push(newItem)
-      this.$nextTick(() => {
-        this.renderItem(newItem)
-        this.instance.repaintEverything()
-      })
+      await this.$nextTick()
+      this.renderItem(newItem)
+      this.instance.repaintEverything()
     },
   }
 }
@@ -418,27 +416,26 @@ export default {
     },
     /**
      * appendDep
-     * @param def {{}} required
+     * @param dep {{}} required
      */
-    appendDep(def = {}) {
-      let id = 'i' + '-' + uuidv4()
-      let dep = {
-        id: id,
-        items: [
-        ],
-        config: {
-          version: 'v1',
-          closure: false
-        },
-        ...def
-      }
+    async appendDep(dep) {
+      // let id = 'i' + '-' + uuidv4()
+      // let dep = {
+      //   id: id,
+      //   items: [
+      //   ],
+      //   config: {
+      //     version: 'v1',
+      //     closure: false
+      //   },
+      //   ...def
+      // }
       if (this.handleDep) {
         this.handleDep(dep)
       }
       this.deps.push(dep)
-      this.$nextTick(() => {
-        this.insDep(id, this.instance, dep.items)
-      })
+      await this.$nextTick()
+      this.insDep(dep.id, this.instance, dep.items)
     },
     /**
      * editDep

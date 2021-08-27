@@ -321,6 +321,7 @@ let plumbLayoutMixin = {
     },
     onSaveData({deps, links = []}) {
       // console.log('onSaveData', deps, links)
+      this.page.rootStore.dispatch('SetStoreData', {deps, links})
       let map = {
         [this.rootId]: deps.find(v => v.id === this.rootId)
       }

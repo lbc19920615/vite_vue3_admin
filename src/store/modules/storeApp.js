@@ -18,12 +18,17 @@ const store = {
           value: '12121212ssd'
         }
       ]
-    }
+    },
+    currentPlayGround: {}
   }),
   mutations: {
     SET_COUNT: (state, v) => {
       state.count = v
       // console.log('state', state, v)
+    },
+    SET_PLAY: (state, v) => {
+      state.currentPlayGround = v
+      localStorage.setItem('current_playground', v)
     }
   },
   actions: {
@@ -32,6 +37,9 @@ const store = {
     },
     SetStoreAppCount: ({commit, state, rootState}, payload) => {
       commit('SET_COUNT', payload)
+    },
+    SetStoreData: ({commit}, payload) => {
+      commit('SET_PLAY', payload)
     }
   }
 }
