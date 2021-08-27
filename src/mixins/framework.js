@@ -1,4 +1,4 @@
-import {getCurrentInstance, inject, nextTick, onMounted, reactive, ref} from "vue";
+import {getCurrentInstance, inject, nextTick, provide, onMounted, reactive, ref} from "vue";
 import {createRefManager, provideRefManager} from "@/hooks/ref";
 import {useRouter} from "vue-router";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
