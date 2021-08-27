@@ -89,7 +89,7 @@ export default defineComponent({
       return res
     }
 
-    global.createServiceCom({
+    globalThis.createServiceCom({
       def: {},
       args: {}
     }, "ServicePage")
@@ -100,7 +100,6 @@ export default defineComponent({
       }
     })
 
-    setupLoggerHandler()
 
     let pageManager = createRefManager({
       eventHandler({type, e}) {
