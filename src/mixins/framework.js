@@ -1,5 +1,5 @@
 import {getCurrentInstance, inject, nextTick, onMounted, reactive, ref} from "vue";
-import {provideRefManager} from "@/hooks/ref";
+import {createRefManager, provideRefManager} from "@/hooks/ref";
 import {useRouter} from "vue-router";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
 import {useStore} from "vuex";
@@ -31,6 +31,24 @@ export let useAppPageControl = function (page) {
   pageManager.register(ctx, router.currentRoute.value.fullPath)
 
   page.pageManager = pageManager
+
+  let webComponentRef = createRefManager({
+    eventHandler({type, e}) {
+      console.log('eventHandler', type, e)
+    }
+  })
+
+  provide('webComponentRef', webComponentRef)
+  page.webComponentRef = webComponentRef
+
+  async function openDialog(name) {
+    let dialog = webComponentRef.find(name)
+    if (dialog) {
+      dialog.toggleOpen(true)
+    }
+  }
+
+  page.openDialog = openDialog
 }
 
 
@@ -65,6 +83,14 @@ export function useConstObj() {
   return ret
 }
 
+/**
+ *
+ * @param properties
+ * @param computed
+ * @param filters
+ * @param onInited
+ * @returns {{val: ((function(*=): (*))|*), dxValue: ((function(*=): (undefined))|*), inited, callEvent: callEvent, setByPath: setByPath, EVENT_TYPES: {ARR_APPEND: string, ARR_SPLICE: string, COMPUTED_CHANGE: string}, store, setEventHandler: setEventHandler}}
+ */
 export function useControl({properties, computed, filters}, {onInited}) {
   const rootStore = useStore()
   const globalStore = inject('globalStore')
@@ -356,7 +382,7 @@ export let usePage  = function ({data = {} , filters = {}, defaultVal = {}, serv
     storeControl.set({
       [varName]: config.name
     })
-    console.log(storeControl.store)
+    // console.log(storeControl.store)
   }
 
   function callEvent(name, e) {
