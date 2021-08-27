@@ -32,85 +32,79 @@
 </style>
 
 <template>
-<!--  <AsyncComponent>-->
-<!--    <template #default="scope">-->
-<!--&lt;!&ndash;      {{scope.serviceName}}&ndash;&gt;-->
-<!--      <DeepPropEditor :service-name="scope.serviceName"></DeepPropEditor>-->
-<!--    </template>-->
-<!--  </AsyncComponent>-->
-
   <div class="page-search">
-  <template v-if="store.model.textarea_step">
-    <HttpComponent
-        :defs="allDef"
-        :is="store.model.textarea_step"
-    >
-      <template #array_before="scope">
-        <el-col>
-          <el-row class="u-sizeFull" justify="space-between" align="middle">
-            <h3>{{scope.selfpath}}</h3>
-            <el-button @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>
-          </el-row>
-        </el-col>
-      </template>
-      <template #array_item_after="scope">
-<!--                 {{scope}}-->
-        <el-button @click="page.callEvent('remove:event', scope)">删除{{ scope.key }}</el-button>
-      </template>
-      <template #form_after="scope">
-        <CusSubmitButton
-            :scope="scope"
-            class="el-col z-submit-btn"></CusSubmitButton>
-      </template>
-    </HttpComponent>
-  </template>
-<!--    {{store.model}}-->
-    <div>
-      <div v-if="showCurrent">
-        <render-layout :map="currentLayoutMap"
-                       :id="rootId"
-                       :handleNext="handleNext"
-                       :page="page"
-        >
-          <template #form_after="scope">
-            <CusSubmitButton
-                :scope="scope"
-                class="el-col z-submit-btn"></CusSubmitButton>
-          </template>
-        </render-layout>
-      </div>
-      <el-row type="flex" style="flex-wrap: nowrap;">
-        <PlumbLayout
-            style="flex: 1"
-            @init="onPlumbLayoutInit"
-            :root-id="rootId"
-            :handleAppend="handleAppend"
-            :handle-dep="handleDep"
-            @save-data="onGetData"
-            @edit-dep="onEditDep"
-        ></PlumbLayout>
-
-        <div style="width: 600px" v-loading="renderFormLoading">
-<!--          {{currentEditDep}}-->
-          <template v-if="renderFormDesigner">
-            <HttpComponent
-                :defs="allDef"
-                :is="store.model.editor_step"
-            >
-              <template #form_array_before="scope">
-                <h3>{{scope.index}}</h3>
-              </template>
-              <template #form_after="scope">
-                <CusSubmitButton
-                    :scope="scope"
-                    class="el-col z-submit-btn"></CusSubmitButton>
-              </template>
-            </HttpComponent>
-          </template>
+    <template v-if="store.model.textarea_step">
+      <HttpComponent
+          :defs="allDef"
+          :is="store.model.textarea_step"
+      >
+        <template #array_before="scope">
+          <el-col>
+            <el-row class="u-sizeFull" justify="space-between" align="middle">
+              <h3>{{ scope.selfpath }}</h3>
+              <el-button @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>
+            </el-row>
+          </el-col>
+        </template>
+        <template #array_item_after="scope">
+          <!--                 {{scope}}-->
+          <el-button @click="page.callEvent('remove:event', scope)">删除{{ scope.key }}</el-button>
+        </template>
+        <template #form_after="scope">
+          <CusSubmitButton
+              :scope="scope"
+              class="el-col z-submit-btn"></CusSubmitButton>
+        </template>
+      </HttpComponent>
+    </template>
+    <!--    {{store.model}}-->
+    <template v-if="page2.inited">
+      <div>
+        <div v-if="showCurrent">
+          <render-layout :map="currentLayoutMap"
+                         :id="rootId"
+                         :handleNext="handleNext"
+                         :page="page"
+          >
+            <template #form_after="scope">
+              <CusSubmitButton
+                  :scope="scope"
+                  class="el-col z-submit-btn"></CusSubmitButton>
+            </template>
+          </render-layout>
         </div>
-      </el-row>
-    </div>
-    <!--    <table-a></table-a>-->
+        <el-row style="flex-wrap: nowrap;">
+          <PlumbLayout
+              style="flex: 1"
+              @init="onPlumbLayoutInit"
+              :root-id="rootId"
+              :handleAppend="handleAppend"
+              :handle-dep="handleDep"
+              @save-data="onGetData"
+              @edit-dep="onEditDep"
+          ></PlumbLayout>
+
+          <div style="width: 600px" v-loading="renderFormLoading">
+            <template v-if="renderFormDesigner">
+              <HttpComponent
+                  :defs="allDef"
+                  :is="store.model.editor_step"
+              >
+                <template #form_array_before="scope">
+                  <h3>{{ scope.index }}</h3>
+                </template>
+                <template #form_after="scope">
+                  <CusSubmitButton
+                      :scope="scope"
+                      class="el-col z-submit-btn"></CusSubmitButton>
+                </template>
+              </HttpComponent>
+            </template>
+          </div>
+        </el-row>
+      </div>
+    </template>
+
   </div>
 </template>
 
@@ -402,7 +396,7 @@ ${formEditorConfig({
   }
 }
 
-import {usePage} from "@/mixins/framework";
+import {extendControl2Page, useControl, usePage, useAppPageControl} from "@/mixins/framework";
 import AutoHttpCom from "@/components/AutoHttpCom.vue";
 import {formEditorConfig, rowEditorConfig} from "@/views/about/editorConfig";
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
@@ -436,6 +430,39 @@ export default defineComponent({
   },
   setup() {
     let self = getCurrentInstance().ctx
+
+    function onInited() {
+      console.log('sdsdsdsds')
+    }
+    let properties =  {
+      editor_step: {
+        type: String,
+      },
+      code_str: {
+        type: String,
+      },
+      textarea_step: {
+        type: String
+      }
+    }
+    let computed = {}
+    let page2 = useControl({properties, computed}, {
+      onInited
+    })
+    extendControl2Page(page2)
+    let store = page2.store
+    useAppPageControl(page2)
+
+    // page.commonLoadStepByContent(
+    //     import('./EventEditorConfig'),
+    //     'textarea_step',
+    //     {
+    //       onMounted(config) {
+    //       }
+    //     }
+    // )
+
+
     let page = usePage({
       data: {
         editor_step: {
@@ -458,14 +485,6 @@ export default defineComponent({
       }
     })
 
-    page.commonLoadStepByContent(
-        import('./EventEditorConfig'),
-        'textarea_step',
-        {
-          onMounted(config) {
-          }
-        }
-    )
 
     page.setEventHandler({
       ['add:event'](e) {
@@ -556,59 +575,60 @@ export default defineComponent({
       }
     })
 
-    async function loadStepByContent(content = '', varName = '') {
-      let [,res] = await ZY.awaitTo(
-          ZY.importJsStr(content)
-      )
-      if (!res || !res.default) {
-        throw new Error('loadStepByContent res')
-      }
-      const config = res.default
-      // console.log(config)
-      // allDef.set(config.name, config)
-      let ret = {
-        updateData(part, data) {
-          page.setPartModel( config.name, part,
-             data
-          )
-        }
-      };
-
-      page.setDef(config, function ({done}) {
-        // console.log('sdsdsds', config, self)
-        // ret.updateData()
-        for (let [partName, depPath] of Object.entries(config.defaultVal)) {
-          // console.log(partName, depPath)
-          // console.log(self.currentEditDep, depPath, ZY.lodash.get( self.currentEditDep, depPath))
-
-          if (self.currentEditDep.data) {
-            ret.updateData(partName,  self.currentEditDep.data)
-          } else {
-
-            ret.updateData(partName,  self.currentEditDep)
-          }
-        }
-
-        done()
-      })
-
-
-      await nextTick()
-      // console.log('config', config)
-
-      page.storeControl.set({
-        [varName]: config.name
-      })
-
-      return ret;
-    }
+    // async function loadStepByContent(content = '', varName = '') {
+    //   let [,res] = await ZY.awaitTo(
+    //       ZY.importJsStr(content)
+    //   )
+    //   if (!res || !res.default) {
+    //     throw new Error('loadStepByContent res')
+    //   }
+    //   const config = res.default
+    //   // console.log(config)
+    //   // allDef.set(config.name, config)
+    //   let ret = {
+    //     updateData(part, data) {
+    //       page.setPartModel( config.name, part,
+    //          data
+    //       )
+    //     }
+    //   };
+    //
+    //   page.setDef(config, function ({done}) {
+    //     // console.log('sdsdsds', config, self)
+    //     // ret.updateData()
+    //     for (let [partName, depPath] of Object.entries(config.defaultVal)) {
+    //       // console.log(partName, depPath)
+    //       // console.log(self.currentEditDep, depPath, ZY.lodash.get( self.currentEditDep, depPath))
+    //
+    //       if (self.currentEditDep.data) {
+    //         ret.updateData(partName,  self.currentEditDep.data)
+    //       } else {
+    //
+    //         ret.updateData(partName,  self.currentEditDep)
+    //       }
+    //     }
+    //
+    //     done()
+    //   })
+    //
+    //
+    //   await nextTick()
+    //   // console.log('config', config)
+    //
+    //   page.storeControl.set({
+    //     [varName]: config.name
+    //   })
+    //
+    //   return ret;
+    // }
 
 
     return {
-      loadStepByContent,
+      // loadStepByContent,
+      page2,
       store: page.storeControl.store,
       page,
-      filter: page.storeControl.filter,
+      // filter: page.storeControl.filter,
       allDef: page.allDef,
     }
   }
