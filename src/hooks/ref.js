@@ -62,12 +62,25 @@ export function createRefManager({eventHandler}) {
   return RefsManager
 }
 
+/**
+ * provideRefManager
+ * @param name
+ * @param eventHandler
+ * @returns {{Refs: Map<any, any>}}
+ */
 export function provideRefManager( {name = 'RefsManager', eventHandler} = {}) {
   let RefsManager = createRefManager({eventHandler})
   provide(name, RefsManager)
   return RefsManager
 }
 
+/**
+ * useRefsManager
+ * @param ret
+ * @param catchMOunted
+ * @param catchUnMOunted
+ * @param append
+ */
 export function useRefsManager(ret, [catchMOunted, catchUnMOunted], append ) {
   let def = {}
   let RefsManager = inject('RefsManager')
