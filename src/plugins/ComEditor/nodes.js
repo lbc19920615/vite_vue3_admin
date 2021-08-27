@@ -1,4 +1,4 @@
-import {formEditorConfig, rowEditorConfig} from "@/views/about/editorConfig";
+import {formEditorConfig, rowEditorConfig} from "./editorConfig";
 
 class V1Node {
   id;
