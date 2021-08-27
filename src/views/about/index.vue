@@ -83,7 +83,7 @@
               :root-id="rootId"
               :handleAppend="handleAppend"
               :handle-dep="handleDep"
-              @save-data="onGetData"
+              @save-data="onSaveData"
               @edit-dep="onEditDep"
           ></PlumbLayout>
 
@@ -110,7 +110,7 @@
 import {defineComponent, nextTick, getCurrentInstance} from "vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
-import * as NodeDefMap from "@/views/about/nodes.js";
+import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
 
 let depManagerMixin = {
   data() {
@@ -308,10 +308,6 @@ let plumbLayoutMixin = {
     },
     handleDep(dep) {
       // console.log('handleDep', dep)
-      if (dep.type === 'form') {
-        dep.content = ''
-        dep.config.closure = true
-      }
     },
     handleAppend(newItem, dep) {
       // console.log('newItem', dep)
@@ -323,8 +319,8 @@ let plumbLayoutMixin = {
         newItem.h = 50
       }
     },
-    onGetData({deps, links = []}) {
-      // console.log('onGetData', deps, links)
+    onSaveData({deps, links = []}) {
+      // console.log('onSaveData', deps, links)
       let map = {
         [this.rootId]: deps.find(v => v.id === this.rootId)
       }
@@ -340,9 +336,9 @@ let plumbLayoutMixin = {
       this.currentLayoutMap = JSON.parse(JSON.stringify(map))
       this.currentLinks = JSON.parse(JSON.stringify(links))
       this.showCurrent = false
-      console.log(
-          this.currentLayoutMap
-      )
+      // console.log(
+      //     this.currentLayoutMap
+      // )
       setTimeout(() => {
         this.showCurrent = true
       }, 500)
@@ -350,12 +346,10 @@ let plumbLayoutMixin = {
   }
 }
 
-import {extendControl2Page, useControl, usePage, useAppPageControl} from "@/mixins/framework";
+import {extendControl2Page, useControl, useAppPageControl} from "@/mixins/framework";
 import AutoHttpCom from "@/components/AutoHttpCom.vue";
-import {formEditorConfig, rowEditorConfig} from "@/views/about/editorConfig";
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
 import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
-import AsyncComponent from "@/components/AsyncComponent.vue";
 
 export default defineComponent({
   mixins: [
@@ -373,7 +367,6 @@ export default defineComponent({
     }
   },
   components: {
-    AsyncComponent,
     DeepPropEditor,
     AsyncPlumbLayout,
     AutoHttpCom,
@@ -497,30 +490,6 @@ export default defineComponent({
     //     }
     // )
 
-
-    // let page = usePage({
-    //   data: {
-    //     editor_step: {
-    //       type: String,
-    //     },
-    //     code_str: {
-    //       type: String,
-    //     },
-    //     textarea_step: {
-    //       type: String
-    //     }
-    //   },
-    //   filters: {
-    //     showCom: "ZY_NOT(MODEL('reload'))",
-    //   },
-    //   defaultVal: {
-    //     editor_step: '',
-    //     code_str: '',
-    //     textarea_step: '',
-    //   }
-    // })
-
-
     async function loadStepByContent(content = '', varName = '') {
       let [,res] = await ZY.awaitTo(
           ZY.importJsStr(content)
@@ -556,7 +525,6 @@ export default defineComponent({
 
       return ret;
     }
-
 
     return {
       loadStepByContent,
