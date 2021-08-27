@@ -57,8 +57,11 @@
         </template>
       </HttpComponent>
     </template>
-        {{store.model}}
+
     <template v-if="page.inited">
+      <div>
+        {{store.model}}
+      </div>
       <div>
         <div v-if="showCurrent">
           <render-layout :map="currentLayoutMap"
@@ -84,7 +87,6 @@
               @edit-dep="onEditDep"
           ></PlumbLayout>
 
-          {{renderFormDesigner}} {{allDef}}
           <div style="width: 600px" v-loading="renderFormLoading">
             <template v-if="renderFormDesigner">
               <HttpComponent
@@ -108,6 +110,7 @@
 import {defineComponent, nextTick, getCurrentInstance} from "vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
+import * as NodeDefMap from "@/views/about/nodes.js";
 
 let depManagerMixin = {
   data() {
@@ -166,20 +169,8 @@ let plumbLayoutMixin = {
   methods: {
     onPlumbLayoutInit(self) {
       self.deps = [
-        {
-          id: 'i1',
-          type: 'column',
-          config: {
-            version: 'v1',
-            closure: false
-          },
-          editor: `
-${rowEditorConfig({
-            form2: {}
-          })}
-          `,
-          name: '',
-          items: [
+        new NodeDefMap.ColumnNode('i1',
+          [
             {
               id: 'i1-0',
               h: 800
@@ -193,133 +184,97 @@ ${rowEditorConfig({
               h: 120
             }
           ]
-        },
-        {
-          id: 'i2',
-          type: 'row',
-          config: {
-            version: 'v1',
-            closure: false
+        ),
+        new NodeDefMap.RowNode('i2,', [
+          {
+            id: 'i2-0',
+            w: '1fr',
+            h: 50,
           },
-          editor: `
-${rowEditorConfig({
-            form2: {}
-          })}
-          `,
-          name: '',
-          items: [
-            {
-              id: 'i2-0',
-              w: '1fr',
-              h: 50,
-            },
-            {
-              id: 'i2-1',
-              w: '1fr',
-              h: 50,
-            },
-            {
-              id: 'i2-2',
-              w: '1fr',
-              h: 50,
-            }
-          ]
-        },
-        {
-          id: 'i3',
-          type: 'form',
-          config: {
-            version: 'v1',
-            closure: true
+          {
+            id: 'i2-1',
+            w: '1fr',
+            h: 50,
           },
-          editor: `
-${formEditorConfig({
-            form2: {
-              name: 'form1',
-              parts: [
-                {
-                  uis: '{}',
-                  properties: '{}',
-                }
-              ]
-            }
-          })}
-          `,
-          content: '',
-          items: [
-          ],
-         data: {
-           name: 'form1',
-          parts: [
-            {
-              uis: ZY.JSON5.stringify(
-                  {
-                    attrs: [
-                      [
-                        'label-width',
-                        '100px',
+          {
+            id: 'i2-2',
+            w: '1fr',
+            h: 50,
+          }
+        ]),
+        new NodeDefMap.FormNode('i3',
+          {
+            name: 'form1',
+            parts: [
+              {
+                uis: ZY.JSON5.stringify(
+                    {
+                      attrs: [
+                        [
+                          'label-width',
+                          '100px',
+                        ],
                       ],
-                    ],
-                  }
-                  , null, 2),
-              properties: ZY.JSON5.stringify(
-                  {
-                    parts: {
-                      type: 'array',
-                      items: {
-                        type: "object",
-                        properties: {
-                          key: {
-                            type: 'string',
-                            ui: {
-                            }
-                          },
-                          ui_type: {
-                            type: 'string',
-                            ui: {
-                            }
-                          },
-                          ui_label: {
-                            type: 'string',
-                            ui: {
-                            }
-                          },
-                          ui_widget: {
-                            type: 'string',
-                            ui: {
-                            }
-                          },
-                          ui_widgetConfig: {
-                            type: 'string',
-                            ui: {
-                              widget: 'CodeJsEditor',
-                              widgetConfig: {
-                                style: {
-                                  // height: "200px",
+                    }
+                    , null, 2),
+                properties: ZY.JSON5.stringify(
+                    {
+                      parts: {
+                        type: 'array',
+                        items: {
+                          type: "object",
+                          properties: {
+                            key: {
+                              type: 'string',
+                              ui: {
+                              }
+                            },
+                            ui_type: {
+                              type: 'string',
+                              ui: {
+                              }
+                            },
+                            ui_label: {
+                              type: 'string',
+                              ui: {
+                              }
+                            },
+                            ui_widget: {
+                              type: 'string',
+                              ui: {
+                              }
+                            },
+                            ui_widgetConfig: {
+                              type: 'string',
+                              ui: {
+                                widget: 'CodeJsEditor',
+                                widgetConfig: {
+                                  style: {
+                                    // height: "200px",
+                                  }
                                 }
                               }
-                            }
-                          },
-                          rules: {
-                            type: 'string',
-                            ui: {
-                              widget: 'JsonCodeEditor',
-                              widgetConfig: {
-                                style: {
-                                  height: "200px",
+                            },
+                            rules: {
+                              type: 'string',
+                              ui: {
+                                widget: 'JsonCodeEditor',
+                                widgetConfig: {
+                                  style: {
+                                    height: "200px",
+                                  }
                                 }
                               }
                             }
                           }
                         }
-                      }
-                    },
-                  }
-                  , null, 2),
-            }
-          ]
-         }
-        }
+                      },
+                    }
+                    , null, 2),
+              }
+            ]
+          }
+        )
       ]
       self.$nextTick(() => {
         self.insDeps(self.deps)
@@ -352,7 +307,7 @@ ${formEditorConfig({
       })
     },
     handleDep(dep) {
-      console.log('handleDep', dep)
+      // console.log('handleDep', dep)
       if (dep.type === 'form') {
         dep.content = ''
         dep.config.closure = true
@@ -369,7 +324,7 @@ ${formEditorConfig({
       }
     },
     onGetData({deps, links = []}) {
-      console.log('onGetData', deps, links)
+      // console.log('onGetData', deps, links)
       let map = {
         [this.rootId]: deps.find(v => v.id === this.rootId)
       }
@@ -385,6 +340,9 @@ ${formEditorConfig({
       this.currentLayoutMap = JSON.parse(JSON.stringify(map))
       this.currentLinks = JSON.parse(JSON.stringify(links))
       this.showCurrent = false
+      console.log(
+          this.currentLayoutMap
+      )
       setTimeout(() => {
         this.showCurrent = true
       }, 500)
@@ -464,8 +422,9 @@ export default defineComponent({
       },
       ['model:update'](e) {
         let { model, key, newVal, config } = e
-        // console.log(key, model, self.currentEditDep)
+        // console.log(key, model, config, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
+          console.log('sdsdsdsdsdsdsds', self.currentEditDep, model)
           self.currentEditDep.data = model
           if (self.currentEditDep.type === 'form') {
             let contentTpl = function ({ui, properties} = {}, defaultVal) {

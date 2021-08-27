@@ -51,7 +51,7 @@ export default defineComponent( {
       // console.log(children)
       // console.log(config.slots)
       httpCtx = h(HttpComponent, {
-        defs: page.allDef,
+        defs: page.defMap,
         is:  step.value,
         slotContent: props.slotContent ? props.slotContent : ctx.slots,
         debug: true,

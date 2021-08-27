@@ -224,6 +224,7 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
   let allDef = new Map()
   let events = new Map()
   control.defMap = allDef
+  control.allDef = allDef
 
   let refsManager = provideRefManager({
     async eventHandler({type, e}) {
@@ -240,10 +241,10 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
           })
         }
       } else {
-        console.log(control.eventHandleMap, type)
-        // if (control.eventHandleMap[type]) {
-        //   control.eventHandleMap[type](e)
-        // }
+        // console.log(control.eventHandleMap, type)
+        if (control.eventHandleMap[type]) {
+          control.eventHandleMap[type](e)
+        }
       }
     }
   })
