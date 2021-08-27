@@ -31,7 +31,6 @@
     "normalize.css": "^8.0.1",
     "path-to-regexp": "^6.2.0",
     "pretty": "^2.0.0",
-    "pubsub-js": "^1.9.3",
     "sleep-promise": "^9.1.0",
     "sortablejs": "^1.14.0",
     "suitcss-utils-size": "^2.0.1",
