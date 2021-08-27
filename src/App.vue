@@ -22,10 +22,9 @@
 
 <script>
 import {defineComponent, inject, provide} from "vue";
-import {setupLoggerHandler} from "./utils/logger";
 import {createRefManager} from "@/hooks/ref";
 import {useRouter} from "vue-router";
-import {fetchComponent, fetchTwigComponent} from "@/hooks/remote.js";
+import {fetchTwigComponent} from "@/hooks/remote.js";
 
 export default defineComponent({
   setup() {
