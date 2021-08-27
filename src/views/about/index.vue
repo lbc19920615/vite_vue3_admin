@@ -418,7 +418,7 @@ export default defineComponent({
         let { model, key, newVal, config } = e
         // console.log(key, model, config, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
-          console.log('sdsdsdsdsdsdsds', self.currentEditDep, model)
+          // console.log('sdsdsdsdsdsdsds', self.currentEditDep, model)
           self.currentEditDep.data = model
           if (self.currentEditDep.type === 'form') {
             let contentTpl = function ({ui, properties} = {}, defaultVal) {
@@ -456,27 +456,31 @@ export default defineComponent({
               // console.log(obj)
               return ZY.JSON5.stringify(obj)
             }
-            self.currentEditDep.content = contentTpl(
-                {
-                  ui: ZY.JSON5.parse(model.parts[0].uis),
-                  properties: ZY.JSON5.parse(model.parts[0].properties)
-                },
-                {
-                  form2: {
-                    parts: [
-                      {
-                        key: '',
-                        ui_type: '',
-                        ui_label: '',
-                        ui_widgetConfig: '{}',
-                        rules: '{}'
-                      }
-                    ]
+            try {
+              self.currentEditDep.content = contentTpl(
+                  {
+                    ui: ZY.JSON5.parse(model.parts[0].uis),
+                    properties: ZY.JSON5.parse(model.parts[0].properties)
+                  },
+                  {
+                    form2: {
+                      parts: [
+                        {
+                          key: '',
+                          ui_type: '',
+                          ui_label: '',
+                          ui_widgetConfig: '{}',
+                          rules: '{}'
+                        }
+                      ]
+                    }
                   }
-                }
-            )
-            // console.log(self.currentEditDep.content )
-            localStorage.setItem('currentEditDepContent', self.currentEditDep.content)
+              )
+              // console.log(self.currentEditDep.content )
+              localStorage.setItem('currentEditDepContent', self.currentEditDep.content)
+            } catch (e) {
+              console.error(e)
+            }
           }
         }
       }
@@ -509,10 +513,15 @@ export default defineComponent({
       };
 
       page.setDef(config, function ({done}) {
-        for (let [partName, depPath] of Object.entries(config.defaultVal)) {
+        for (let [partName, partConfig] of Object.entries(config.defaultVal)) {
           // console.log(self.currentEditDep, depPath, ZY.lodash.get( self.currentEditDep, depPath))
           if (self.currentEditDep.data) {
-            ret.updateData(partName,  self.currentEditDep.data)
+            if (ZY.lodash.keys(self.currentEditDep.data).length > 0) {
+              ret.updateData(partName,  self.currentEditDep.data)
+            } else {
+              console.log('partConfig', partConfig)
+              ret.updateData(partName,  partConfig)
+            }
           } else {
             ret.updateData(partName,  self.currentEditDep)
           }

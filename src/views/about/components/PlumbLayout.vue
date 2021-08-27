@@ -111,9 +111,9 @@ $sel: "." + $tag;
               <div>id: {{dep.id}}</div>
             </div>
           </div>
-          <div class="item content-item" :data-pid="dep.id"
-               :id="dep.id + '-evt'"
-          >events</div>
+<!--          <div class="item content-item" :data-pid="dep.id"-->
+<!--               :id="dep.id + '-evt'"-->
+<!--          >events</div>-->
           <template v-if="!dep.config.closure">
             <h3 style="margin: 10px 0;">items</h3>
             <template v-for="(item, index) in dep.items" :key="index">
@@ -402,9 +402,9 @@ export default {
       self.addEndpoint(id + '-top' , {
         anchors: ['Left']
       }, config.baseStyle)
-      self.addEndpoint(id + '-evt' , {
-        anchors: ['Right']
-      }, config.baseStyle)
+      // self.addEndpoint(id + '-evt' , {
+      //   anchors: ['Right']
+      // }, config.baseStyle)
       // instance.addEndpoint(id + '-fun' , {
       //   anchors: ['Right']
       // }, config.baseStyle)
