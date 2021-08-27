@@ -93,11 +93,6 @@
                 <template #form_array_before="scope">
                   <h3>{{ scope.index }}</h3>
                 </template>
-                <template #form_after="scope">
-                  <CusSubmitButton
-                      :scope="scope"
-                      class="el-col z-submit-btn"></CusSubmitButton>
-                </template>
               </HttpComponent>
             </template>
           </div>
@@ -186,7 +181,7 @@ ${rowEditorConfig({
           items: [
             {
               id: 'i1-0',
-              h: 700
+              h: 800
             },
             {
               id: 'i1-1',
@@ -575,56 +570,56 @@ export default defineComponent({
       }
     })
 
-    // async function loadStepByContent(content = '', varName = '') {
-    //   let [,res] = await ZY.awaitTo(
-    //       ZY.importJsStr(content)
-    //   )
-    //   if (!res || !res.default) {
-    //     throw new Error('loadStepByContent res')
-    //   }
-    //   const config = res.default
-    //   // console.log(config)
-    //   // allDef.set(config.name, config)
-    //   let ret = {
-    //     updateData(part, data) {
-    //       page.setPartModel( config.name, part,
-    //          data
-    //       )
-    //     }
-    //   };
-    //
-    //   page.setDef(config, function ({done}) {
-    //     // console.log('sdsdsds', config, self)
-    //     // ret.updateData()
-    //     for (let [partName, depPath] of Object.entries(config.defaultVal)) {
-    //       // console.log(partName, depPath)
-    //       // console.log(self.currentEditDep, depPath, ZY.lodash.get( self.currentEditDep, depPath))
-    //
-    //       if (self.currentEditDep.data) {
-    //         ret.updateData(partName,  self.currentEditDep.data)
-    //       } else {
-    //
-    //         ret.updateData(partName,  self.currentEditDep)
-    //       }
-    //     }
-    //
-    //     done()
-    //   })
-    //
-    //
-    //   await nextTick()
-    //   // console.log('config', config)
-    //
-    //   page.storeControl.set({
-    //     [varName]: config.name
-    //   })
-    //
-    //   return ret;
-    // }
+    async function loadStepByContent(content = '', varName = '') {
+      let [,res] = await ZY.awaitTo(
+          ZY.importJsStr(content)
+      )
+      if (!res || !res.default) {
+        throw new Error('loadStepByContent res')
+      }
+      const config = res.default
+      // console.log(config)
+      // allDef.set(config.name, config)
+      let ret = {
+        updateData(part, data) {
+          page.setPartModel( config.name, part,
+             data
+          )
+        }
+      };
+
+      page.setDef(config, function ({done}) {
+        // console.log('sdsdsds', config, self)
+        // ret.updateData()
+        for (let [partName, depPath] of Object.entries(config.defaultVal)) {
+          // console.log(partName, depPath)
+          // console.log(self.currentEditDep, depPath, ZY.lodash.get( self.currentEditDep, depPath))
+
+          if (self.currentEditDep.data) {
+            ret.updateData(partName,  self.currentEditDep.data)
+          } else {
+
+            ret.updateData(partName,  self.currentEditDep)
+          }
+        }
+
+        done()
+      })
+
+
+      await nextTick()
+      // console.log('config', config)
+
+      page.storeControl.set({
+        [varName]: config.name
+      })
+
+      return ret;
+    }
 
 
     return {
-      // loadStepByContent,
+      loadStepByContent,
       page2,
       store: page.storeControl.store,
       page,
