@@ -46,10 +46,12 @@
         :is="store.model.textarea_step"
     >
       <template #array_before="scope">
-        <el-row class="u-sizeFull" type="flex" justify="space-between" align="middle">
-          <h3>{{scope.selfpath}}</h3>
-          <el-button @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>
-        </el-row>
+        <el-col>
+          <el-row class="u-sizeFull" justify="space-between" align="middle">
+            <h3>{{scope.selfpath}}</h3>
+            <el-button @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>
+          </el-row>
+        </el-col>
       </template>
       <template #array_item_after="scope">
 <!--                 {{scope}}-->

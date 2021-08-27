@@ -24,6 +24,17 @@ export async function fetchTwigComponent(comName = '', {def, args } = {}) {
         let tpl = await fetchContentV3(data, args)
         let sfc = parseComponent(tpl)
         const templateId = comName + '-tpl';
+        // console.log(sfc)
+        let styleSheets = []
+        if (Array.isArray(sfc.styles) && sfc.styles.length > 0) {
+            sfc.styles.forEach(styleObj => {
+                let styleDom = document.createElement('style')
+                styleDom.id = ZY.nid()
+                styleDom.innerText = styleObj.content
+                document.body.appendChild(styleDom)
+                styleSheets.push(styleDom)
+            })
+        }
         let res = await ZY.importJsStr(sfc.script.content)
         globalThis.initTemplate(templateId, globalThis, {
             html: `${templateSfc(sfc)}`,
