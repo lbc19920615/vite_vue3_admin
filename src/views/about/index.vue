@@ -57,8 +57,8 @@
         </template>
       </HttpComponent>
     </template>
-    <!--    {{store.model}}-->
-    <template v-if="page2.inited">
+        {{store.model}}
+    <template v-if="page.inited">
       <div>
         <div v-if="showCurrent">
           <render-layout :map="currentLayoutMap"
@@ -84,6 +84,7 @@
               @edit-dep="onEditDep"
           ></PlumbLayout>
 
+          {{renderFormDesigner}} {{allDef}}
           <div style="width: 600px" v-loading="renderFormLoading">
             <template v-if="renderFormDesigner">
               <HttpComponent
@@ -418,16 +419,14 @@ export default defineComponent({
     DeepPropEditor,
     AsyncPlumbLayout,
     AutoHttpCom,
-    // JsonCodeEditor,
     PlumbLayout,
     RenderLayout,
-    // GridRow,
   },
   setup() {
     let self = getCurrentInstance().ctx
 
     function onInited() {
-      console.log('sdsdsdsds')
+      console.log('page inited')
     }
     let properties =  {
       editor_step: {
@@ -441,57 +440,17 @@ export default defineComponent({
       }
     }
     let computed = {}
-    let page2 = useControl({properties, computed}, {
+    let page = useControl({properties, computed}, {
       onInited
     })
-    extendControl2Page(page2)
-    let store = page2.store
-    useAppPageControl(page2)
-
-    // page.commonLoadStepByContent(
-    //     import('./EventEditorConfig'),
-    //     'textarea_step',
-    //     {
-    //       onMounted(config) {
-    //       }
-    //     }
-    // )
-
-
-    let page = usePage({
-      data: {
-        editor_step: {
-          type: String,
-        },
-        code_str: {
-          type: String,
-        },
-        textarea_step: {
-          type: String
-        }
-      },
-      filters: {
-        showCom: "ZY_NOT(MODEL('reload'))",
-      },
-      defaultVal: {
-        editor_step: '',
-        code_str: '',
-        textarea_step: '',
-      }
-    })
-
+    page = extendControl2Page(page)
+    page = useAppPageControl(page)
 
     page.setEventHandler({
       ['add:event'](e) {
-        console.log('sdsdsdsdsdsds', e)
         let { parts, partName, selfpath, process } = e
         // console.log('add:event', e, model)
-
         parts[partName].arrAppend(selfpath)
-        // console.log(parts[partName])
-        // let target = ZY.lodash.get(model, key)
-        // target.push({})
-        // page.setPartModel(process, partName, target)
       },
       ['remove:event'](e) {
         // console.log('sdsdsdsdsdsds', e)
@@ -570,6 +529,39 @@ export default defineComponent({
       }
     })
 
+    // page.commonLoadStepByContent(
+    //     import('./EventEditorConfig'),
+    //     'textarea_step',
+    //     {
+    //       onMounted(config) {
+    //       }
+    //     }
+    // )
+
+
+    // let page = usePage({
+    //   data: {
+    //     editor_step: {
+    //       type: String,
+    //     },
+    //     code_str: {
+    //       type: String,
+    //     },
+    //     textarea_step: {
+    //       type: String
+    //     }
+    //   },
+    //   filters: {
+    //     showCom: "ZY_NOT(MODEL('reload'))",
+    //   },
+    //   defaultVal: {
+    //     editor_step: '',
+    //     code_str: '',
+    //     textarea_step: '',
+    //   }
+    // })
+
+
     async function loadStepByContent(content = '', varName = '') {
       let [,res] = await ZY.awaitTo(
           ZY.importJsStr(content)
@@ -579,7 +571,6 @@ export default defineComponent({
       }
       const config = res.default
       // console.log(config)
-      // allDef.set(config.name, config)
       let ret = {
         updateData(part, data) {
           page.setPartModel( config.name, part,
@@ -589,30 +580,20 @@ export default defineComponent({
       };
 
       page.setDef(config, function ({done}) {
-        // console.log('sdsdsds', config, self)
-        // ret.updateData()
         for (let [partName, depPath] of Object.entries(config.defaultVal)) {
-          // console.log(partName, depPath)
           // console.log(self.currentEditDep, depPath, ZY.lodash.get( self.currentEditDep, depPath))
-
           if (self.currentEditDep.data) {
             ret.updateData(partName,  self.currentEditDep.data)
           } else {
-
             ret.updateData(partName,  self.currentEditDep)
           }
         }
-
         done()
       })
 
-
       await nextTick()
-      // console.log('config', config)
 
-      page.storeControl.set({
-        [varName]: config.name
-      })
+      page.setByPath(varName, config.name)
 
       return ret;
     }
@@ -620,11 +601,9 @@ export default defineComponent({
 
     return {
       loadStepByContent,
-      page2,
-      store: page.storeControl.store,
+      store: page.store,
       page,
-      // filter: page.storeControl.filter,
-      allDef: page.allDef,
+      allDef: page.defMap,
     }
   }
 })

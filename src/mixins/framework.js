@@ -49,6 +49,8 @@ export let useAppPageControl = function (page) {
   }
 
   page.openDialog = openDialog
+
+  return page
 }
 
 
@@ -177,11 +179,15 @@ export function useControl({properties, computed, filters}, {onInited}) {
     storeControl.set(o)
   }
 
+  function setData(v) {
+    storeControl.set(v)
+  }
+
   function setEventHandler(_eventHandler) {
     for (let key in _eventHandler) {
       eventHandleMap[key] = _eventHandler[key]
     }
-    console.log(eventHandleMap)
+    // console.log(eventHandleMap)
   }
 
   function callEvent(name, e) {
@@ -203,7 +209,9 @@ export function useControl({properties, computed, filters}, {onInited}) {
     dxValue,
     val,
     callEvent,
+    eventHandleMap,
     setEventHandler,
+    setData,
     setByPath,
     inited,
   }
@@ -213,7 +221,10 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
   let ctx = getCurrentInstance().ctx
   control.ctx = ctx
   let httpComContext = {}
+  let allDef = new Map()
   let events = new Map()
+  control.defMap = allDef
+
   let refsManager = provideRefManager({
     async eventHandler({type, e}) {
       // console.log('page eventHandler', type, e)
@@ -229,9 +240,10 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
           })
         }
       } else {
-        if (control.eventHandleMap[type]) {
-          control.eventHandleMap[type](e)
-        }
+        console.log(control.eventHandleMap, type)
+        // if (control.eventHandleMap[type]) {
+        //   control.eventHandleMap[type](e)
+        // }
       }
     }
   })
@@ -251,6 +263,16 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
     )
   }
   control.getPartModel  = getPartModel
+
+  function setDef(config, fun) {
+    allDef.set(config.name, config)
+    events.set(config.name, fun)
+    // events[name] = new Function('options', `fun()`)
+  }
+
+  control.setDef = setDef
+
+  return control
 }
 
 export function extendControlComputedWatch(control = {setEventHandler}, computedChange = {}) {
