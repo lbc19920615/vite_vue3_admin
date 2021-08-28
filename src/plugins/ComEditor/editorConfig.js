@@ -52,7 +52,13 @@ export let formEditorConfig = function (defaultVal = {}) {
                 items: {
                     type: "object",
                     properties: {
-                        uis: {
+                        type: {
+                            type: 'string',
+                        },
+                        name: {
+                            type: 'string',
+                        },
+                        ui: {
                             type: 'string',
                             ui: {
                                 label: 'UI',
@@ -72,6 +78,18 @@ export let formEditorConfig = function (defaultVal = {}) {
                                 widgetConfig: {
                                     style: {
                                         height: "500px",
+                                    }
+                                }
+                            }
+                        },
+                        defaultVal: {
+                            type: 'string',
+                            ui: {
+                                label: 'DEFAULT',
+                                widget: 'JsonCodeEditor',
+                                widgetConfig: {
+                                    style: {
+                                        height: "200px",
                                     }
                                 }
                             }

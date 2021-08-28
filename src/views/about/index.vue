@@ -168,7 +168,9 @@ let plumbLayoutMixin = {
             name: 'form1',
             parts: [
               {
-                uis: ZY.JSON5.stringify(
+                type: 'form',
+                name: 'form2',
+                ui: ZY.JSON5.stringify(
                     {
                       attrs: [
                         [
@@ -178,6 +180,17 @@ let plumbLayoutMixin = {
                       ],
                     }
                     , null, 2),
+                defaultVal: ZY.JSON5.stringify({
+                  parts: [
+                    {
+                      key: '',
+                      ui_type: '',
+                      ui_label: '',
+                      ui_widgetConfig: '{}',
+                      rules: '{}'
+                    }
+                  ]
+                } , null, 2),
                 properties: ZY.JSON5.stringify(
                     {
                       parts: {
@@ -310,6 +323,7 @@ import {extendControl2Page, useControl, useAppPageControl} from "@/mixins/framew
 import AutoHttpCom from "@/components/AutoHttpCom.vue";
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
 import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
+import {buildFormDepContent} from "@/views/about/build";
 
 export default defineComponent({
   mixins: [
@@ -377,69 +391,32 @@ export default defineComponent({
         let { model, key, newVal, config } = e
         // console.log(key, model, config, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
-          console.log('sdsdsdsdsdsdsds', self.currentEditDep, model)
+          // console.log('sdsdsdsdsdsdsds', self.currentEditDep, model)
           self.currentEditDep.data = model
           if (self.currentEditDep.type === 'form') {
-            let contentTpl = function ({ui, properties} = {}, defaultVal) {
-              let obj = {
-                name: 'process-step1',
-                defaultVal: defaultVal,
-                init: {
-                  def: {
-                    constants: {},
-                    parts: [
-                      {
-                        type: "form",
-                        name: "form2",
-                        serviceTpl: {
-                          def: {},
-                          args: {
-                            src: 'bservice.twig',
-                          },
-                        },
-                        def: {
-                          type: 'object',
-                          ui,
-                          properties
-                        },
-                        computed: {
-                        },
-                      }
-                    ]
-                  },
-                  args: {
-                    src: 'comformscr.twig'
-                  }
-                }
-              }
-              // console.log(obj)
-              return ZY.JSON5.stringify(obj)
-            }
             try {
-              self.currentEditDep.content = contentTpl(
-                  {
-                    ui: ZY.JSON5.parse(model.parts[0].uis),
-                    properties: ZY.JSON5.parse(model.parts[0].properties)
-                  },
-                  {
-                    form2: {
-                      parts: [
-                        {
-                          key: '',
-                          ui_type: '',
-                          ui_label: '',
-                          ui_widgetConfig: '{}',
-                          rules: '{}'
-                        }
-                      ]
-                    }
-                  }
+              self.currentEditDep.content = buildFormDepContent(
+                  model.parts,
+                  // () => {
+                  //   return {
+                  //     form2: {
+                  //       parts: [
+                  //         {
+                  //           key: '',
+                  //           ui_type: '',
+                  //           ui_label: '',
+                  //           ui_widgetConfig: '{}',
+                  //           rules: '{}'
+                  //         }
+                  //       ]
+                  //     }
+                  //   }
+                  // }
               )
               self.LayoutContext.setDep(self.currentEditDep.id, {
                 content: self.currentEditDep.content
               })
               // console.log(self.currentEditDep.content )
-              // localStorage.setItem('currentEditDepContent', self.currentEditDep.content)
             } catch (e) {
               console.error(e)
             }
