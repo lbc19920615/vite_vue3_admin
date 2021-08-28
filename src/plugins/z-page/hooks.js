@@ -1,12 +1,12 @@
 import {reactive, ref} from "vue";
 
 
-export function useRenderControl(id = '') {
+export function useRenderControl() {
 
     // let currentLayoutMap = reactive({})
     // let currentLinks = reactive([])
     let state = reactive({
-        rootId: id ?? '',
+        rootId: '',
         currentLayoutMap: {},
         currentLinks: [],
         uuid: '',
@@ -31,6 +31,11 @@ export function useRenderControl(id = '') {
         for (let key in obj) {
             state[key] = obj[key]
         }
+        // console.log(state.currentLinks)
+        if (state.currentLinks[0]) {
+            state.rootId = state.currentLinks[0].fromPID ?? ''
+        }
+
     }
 
     async function detectChange() {

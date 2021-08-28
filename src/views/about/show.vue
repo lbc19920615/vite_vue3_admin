@@ -55,7 +55,7 @@ export default {
   components: {RenderLayout},
   setup() {
 
-    let renderC = useRenderControl('i1')
+    let renderC = useRenderControl()
     let properties =  {
       editor_step: {
         type: String,
