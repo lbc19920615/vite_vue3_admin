@@ -60,7 +60,7 @@ export function useRenderControl() {
             interval.stop()
         }
         detectChange()
-       interval = new ZY.Interval(detectChange, 10000);
+       interval = new ZY.Interval(detectChange, 6000);
         interval.start()
     }
 
