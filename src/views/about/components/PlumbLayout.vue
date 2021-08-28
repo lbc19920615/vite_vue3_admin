@@ -136,6 +136,7 @@ $sel: "." + $tag;
 <script>
 import {jsPlumb} from 'jsplumb'
 import {groupManagerMixin} from "./PlumbLayout/groupDialog";
+import {createFromJSON5} from "@/plugins/ComEditor/nodes";
 
 let itemsManagerMixin = {
   methods: {
@@ -259,6 +260,13 @@ export default {
       ]
     }
   },
+  watch: {
+    deps: {
+      async handler(newVal) {
+
+      },
+    }
+  },
   mounted() {
     let self = this
     let config = {}
@@ -358,6 +366,38 @@ export default {
         self.insDep(dep.id, instance, dep.items)
       })
     },
+    async useDeps(defaultDeps = []) {
+      let deps = []
+      let cached = await ZY_EXT.store.getItem('play-deps') ?? defaultDeps
+      if (cached) {
+        cached.forEach(item => {
+          let dep = createFromJSON5(item.type, item)
+          if (dep) {
+            deps.push(dep)
+          }
+        })
+      }
+      console.log('deps', deps)
+      this.deps = deps
+      return deps
+    },
+    async useLinks(defaultVal) {
+      let deps = []
+      let cached = await ZY_EXT.store.getItem('play-links') ?? {
+        eventLinks: [],
+        comLinks: [],
+      }
+      // console.log('cached', cached)
+      if (cached) {
+        if (cached.eventLinks) {
+          this.insEventLinks(cached.eventLinks)
+        }
+        if (cached.comLinks) {
+          this.insComLinks(cached.comLinks)
+        }
+      }
+      return deps
+    },
     insEventLinks(links = []) {
       let instance = this.instance
       links.forEach(link => {
@@ -375,10 +415,10 @@ export default {
       links.forEach(link => {
         let endPoints1 = instance.getEndpoints(link.from)
         let endPoints2 = instance.getEndpoints(link.to)
-        // console.log(endPoints1, endPoints2)
+        console.log(endPoints1, endPoints2)
         instance.connect({
           source: endPoints1[1],
-          target: endPoints2[1]
+          target: endPoints2[0]
         })
       })
     },
@@ -396,9 +436,9 @@ export default {
     insDep(id, instance, items = []) {
       let self = this
       let config = this.config
-      self.addEndpoint(id + '-top' , {
-        anchors: ['Top']
-      }, config.baseStyle)
+      // self.addEndpoint(id + '-top' , {
+      //   anchors: ['Top']
+      // }, config.baseStyle)
       self.addEndpoint(id + '-top' , {
         anchors: ['Left']
       }, config.baseStyle)
@@ -444,10 +484,7 @@ export default {
     editDep(dep) {
       this.$emit('edit-dep', dep)
     },
-    /**
-     * save
-     */
-    save() {
+    getLinks() {
       let links = this.getLinkRealtions()
 
       let eventLinks = []
@@ -459,8 +496,8 @@ export default {
 
       let comLinks = []
       let notCanLinks = [
-          'evt',
-          'fun'
+        'evt',
+        'fun'
       ]
       comLinks = links.filter(v => {
         let from = v.from
@@ -470,13 +507,33 @@ export default {
         // console.log('v', isMatched)
         return v.to.endsWith('top') && !isMatched
       })
+      return {
+        eventLinks,
+        comLinks,
+      }
+    },
+    setDep(id, v) {
+      let dep = this.deps.find(v => v.id === id)
+      if (dep) {
+        for (let k in v) {
+          dep[k] = v[k]
+        }
+      }
+    },
+    /**
+     * save
+     */
+    save() {
+      let links = this.getLinks()
       let ret = {
         deps: this.deps,
-        eventLinks: eventLinks,
-        links: comLinks,
+        eventLinks: links.eventLinks,
+        links: links.comLinks,
       }
+      ZY_EXT.store.setItem('play-deps', ZY.JSON5.parse(ZY.JSON5.stringify(this.deps)))
+      ZY_EXT.store.setItem('play-links', ZY.JSON5.parse(ZY.JSON5.stringify(links)))
 
-      console.log('links', comLinks, eventLinks)
+      // console.log('links', comLinks, eventLinks)
 
       this.$emit('save-data', ret)
     }

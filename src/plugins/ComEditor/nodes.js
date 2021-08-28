@@ -50,7 +50,7 @@ export class RowNode extends LayoutNode {
 }
 
 export class FormNode extends ClosureNode {
-  constructor(id, data, defaultVal = {}) {
+  constructor(id, data, defaultContent ) {
     super(id);
     this.type = 'form'
     this.editor = `
@@ -66,5 +66,23 @@ ${formEditorConfig({
       }
     })}`
     this.data = data
+    if (defaultContent) {
+      this.content = defaultContent
+    }
+  }
+}
+
+export function createFromJSON5(type, jsonlikeobj) {
+  if (jsonlikeobj.type === 'row') {
+    return new RowNode(jsonlikeobj.id, jsonlikeobj.items)
+  }
+  else if (jsonlikeobj.type === 'column') {
+    return new ColumnNode(jsonlikeobj.id, jsonlikeobj.items)
+  }
+  else if (jsonlikeobj.type === 'form')  {
+    return new FormNode(jsonlikeobj.id, jsonlikeobj.data, jsonlikeobj.content)
+  }
+  else {
+    console.log('hahahahaha')
   }
 }

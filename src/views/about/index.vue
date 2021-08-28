@@ -120,14 +120,16 @@ let renderLayoutMixin = {
 let plumbLayoutMixin = {
   data() {
     return {
+      LayoutContext: null,
       showCurrent: true,
       currentLinks: [],
       currentLayoutMap: {},
     }
   },
   methods: {
-    onPlumbLayoutInit(self) {
-      self.deps = [
+    async onPlumbLayoutInit(self) {
+      this.LayoutContext = self
+      let defaultDeps  = [
         new NodeDefMap.ColumnNode('i1',
           [
             {
@@ -144,7 +146,7 @@ let plumbLayoutMixin = {
             }
           ]
         ),
-        new NodeDefMap.RowNode('i2,', [
+        new NodeDefMap.RowNode('i2', [
           {
             id: 'i2-0',
             w: '1fr',
@@ -235,35 +237,24 @@ let plumbLayoutMixin = {
           }
         )
       ]
-      self.$nextTick(() => {
-        self.insDeps(self.deps)
-        setTimeout(() => {
-          self.insComLinks(
-              [
-                {
-                  "toPID": "i3",
-                  "fromPID": "i1",
-                  "from": "i1-0",
-                  "to": "i3-top"
-                },
-                // {
-                //   "toPID": "i5",
-                //   "fromPID": "i1",
-                //   "from": "i1-1",
-                //   "to": "i5-top"
-                // }
-              ]
-          )
-          self.insEventLinks([
-            // {
-            //   "toPID": "i4",
-            //   "fromPID": "i3",
-            //   "from": "i3-evt",
-            //   "to": "i4-0"
-            // }
-          ])
-        }, 300)
-      })
+      await self.useDeps(defaultDeps)
+      await self.$nextTick()
+      await ZY.sleep(300)
+      self.insDeps(self.deps)
+      await ZY.sleep(300)
+      self.useLinks()
+      // self.insComLinks(
+      //     [
+      //       {
+      //         "toPID": "i3",
+      //         "fromPID": "i1",
+      //         "from": "i1-0",
+      //         "to": "i3-top"
+      //       },
+      //     ]
+      // )
+      // self.insEventLinks([
+      // ])
     },
     handleDep(dep) {
       // console.log('handleDep', dep)
@@ -386,7 +377,7 @@ export default defineComponent({
         let { model, key, newVal, config } = e
         // console.log(key, model, config, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
-          // console.log('sdsdsdsdsdsdsds', self.currentEditDep, model)
+          console.log('sdsdsdsdsdsdsds', self.currentEditDep, model)
           self.currentEditDep.data = model
           if (self.currentEditDep.type === 'form') {
             let contentTpl = function ({ui, properties} = {}, defaultVal) {
@@ -444,8 +435,11 @@ export default defineComponent({
                     }
                   }
               )
+              self.LayoutContext.setDep(self.currentEditDep.id, {
+                content: self.currentEditDep.content
+              })
               // console.log(self.currentEditDep.content )
-              localStorage.setItem('currentEditDepContent', self.currentEditDep.content)
+              // localStorage.setItem('currentEditDepContent', self.currentEditDep.content)
             } catch (e) {
               console.error(e)
             }
