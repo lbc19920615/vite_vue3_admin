@@ -1,12 +1,5 @@
 <template>
   <div class="render-layout" :class="['render-layout-level-' + level]">
-<!--      <div class="handle">move</div>-->
-<!--      <layout-grid :class="['layout-level-' + level]" v-if="layoutItem.type === 'grid'"-->
-<!--                   :layout="layoutItem.data">-->
-<!--        <template v-slot:default="scope">-->
-<!--          <template v-if="scope.children && scope.children.length > 0"><render-layout :level="level + 1" :items="scope.children"></render-layout></template>-->
-<!--        </template>-->
-<!--      </layout-grid>-->
       <grid-column :class="levelItemCls" v-if="curObj.type === 'column'"
                 :layout="curObj.items">
         <template v-slot:default="{item}">
@@ -14,9 +7,6 @@
                          :page="page"
                          :slotContent="innerSlots"
                          :id="getNext(item)">
-<!--            <template #other="curObj">-->
-<!--              <slot v-bind="curObj"></slot>-->
-<!--            </template>-->
           </render-layout>
         </template>
       </grid-column>
@@ -27,9 +17,6 @@
                          :page="page"
                          :slotContent="innerSlots"
                          :id="getNext(item)">
-<!--            <template #other="curObj">-->
-<!--              <slot v-bind="curObj"></slot>-->
-<!--            </template>-->
           </render-layout>
         </template>
       </grid-row>
@@ -48,7 +35,6 @@
 
 <script>
 import GridRow from "@/views/about/components/grid-row.vue";
-import Sortable from "sortablejs";
 import GridColumn from "@/views/about/components/grid-column.vue";
 import AutoHttpCom from "@/components/AutoHttpCom.vue";
 
@@ -77,9 +63,7 @@ export default {
   },
   components: {
     AutoHttpCom,
-    // AsyncForm,
     GridColumn,
-    // LayoutGrid,
     GridRow,
   },
   data() {
@@ -89,7 +73,7 @@ export default {
   },
   computed: {
     curObj() {
-      // console.log(this.map, this.id)
+      console.log(this.map, this.id)
       if (this.map[this.id]) {
         return this.map[this.id]
       }
@@ -112,16 +96,6 @@ export default {
         id = this.handleNext(item)
       }
       return id
-    },
-    resetSortable() {
-      let self = this
-      // console.log('row',  this.$el)
-      new Sortable(this.$el, {
-        // handle: '.handle',
-        onEnd: function (/**Event*/evt) {
-
-        }
-      })
     },
   }
 }

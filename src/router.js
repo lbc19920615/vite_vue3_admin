@@ -52,6 +52,16 @@ export const constantRouterMap = [
         },
         component: () => import('@/views/home/demo.vue'),
       },
+      {
+        path: "show",
+        name: "Show",
+
+        meta: {
+          title: 'Show',
+          // icon: 'shangdian'
+        },
+        component: () => import('@/views/about/show.vue'),
+      },
     ]
   },
 ];

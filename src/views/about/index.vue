@@ -1,35 +1,4 @@
-<style lang="scss">
-.vue-grid-item {
-  color: #ffffff;
-}
 
-@function random-rgb($opacity: 1) {
-  @return rgb(random(255), random(255), random(255), $opacity)
-}
-
-@mixin random-bgr($opacity: 1){
-  background: random-rgb($opacity);
-}
-
-@for $i from 0 through 10 {
-  .render-layout-level-#{$i} {
-    width: 100%;
-    .vue-column-item {
-      @include random-bgr();
-      &:nth-child(2n+1) {
-        @include random-bgr(.5);
-      }
-    }
-    .vue-row-item {
-      @include random-bgr();
-      &:nth-child(2n+1) {
-        @include random-bgr(.5);
-      }
-    }
-  }
-}
-
-</style>
 
 <template>
   <div class="page-search">
@@ -64,17 +33,7 @@
       </div>
       <div>
         <div v-if="showCurrent">
-          <render-layout :map="currentLayoutMap"
-                         :id="rootId"
-                         :handleNext="handleNext"
-                         :page="page"
-          >
-            <template #form_after="scope">
-              <CusSubmitButton
-                  :scope="scope"
-                  class="el-col z-submit-btn"></CusSubmitButton>
-            </template>
-          </render-layout>
+          <el-link href="/show" target="_blank">show</el-link>
         </div>
         <el-row style="flex-wrap: nowrap;">
           <PlumbLayout
@@ -319,7 +278,7 @@ let plumbLayoutMixin = {
         newItem.h = 50
       }
     },
-    onSaveData({deps, links = []}) {
+    async onSaveData({deps, links = []}) {
       // console.log('onSaveData', deps, links)
       this.page.rootStore.dispatch('SetStoreData', {deps, links})
       let map = {
@@ -334,15 +293,24 @@ let plumbLayoutMixin = {
           }
         }
       })
-      this.currentLayoutMap = JSON.parse(JSON.stringify(map))
-      this.currentLinks = JSON.parse(JSON.stringify(links))
+
+      let currentLayoutMap = JSON.parse(JSON.stringify(map))
+      let currentLinks = JSON.parse(JSON.stringify(links))
+
+      this.currentLayoutMap = currentLayoutMap
+      this.currentLinks = currentLinks
       this.showCurrent = false
       // console.log(
       //     this.currentLayoutMap
       // )
-      setTimeout(() => {
-        this.showCurrent = true
-      }, 500)
+      await ZY_EXT.store.setItem('current-data', {
+        uuid: ZY.nid(),
+        currentLayoutMap,
+        currentLinks,
+      })
+
+      await ZY.sleep(500)
+      this.showCurrent = true
     }
   }
 }
