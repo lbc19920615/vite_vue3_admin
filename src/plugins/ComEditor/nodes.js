@@ -1,5 +1,8 @@
 import {formEditorConfig, rowEditorConfig} from "./editorConfig";
 
+let plugins = new Map()
+let clsDefs = new Map()
+
 class V1Node {
   id;
   type;
@@ -72,6 +75,20 @@ ${formEditorConfig({
   }
 }
 
+
+export function register (value) {
+  if (value && value.install) {
+    let plugin = value.install({
+      V1Node,
+      ClosureNode
+    })
+    plugins.set(name, value)
+    clsDefs.set(name, plugin)
+  }
+}
+
+
+
 export function createFromJSON5(type, jsonlikeobj) {
   if (jsonlikeobj.type === 'row') {
     return new RowNode(jsonlikeobj.id, jsonlikeobj.items)
@@ -83,6 +100,14 @@ export function createFromJSON5(type, jsonlikeobj) {
     return new FormNode(jsonlikeobj.id, jsonlikeobj.data, jsonlikeobj.content)
   }
   else {
-    console.log('hahahahaha')
+    if (clsDefs.has(jsonlikeobj.type)) {
+      let name = jsonlikeobj.type
+      let clsDef = clsDefs.get(name)
+      if (clsDef && clsDef.fromJSON5) {
+        return clsDef.fromJSON5(jsonlikeobj)
+      }
+    } else {
+      console.log('hahahahahahahahahaha')
+    }
   }
 }
