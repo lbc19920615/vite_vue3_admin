@@ -42,6 +42,7 @@ export let CustomRenderControlMixin = {
     },
     methods: {
         dxValueTemplate(v) {
+            // console.log('context', this.context, v)
             return this.curFormCon.dxValue(this.context, v)
         }
     }

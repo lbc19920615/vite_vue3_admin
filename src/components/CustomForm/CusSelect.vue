@@ -1,5 +1,6 @@
 <template>
   <template v-if="inited">
+<!--    {{widgetConfig.enums}}-->
     <el-select v-model="state.value"
                v-bind="widgetConfig"
                v-on="listeners"
@@ -9,6 +10,7 @@
       ></el-option>
     </el-select>
   </template>
+
 </template>
 
 <script>
