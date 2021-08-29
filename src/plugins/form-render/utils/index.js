@@ -63,6 +63,7 @@ export function defineCustomRender(props = {}, ctx) {
         if (!lock.isLocked) {
             model.value = newVal
         }
+    }, {
     })
 
     let comManager = inject('comManager')
@@ -118,8 +119,13 @@ export function defineCustomRender(props = {}, ctx) {
         })
     }
 
+    function init(props) {
+        model.value = props.modelValue
+    }
+
     return {
         data,
+        init,
         listeners,
         methods
     }

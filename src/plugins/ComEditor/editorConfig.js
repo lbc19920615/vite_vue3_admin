@@ -55,9 +55,21 @@ export let formEditorConfig = function (defaultVal = {}) {
                         type: {
                             type: 'string',
                             ui: {
-                                disabled: true
-                            }
+                                label: '请假类型',
+                                widget: 'CusSelect',
+                                widgetConfig: {
+                                    enums: "ROOT_STATE('tools.partOptions', [])",
+                                },
+                                events: {
+                                }
+                            },
                         },
+                        // type: {
+                        //     type: 'string',
+                        //     ui: {
+                        //         disabled: true
+                        //     }
+                        // },
                         name: {
                             type: 'string',
                         },

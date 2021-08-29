@@ -20,8 +20,9 @@ export default {
       CustomRenderControlMixin
   ],
   setup(props, ctx) {
-    let { data, methods, listeners } = defineCustomRender(props, ctx)
+    let { data, methods, listeners, init } = defineCustomRender(props, ctx)
     let state = data()
+    init(props)
 
     return {
       state,
