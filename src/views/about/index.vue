@@ -52,8 +52,12 @@
                   :defs="allDef"
                   :is="store.model.editor_step"
               >
-                <template #form_array_before="scope">
-                  <h3>{{ scope.index }}</h3>
+                <template #array_item_before="scope">
+                  <h3>{{ scope.key }}</h3>
+                </template>
+                <template #array_before="scope">
+                  <!--                 {{scope}}-->
+                  <el-button>{{ scope.key }}</el-button>
                 </template>
               </HttpComponent>
             </template>
