@@ -128,23 +128,23 @@ let renderLayoutMixin = {
   }
 }
 
-import * as tabNodePlugin from '@/plugins/tabNode.plugin'
+import * as tabNodePlugin from '@/plugins/ComEditor/tabNode.plugin'
 NodeDefMap.register(tabNodePlugin)
 let testDep = NodeDefMap.def('tab', 'i6', [
   {
     id: 'i6-0',
-    w: '1fr',
-    h: 50,
+    label: 'label1',
+    name: 'name1',
   },
   {
     id: 'i6-1',
-    w: '1fr',
-    h: 50,
+    label: 'label2',
+    name: 'name2',
   },
   {
     id: 'i6-2',
-    w: '1fr',
-    h: 50,
+    label: 'label3',
+    name: 'name3',
   }
 ])
 

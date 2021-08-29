@@ -1,4 +1,4 @@
-let baseConfig = function (def = {}, computed = {}, {defaultVal = {}} = {}) {
+export let baseConfig = function (def = {}, computed = {}, {defaultVal = {}} = {}) {
     let defStr = ZY.JSON5.stringify(def)
     let computedStr = ZY.JSON5.stringify(computed)
     return `

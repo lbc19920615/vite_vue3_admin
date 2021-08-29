@@ -3,9 +3,11 @@
 </style>
 
 <template>
-  <div class="render-tab" v-for="(item, index) in rowv2">
-    <slot v-bind="{item, index}"></slot>
-  </div>
+  <el-tabs class="render-tab" v-model="current">
+    <el-tab-pane :label="item.label" :name="item.name"  v-for="(item, index) in rowv2">
+      <slot v-bind="{item, index}"></slot>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 
 <script>
@@ -23,21 +25,40 @@ export default {
     return {
       rowv2: [
       ],
+      current: ''
     }
   },
   props: {
+    layout: {
+      type: Array,
+      default: []
+    }
   },
   watch: {
+    layout: {
+      handler(newVal) {
+        // console.log('newVal', newVal)
+        this.rowv2 = newVal
+        this.current = newVal[0].name
+        this.$nextTick(() => {
+          this.init().then(() => {
+          })
+        })
+      },
+      immediate: true
+    }
   },
   methods: {
     init() {
-      this.rowv2.forEach(v => {
-        // if (!v.style) {
-        //   v.style = {
-        //     width: ''
-        //   }
-        // }
-      })
+      if (Array.isArray(this.rowv2)) {
+        this.rowv2.forEach(v => {
+          // if (!v.style) {
+          //   v.style = {
+          //     width: ''
+          //   }
+          // }
+        })
+      }
       return Promise.resolve()
     },
   }

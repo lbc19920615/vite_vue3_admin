@@ -20,16 +20,20 @@
           </render-layout>
         </template>
       </grid-row>
-      <grid-row :class="levelItemCls" v-else-if="curObj.type === 'tab'"
-                :layout="curObj.items">
-        <template v-slot:default="{item}">
-          <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"
-                         :page="page"
-                         :slotContent="innerSlots"
-                         :id="getNext(item)">
-          </render-layout>
-        </template>
-      </grid-row>
+      <template  v-else-if="curObj.type === 'tab'">
+<!--        {{curObj.items}}-->
+        <render-tab :class="levelItemCls"
+                  :layout="curObj.items">
+          <template v-slot:default="{item}">
+<!--            {{item}} {{getNext(item)}}-->
+            <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"
+                           :page="page"
+                           :slotContent="innerSlots"
+                           :id="getNext(item)">
+            </render-layout>
+          </template>
+        </render-tab>
+      </template>
       <template v-else>
         <template v-if="curObj && curObj.type && curObj.content">
           <AutoHttpCom
@@ -85,7 +89,7 @@ export default {
   },
   computed: {
     curObj() {
-      console.log(this.map, this.id)
+      // console.log(this.map, this.id)
       if (this.map[this.id]) {
         return this.map[this.id]
       }
