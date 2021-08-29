@@ -44,7 +44,7 @@ export let formEditorConfig = function (defaultVal = {}) {
             name: {
                 type: 'string',
                 ui: {
-                    label: '名称'
+                    label: '名称',
                 },
             },
             parts: {
@@ -54,6 +54,9 @@ export let formEditorConfig = function (defaultVal = {}) {
                     properties: {
                         type: {
                             type: 'string',
+                            ui: {
+                                disabled: true
+                            }
                         },
                         name: {
                             type: 'string',
