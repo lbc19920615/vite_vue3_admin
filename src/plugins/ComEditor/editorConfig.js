@@ -55,7 +55,7 @@ export let formEditorConfig = function (defaultVal = {}) {
                         type: {
                             type: 'string',
                             ui: {
-                                label: '请假类型',
+                                label: '类型',
                                 widget: 'CusSelect',
                                 widgetConfig: {
                                     enums: "ROOT_STATE('tools.partOptions', [])",

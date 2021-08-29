@@ -20,6 +20,16 @@
           </render-layout>
         </template>
       </grid-row>
+      <grid-row :class="levelItemCls" v-else-if="curObj.type === 'tab'"
+                :layout="curObj.items">
+        <template v-slot:default="{item}">
+          <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"
+                         :page="page"
+                         :slotContent="innerSlots"
+                         :id="getNext(item)">
+          </render-layout>
+        </template>
+      </grid-row>
       <template v-else>
         <template v-if="curObj && curObj.type && curObj.content">
           <AutoHttpCom
@@ -36,6 +46,7 @@
 <script>
 import GridRow from "@/views/about/components/grid-row.vue";
 import GridColumn from "@/views/about/components/grid-column.vue";
+import RenderTab from "@/views/about/components/render-tab.vue";
 import AutoHttpCom from "@/components/AutoHttpCom.vue";
 
 export default {
@@ -62,6 +73,7 @@ export default {
     slotContent: null
   },
   components: {
+    RenderTab,
     AutoHttpCom,
     GridColumn,
     GridRow,

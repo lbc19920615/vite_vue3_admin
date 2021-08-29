@@ -1,0 +1,9 @@
+$com: ".my-tab";
+
+#{$com}-panel {
+  //display: none;
+}
+
+#{$com} >>> #{$com}-panel {
+  //display: block;
+}

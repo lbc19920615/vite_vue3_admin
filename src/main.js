@@ -14,7 +14,10 @@ import 'normalize.css/normalize.css'
 import 'suitcss-utils-size/index.css'
 import 'font-awesome/css/font-awesome.css'
 
+import '@/components/WebElements/index'
+
 import JsonViewer from "vue3-json-viewer";
+
 
 // element
 import ElementPlus from 'element-plus';

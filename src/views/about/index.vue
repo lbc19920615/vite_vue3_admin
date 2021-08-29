@@ -2,6 +2,13 @@
 
 <template>
   <div class="page-search">
+
+    <button @click="page.callEvent('random:tab')">时空</button>
+    <CustomElement is="my-tab" name="tab" :selected="store.model.selected">
+      <CustomElement is="my-tab-panel" :params="{slot: 'tab-panel-1', selected: store.model.selected === 'tab-panel-1'}">tab1</CustomElement>
+      <CustomElement is="my-tab-panel" :params="{slot: 'tab-panel-2', selected: store.model.selected === 'tab-panel-2'}">tab2</CustomElement>
+    </CustomElement>
+
     <template v-if="store.model.textarea_step">
       <HttpComponent
           :defs="allDef"
@@ -57,7 +64,7 @@
                 </template>
                 <template #array_before="scope">
                   <!--                 {{scope}}-->
-                  <el-button>{{ scope.key }}</el-button>
+                  <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>
                 </template>
               </HttpComponent>
             </template>
@@ -121,6 +128,26 @@ let renderLayoutMixin = {
   }
 }
 
+import * as tabNodePlugin from '@/plugins/tabNode.plugin'
+NodeDefMap.register(tabNodePlugin)
+let testDep = NodeDefMap.def('tab', 'i6', [
+  {
+    id: 'i6-0',
+    w: '1fr',
+    h: 50,
+  },
+  {
+    id: 'i6-1',
+    w: '1fr',
+    h: 50,
+  },
+  {
+    id: 'i6-2',
+    w: '1fr',
+    h: 50,
+  }
+])
+
 let plumbLayoutMixin = {
   data() {
     return {
@@ -167,6 +194,7 @@ let plumbLayoutMixin = {
             h: 50,
           }
         ]),
+        testDep,
         new NodeDefMap.FormNode('i3',
           {
             name: 'form1',
@@ -328,6 +356,7 @@ import AutoHttpCom from "@/components/AutoHttpCom.vue";
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
 import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
 import {buildFormDepContent} from "@/views/about/build";
+import CustomElement from "@/components/CustomElement.vue";
 
 export default defineComponent({
   mixins: [
@@ -350,12 +379,17 @@ export default defineComponent({
     AutoHttpCom,
     PlumbLayout,
     RenderLayout,
+    CustomElement,
   },
   setup() {
     let self = getCurrentInstance().ctx
 
-    function onInited() {
+    function onInited({storeControl}) {
       console.log('page inited')
+      // storeControl.set({
+      //   selected: 'tab-panel-1'
+      // })
+
     }
     let properties =  {
       editor_step: {
@@ -365,6 +399,9 @@ export default defineComponent({
         type: String,
       },
       textarea_step: {
+        type: String
+      },
+      selected: {
         type: String
       }
     }
@@ -376,6 +413,17 @@ export default defineComponent({
     page = useAppPageControl(page)
 
     page.setEventHandler({
+      ['random:tab'](e) {
+        let index = ZY.lodash.random(1,2)
+        page.setData({
+          selected: 'tab-panel-' + index
+        })
+      },
+      ['add:part'](e) {
+        let { parts, partName, selfpath, process } = e
+        // console.log('add:event', e, model)
+        parts[partName].arrAppend(selfpath)
+      },
       ['add:event'](e) {
         let { parts, partName, selfpath, process } = e
         // console.log('add:event', e, model)
@@ -395,27 +443,12 @@ export default defineComponent({
         let { model, key, newVal, config } = e
         // console.log(key, model, config, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
-          // console.log('sdsdsdsdsdsdsds', self.currentEditDep, model)
+          console.log('sdsdsdsdsdsdsds', self.currentEditDep, model)
           self.currentEditDep.data = model
           if (self.currentEditDep.type === 'form') {
             try {
               self.currentEditDep.content = buildFormDepContent(
                   model.parts,
-                  // () => {
-                  //   return {
-                  //     form2: {
-                  //       parts: [
-                  //         {
-                  //           key: '',
-                  //           ui_type: '',
-                  //           ui_label: '',
-                  //           ui_widgetConfig: '{}',
-                  //           rules: '{}'
-                  //         }
-                  //       ]
-                  //     }
-                  //   }
-                  // }
               )
               self.LayoutContext.setDep(self.currentEditDep.id, {
                 content: self.currentEditDep.content

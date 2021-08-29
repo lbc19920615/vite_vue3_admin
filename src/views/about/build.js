@@ -28,26 +28,35 @@ export let buildFormDepContent = function (parts = []) {
     let parsedParts = []
     let defaultVals = {}
     parts.forEach(part => {
-        let obj = {
-            type: part.type,
-            name: part.name,
-            serviceTpl: {
-                def: {},
-                args: {
-                    src: 'bservice.twig',
-                },
-            },
-            def: {
-                type: 'object',
-                ui: JSON5.parse(part.ui),
-                properties: JSON5.parse(part.properties)
-            },
-            computed: {
-            },
+        if (part.name && part.type) {
+            try {
+                let ui = JSON5.parse(part.ui)
+                let properties = JSON5.parse(part.properties)
+                let obj = {
+                    type: part.type,
+                    name: part.name,
+                    serviceTpl: {
+                        def: {},
+                        args: {
+                            src: 'bservice.twig',
+                        },
+                    },
+                    def: {
+                        type: 'object',
+                        ui,
+                        properties,
+                    },
+                    computed: {
+                    },
+                }
+                defaultVals[obj.name] = JSON5.parse(part.defaultVal)
+                parsedParts.push(obj)
+            } catch (e) {
+                console.log(e)
+            }
         }
-        defaultVals[obj.name] = JSON5.parse(part.defaultVal)
-        parsedParts.push(obj)
     })
+    console.log(parsedParts)
     let obj = {
         name: 'process-step1',
         defaultVal: defaultVals,

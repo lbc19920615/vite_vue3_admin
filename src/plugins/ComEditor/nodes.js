@@ -80,13 +80,23 @@ export function register (value) {
   if (value && value.install) {
     let plugin = value.install({
       V1Node,
-      ClosureNode
+      ClosureNode,
+      LayoutNode
     })
-    plugins.set(name, value)
-    clsDefs.set(name, plugin)
+    plugins.set(plugin.type, value)
+    clsDefs.set(plugin.type, plugin)
   }
 }
 
+export function def(type, ...args) {
+  // console.log(clsDefs, name)
+  if (clsDefs.has(type)) {
+    let clsDef = clsDefs.get(type)
+    if (clsDef && clsDef.cls) {
+      return new clsDef.cls(...args)
+    }
+  }
+}
 
 
 export function createFromJSON5(type, jsonlikeobj) {

@@ -29,6 +29,7 @@
           inited: Symbol('customElement:inited')
         },
         obj: null,
+        webComponentRef: null,
       }
     },
     render() {
@@ -39,13 +40,15 @@
         let slotCom = this.$slots[key]
         slots.push(slotCom())
       }
+      this.webComponentRef = webComponentRef
       return h(this.is, {
         ...this.params,
+        name: this.name,
         onInited: function (e) {
           let instance = e.detail[0]
           self.obj = webComponentRef.register(instance.ctx, self.name)
           // instance.ctx.toggleOpen(true)
-          // console.log(webComponentRef)
+          // console.log(webComponentRef, self.obj)
         },
         onFires: function (e) {
           if (e.detail[0]) {
@@ -58,7 +61,7 @@
     },
     beforeUnmount() {
       let self = this
-      let webComponentRef = inject('webComponentRef')
+      let webComponentRef = this.webComponentRef
       webComponentRef.destory(self.obj.uuid)
     }
   }
