@@ -25,7 +25,7 @@ let baseConfig = function (def = {}, computed = {}, {defaultVal = {}} = {}) {
       ],
     },
     args: {
-      src: 'comformscr.twig'
+      src: 'comformscr2.twig'
     }
   }
 }
