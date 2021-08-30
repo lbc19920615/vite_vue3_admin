@@ -152,6 +152,7 @@ export function useControl({properties, computed, filters}, {onInited}) {
       store.model = storeControl.store.model
       store.computedModel = storeControl.store.computedModel
       inited.value = true
+      // console.log('sdsdsdsdsdsds')
       if (onInited) {
         onInited({storeControl})
       }

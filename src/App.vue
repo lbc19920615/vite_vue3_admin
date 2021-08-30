@@ -44,16 +44,32 @@ export default defineComponent({
       return prefix + ZY.nid(6)
     }
 
-    globalThis.createServiceComFromCache = function (id = ServiceID()) {
+
+
+    globalThis.createServiceComFromCache = function (id = globalThis.ServiceID()) {
       // console.log('cachedServiceDef', cachedServiceDef)
+
        return new Promise(resolve => {
-         if (cachedServiceDef) {
-           let name = id
-           // console.log(name)
-           globalStore.installServiceComponent(name, cachedServiceDef.script, {
+         function run(script) {
+           globalStore.installServiceComponent(id, script, {
              onMounted() {
-               resolve(name)
+               resolve(id)
              }
+           })
+         }
+
+         if (cachedServiceDef) {
+           run(cachedServiceDef.script)
+         } else {
+           fetchTwigComponent( id, {
+             def: {},
+             args: {
+               src: 'bservice.twig',
+               args: {}
+             },
+           }).then(res => {
+             cachedServiceDef = res
+             run(cachedServiceDef.script)
            })
          }
        })

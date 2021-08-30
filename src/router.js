@@ -1,10 +1,17 @@
 import { createWebHistory, createRouter } from "vue-router";
 
 import Layout from './views/layout/Layout.vue'
+import {loadPage} from "@/remote";
 
 export const constantRouterMap = [
   {
-    path: '',
+    path: '/404',
+    component: () => import('@/views/error-page/404.vue'),
+    hidden: true
+  },
+  {
+    path: '/',
+    name: 'main',
     component: Layout,
     redirect: 'dashboard',
     hidden: false,
@@ -52,18 +59,13 @@ export const constantRouterMap = [
         },
         component: () => import('@/views/home/demo.vue'),
       },
-      {
-        path: "show",
-        name: "Show",
-
-        meta: {
-          title: 'Show',
-          // icon: 'shangdian'
-        },
-        component: () => import('@/views/about/show.vue'),
-      },
     ]
   },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/404',
+    meta: { hidden: true }
+  }
 ];
 
 export const asyncRouterMap = []
@@ -73,6 +75,17 @@ const router = createRouter({
   history: createWebHistory(),
   routes: constantRouterMap,
 });
+router.addRoute('main',  {
+  path: "show",
+  name: "Show",
+
+  meta: {
+    title: 'Show',
+    // icon: 'shangdian'
+  },
+  // component: () => import('@/views/about/show.vue'),
+  component: () => loadPage('show')
+},)
 
 let metaCache = new Map()
 router.beforeEach(async (to, from, next) => {

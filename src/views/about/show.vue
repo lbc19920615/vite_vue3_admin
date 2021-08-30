@@ -28,8 +28,6 @@
 
 <template>
   <div class="z-page">
-<!--    {{renderC.state.refresh}}-->
-<!--    {{renderC.state.currentLayoutMap}}-->
     <template v-if="renderC.state.refresh">
       <render-layout :map="renderC.state.currentLayoutMap"
                      :id="renderC.state.rootId"

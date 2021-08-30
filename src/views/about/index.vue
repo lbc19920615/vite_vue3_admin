@@ -3,11 +3,11 @@
 <template>
   <div class="page-search">
 
-    <button @click="page.callEvent('random:tab')">时空</button>
-    <CustomElement is="my-tab" name="tab" :selected="store.model.selected">
-      <CustomElement is="my-tab-panel" :params="{slot: 'tab-panel-1', selected: store.model.selected === 'tab-panel-1'}">tab1</CustomElement>
-      <CustomElement is="my-tab-panel" :params="{slot: 'tab-panel-2', selected: store.model.selected === 'tab-panel-2'}">tab2</CustomElement>
-    </CustomElement>
+<!--    <button @click="page.callEvent('random:tab')">时空</button>-->
+<!--    <CustomElement is="my-tab" name="tab" :selected="store.model.selected">-->
+<!--      <CustomElement is="my-tab-panel" :params="{slot: 'tab-panel-1', selected: store.model.selected === 'tab-panel-1'}">tab1</CustomElement>-->
+<!--      <CustomElement is="my-tab-panel" :params="{slot: 'tab-panel-2', selected: store.model.selected === 'tab-panel-2'}">tab2</CustomElement>-->
+<!--    </CustomElement>-->
 
     <template v-if="store.model.textarea_step">
       <HttpComponent
@@ -77,10 +77,12 @@
 </template>
 
 <script>
+
 import {defineComponent, nextTick, getCurrentInstance} from "vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
 import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
+
 
 let depManagerMixin = {
   data() {
@@ -264,7 +266,7 @@ let plumbLayoutMixin = {
                             rules: {
                               type: 'string',
                               ui: {
-                                widget: 'JsonCodeEditor',
+                                widget: 'CodeJsEditor',
                                 widgetConfig: {
                                   style: {
                                     height: "200px",

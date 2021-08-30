@@ -36,6 +36,12 @@ globalThis.ZY_EXT = ZY_EXT
 import request from '@/requests/index.js'
 globalThis.Req = request
 
+import * as Framework from "@/mixins/framework";
+globalThis.Framework = Framework
+
+import * as ZPageHooks from "@/plugins/z-page/hooks";
+globalThis.ZPageHooks = ZPageHooks
+
 import router from './router'
 import store from './store'
 
@@ -100,6 +106,7 @@ window.startApp = function () {
     app.use(res.default)
   })
   initStoreApp(storeApp)
+
   app.mount('#app')
 
   return app

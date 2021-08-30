@@ -10,9 +10,12 @@ import jsxCom from '@/components/jsxcom.vue'
 import CodeJsEditor from '@/components/CodeEditor/CodeJsEditor.vue'
 import HttpComponent from '@/components/HttpComponent.vue'
 import AceJsEditor from '@/components/CodeEditor/AceJsEditor.vue'
+import RenderLayout from '@/views/about/components/render-layout.vue'
 
 const plugin = {
     install(app) {
+        app.component(RenderLayout.name, RenderLayout)
+
         import('@/components/CodeEditor/JsonCodeEditor.vue').then(res => {
             let JsonCodeEditor = res.default
             app.component('JsonCodeEditor', JsonCodeEditor)

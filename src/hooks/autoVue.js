@@ -1,16 +1,21 @@
-import {inject} from "vue";
-import {useStore} from "vuex";
 
-let templateFun = ''
-for (let funName in ZY.lodash) {
-  templateFun = templateFun + `
+/**
+ * defineAutoStoreControl
+ * @param config
+ * @returns {{}}
+ */
+export function defineAutoStoreControl(config = { data: {}, computed: {}, globalStore, rootStore}) {
+
+  let templateFun = ''
+  for (let funName in globalThis.ZY.lodash) {
+    templateFun = templateFun + `
         function ${funName}(...args) {
           return ZY.lodash.${funName}(...args)
         }
       `
-}
+  }
 
-let commonFun = `
+  let commonFun = `
   ${templateFun}
 
   function ZY_hour_between_2_date(date1, date2) {
@@ -59,13 +64,6 @@ let commonFun = `
     return ZY.lodash.get($root, v, defaultVal)
   }
 `
-
-/**
- * defineAutoStoreControl
- * @param config
- * @returns {{}}
- */
-export function defineAutoStoreControl(config = { data: {}, computed: {}, globalStore, rootStore}) {
 
 
   let rootStore = config.rootStore ?? null

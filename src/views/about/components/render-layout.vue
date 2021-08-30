@@ -3,6 +3,7 @@
       <grid-column :class="levelItemCls" v-if="curObj.type === 'column'"
                 :layout="curObj.items">
         <template v-slot:default="{item}">
+<!--          {{getNext(item)}}-->
           <render-layout :level="level + 1" :map="map" :handle-next="handleNext"
                          :page="page"
                          :slotContent="innerSlots"
@@ -107,7 +108,7 @@ export default {
     },
     getNext(item) {
       let id = ''
-      // console.log('getNext')
+      // console.log('getNext', this.handleNext)
       if (this.handleNext) {
         id = this.handleNext(item)
       }

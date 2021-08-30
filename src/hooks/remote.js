@@ -1,4 +1,4 @@
-import { fetchContentV3,  } from '@expose/main.js'
+import {fetchContentV3,} from '@expose/main.js'
 import {parseComponent} from "vue-sfc-parser";
 
 let templateSfc = function (sfc) {
@@ -16,7 +16,7 @@ let templateSfc = function (sfc) {
  * @param onReady
  * @returns {Promise<void>}
  */
-export async function fetchTwigComponent(comName = '', {def, args } = {}) {
+export async function fetchTwigComponent(comName = '', {def, args, handleScript, styles = [] } = {}) {
     try {
         // console.log('this.formDef', this.formDef)
         let data = new FormData()
@@ -27,15 +27,21 @@ export async function fetchTwigComponent(comName = '', {def, args } = {}) {
         // console.log(sfc)
         let styleSheets = []
         if (Array.isArray(sfc.styles) && sfc.styles.length > 0) {
-            sfc.styles.forEach(styleObj => {
-                let styleDom = document.createElement('style')
-                styleDom.id = ZY.nid()
-                styleDom.innerText = styleObj.content
-                document.body.appendChild(styleDom)
-                styleSheets.push(styleDom)
-            })
+            styles = styles.concat(sfc.styles)
         }
-        let res = await ZY.importJsStr(sfc.script.content)
+
+        styles.forEach(styleObj => {
+            let styleDom = document.createElement('style')
+            styleDom.id = ZY.nid()
+            styleDom.innerText = styleObj.content
+            document.body.appendChild(styleDom)
+            styleSheets.push(styleDom)
+        })
+        let scriptStr = sfc.script.content
+        if (handleScript) {
+            scriptStr = handleScript(scriptStr)
+        }
+        let res = await ZY.importJsStr(scriptStr)
         globalThis.initTemplate(templateId, globalThis, {
             html: `${templateSfc(sfc)}`,
         });
@@ -49,6 +55,59 @@ export async function fetchTwigComponent(comName = '', {def, args } = {}) {
         console.error(e)
     } finally {
     //
+    }
+}
+
+function handleStyle(styles = []) {
+    styles.forEach(styleObj => {
+        let styleDom = document.createElement('style')
+        styleDom.id = ZY.nid()
+        styleDom.innerText = styleObj.content
+        document.body.appendChild(styleDom)
+    })
+}
+
+export async function fetchVueComponent({def, args}) {
+    let data = new FormData()
+    data.append('source', JSON.stringify(def))
+    let tpl = await fetchContentV3(data, args)
+    return parseComponent(tpl)
+}
+
+/**
+ * loadComponent
+ * @param comName
+ * @param def
+ * @param args
+ * @param handleScript
+ * @param styles
+ * @returns {Promise<*>}
+ */
+export async function loadComponent(p, comName = '', {handleScript, handleTpl, styles = [] } = {}) {
+    let [err, sfc] = await ZY.awaitTo(
+        p()
+    )
+    if (err) {
+        return Promise.reject(err)
+    }
+    if (Array.isArray(sfc.styles) && sfc.styles.length > 0) {
+        styles = styles.concat(sfc.styles)
+    }
+    handleStyle(styles)
+    let scriptStr = sfc.script.content
+    if (handleScript) {
+        scriptStr = handleScript(scriptStr)
+    }
+    let script = await ZY.importJsStr(scriptStr)
+    let tpl = sfc.template.content
+    if (handleTpl) {
+        tpl = handleTpl(tpl)
+    }
+    console.log(tpl)
+    return {
+        name: comName,
+        template: tpl,
+        ...script.default
     }
 }
 
