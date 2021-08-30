@@ -10,7 +10,7 @@ export const constantRouterMap = [
     hidden: true
   },
   {
-    path: '/',
+    path: '',
     name: 'main',
     component: Layout,
     redirect: 'dashboard',
@@ -68,24 +68,34 @@ export const constantRouterMap = [
   }
 ];
 
-export const asyncRouterMap = []
+export const asyncRouterMap = [
+  {
+    parent: 'main',
+    path: "show",
+    name: "Show",
+
+    meta: {
+      title: 'Show',
+      // icon: 'shangdian'
+    },
+    // component: () => import('@/views/about/show.vue'),
+    component: () => loadPage('show')
+  }
+]
 
 
+/**
+ * @type {Router}
+ */
 const router = createRouter({
   history: createWebHistory(),
   routes: constantRouterMap,
 });
-router.addRoute('main',  {
-  path: "show",
-  name: "Show",
 
-  meta: {
-    title: 'Show',
-    // icon: 'shangdian'
-  },
-  // component: () => import('@/views/about/show.vue'),
-  component: () => loadPage('show')
-},)
+export function addRoute(args) {
+  // console.log(args)
+  router.addRoute(args.parent, args)
+}
 
 let metaCache = new Map()
 router.beforeEach(async (to, from, next) => {

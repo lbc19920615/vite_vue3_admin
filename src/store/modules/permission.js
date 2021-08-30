@@ -39,7 +39,21 @@ const permission = {
   mutations: {
     SET_ROUTERS: (state, routers) => {
       state.addRouters = routers
-      state.routers = constantRouterMap.concat(routers)
+      routers.forEach(router => {
+        if (router.parent) {
+          let parentRoute = constantRouterMap.find(v => {
+            return v.name === router.parent
+          })
+          if (parentRoute && parentRoute.children) {
+            parentRoute.children.push(router)
+          }
+          // console.log('parentRoute', parentRoute)
+        } else {
+          constantRouterMap.push(router)
+        }
+      })
+      state.routers = constantRouterMap
+      // console.log(routers)
     }
   },
   actions: {
@@ -53,7 +67,7 @@ const permission = {
           accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
         }
         commit('SET_ROUTERS', accessedRouters)
-        resolve()
+        resolve(accessedRouters)
       })
     }
   }

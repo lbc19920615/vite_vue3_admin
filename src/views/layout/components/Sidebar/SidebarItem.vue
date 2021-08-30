@@ -1,3 +1,9 @@
+<style>
+.menu-wrapper {
+  font-size: 14px;
+}
+</style>
+
 <template>
   <div class="menu-wrapper">
     <template v-for="item in routes">

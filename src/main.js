@@ -42,11 +42,15 @@ globalThis.Framework = Framework
 import * as ZPageHooks from "@/plugins/z-page/hooks";
 globalThis.ZPageHooks = ZPageHooks
 
-import router from './router'
+import router, {addRoute} from './router'
 import store from './store'
 
-store.dispatch('GenerateRoutes', {
+let routes = await store.dispatch('GenerateRoutes', {
   roles: ['admin']
+})
+routes.forEach(routeEntry => {
+  // console.log(routeEntry)
+  addRoute(routeEntry)
 })
 
 import icons from './icons/index'
