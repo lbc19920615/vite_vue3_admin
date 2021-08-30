@@ -140,7 +140,7 @@ export default defineComponent({
         throw new Error('now service', partKey)
       }
       let service = servicePartLink[partKey]
-      console.log('service', service)
+      // console.log('service', service)
       globalStore.run(service, ...args)
     }
 

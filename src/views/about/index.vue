@@ -458,7 +458,10 @@ export default defineComponent({
         import('./EventEditorConfig'),
         'textarea_step',
         {
-          onMounted(config) {
+          async onMounted(config) {
+            let eventModel = await page.dispatchRoot('GetStoreEvents')
+            page.setPartModel(config.name, 'form2', eventModel)
+            // console.log('eventModel', config, eventModel)
           }
         }
     )

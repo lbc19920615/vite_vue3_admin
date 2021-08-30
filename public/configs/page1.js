@@ -22,11 +22,21 @@ export default {
           }      
       `,
     onInited: `
-   storeControl.set({
-      textarea_step: 'sdsds'
-  })
-  renderC.detect()      
-      `
+<script>    
+     storeControl.set({
+        textarea_step: 'sdsds'
+    })
+    renderC.detectLayout()  
+    renderC.detectEvent((events) => {
+      let obj = {}
+      events.forEach(event => {
+        obj[event.name] = new Function('e', event.code)
+      })
+      console.log('setEvent', obj)
+       page.setEventHandler(obj)
+    })      
+</script>
+      `.replace('<script>', '').replace('</script>', '')
   },
   args: {
     src: 'zpage.twig'

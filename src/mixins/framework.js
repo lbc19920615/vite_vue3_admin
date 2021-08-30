@@ -247,7 +247,7 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
           })
         }
       } else {
-        // console.log(control.eventHandleMap, type)
+        console.log(control.eventHandleMap, type)
         if (control.eventHandleMap[type]) {
           control.eventHandleMap[type](e)
         }
@@ -257,7 +257,7 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
   control.refsManager = refsManager
 
   function setPartModel(stepName, partName, model) {
-    // console.log('httpComContext', stepName, partName)
+    // console.log('httpComContext', httpComContext, stepName, partName)
     return httpComContext[stepName].runPart(partName, 'setModel',
       model
     )

@@ -51,7 +51,13 @@ const store = {
       let cloned = JSON5.parse(JSON5.stringify(payload))
       ZY_EXT.store.setItem('play-events-model', cloned)
       // commit('SET_EVENTS', payload)
+    },
+    GetStoreEvents: async () => {
+      return ZY_EXT.store.getItem('play-events-model')
     }
+  },
+  getters: {
+
   }
 }
 

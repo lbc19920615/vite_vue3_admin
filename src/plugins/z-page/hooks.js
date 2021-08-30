@@ -1,4 +1,4 @@
-import {reactive, ref} from "vue";
+import {reactive, ref, toRaw} from "vue";
 
 
 export function useRenderControl() {
@@ -10,7 +10,8 @@ export function useRenderControl() {
         currentLayoutMap: {},
         currentLinks: [],
         uuid: '',
-        refresh: false
+        refresh: false,
+        events: []
     })
 
     function handleNext(item) {
@@ -36,7 +37,6 @@ export function useRenderControl() {
         if (state.currentLinks[0]) {
             state.rootId = state.currentLinks[0].fromPID ?? ''
         }
-
     }
 
     async function detectChange() {
@@ -54,22 +54,54 @@ export function useRenderControl() {
         }
     }
 
-    let interval
-
-    function detect() {
-        if (interval) {
-            interval.stop()
+    let interval1
+    function detectLayout() {
+        if (interval1) {
+            interval1.stop()
         }
         detectChange()
-       interval = new ZY.Interval(detectChange, 6000);
-        interval.start()
+        interval1 = new ZY.Interval(detectChange, 6000);
+        interval1.start()
+    }
+
+    let detectEventChangeContext = {}
+    async function detectEventChange() {
+        let currentData = await ZY_EXT.store.getItem('play-events-model')
+        // console.log(currentData.uuid)
+        // console.log(interval)
+        // console.log('changed')
+        let oldVal = toRaw(state.events)
+        let newVal = currentData.events
+        // console.log(ZY.compareObj(oldVal, newVal))
+        let equals = ZY.compareObj(oldVal, newVal)
+        if (!equals) {
+            if (currentData && Array.isArray(currentData.events)) {
+                state.events = currentData.events
+            }
+            // console.log('sdsdsdsdsdsdsdsds', currentData.events)
+            if (detectEventChangeContext.cb) {
+                detectEventChangeContext.cb(currentData.events, state)
+            }
+        }
+    }
+
+    let interval2
+    function detectEvent(cb) {
+        detectEventChangeContext.cb = cb
+        if (interval2) {
+            interval2.stop()
+        }
+        detectEventChange()
+        interval2 = new ZY.Interval(detectEventChange, 6000);
+        interval2.start()
     }
 
     return {
         setLayout,
         state,
+        detectEvent,
         // currentLayoutMap: state.currentLayoutMap,
-        detect,
+        detectLayout,
         // currentLinks: state.currentLinks,
         handleNext
     }
