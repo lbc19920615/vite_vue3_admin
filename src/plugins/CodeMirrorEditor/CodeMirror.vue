@@ -129,7 +129,7 @@ const props = defineProps({
   table: Array,
   width: null,
   height: {
-    type: [Number],
+    type: [Number, String],
     default: 200,
   }
 });
