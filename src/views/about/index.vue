@@ -10,6 +10,7 @@
 <!--    </CustomElement>-->
 
     <template v-if="store.model.textarea_step">
+      {{store.model.textarea_step}}
       <HttpComponent
           :defs="allDef"
           :is="store.model.textarea_step"
@@ -290,18 +291,6 @@ let plumbLayoutMixin = {
       self.insDeps(self.deps)
       await ZY.sleep(300)
       self.useLinks()
-      // self.insComLinks(
-      //     [
-      //       {
-      //         "toPID": "i3",
-      //         "fromPID": "i1",
-      //         "from": "i1-0",
-      //         "to": "i3-top"
-      //       },
-      //     ]
-      // )
-      // self.insEventLinks([
-      // ])
     },
     handleDep(dep) {
       // console.log('handleDep', dep)
@@ -388,10 +377,6 @@ export default defineComponent({
 
     function onInited({storeControl}) {
       console.log('page inited')
-      // storeControl.set({
-      //   selected: 'tab-panel-1'
-      // })
-
     }
     let properties =  {
       editor_step: {
@@ -439,7 +424,12 @@ export default defineComponent({
       ['submit:form'](e) {
         let { scope, parts } = e
         let model = parts[scope.name].getModel()
-        console.log('submit:form',e, model)
+        // console.log('submit:form',e, model);
+        if (scope.process === page.store.model.textarea_step) {
+          console.log('sddddddddddddd');
+          page.dispatchRoot('SetStoreEvents', model)
+        }
+
       },
       ['model:update'](e) {
         let { model, key, newVal, config } = e
@@ -464,14 +454,14 @@ export default defineComponent({
       }
     })
 
-    // page.commonLoadStepByContent(
-    //     import('./EventEditorConfig'),
-    //     'textarea_step',
-    //     {
-    //       onMounted(config) {
-    //       }
-    //     }
-    // )
+    page.commonLoadStep(
+        import('./EventEditorConfig'),
+        'textarea_step',
+        {
+          onMounted(config) {
+          }
+        }
+    )
 
     async function loadStepByContent(content = '', varName = '') {
       let [,res] = await ZY.awaitTo(

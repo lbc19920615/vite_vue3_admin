@@ -197,6 +197,9 @@ export function useControl({properties, computed, filters}, {onInited}) {
     }
   }
 
+  function dispatchRoot(...args) {
+    return rootStore.dispatch(...args)
+  }
 
   onMounted(() => {
     if (!inited.value) {
@@ -211,6 +214,7 @@ export function useControl({properties, computed, filters}, {onInited}) {
     val,
     callEvent,
     eventHandleMap,
+    dispatchRoot,
     rootStore,
     setEventHandler,
     setData,
@@ -274,6 +278,40 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
   }
 
   control.setDef = setDef
+
+
+  async function commonLoadStep( loadPromise, varName = '', {
+    onMounted
+  }) {
+    let [,res] = await ZY.awaitTo(
+      loadPromise
+    )
+    const config = res.default
+    config.name = ZY.nid()
+
+    setDef(config, function ({done}) {
+      // let cached = null
+      // if (item.data) {
+      //   cached = JSON5.parse(item.data)
+      // }
+      let JSON5 = ZY.JSON5
+      for (let [partName, data] of Object.entries(config.defaultVal)) {
+        let defaultObj = JSON5.parse(JSON5.stringify(data))
+
+        setPartModel( config.name, partName,
+          defaultObj
+        )
+      }
+      if (onMounted) {
+        onMounted(config)
+      }
+      done()
+    })
+    await nextTick()
+    control.setByPath(varName, config.name)
+    // console.log(storeControl.store)
+  }
+  control.commonLoadStep = commonLoadStep
 
   return control
 }

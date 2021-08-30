@@ -2,16 +2,13 @@ export default {
     name: 'event-handler',
     defaultVal: {
         form2: {
-            obj: {
-                events: [
-                    {}
-                ]
-            },
+            // obj: {
+            //     events: [
+            //         {}
+            //     ]
+            // },
             events: [
-                {
-                    name: '111',
-                    code: '111',
-                }
+                // {}
             ]
         }
     },
@@ -26,30 +23,30 @@ export default {
                     type: 'object',
                     ui: {attrs: [['label-width', '150px']]},
                     properties: {
-                        obj: {
-                            type: 'object',
-                            properties: {
-                                events: {
-                                    type: 'array',
-                                    items: {
-                                        type: 'object',
-                                        properties: {
-                                            name: {
-                                                type: 'string'
-                                            },
-                                            code: {
-                                                type: 'string',
-                                                ui: {
-                                                    widgetConfig: {
-                                                        type: 'textarea'
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
+                        // obj: {
+                        //     type: 'object',
+                        //     properties: {
+                        //         events: {
+                        //             type: 'array',
+                        //             items: {
+                        //                 type: 'object',
+                        //                 properties: {
+                        //                     name: {
+                        //                         type: 'string'
+                        //                     },
+                        //                     code: {
+                        //                         type: 'string',
+                        //                         ui: {
+                        //                             widgetConfig: {
+                        //                                 type: 'textarea'
+                        //                             }
+                        //                         }
+                        //                     }
+                        //                 }
+                        //             }
+                        //         }
+                        //     }
+                        // },
                         events: {
                             type: 'array',
                             items: {

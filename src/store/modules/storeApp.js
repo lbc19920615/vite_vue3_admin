@@ -28,7 +28,12 @@ const store = {
     },
     SET_PLAY: (state, v) => {
       state.currentPlayGround = v
-      localStorage.setItem('current_playground', v)
+      // localStorage.setItem('current_playground', v)
+    },
+    SET_EVENTS: (state, v) => {
+      // state.currentPlayGround = v
+      // localStorage.setItem('current_playground', v)
+
     }
   },
   actions: {
@@ -40,6 +45,12 @@ const store = {
     },
     SetStoreData: ({commit}, payload) => {
       commit('SET_PLAY', payload)
+    },
+    SetStoreEvents: ({commit}, payload) => {
+      let JSON5 = ZY.JSON5
+      let cloned = JSON5.parse(JSON5.stringify(payload))
+      ZY_EXT.store.setItem('play-events-model', cloned)
+      // commit('SET_EVENTS', payload)
     }
   }
 }
