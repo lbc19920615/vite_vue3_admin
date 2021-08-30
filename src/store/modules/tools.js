@@ -10,6 +10,16 @@ const store = {
         label: 'table',
         value: 'table',
       }
+    ],
+    propTypes: [
+      {
+        label: 'string',
+        value: 'string',
+      },
+      {
+        label: 'number',
+        value: 'number',
+      },
     ]
   }),
   mutations: {

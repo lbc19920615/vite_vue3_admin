@@ -1,7 +1,7 @@
 
 
 <template>
-  <div class="page-search">
+  <div class="page-search" v-if="page.inited">
 
 <!--    <button @click="page.callEvent('random:tab')">时空</button>-->
 <!--    <CustomElement is="my-tab" name="tab" :selected="store.model.selected">-->
@@ -9,8 +9,12 @@
 <!--      <CustomElement is="my-tab-panel" :params="{slot: 'tab-panel-2', selected: store.model.selected === 'tab-panel-2'}">tab2</CustomElement>-->
 <!--    </CustomElement>-->
 
+<!--    {{store.model}}-->
+    {{store.computedModel}}
+    <DeepPropEditor v-model:deps="store.model.deps" v-model:links="store.model.links"></DeepPropEditor>
+
     <template v-if="store.model.textarea_step">
-      {{store.model.textarea_step}}
+<!--      {{store.model.textarea_step}}-->
       <HttpComponent
           :defs="allDef"
           :is="store.model.textarea_step"
@@ -131,8 +135,8 @@ let renderLayoutMixin = {
   }
 }
 
-import * as tabNodePlugin from '@/plugins/ComEditor/tabNode.plugin'
-NodeDefMap.register(tabNodePlugin)
+
+
 let testDep = NodeDefMap.def('tab', 'i6', [
   {
     id: 'i6-0',
@@ -342,12 +346,13 @@ let plumbLayoutMixin = {
   }
 }
 
-import {extendControl2Page, useControl, useAppPageControl} from "@/mixins/framework";
+import {extendControl2Page, useControl, useAppPageControl, extendControlComputedWatch} from "@/mixins/framework";
 import AutoHttpCom from "@/components/AutoHttpCom.vue";
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
 import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
 import {buildFormDepContent} from "@/views/about/build";
 import CustomElement from "@/components/CustomElement.vue";
+import {getDeepConfigFromLinksAndDeps} from "@/views/about/components/DeepPropEditor/utils";
 
 export default defineComponent({
   mixins: [
@@ -376,7 +381,65 @@ export default defineComponent({
     let self = getCurrentInstance().ctx
 
     function onInited({storeControl}) {
-      console.log('page inited')
+      // console.log('page inited')
+      storeControl.set({
+        links: [
+          {
+            "toPID": "i222",
+            "fromPID": "i111",
+            "from": "i111-0",
+            "to": "i222-top"
+          },
+          {
+            "toPID": "i333",
+            "fromPID": "i222",
+            "from": "i222-0",
+            "to": "i333-top"
+          },
+        ],
+        deps: [
+            NodeDefMap.create('object', {
+              id: 'i111',
+              items: [
+                {
+                  id: 'i111-0',
+                  key: 'parts',
+                  data: '',
+                },
+                {
+                  id: 'i111-1',
+                  key: 'other',
+                  data: '',
+                },
+              ]
+            }),
+          NodeDefMap.create('array', {
+            id: 'i222',
+            items: [
+              {
+                id: 'i222-0',
+                key: 'items',
+                data: '',
+              },
+            ]
+          }),
+          NodeDefMap.create('object', {
+            id: 'i333',
+            items: [
+              {
+                id: 'i333-0',
+                key: 'name1',
+                data: '',
+              },
+              {
+                id: 'i333-1',
+                key: 'name2',
+                data: '',
+              },
+            ]
+          }),
+        ],
+      })
     }
     let properties =  {
       editor_step: {
@@ -390,14 +453,29 @@ export default defineComponent({
       },
       selected: {
         type: String
+      },
+      links: {
+        type: Array
+      },
+      deps: {
+        type: Array
       }
     }
-    let computed = {}
+    let computed = {
+      ['curss']: `E.getDeeps(MODEL('links'),MODEL('deps'))`
+    }
     let page = useControl({properties, computed}, {
-      onInited
+      onInited,
+      extendContext: {
+        getDeeps(v1, v2) {
+          console.log('v1', v1, v2)
+          return getDeepConfigFromLinksAndDeps(v1, v2)
+        }
+      }
     })
     page = extendControl2Page(page)
     page = useAppPageControl(page)
+
 
     page.setEventHandler({
       ['random:tab'](e) {

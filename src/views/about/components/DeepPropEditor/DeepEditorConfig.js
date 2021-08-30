@@ -2,6 +2,7 @@ export default {
     name: 'process-step1',
     defaultVal: {
         form2: {
+            type: '',
             ui: {
                 type: '',
                 label: '',
@@ -22,6 +23,18 @@ export default {
                     type: 'object',
                     ui: {attrs: [['label-width', '150px']]},
                     properties: {
+                        type: {
+                            type: 'string',
+                            ui: {
+                                label: '类型',
+                                widget: 'CusSelect',
+                                widgetConfig: {
+                                    enums: "ROOT_STATE('tools.propTypes', [])",
+                                },
+                                events: {
+                                }
+                            },
+                        },
                         ui: {
                             type: 'object',
                             properties: {

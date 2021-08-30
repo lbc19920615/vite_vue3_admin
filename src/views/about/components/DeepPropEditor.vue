@@ -1,6 +1,9 @@
 <template>
 <div>
-<!--  {{store.model}}-->
+  {{store.model}}
+<!--  <div>-->
+<!--    <json-viewer :value="jsonObj" copyable boxed sort></json-viewer>-->
+<!--  </div>-->
   <el-row type="flex">
     <AsyncPlumbLayout
         style="flex: 1"
@@ -14,7 +17,6 @@
     <div style="width: 600px">
       <template v-if="renderFormDesigner && currentEditDep">
         {{currentEditItem}}
-<!--        {{currentEditItem}}-->
         <template v-if="currentEditDep.type === 'object'">
           <HttpComponent
               :defs="allDef"
@@ -33,7 +35,7 @@
 
 <script>
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
-import {getCurrentInstance, nextTick} from "vue";
+import {getCurrentInstance, nextTick, toRaw} from "vue";
 import {usePage} from "@/mixins/framework";
 
 let depManagerMixin = {
@@ -52,9 +54,7 @@ let depManagerMixin = {
       this.currentEditDep = dep
       this.currentEditItem = item
       console.log('onEditDep', dep, item)
-      if (dep.editor) {
-        await this.loadStepByContent('editor_step', item)
-      }
+      await this.loadStepByContent('editor_step', item)
       // console.log(currentHtc)
       this.$nextTick(() => {
         setTimeout(() => {
@@ -71,96 +71,57 @@ let plumbLayoutMixin = {
     return {
       showCurrent: true,
       currentLinks: [],
+      jsonObj: {},
+      layoutContext: null,
       currentLayoutMap: {},
     }
   },
+  props: {
+    deps: {
+      type: Array
+    },
+    links: {
+      type: Array
+    }
+  },
+  watch: {
+    deps: {
+      handler(newVal) {
+        // console.log(this.deps, this.links)
+        console.log(this)
+        this.initLayout(this.layoutContext)
+      },
+      immediate: true
+    }
+  },
   methods: {
+    initLayout(layoutContext) {
+      let self = layoutContext
+      // console.log(self)
+      if (self) {
+        self.deps = this.deps
+        self.$nextTick(() => {
+          self.insDeps(this.deps)
+          setTimeout(() => {
+            self.insComLinks(
+                this.links
+            )
+          }, 300)
+        })
+      }
+    },
     onPlumbLayoutInit(self) {
-      self.deps = [
-        {
-          id: 'i111',
-          type: 'object',
-          config: {
-            version: 'v1',
-            closure: false,
-            root: true
-          },
-          editor: `editor`,
-          content: '',
-          items: [
-            {
-              id: 'i111-0',
-              key: 'parts',
-              data: '',
-            },
-            {
-              id: 'i111-1',
-              key: 'other',
-              data: '',
-            },
-          ],
-        },
-        {
-          id: 'i222',
-          type: 'array',
-          config: {
-            version: 'v1',
-            closure: false
-          },
-          editor: `editor`,
-          name: '',
-          items: [
-            {
-              id: 'i222-0',
-              key: 'items',
-              data: '',
-            },
-          ]
-        },
-        {
-          id: 'i333',
-          type: 'object',
-          config: {
-            version: 'v1',
-            closure: false
-          },
-          editor: `editor`,
-          content: '',
-          items: [
-            {
-              id: 'i333-0',
-              key: 'name1',
-              data: '',
-            },
-            {
-              id: 'i333-0',
-              key: 'name2',
-              data: '',
-            },
-          ],
-        }
-      ]
-      self.$nextTick(() => {
-        self.insDeps(self.deps)
-        setTimeout(() => {
-          self.insComLinks(
-              [
-                {
-                  "toPID": "i222",
-                  "fromPID": "i111",
-                  "from": "i111-0",
-                  "to": "i222-top"
-                },
-                {
-                  "toPID": "i333",
-                  "fromPID": "i222",
-                  "from": "i222-0",
-                  "to": "i333-top"
-                },
-              ]
-          )
-        }, 300)
-      })
+      // console.log(this.deps)
+      // self.deps = this.modelDeps
+      // self.$nextTick(() => {
+      //   self.insDeps(self.deps)
+      //   setTimeout(() => {
+      //     self.insComLinks(
+      //         this.modelLinks
+      //     )
+      //   }, 300)
+      // })
+      this.layoutContext = self
     },
     handleDep(dep) {
       console.log('handleDep', dep)
@@ -180,146 +141,128 @@ let plumbLayoutMixin = {
       }
     },
     onSaveDep({deps, links = []}) {
-      const JSON_PARSE_KEYS = ['widgetConfig', 'rules']
+      // const JSON_PARSE_KEYS = ['widgetConfig', 'rules']
+      //
+      // function findItemLinkedDep(item) {
+      //   let dep
+      //   let link = links.find(v => v.from === item.id)
+      //   if (link) {
+      //     dep = deps.find(v => v.id === link.toPID)
+      //   }
+      //   return dep
+      // }
+      //
+      // // console.log('onGetData', deps, links)
+      // let deepObj = {}
+      // let cur =  deps.find(v => v.id === this.rootId)
+      //
+      // let setObj = ZY.lodash.set
+      // let JSON5 =  ZY.JSON5
+      //
+      // function deepTransform(target, obj, path) {
+      //
+      //   for (let [key, value] of Object.entries(obj)) {
+      //     if (Array.isArray(value)) {
+      //       //
+      //     } else {
+      //       // 当value是object类型 递归查找
+      //       if (typeof value === 'object') {
+      //         deepTransform(target, value, `${path}['${key}']`)
+      //       } else {
+      //         // 只有特殊key才被翻译
+      //         if (JSON_PARSE_KEYS.includes(key)) {
+      //           // context.obj[key] = JSON5.parse(value)
+      //           // setObj(target, path, JSON5.parse(value))
+      //           // console.log(key, path)
+      //           let parent = ZY.lodash.get(target, path)
+      //           if (path === '') {
+      //             parent = target
+      //           }
+      //           // console.log(parent, key, value)
+      //           try {
+      //             parent[key] = JSON5.parse(value)
+      //           } catch (e) {
+      //             parent[key] = {}
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
+      //
+      // function parseEditorData(dataStr) {
+      //   try {
+      //     let obj = JSON5.parse(dataStr)
+      //     deepTransform(
+      //         obj,
+      //         obj,
+      //         ''
+      //     )
+      //     // console.log(obj)
+      //     return obj
+      //   } catch (e) {
+      //     return {}
+      //   }
+      // }
+      //
+      // function handleDeep(curDep = {}, path) {
+      //   if (curDep.type === 'array') {
+      //     // console.log('array')
+      //     setObj(deepObj, path, {
+      //       type: 'array',
+      //       items: {
+      //       }
+      //     })
+      //
+      //     let newPath = `${path}['items']`
+      //
+      //     // console.log(deepObj)
+      //     // 因为array是特殊的object 只有items一个属性
+      //     let item = curDep.items[0]
+      //     let dep = findItemLinkedDep(item)
+      //     if (dep) {
+      //       handleDeep(dep, newPath)
+      //     }
+      //   }
+      //   else if (curDep.type === 'object') {
+      //     setObj(deepObj, path,
+      //         {
+      //           type: 'object',
+      //           properties: {
+      //           },
+      //         }
+      //     )
+      //
+      //     for (let item of curDep.items) {
+      //       let parsedData = {}
+      //       parsedData = parseEditorData(item.data)
+      //       let newPath = `${path}['properties']['${item.key}']`
+      //
+      //       // deepPoint.properties[item.key] = parsedData
+      //
+      //       console.log(path, parsedData)
+      //
+      //       setObj(deepObj, newPath,
+      //           parsedData
+      //       )
+      //
+      //       // 找寻当前item是否有绑定的下一个dep
+      //       let dep = findItemLinkedDep(item)
+      //
+      //       // console.log(item, dep, deepObj, newPath)
+      //       if (dep) {
+      //         handleDeep(dep, newPath)
+      //       }
+      //     }
+      //   }
+      //   else {
+      //     console.log('not array and object', curDep, deepPoint)
+      //   }
+      // }
+      //
+      // handleDeep(cur, 'root')
 
-      function findItemLinkedDep(item) {
-        let dep
-        let link = links.find(v => v.from === item.id)
-        if (link) {
-          dep = deps.find(v => v.id === link.toPID)
-        }
-        return dep
-      }
-
-      // console.log('onGetData', deps, links)
-      let deepObj = {}
-      let cur =  deps.find(v => v.id === this.rootId)
-
-      let setObj = ZY.lodash.set
-      let JSON5 =  ZY.JSON5
-
-      function deepTransform(target, obj, path) {
-
-        for (let [key, value] of Object.entries(obj)) {
-          if (Array.isArray(value)) {
-            //
-          } else {
-            // 当value是object类型 递归查找
-            if (typeof value === 'object') {
-              deepTransform(target, value, `${path}['${key}']`)
-            } else {
-              // 只有特殊key才被翻译
-              if (JSON_PARSE_KEYS.includes(key)) {
-                // context.obj[key] = JSON5.parse(value)
-                // setObj(target, path, JSON5.parse(value))
-                // console.log(key, path)
-                let parent = ZY.lodash.get(target, path)
-                if (path === '') {
-                  parent = target
-                }
-                // console.log(parent, key, value)
-                try {
-                  parent[key] = JSON5.parse(value)
-                } catch (e) {
-                  parent[key] = {}
-                }
-              }
-            }
-          }
-        }
-      }
-
-      function parseEditorData(dataStr) {
-        try {
-          let obj = JSON5.parse(dataStr)
-          deepTransform(
-              obj,
-              obj,
-              ''
-          )
-          // console.log(obj)
-          return obj
-        } catch (e) {
-          return {}
-        }
-      }
-
-      function handleDeep(curDep = {}, path) {
-        if (curDep.type === 'array') {
-          // console.log('array')
-          setObj(deepObj, path, {
-            type: 'array',
-            items: {
-            }
-          })
-
-          let newPath = `${path}['items']`
-
-          // console.log(deepObj)
-          // 因为array是特殊的object 只有items一个属性
-          let item = curDep.items[0]
-          let dep = findItemLinkedDep(item)
-          if (dep) {
-            handleDeep(dep, newPath)
-          }
-        }
-        else if (curDep.type === 'object') {
-          setObj(deepObj, path,
-              {
-                type: 'object',
-                properties: {
-                },
-              }
-          )
-
-          for (let item of curDep.items) {
-            let parsedData = {}
-            parsedData = parseEditorData(item.data)
-            let newPath = `${path}['properties']['${item.key}']`
-
-            // deepPoint.properties[item.key] = parsedData
-
-            console.log(path, parsedData)
-
-            setObj(deepObj, newPath,
-                parsedData
-            )
-
-            // 找寻当前item是否有绑定的下一个dep
-            let dep = findItemLinkedDep(item)
-
-            // console.log(item, dep, deepObj, newPath)
-            if (dep) {
-              handleDeep(dep, newPath)
-            }
-          }
-        }
-        else {
-          console.log('not array and object', curDep, deepPoint)
-        }
-      }
-
-      `
-{
-  type: 'object',
-  properties: {
-    parts: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          name1: {},
-          name2: {},
-        },
-      },
-    },
-  },
-}
-      `
-
-      handleDeep(cur, 'root')
-
-      console.log(ZY.JSON5.stringify(deepObj.root.properties, null, 2))
+      // console.log(ZY.JSON5.stringify(deepObj.root.properties, null, 2))
 
       let map = {
         [this.rootId]: deps.find(v => v.id === this.rootId)
@@ -335,11 +278,14 @@ let plumbLayoutMixin = {
       })
       this.currentLayoutMap = JSON.parse(JSON.stringify(map))
       this.currentLinks = JSON.parse(JSON.stringify(links))
+      // this.jsonObj = deepObj.root.properties
       // console.log(deepObj)
       // this.showCurrent = false
       // setTimeout(() => {
       //   this.showCurrent = true
       // }, 500)
+      this.$emit('update:deps', toRaw(deps))
+      this.$emit('update:links', toRaw(links))
     }
   }
 }
@@ -348,7 +294,7 @@ export default {
   name: "DeepPropEditor",
   components: {AsyncPlumbLayout},
   props: {
-    serviceName: String
+    serviceName: String,
   },
   mixins: [
     plumbLayoutMixin,
@@ -389,7 +335,6 @@ export default {
         }
         // console.log( self.currentEditItem.data)
       }
-
     })
 
     async function loadStepByContent( varName = '', item) {
@@ -404,7 +349,6 @@ export default {
         if (item.data) {
           cached = ZY.JSON5.parse(item.data)
         }
-
 
         for (let [partName, data] of Object.entries(config.defaultVal)) {
           let defaultObj = ZY.JSON5.parse(ZY.JSON5.stringify(data))

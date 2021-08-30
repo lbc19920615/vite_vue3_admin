@@ -27,7 +27,6 @@ import locale from 'element-plus/lib/locale/lang/zh-cn'
 // vant
 
 import * as ZY from '@expose/main.js'
-
 globalThis.ZY = ZY
 
 import * as ZY_EXT from '@expose/ext.js'
@@ -41,6 +40,16 @@ globalThis.Framework = Framework
 
 import * as ZPageHooks from "@/plugins/z-page/hooks";
 globalThis.ZPageHooks = ZPageHooks
+
+import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
+import * as tabNodePlugin from '@/plugins/ComEditor/tabNode.plugin'
+NodeDefMap.register(tabNodePlugin)
+
+import * as v1ArrayPlugin from '@/plugins/ComEditor/v1arrayNode.plugin'
+NodeDefMap.register(v1ArrayPlugin)
+
+import * as v1objectPlugin from '@/plugins/ComEditor/v1objectNode.plugin'
+NodeDefMap.register(v1objectPlugin)
 
 import router, {addRoute} from './router'
 import store from './store'

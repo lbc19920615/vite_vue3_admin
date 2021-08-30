@@ -76,7 +76,9 @@ $sel: "." + $tag;
           <h3 style="margin: 10px 0;">items</h3>
           <template v-for="(item, index) in dep.items" :key="item.id">
             <div :id="item.id" :data-pid="dep.id" class="item content-item">
-              <div>{{item.id}} {{item.key}}</div>
+              <div>
+                <el-input v-model="item.key" placeholder="placeholder"></el-input>
+              </div>
               <template v-if="dep.type === 'array'">
 <!--                <button @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>-->
               </template>
@@ -340,7 +342,7 @@ export default {
         // console.log(endPoints1, endPoints2)
         instance.connect({
           source: endPoints1[1],
-          target: endPoints2[1]
+          target: endPoints2[0]
         })
       })
     },
@@ -358,9 +360,9 @@ export default {
     insDep(id, instance, items = []) {
       let self = this
       let config = this.config
-      self.addEndpoint(id + '-top' , {
-        anchors: ['Top']
-      }, config.baseStyle)
+      // self.addEndpoint(id + '-top' , {
+      //   anchors: ['Top']
+      // }, config.baseStyle)
       self.addEndpoint(id + '-top' , {
         anchors: ['Left']
       }, config.baseStyle)

@@ -4,7 +4,7 @@
  * @param config
  * @returns {{}}
  */
-export function defineAutoStoreControl(config = { data: {}, computed: {}, globalStore, rootStore}) {
+export function defineAutoStoreControl(config = { data: {}, computed: {}, globalStore, rootStore, extendContext: null, extendFun: ''}) {
 
   let templateFun = ''
   for (let funName in globalThis.ZY.lodash) {
@@ -17,6 +17,8 @@ export function defineAutoStoreControl(config = { data: {}, computed: {}, global
 
   let commonFun = `
   ${templateFun}
+  
+  ${config.extendFun}
 
   function ZY_hour_between_2_date(date1, date2) {
     if (date1 && date2) {
@@ -76,6 +78,7 @@ export function defineAutoStoreControl(config = { data: {}, computed: {}, global
     computed[key] = new Function('model', 'options', `
         ${commonFun}
         let context = options.context ? options.context : {}
+        let E = context.E ? context.E : {}
         
         function MODEL(v, defaultVal) {
           return ZY.lodash.get(model, v, defaultVal)
@@ -160,8 +163,9 @@ export function defineAutoStoreControl(config = { data: {}, computed: {}, global
       }
     },
     context: {
+      E: config.extendContext,
       config,
-      rootStore
+      rootStore,
     }
   })
   model = ret.model

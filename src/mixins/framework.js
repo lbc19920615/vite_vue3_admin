@@ -85,15 +85,17 @@ export function useConstObj() {
   return ret
 }
 
+
 /**
  *
  * @param properties
  * @param computed
  * @param filters
  * @param onInited
- * @returns {{val: ((function(*=): (*))|*), dxValue: ((function(*=): (undefined))|*), inited, callEvent: callEvent, setByPath: setByPath, EVENT_TYPES: {ARR_APPEND: string, ARR_SPLICE: string, COMPUTED_CHANGE: string}, store, setEventHandler: setEventHandler}}
+ * @param extendContext
+ * @returns {{val: ((function(*=): (*))|*), dxValue: ((function(*=): (undefined))|*), inited, callEvent: callEvent, setData: setData, eventHandleMap: {}, rootStore, setByPath: setByPath, dispatchRoot: (function(...[*]): *), EVENT_TYPES: {ARR_APPEND: string, ARR_SPLICE: string, COMPUTED_CHANGE: string}, store, setEventHandler: setEventHandler}}
  */
-export function useControl({properties, computed, filters}, {onInited}) {
+export function useControl({properties, computed, filters}, {onInited, extendContext = {}}) {
   const rootStore = useStore()
   const globalStore = inject('globalStore')
 
@@ -111,7 +113,7 @@ export function useControl({properties, computed, filters}, {onInited}) {
   }
 
   function log(...args) {
-    console.log(...args)
+    // console.log(...args)
   }
   let storeControl
   let serviceId = 'AsyncComService' + ZY.nid(8).toLowerCase()
@@ -138,7 +140,9 @@ export function useControl({properties, computed, filters}, {onInited}) {
         computed: computed ?? {},
         filters: filters ?? {},
         globalStore,
-        rootStore
+        rootStore,
+        extendFun: '',
+        extendContext,
       })
       storeControl.store.beforeAutoVal = function (key, newVal) {
         // console.log('beforeAutoVal', key, newVal, eventHandleMap[EVENT_TYPES.COMPUTED_CHANGE])
@@ -247,7 +251,7 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
           })
         }
       } else {
-        console.log(control.eventHandleMap, type)
+        // console.log(control.eventHandleMap, type)
         if (control.eventHandleMap[type]) {
           control.eventHandleMap[type](e)
         }
@@ -319,7 +323,7 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
 export function extendControlComputedWatch(control = {setEventHandler}, computedChange = {}) {
   control.setEventHandler({
     [control.EVENT_TYPES.COMPUTED_CHANGE](e) {
-      console.log('  let [,response] = await ZY.awaitTo(', e)
+      // console.log('  let [,response] = await ZY.awaitTo(', e)
       computedChange[e.key] ? computedChange[e.key](e.newVal) : ''
     }
   })

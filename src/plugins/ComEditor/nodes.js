@@ -99,6 +99,29 @@ export function def(type, ...args) {
 }
 
 
+export function create(type, jsonlikeobj) {
+  if (type === 'row') {
+    return new RowNode(jsonlikeobj.id, jsonlikeobj.items)
+  }
+  else if (type === 'column') {
+    return new ColumnNode(jsonlikeobj.id, jsonlikeobj.items)
+  }
+  else if (type === 'form')  {
+    return new FormNode(jsonlikeobj.id, jsonlikeobj.data, jsonlikeobj.content)
+  }
+  else {
+    if (clsDefs.has(type)) {
+      let clsDef = clsDefs.get(type)
+      if (clsDef && clsDef.fromJSON5) {
+        return clsDef.fromJSON5(jsonlikeobj)
+      }
+    } else {
+      console.log('hahahahahahahahahaha')
+    }
+  }
+}
+
+
 export function createFromJSON5(type, jsonlikeobj) {
   if (jsonlikeobj.type === 'row') {
     return new RowNode(jsonlikeobj.id, jsonlikeobj.items)
