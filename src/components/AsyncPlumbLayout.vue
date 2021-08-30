@@ -52,6 +52,8 @@ $sel: "." + $tag;
   <div  class="async-plumb-layout">
 <!--    {{deps}}-->
     <el-button @click="save">保存</el-button>
+    <el-button @click="addDep('array')">添加Array</el-button>
+    <el-button @click="addDep('object')">添加Object</el-button>
 
     <div ref="container" class="container">
       <div :id="dep.id" class="abs section"
@@ -99,7 +101,8 @@ $sel: "." + $tag;
 
 <script>
 import {jsPlumb} from 'jsplumb'
-import {v4 as uuidv4} from 'uuid';
+// import {v4 as uuidv4} from 'uuid';
+import * as NodeDefMap from "@/plugins/ComEditor/nodes";
 
 let itemsManagerMixin = {
   methods: {
@@ -145,8 +148,9 @@ let itemsManagerMixin = {
     appendItem(dep) {
       let opt = dep
       let newItem = {
-        id: opt.id + '-' + uuidv4(),
-        data: ''
+        id: opt.id + '-' + ZY.rid(3),
+        data: '',
+        key: ''
       }
       if (this.handleAppend) {
         this.handleAppend(newItem, dep)
@@ -384,7 +388,7 @@ export default {
      * @param def {{}} required
      */
     appendDep(def = {}) {
-      let id = 'i' + '-' + uuidv4()
+      let id = 'i' + '-' + ZY.rid()
       let dep = {
         id: id,
         items: [
@@ -410,6 +414,18 @@ export default {
     editDep(dep, item) {
       this.$emit('edit-dep', {
         dep, item
+      })
+    },
+    addDep(type) {
+      let id = 'i' + ZY.rid(3)
+      let items = []
+      let dep = NodeDefMap.create(type, {
+        id,
+        items: items
+      })
+      this.deps.push(dep)
+      this.$nextTick(() => {
+        this.insDep(id, this.instance, dep.items)
       })
     },
     /**

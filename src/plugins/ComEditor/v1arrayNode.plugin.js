@@ -14,7 +14,13 @@ export function install({
             super(id, items);
             this.type = type;
             this.editor = ``
-            this.items = items
+            this.items = [
+                {
+                    id: id + '-0',
+                    key: 'items',
+                    data: '',
+                }
+            ]
         }
     }
 
