@@ -1,5 +1,3 @@
-import {baseConfig} from "@/plugins/ComEditor/editorConfig";
-
 export function install({
     V1Node,
                             LayoutNode,

@@ -63,6 +63,7 @@ ${formEditorConfig({
         parts: [
           {
             uis: '{}',
+            props: '{links: [], deps: []}',
             properties: '{}',
           }
         ]

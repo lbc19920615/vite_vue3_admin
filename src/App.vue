@@ -25,8 +25,31 @@ import {defineComponent, inject, provide} from "vue";
 import {createRefManager} from "@/hooks/ref";
 import {useRouter} from "vue-router";
 import {fetchTwigComponent} from "@/hooks/remote.js";
+import {getDeepConfigFromLinksAndDeps} from "@/views/about/components/DeepPropEditor/utils";
 
 export default defineComponent({
+  mounted() {
+    let self = this
+    globalThis.getApp = function () {
+      return self
+    }
+  },
+  methods: {
+    getDeeps(v1, v2) {
+      // console.log('v1', v1, v2)
+      return getDeepConfigFromLinksAndDeps(v1, v2)
+    },
+    getProps(v) {
+      // console.log('getProps', v)
+      try {
+        let o = ZY.JSON5.parse(v)
+        return getDeepConfigFromLinksAndDeps(o.links, o.deps)
+      } catch (e) {
+      //
+      }
+      return '{}'
+    }
+  },
   setup() {
     const router = useRouter()
     const globalStore = inject('globalStore')

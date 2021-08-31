@@ -1,9 +1,7 @@
 <template>
 <div>
-  {{store.model}}
-<!--  <div>-->
-<!--    <json-viewer :value="jsonObj" copyable boxed sort></json-viewer>-->
-<!--  </div>-->
+  <div style="opacity: 0; font-size: 0;">{{store.model}}</div>
+  {{deps}}
   <el-row type="flex">
     <AsyncPlumbLayout
         style="flex: 1"
@@ -87,41 +85,37 @@ let plumbLayoutMixin = {
   watch: {
     deps: {
       handler(newVal) {
-        // console.log(this.deps, this.links)
-        console.log(this)
-        this.initLayout(this.layoutContext)
+        // console.log('deps watch', newVal)
+        // console.log(this)
+        this.initLayout(this.layoutContext, newVal)
       },
       immediate: true
     }
   },
   methods: {
-    initLayout(layoutContext) {
+    initLayout(layoutContext, deps) {
       let self = layoutContext
-      // console.log(self)
+      let links = this.links ?? []
+      console.log('initLayout', self)
       if (self) {
-        self.deps = this.deps
+        // self.deps = deps
+        self.init({deps})
         self.$nextTick(() => {
-          self.insDeps(this.deps)
-          setTimeout(() => {
-            self.insComLinks(
-                this.links
-            )
-          }, 300)
+          self.insDeps(deps)
+          // setTimeout(() => {
+          //   self.insComLinks(
+          //       this.links
+          //   )
+          // }, 300)
         })
       }
     },
     onPlumbLayoutInit(self) {
-      // console.log(this.deps)
-      // self.deps = this.modelDeps
-      // self.$nextTick(() => {
-      //   self.insDeps(self.deps)
-      //   setTimeout(() => {
-      //     self.insComLinks(
-      //         this.modelLinks
-      //     )
-      //   }, 300)
-      // })
       this.layoutContext = self
+      // console.log('layoutContext', this.layoutContext)
+      if (Array.isArray(this.deps) && this.deps.length > 0) {
+        this.initLayout(this.layoutContext, this.deps)
+      }
     },
     handleDep(dep) {
       console.log('handleDep', dep)
@@ -286,6 +280,7 @@ let plumbLayoutMixin = {
       // }, 500)
       this.$emit('update:deps', toRaw(deps))
       this.$emit('update:links', toRaw(links))
+      this.$emit('change')
     }
   }
 }

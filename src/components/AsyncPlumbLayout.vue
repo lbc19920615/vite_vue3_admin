@@ -315,6 +315,7 @@ export default {
      * init
      */
     init({deps = []} = {}) {
+      console.log('async layout init', deps)
       this.deps = deps
     },
     /**

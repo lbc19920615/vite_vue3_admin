@@ -85,6 +85,18 @@ export let formEditorConfig = function (defaultVal = {}) {
                                 }
                             }
                         },
+                        props: {
+                            type: 'string',
+                            ui: {
+                                widget: 'CusProps',
+                                widgetConfig: {
+                                }
+                            }
+                        },
+                        properties2: {
+                            type: 'string',
+                            computedProp: 'cur_deep_props',
+                        },
                         properties: {
                             type: 'string',
                             ui: {
@@ -114,7 +126,8 @@ export let formEditorConfig = function (defaultVal = {}) {
             },
         }
     }, {
-        // doubled: "MODEL('parts', '')"
+        ['cur_deep_props']: `A.getProps(MODEL('parts[0].props'))`,
+        doubled: "MODEL('name', '') + ',s'"
     }, {
         defaultVal
     })

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender} from "../../plugins/form-render/utils";
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 
 export default {
   name: 'CusSelect',

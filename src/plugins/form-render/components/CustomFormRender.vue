@@ -16,6 +16,7 @@ export default defineComponent({
         return {}
       }
     },
+    part_key: String,
     context: null,
     rules: null,
     modelValue: null
@@ -81,7 +82,7 @@ export default defineComponent({
       emit('change', e)
     }
 
-    return () => (<widgetDef ui={props.ui} props={props} context={props.context} rules={props.rules} ref={widgetInstance} onFchange={onFchange} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
+    return () => (<widgetDef ui={props.ui} props={props} defs={props} part_key={props.part_key} context={props.context} rules={props.rules} ref={widgetInstance} onFchange={onFchange} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
   }
 })
 </script>

@@ -462,15 +462,15 @@ export default defineComponent({
       }
     }
     let computed = {
-      ['curss']: `E.getDeeps(MODEL('links'),MODEL('deps'))`
+      ['curss']: `A.getDeeps(MODEL('links'),MODEL('deps'))`
     }
     let page = useControl({properties, computed}, {
       onInited,
       extendContext: {
-        getDeeps(v1, v2) {
-          console.log('v1', v1, v2)
-          return getDeepConfigFromLinksAndDeps(v1, v2)
-        }
+        // getDeeps(v1, v2) {
+        //   // console.log('v1', v1, v2)
+        //   return getDeepConfigFromLinksAndDeps(v1, v2)
+        // }
       }
     })
     page = extendControl2Page(page)

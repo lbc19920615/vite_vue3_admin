@@ -15,6 +15,12 @@ export let CustomRenderControlMixin = {
                 return {}
             }
         },
+        defs: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
         rules: null,
         // context 是一个com
         context: null,
@@ -48,7 +54,7 @@ export let CustomRenderControlMixin = {
     }
 }
 
-export function defineCustomRender(props = {}, ctx) {
+export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     let lock = new ZY.Lock(/* optional lock name, should be unique */)
     let model = null;
     let data = function (opt) {
@@ -60,9 +66,23 @@ export function defineCustomRender(props = {}, ctx) {
     }
     let events = props.ui.events ? props.ui.events : {};
 
+    let FROM_TYPES = {
+        watch: 1,
+        init: 2
+    }
+
+    async function initValue(newVal, from) {
+        if (handleValueInit) {
+            model.value = handleValueInit(newVal)
+        } else {
+            model.value = newVal
+        }
+    }
+
     watch(() => props.modelValue, (newVal) => {
         if (!lock.isLocked) {
-            model.value = newVal
+            // model.value = newVal
+            initValue(newVal, FROM_TYPES.watch)
         }
     }, {
     })
@@ -121,7 +141,8 @@ export function defineCustomRender(props = {}, ctx) {
     }
 
     function init(props) {
-        model.value = props.modelValue
+        // model.value = props.modelValue
+        initValue(props.modelValue, FROM_TYPES.init)
     }
 
     return {

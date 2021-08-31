@@ -11,13 +11,9 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
     return dep
   }
 
-  let linkFirst = links[0]
-  if (linkFirst && linkFirst.fromPID) {
-    rootId = linkFirst.fromPID
-  }
   // console.log('onGetData', deps, links)
   let deepObj = {}
-  let cur =  deps.find(v => v.id === rootId)
+  let cur;
 
   let setObj = ZY.lodash.set
   let JSON5 =  ZY.JSON5
@@ -103,7 +99,7 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
 
         // deepPoint.properties[item.key] = parsedData
 
-        console.log(path, parsedData)
+        // console.log(path, parsedData)
 
         setObj(deepObj, newPath,
           parsedData
@@ -119,13 +115,26 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
       }
     }
     else {
-      console.log('not array and object', curDep, deepPoint)
+      console.log('not array and object', curDep)
     }
   }
 
-  handleDeep(cur, 'root')
-
+  if (Array.isArray(links) && links.length > 0) {
+    let linkFirst = links[0]
+    if (linkFirst && linkFirst.fromPID) {
+      rootId = linkFirst.fromPID
+    }
+    cur = deps.find(v => v.id === rootId)
+  } else {
+    if (Array.isArray(deps)) {
+      rootId = deps[0].id
+      cur = deps[0]
+    }
+  }
   console.log(rootId, deepObj)
-
-  return deepObj.root
+  if (rootId) {
+    handleDeep(cur, 'root')
+    return deepObj.root
+  }
+  return {}
 }

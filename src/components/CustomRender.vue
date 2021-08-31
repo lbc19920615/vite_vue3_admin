@@ -44,16 +44,16 @@ export default defineComponent({
     }, { immediate: true })
 
     function onUpdateModelValue(e) {
-      console.log('custom render onChange', e, widgetInstance)
+      // console.log('custom render onChange', e, widgetInstance)
       emit('update:modelValue', e)
     }
 
     function onChange(e) {
-      console.log('onChange', e)
+      // console.log('onChange', e)
       emit('update:modelValue', e)
     }
 
-    console.log('custom render', props)
+    // console.log('custom render', props)
 
     return () => (
         <>

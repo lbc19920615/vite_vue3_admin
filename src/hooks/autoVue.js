@@ -79,6 +79,7 @@ export function defineAutoStoreControl(config = { data: {}, computed: {}, global
         ${commonFun}
         let context = options.context ? options.context : {}
         let E = context.E ? context.E : {}
+        let A = context.app 
         
         function MODEL(v, defaultVal) {
           return ZY.lodash.get(model, v, defaultVal)
@@ -164,6 +165,7 @@ export function defineAutoStoreControl(config = { data: {}, computed: {}, global
     },
     context: {
       E: config.extendContext,
+      app: globalThis.getApp(),
       config,
       rootStore,
     }
