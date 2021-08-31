@@ -45,7 +45,7 @@ export default {
                                             prop1: {
                                                 type: 'string',
                                                 reflect: 'name',
-                                                reflectTpl: `$REFLECT_VAL + 's'`,
+                                                reflectTpl: `L.defaultTo($VAL, '') + 's'`,
                                                 // computedProp: 'doubled',
                                                 // computedTpl: `$VAL + 's'`
                                                 // reflect: `CUR('code')`
