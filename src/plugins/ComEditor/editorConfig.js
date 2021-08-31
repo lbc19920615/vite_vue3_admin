@@ -96,6 +96,7 @@ export let formEditorConfig = function (defaultVal = {}) {
                         properties2: {
                             type: 'string',
                             reflect: 'props',
+                            reflectTpl: `A.getProps($VAL)`,
                             ui: {
                                 widgetConfig: {
                                     type: 'textarea'

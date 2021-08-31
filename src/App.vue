@@ -43,11 +43,15 @@ export default defineComponent({
       // console.log('getProps', v)
       try {
         let o = ZY.JSON5.parse(v)
-        return getDeepConfigFromLinksAndDeps(o.links, o.deps)
+        let r =  getDeepConfigFromLinksAndDeps(o.links, o.deps)
+        return ZY.JSON5.stringify(r)
       } catch (e) {
       //
       }
       return '{}'
+    },
+    OBJ2JSON5(v = {}) {
+      return ZY.JSON5.stringify(v)
     }
   },
   setup() {
