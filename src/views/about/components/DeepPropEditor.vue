@@ -1,10 +1,9 @@
 <template>
-<div>
+<div class="deep-editor">
   <div style="opacity: 0; font-size: 0;">{{store.model}}</div>
-  {{deps}}
+<!--  {{deps}}-->
   <el-row type="flex">
     <AsyncPlumbLayout
-        style="flex: 1"
         @init="onPlumbLayoutInit"
         :root-id="rootId"
         :handleAppend="handleAppend"
@@ -12,21 +11,27 @@
         @edit-dep="onEditDep"
         @save-data="onSaveDep"
     ></AsyncPlumbLayout>
-    <div style="width: 600px">
-      <template v-if="renderFormDesigner && currentEditDep">
-        {{currentEditItem}}
-        <template v-if="currentEditDep.type === 'object'">
-          <HttpComponent
-              :defs="allDef"
-              :is="store.model.editor_step"
-          >
-            <template #form_array_before="scope">
-              <h3>{{scope.index}}</h3>
-            </template>
-          </HttpComponent>
-        </template>
+
+
+    <el-drawer
+        title="编辑"
+        size="600px"
+        v-model="renderFormDesigner" destroy-on-close>
+      <template #default>
+        <div  v-if="renderFormDesigner && currentEditDep">
+          <template v-if="currentEditDep.type === 'object'">
+            <HttpComponent
+                :defs="allDef"
+                :is="store.model.editor_step"
+            >
+              <template #form_array_before="scope">
+                <h3>{{scope.index}}</h3>
+              </template>
+            </HttpComponent>
+          </template>
+        </div>
       </template>
-    </div>
+    </el-drawer>
   </el-row>
 </div>
 </template>
@@ -86,7 +91,6 @@ let plumbLayoutMixin = {
     deps: {
       handler(newVal) {
         // console.log('deps watch', newVal)
-        // console.log(this)
         this.initLayout(this.layoutContext, newVal)
       },
       immediate: true
@@ -94,19 +98,20 @@ let plumbLayoutMixin = {
   },
   methods: {
     initLayout(layoutContext, deps) {
+      let comc = this
       let self = layoutContext
       let links = this.links ?? []
-      console.log('initLayout', self)
+      // console.log('initLayout', self)
       if (self) {
         // self.deps = deps
         self.init({deps})
         self.$nextTick(() => {
           self.insDeps(deps)
-          // setTimeout(() => {
-          //   self.insComLinks(
-          //       this.links
-          //   )
-          // }, 300)
+          setTimeout(() => {
+            self.insComLinks(
+                comc.links
+            )
+          }, 300)
         })
       }
     },
@@ -135,129 +140,6 @@ let plumbLayoutMixin = {
       }
     },
     onSaveDep({deps, links = []}) {
-      // const JSON_PARSE_KEYS = ['widgetConfig', 'rules']
-      //
-      // function findItemLinkedDep(item) {
-      //   let dep
-      //   let link = links.find(v => v.from === item.id)
-      //   if (link) {
-      //     dep = deps.find(v => v.id === link.toPID)
-      //   }
-      //   return dep
-      // }
-      //
-      // // console.log('onGetData', deps, links)
-      // let deepObj = {}
-      // let cur =  deps.find(v => v.id === this.rootId)
-      //
-      // let setObj = ZY.lodash.set
-      // let JSON5 =  ZY.JSON5
-      //
-      // function deepTransform(target, obj, path) {
-      //
-      //   for (let [key, value] of Object.entries(obj)) {
-      //     if (Array.isArray(value)) {
-      //       //
-      //     } else {
-      //       // 当value是object类型 递归查找
-      //       if (typeof value === 'object') {
-      //         deepTransform(target, value, `${path}['${key}']`)
-      //       } else {
-      //         // 只有特殊key才被翻译
-      //         if (JSON_PARSE_KEYS.includes(key)) {
-      //           // context.obj[key] = JSON5.parse(value)
-      //           // setObj(target, path, JSON5.parse(value))
-      //           // console.log(key, path)
-      //           let parent = ZY.lodash.get(target, path)
-      //           if (path === '') {
-      //             parent = target
-      //           }
-      //           // console.log(parent, key, value)
-      //           try {
-      //             parent[key] = JSON5.parse(value)
-      //           } catch (e) {
-      //             parent[key] = {}
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
-      //
-      // function parseEditorData(dataStr) {
-      //   try {
-      //     let obj = JSON5.parse(dataStr)
-      //     deepTransform(
-      //         obj,
-      //         obj,
-      //         ''
-      //     )
-      //     // console.log(obj)
-      //     return obj
-      //   } catch (e) {
-      //     return {}
-      //   }
-      // }
-      //
-      // function handleDeep(curDep = {}, path) {
-      //   if (curDep.type === 'array') {
-      //     // console.log('array')
-      //     setObj(deepObj, path, {
-      //       type: 'array',
-      //       items: {
-      //       }
-      //     })
-      //
-      //     let newPath = `${path}['items']`
-      //
-      //     // console.log(deepObj)
-      //     // 因为array是特殊的object 只有items一个属性
-      //     let item = curDep.items[0]
-      //     let dep = findItemLinkedDep(item)
-      //     if (dep) {
-      //       handleDeep(dep, newPath)
-      //     }
-      //   }
-      //   else if (curDep.type === 'object') {
-      //     setObj(deepObj, path,
-      //         {
-      //           type: 'object',
-      //           properties: {
-      //           },
-      //         }
-      //     )
-      //
-      //     for (let item of curDep.items) {
-      //       let parsedData = {}
-      //       parsedData = parseEditorData(item.data)
-      //       let newPath = `${path}['properties']['${item.key}']`
-      //
-      //       // deepPoint.properties[item.key] = parsedData
-      //
-      //       console.log(path, parsedData)
-      //
-      //       setObj(deepObj, newPath,
-      //           parsedData
-      //       )
-      //
-      //       // 找寻当前item是否有绑定的下一个dep
-      //       let dep = findItemLinkedDep(item)
-      //
-      //       // console.log(item, dep, deepObj, newPath)
-      //       if (dep) {
-      //         handleDeep(dep, newPath)
-      //       }
-      //     }
-      //   }
-      //   else {
-      //     console.log('not array and object', curDep, deepPoint)
-      //   }
-      // }
-      //
-      // handleDeep(cur, 'root')
-
-      // console.log(ZY.JSON5.stringify(deepObj.root.properties, null, 2))
-
       let map = {
         [this.rootId]: deps.find(v => v.id === this.rootId)
       }
@@ -369,6 +251,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+.deep-editor {
+   .el-form-item {
+    margin-bottom: 20px;
+  }
+}
 </style>

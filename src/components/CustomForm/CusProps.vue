@@ -1,6 +1,6 @@
 <template>
   <template v-if="inited">
-        {{state}}
+<!--        {{state}}-->
     <DeepPropEditor v-model:deps="state.deps" v-model:links="state.links"
     @change="onChange"
     ></DeepPropEditor>

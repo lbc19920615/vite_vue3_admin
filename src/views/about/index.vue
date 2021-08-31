@@ -10,8 +10,8 @@
 <!--    </CustomElement>-->
 
 <!--    {{store.model}}-->
-    {{store.computedModel}}
-    <DeepPropEditor v-model:deps="store.model.deps" v-model:links="store.model.links"></DeepPropEditor>
+<!--    {{store.computedModel}}-->
+<!--    <DeepPropEditor v-model:deps="store.model.deps" v-model:links="store.model.links"></DeepPropEditor>-->
 
     <template v-if="store.model.textarea_step">
 <!--      {{store.model.textarea_step}}-->
@@ -40,9 +40,9 @@
     </template>
 
     <template v-if="page.inited">
-      <div>
-        {{store.model}}
-      </div>
+<!--      <div>-->
+<!--        {{store.model}}-->
+<!--      </div>-->
       <div>
         <div v-if="showCurrent">
           <el-link href="/show" target="_blank">show</el-link>

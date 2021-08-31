@@ -2,11 +2,11 @@ export default {
     name: 'event-handler',
     defaultVal: {
         form2: {
-            obj: {
-                events: [
-                    {}
-                ]
-            },
+            // obj: {
+            //     events: [
+            //         {}
+            //     ]
+            // },
             events: [
                 // {}
             ]
@@ -23,38 +23,38 @@ export default {
                     type: 'object',
                     ui: {attrs: [['label-width', '150px']]},
                     properties: {
-                        obj: {
-                            type: 'object',
-                            properties: {
-                                events: {
-                                    type: 'array',
-                                    items: {
-                                        type: 'object',
-                                        properties: {
-                                            name: {
-                                                type: 'string'
-                                            },
-                                            code: {
-                                                type: 'string',
-                                                ui: {
-                                                    widgetConfig: {
-                                                        type: 'textarea'
-                                                    }
-                                                }
-                                            },
-                                            prop1: {
-                                                type: 'string',
-                                                reflect: 'name',
-                                                reflectTpl: `L.defaultTo($VAL, '') + 's'`,
-                                                // computedProp: 'doubled',
-                                                // computedTpl: `$VAL + 's'`
-                                                // reflect: `CUR('code')`
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
+                        // obj: {
+                        //     type: 'object',
+                        //     properties: {
+                        //         events: {
+                        //             type: 'array',
+                        //             items: {
+                        //                 type: 'object',
+                        //                 properties: {
+                        //                     name: {
+                        //                         type: 'string'
+                        //                     },
+                        //                     code: {
+                        //                         type: 'string',
+                        //                         ui: {
+                        //                             widgetConfig: {
+                        //                                 type: 'textarea'
+                        //                             }
+                        //                         }
+                        //                     },
+                        //                     prop1: {
+                        //                         type: 'string',
+                        //                         reflect: 'name',
+                        //                         reflectTpl: `L.defaultTo($VAL, '') + 's'`,
+                        //                         // computedProp: 'doubled',
+                        //                         // computedTpl: `$VAL + 's'`
+                        //                         // reflect: `CUR('code')`
+                        //                     }
+                        //                 }
+                        //             }
+                        //         }
+                        //     }
+                        // },
                         events: {
                             type: 'array',
                             items: {
@@ -73,8 +73,8 @@ export default {
                                     },
                                     prop1: {
                                         type: 'string',
-                                        computedProp: 'doubled',
-                                        computedTpl: `$VAL + 's'`
+                                        reflect: 'name',
+                                        reflectTpl: `L.defaultTo($VAL, '') + 's'`,
                                         // reflect: `CUR('code')`
                                     }
                                 }

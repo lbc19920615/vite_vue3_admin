@@ -44,7 +44,7 @@ export default defineComponent({
       try {
         let o = ZY.JSON5.parse(v)
         let r =  getDeepConfigFromLinksAndDeps(o.links, o.deps)
-        return ZY.JSON5.stringify(r)
+        return ZY.JSON5.stringify(r, null, 2)
       } catch (e) {
       //
       }

@@ -3,7 +3,7 @@ $tag: "async-plumb-layout";
 $sel: "." + $tag;
 
 #{$sel} {
-  width: 900px;
+  width: 100%;
   height: 600px;
   border: 1px solid #eee;
   .item {
@@ -86,7 +86,7 @@ $sel: "." + $tag;
 <!--                <button @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>-->
               </template>
               <template v-else>
-                <button @click="editDep(dep, item)"><i class="el-icon-edit" ></i></button>
+                <el-button size="small" @click="editDep(dep, item)"><i class="el-icon-edit" ></i></el-button>
               </template>
             </div>
           </template>
