@@ -3,7 +3,7 @@
 <!--</template>-->
 
 <script lang="jsx">
-import {defineComponent, h, inject, provide, ref, resolveComponent} from "vue";
+import {defineComponent, h, inject, provide, ref, resolveComponent, watch} from "vue";
 
 export default defineComponent( {
   name: 'auto-http-com',
@@ -12,6 +12,7 @@ export default defineComponent( {
     def: String,
     slotContent: null,
     page: null,
+    is: String
   },
   setup(props, ctx) {
     let page = props.page
@@ -20,9 +21,10 @@ export default defineComponent( {
     let config
     let httpCtx = null
 
-    function load() {
-      config = ZY.JSON5.parse(props.def)
+    function load(newDef) {
+      config = ZY.JSON5.parse(newDef)
       // config = props.def
+      console.log(config)
       page.setDef(config, function ({done}) {
         // console.log('on fomeerered', config)
 
@@ -40,8 +42,12 @@ export default defineComponent( {
       step.value = config.name
     }
 
-    load()
-
+    watch(() => props.def, (newVal) => {
+      console.log('is change')
+      load(newVal)
+    }, {
+      immediate: true
+    })
 
     let HttpComponent = resolveComponent('HttpComponent')
     // console.log(HttpComponent)

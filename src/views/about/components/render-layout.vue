@@ -5,6 +5,7 @@
         <template v-slot:default="{item}">
 <!--          {{getNext(item)}}-->
           <render-layout :level="level + 1" :map="map" :handle-next="handleNext"
+                         :handle-def-map="handleDefMap"
                          :page="page"
                          :slotContent="innerSlots"
                          :id="getNext(item)">
@@ -15,6 +16,7 @@
                 :layout="curObj.items">
         <template v-slot:default="{item}">
           <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"
+                         :handle-def-map="handleDefMap"
                          :page="page"
                          :slotContent="innerSlots"
                          :id="getNext(item)">
@@ -28,6 +30,7 @@
           <template v-slot:default="{item}">
 <!--            {{item}} {{getNext(item)}}-->
             <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"
+                           :handle-def-map="handleDefMap"
                            :page="page"
                            :slotContent="innerSlots"
                            :id="getNext(item)">
@@ -37,10 +40,12 @@
       </template>
       <template v-else>
         <template v-if="curObj && curObj.type && curObj.content">
+<!--          {{curObj}} {{stepMap.test}}-->
+<!--          :def="curObj.content"-->
           <AutoHttpCom
               :slotContent="innerSlots"
               :page="page"
-              :def="curObj.content"
+              :def="getDef('test')"
           >
           </AutoHttpCom>
         </template>
@@ -75,6 +80,10 @@ export default {
       type: Function,
       default: null
     },
+    handleDefMap: {
+      type: Function,
+      default: null
+    },
     slotContent: null
   },
   components: {
@@ -85,7 +94,7 @@ export default {
   },
   data() {
     return {
-      innerSlots: this.slotContent ? this.slotContent : this.$slots
+      innerSlots: this.slotContent ? this.slotContent : this.$slots,
     }
   },
   computed: {
@@ -114,6 +123,13 @@ export default {
       }
       return id
     },
+    getDef(partName) {
+      if (this.handleDefMap) {
+        let r = this.handleDefMap(partName)
+        return ZY.JSON5.stringify(r)
+      }
+      return '{}'
+    }
   }
 }
 </script>
