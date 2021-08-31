@@ -2,11 +2,11 @@ export default {
     name: 'event-handler',
     defaultVal: {
         form2: {
-            // obj: {
-            //     events: [
-            //         {}
-            //     ]
-            // },
+            obj: {
+                events: [
+                    {}
+                ]
+            },
             events: [
                 // {}
             ]
@@ -23,30 +23,38 @@ export default {
                     type: 'object',
                     ui: {attrs: [['label-width', '150px']]},
                     properties: {
-                        // obj: {
-                        //     type: 'object',
-                        //     properties: {
-                        //         events: {
-                        //             type: 'array',
-                        //             items: {
-                        //                 type: 'object',
-                        //                 properties: {
-                        //                     name: {
-                        //                         type: 'string'
-                        //                     },
-                        //                     code: {
-                        //                         type: 'string',
-                        //                         ui: {
-                        //                             widgetConfig: {
-                        //                                 type: 'textarea'
-                        //                             }
-                        //                         }
-                        //                     }
-                        //                 }
-                        //             }
-                        //         }
-                        //     }
-                        // },
+                        obj: {
+                            type: 'object',
+                            properties: {
+                                events: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'object',
+                                        properties: {
+                                            name: {
+                                                type: 'string'
+                                            },
+                                            code: {
+                                                type: 'string',
+                                                ui: {
+                                                    widgetConfig: {
+                                                        type: 'textarea'
+                                                    }
+                                                }
+                                            },
+                                            prop1: {
+                                                type: 'string',
+                                                reflect: 'name',
+                                                reflectTpl: `$REFLECT_VAL + 's'`,
+                                                // computedProp: 'doubled',
+                                                // computedTpl: `$VAL + 's'`
+                                                // reflect: `CUR('code')`
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
                         events: {
                             type: 'array',
                             items: {
@@ -62,13 +70,19 @@ export default {
                                                 type: 'textarea'
                                             }
                                         }
+                                    },
+                                    prop1: {
+                                        type: 'string',
+                                        computedProp: 'doubled',
+                                        computedTpl: `$VAL + 's'`
+                                        // reflect: `CUR('code')`
                                     }
                                 }
                             }
                         }
                     }
                 },
-                computed: {doubled: "MODEL('name', '') + ',s'"}
+                computed: {doubled: "MODEL('events[0].name', '')"}
             }]
         }, args: {src: 'comformscr2.twig'}
     }
