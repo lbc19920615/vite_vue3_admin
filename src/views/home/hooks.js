@@ -59,7 +59,6 @@ export function useReloadMan({timeout} = {}) {
     state.showed = false
     setTimeout(() => {
       state.showed = true
-      console.log('sdsdsdsds')
     }, timeout)
   }
   return [

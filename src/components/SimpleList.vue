@@ -24,7 +24,7 @@ export default {
     suggest: Array
   },
   setup(props, ctx) {
-    console.log(props)
+    // console.log(props)
     let state = reactive({
       suggest: props.suggest,
       search: ''

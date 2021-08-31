@@ -1,7 +1,7 @@
 <template>
   <template v-if="inited">
 <!--        {{state}}-->
-    <el-input v-model="state.value">
+    <el-input v-model="state.value" @input="onChange">
       <template #append>
         <el-popover
             placement="bottom"
@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import {toRaw} from 'vue'
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
 import {useArrHandler, useReloadMan} from "@/views/home/hooks";
@@ -80,6 +79,10 @@ export default {
       state.value = e
     }
 
+    function onChange() {
+      methods.on_change(state.value)
+    }
+
     return {
       state,
       initSearch,
@@ -87,6 +90,7 @@ export default {
       selectSuggest,
       refMan,
       setRefMan,
+      onChange,
       widgetConfig: props.ui.widgetConfig,
       handler,
       methods,
