@@ -21,9 +21,10 @@ function buildPart({type, name, ui, properties}) {
 /**
  * contentTpl
  * @param parts [{ui, properties}]
+ * @param model {{}}
  * @returns {*}
  */
-export let buildFormDepContent = function (parts = []) {
+export let buildFormDepContent = function (parts = [], model) {
     let JSON5 = ZY.JSON5;
     let parsedParts = []
     let defaultVals = {}
@@ -58,7 +59,7 @@ export let buildFormDepContent = function (parts = []) {
     })
     console.log(parsedParts)
     let obj = {
-        name: 'process-step1',
+        name: model.name ?? 'process-step1',
         defaultVal: defaultVals,
         init: {
             def: {

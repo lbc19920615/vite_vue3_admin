@@ -526,12 +526,13 @@ export default defineComponent({
         let { model, key, newVal, config } = e
         // console.log(key, model, config, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
-          // console.log('sdsdsdsdsdsdsds', self.currentEditDep, model)
+          console.log('sdsdsdsdsdsdsds', self.currentEditDep, model)
           self.currentEditDep.data = model
           if (self.currentEditDep.type === 'form') {
             try {
               self.currentEditDep.content = buildFormDepContent(
                   model.parts,
+                  model,
               )
               self.LayoutContext.setDep(self.currentEditDep.id, {
                 content: self.currentEditDep.content
