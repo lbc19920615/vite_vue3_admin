@@ -14,7 +14,7 @@
 <!--    <DeepPropEditor v-model:deps="store.model.deps" v-model:links="store.model.links"></DeepPropEditor>-->
 
     <template v-if="store.model.textarea_step">
-<!--      {{store.model.textarea_step}}-->
+      {{store.model.textarea_step}}
       <HttpComponent
           :defs="allDef"
           :is="store.model.textarea_step"
@@ -31,10 +31,15 @@
           <!--                 {{scope}}-->
           <el-button @click="page.callEvent('remove:event', scope)">删除{{ scope.key }}</el-button>
         </template>
-        <template #form_after="scope">
-          <CusSubmitButton
-              :scope="scope"
-              class="el-col z-submit-btn"></CusSubmitButton>
+        <template #form_before="scope">
+          <el-space wrap>
+<!--            <CusSubmitButton-->
+<!--                :scope="scope"-->
+<!--                class="el-col z-submit-btn"></CusSubmitButton>-->
+            <template v-if="showCurrent">
+              <el-link href="/show" target="_blank">打开预览</el-link>
+            </template>
+          </el-space>
         </template>
       </HttpComponent>
     </template>
@@ -43,39 +48,34 @@
 <!--      <div>-->
 <!--        {{store.model}}-->
 <!--      </div>-->
-      <div>
-        <div v-if="showCurrent">
-          <el-link href="/show" target="_blank">show</el-link>
-        </div>
-        <el-row style="flex-wrap: nowrap;">
-          <PlumbLayout
-              style="flex: 1"
-              @init="onPlumbLayoutInit"
-              :root-id="rootId"
-              :handleAppend="handleAppend"
-              :handle-dep="handleDep"
-              @save-data="onSaveData"
-              @edit-dep="onEditDep"
-          ></PlumbLayout>
+      <el-row style="flex-wrap: nowrap;">
+        <PlumbLayout
+            style="flex: 1"
+            @init="onPlumbLayoutInit"
+            :root-id="rootId"
+            :handleAppend="handleAppend"
+            :handle-dep="handleDep"
+            @save-data="onSaveData"
+            @edit-dep="onEditDep"
+        ></PlumbLayout>
 
-          <div style="width: 600px" v-loading="renderFormLoading">
-            <template v-if="renderFormDesigner">
-              <HttpComponent
-                  :defs="allDef"
-                  :is="store.model.editor_step"
-              >
-                <template #array_item_before="scope">
-                  <h3>{{ scope.key }}</h3>
-                </template>
-                <template #array_before="scope">
-                  <!--                 {{scope}}-->
-                  <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>
-                </template>
-              </HttpComponent>
-            </template>
-          </div>
-        </el-row>
-      </div>
+        <div style="width: 600px" v-loading="renderFormLoading">
+          <template v-if="renderFormDesigner">
+            <HttpComponent
+                :defs="allDef"
+                :is="store.model.editor_step"
+            >
+              <template #array_item_before="scope">
+                <h3>{{ scope.key }}</h3>
+              </template>
+              <template #array_before="scope">
+                <!--                 {{scope}}-->
+                <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>
+              </template>
+            </HttpComponent>
+          </template>
+        </div>
+      </el-row>
     </template>
 
   </div>
@@ -503,17 +503,24 @@ export default defineComponent({
         let { scope, parts } = e
         let model = parts[scope.name].getModel()
         // console.log('submit:form',e, model);
+        // if (scope.process === page.store.model.textarea_step) {
+        //   // console.log('sddddddddddddd');
+        //   page.dispatchRoot('SetStoreEvents', model)
+        // }
+
+      },
+      ['model:update:all'](e) {
+        let { model, key, newVal, config } = e
         if (scope.process === page.store.model.textarea_step) {
-          console.log('sddddddddddddd');
+          // console.log('sdsdsdsdsdsdsds', e)
           page.dispatchRoot('SetStoreEvents', model)
         }
-
       },
       ['model:update'](e) {
         let { model, key, newVal, config } = e
         // console.log(key, model, config, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
-          console.log('sdsdsdsdsdsdsds', self.currentEditDep, model)
+          // console.log('sdsdsdsdsdsdsds', self.currentEditDep, model)
           self.currentEditDep.data = model
           if (self.currentEditDep.type === 'form') {
             try {
