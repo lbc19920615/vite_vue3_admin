@@ -23,13 +23,13 @@
           <el-col>
             <el-row class="u-sizeFull" justify="space-between" align="middle">
               <h3>{{ scope.selfpath }}</h3>
-              <el-button @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>
+              <el-button size="small" @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>
             </el-row>
           </el-col>
         </template>
         <template #array_item_after="scope">
           <!--                 {{scope}}-->
-          <el-button @click="page.callEvent('remove:event', scope)">删除{{ scope.key }}</el-button>
+          <el-button type="danger" size="small" @click="page.callEvent('remove:event', scope)">删除{{ scope.key }}</el-button>
         </template>
         <template #form_before="scope">
           <el-space wrap>
