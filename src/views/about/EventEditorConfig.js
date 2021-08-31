@@ -55,6 +55,20 @@ export default {
                         //         }
                         //     }
                         // },
+                        name: {
+                            type: 'string',
+                            ui: {
+                                widget: 'CusSuggest',
+                                widgetConfig: {
+                                    suggest: [
+                                        {
+                                            label: '爱你',
+                                            value: 'sdsds',
+                                        }
+                                    ]
+                                }
+                            }
+                        },
                         events: {
                             type: 'array',
                             items: {

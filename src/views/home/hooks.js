@@ -1,4 +1,4 @@
-import {onMounted, watch} from "vue";
+import {onMounted, watch, toRaw, reactive} from "vue";
 
 /**
  *
@@ -17,8 +17,9 @@ export function useArrHandler(refVar) {
       }
     }
   }
-  function search(...args) {
-    return ZY.lodash.filter(refVar, ...args)
+  function search(fun) {
+    let obj = toRaw(refVar)
+    return ZY.lodash.filter(obj, fun)
   }
   return {
     del,
@@ -48,4 +49,21 @@ export function storeVar(refVar, storageName) {
       localStorage.setItem(storageName, JSON.stringify(newVal))
     })
   }
+}
+
+export function useReloadMan({timeout} = {}) {
+  let state = reactive({
+    showed: false
+  })
+  function setShowed(v) {
+    state.showed = false
+    setTimeout(() => {
+      state.showed = true
+      console.log('sdsdsdsds')
+    }, timeout)
+  }
+  return [
+    state,
+    setShowed
+  ]
 }
