@@ -47,10 +47,6 @@ export let formEditorConfig = function (defaultVal = {}) {
                     label: '名称',
                 },
             },
-            properties2: {
-                type: 'string',
-                computedProp: 'doubled',
-            },
             parts: {
                 type: 'array',
                 items: {
@@ -94,6 +90,15 @@ export let formEditorConfig = function (defaultVal = {}) {
                             ui: {
                                 widget: 'CusProps',
                                 widgetConfig: {
+                                }
+                            }
+                        },
+                        properties2: {
+                            type: 'string',
+                            reflect: 'props',
+                            ui: {
+                                widgetConfig: {
+                                    type: 'textarea'
                                 }
                             }
                         },
