@@ -50,7 +50,7 @@ $sel: "." + $tag;
 
 <template>
   <div  class="plumb-layout">
-    <el-button @click="save">保存</el-button>
+<!--    <el-button @click="save">保存</el-button>-->
 <!--    <el-button @click="getLinkRealtions">get connect</el-button>-->
     <el-button @click="toggleGroupDialog(true)">添加组</el-button>
 
@@ -533,7 +533,7 @@ export default {
       ZY_EXT.store.setItem('play-deps', ZY.JSON5.parse(ZY.JSON5.stringify(this.deps)))
       ZY_EXT.store.setItem('play-links', ZY.JSON5.parse(ZY.JSON5.stringify(links)))
 
-      // console.log('links', comLinks, eventLinks)
+      // console.log('links')
 
       this.$emit('save-data', ret)
     }

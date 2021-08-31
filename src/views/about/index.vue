@@ -36,6 +36,7 @@
 <!--            <CusSubmitButton-->
 <!--                :scope="scope"-->
 <!--                class="el-col z-submit-btn"></CusSubmitButton>-->
+            <el-button type="primary" @click="page.callEvent('call:save', scope)">保存</el-button>
             <template v-if="showCurrent">
               <el-link href="/show" target="_blank">打开预览</el-link>
             </template>
@@ -478,6 +479,11 @@ export default defineComponent({
 
 
     page.setEventHandler({
+      ['call:save'](e) {
+        if (page.ctx.LayoutContext) {
+          page.ctx.LayoutContext.save()
+        }
+      },
       ['random:tab'](e) {
         let index = ZY.lodash.random(1,2)
         page.setData({
@@ -511,7 +517,7 @@ export default defineComponent({
       },
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e
-        if (scope.process === page.store.model.textarea_step) {
+        if (config.process === page.store.model.textarea_step) {
           // console.log('sdsdsdsdsdsdsds', e)
           page.dispatchRoot('SetStoreEvents', model)
         }
