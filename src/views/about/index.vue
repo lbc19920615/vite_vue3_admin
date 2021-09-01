@@ -536,7 +536,7 @@ export default defineComponent({
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e
         if (config.process === page.store.model.textarea_step) {
-          // console.log('sdsdsdsdsdsdsds', model)
+          console.log('sdsdsdsdsdsdsds', model)
           page.dispatchRoot('SetStoreEvents', model)
         }
       },

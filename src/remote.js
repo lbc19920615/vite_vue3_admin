@@ -3,9 +3,14 @@ import showCss from '@/views/about/show.scss';
 
 export async function loadPage(name) {
   return await loadComponent( async () => {
+    let currentData = await ZY_EXT.store.getItem('play-events-model')
+    // console.log(currentData)
     let res = await globalThis.importScripts('./configs/page1.js')
+    let obj = Object.assign({}, {
+      layoutSlots: currentData.layoutSlots
+    }, res.default)
     return fetchVueComponent(
-      res.default
+      obj
     )
   }, 'z-page-' + name, {
     handleScript(script) {

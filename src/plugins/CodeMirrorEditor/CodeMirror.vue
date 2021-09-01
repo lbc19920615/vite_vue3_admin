@@ -135,6 +135,11 @@ const props = defineProps({
 });
 const emit = defineEmits();
 // let editor = document.getElementById("editor");
+defineExpose({
+  setModel(newVal) {
+    codeEditor.setValue(newVal)
+  }
+})
 let editorRef = ref(null)
 let editor = null
 let codeEditor = null;

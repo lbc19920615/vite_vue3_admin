@@ -7,6 +7,7 @@ export default {
             //         {}
             //     ]
             // },
+            // slots: 'sdsds',
             events: [
                 // {}
             ]
@@ -66,6 +67,15 @@ export default {
                                             value: 'sdsds',
                                         }
                                     ]
+                                }
+                            }
+                        },
+                        slots: {
+                            type: 'string',
+                            ui: {
+                                widget: 'CodeJsEditor',
+                                widgetConfig: {
+                                    mode: 'text/html'
                                 }
                             }
                         },
