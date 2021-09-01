@@ -41,6 +41,9 @@ globalThis.Framework = Framework
 import * as ZPageHooks from "@/plugins/z-page/hooks";
 globalThis.ZPageHooks = ZPageHooks
 
+import * as ZPageBuild from "@/plugins/z-page/build";
+globalThis.ZPageBuild = ZPageBuild
+
 import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
 import * as tabNodePlugin from '@/plugins/ComEditor/tabNode.plugin'
 NodeDefMap.register(tabNodePlugin)

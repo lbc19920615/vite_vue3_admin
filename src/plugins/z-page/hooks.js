@@ -11,7 +11,8 @@ export function useRenderControl() {
         currentLinks: [],
         uuid: '',
         refresh: false,
-        events: []
+        events: [],
+        pageModel: {}
     })
 
     function handleNext(item) {
@@ -25,7 +26,6 @@ export function useRenderControl() {
             }
             return ''
         }
-        console.log('sdsdsdsd')
         return ''
     }
 
@@ -75,12 +75,13 @@ export function useRenderControl() {
         // console.log(ZY.compareObj(oldVal, newVal))
         let equals = ZY.compareObj(oldVal, newVal)
         if (!equals) {
+            state.pageModel = currentData
             if (currentData && Array.isArray(currentData.events)) {
                 state.events = currentData.events
             }
             // console.log('sdsdsdsdsdsdsdsds', currentData.events)
             if (detectEventChangeContext.cb) {
-                detectEventChangeContext.cb(currentData.events, state)
+                detectEventChangeContext.cb(currentData.events,  {state, currentData})
             }
         }
     }

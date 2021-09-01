@@ -16,15 +16,13 @@ export default defineComponent( {
   },
   setup(props, ctx) {
     let page = props.page
-    // console.log('props', props.render)
     let step = ref('')
     let config
     let httpCtx = null
 
     function load(newDef) {
       config = ZY.JSON5.parse(newDef)
-      // config = props.def
-      console.log(config)
+      // console.log(config, typeof config)
       page.setDef(config, function ({done}) {
         // console.log('on fomeerered', config)
 
@@ -36,14 +34,13 @@ export default defineComponent( {
               defaultObj
           )
         }
-
         done()
       })
       step.value = config.name
     }
 
     watch(() => props.def, (newVal) => {
-      console.log('is change')
+      // console.log('is change', props.def)
       load(newVal)
     }, {
       immediate: true

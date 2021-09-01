@@ -74,6 +74,20 @@ export default {
                             items: {
                                 type: 'object',
                                 properties: {
+                                    name: {
+                                        type: 'string',
+                                        ui: {
+                                            widget: 'CusSuggest',
+                                            widgetConfig: {
+                                                suggest: [
+                                                    {
+                                                        label: '爱你',
+                                                        value: 'sdsds',
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
                                     value: {
                                         type: 'string',
                                         ui: {

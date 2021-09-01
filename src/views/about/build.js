@@ -57,7 +57,7 @@ export let buildFormDepContent = function (parts = [], model) {
             }
         }
     })
-    console.log(parsedParts)
+    // console.log(parsedParts)
     let obj = {
         name: model.name ?? 'process-step1',
         defaultVal: defaultVals,

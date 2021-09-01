@@ -307,7 +307,7 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
         )
       }
       if (onMounted) {
-        onMounted(config)
+        onMounted(config, {setPartModel})
       }
       done()
     })

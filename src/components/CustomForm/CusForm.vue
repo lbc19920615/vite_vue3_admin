@@ -19,7 +19,8 @@
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import HttpComponent from "@/components/HttpComponent.vue";
 import {extendControl2Page, useControl} from "@/mixins/framework";
-import {onMounted, nextTick} from 'vue';
+import {nextTick, onMounted} from 'vue';
+
 export default {
   name: 'CusForm',
   components: {HttpComponent},
@@ -27,9 +28,20 @@ export default {
     CustomRenderControlMixin
   ],
   setup(props, ctx) {
-    let { methods } = defineCustomRender(props, ctx, {
-
+    let locks = true
+    let cached = null
+    // setTimeout(() => {
+    //   locks = false
+    // }, 10000)
+    let { methods, init, data } = defineCustomRender(props, ctx, {
+      handleValueInit(newVal) {
+        // console.log('handleValueInit', newVal, typeof newVal)
+        cached = ZY.JSON5.parse(newVal)
+        return newVal
+        // page.setPartModel('form-editor', 'form2', obj)
+      }
     })
+    data()
     let properties =  {
       editor_step: {
         type: String,
@@ -40,7 +52,6 @@ export default {
     }
     let computed = {}
     function onInited({storeControl}) {
-
     }
     let page = useControl({properties, computed}, {
       onInited,
@@ -48,6 +59,8 @@ export default {
       }
     })
     page = extendControl2Page(page)
+
+
     page.setEventHandler({
       ['model:update'](e) {
         let {model, key, newVal, config} = e
@@ -63,12 +76,14 @@ export default {
         // if (config.process === page.store.model.editor_step) {
         //   console.log('model:update:all', model)
         // }
-        let val = ZY.JSON5.stringify(model)
-        page.setData({
-          json: val
-        })
-        await nextTick();
-        methods.on_change(val)
+        if (!locks) {
+          let val = ZY.JSON5.stringify(model)
+          page.setData({
+            json: val
+          })
+          await nextTick();
+          methods.on_change(val)
+        }
       },
     })
 
@@ -78,9 +93,12 @@ export default {
           import('@/plugins/CusForm/formEditorConfig.js'),
           'editor_step',
           {
-            async onMounted(config) {
-
-              console.log('eventModel', config, page.defMap)
+            async onMounted(config, {setPartModel}) {
+              init(props)
+              console.log(cached)
+              setPartModel(config.name, 'form2', cached)
+              locks = false
+              // console.log('eventModel', config, page.defMap)
             }
           }
       )
