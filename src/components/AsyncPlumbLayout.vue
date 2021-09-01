@@ -84,7 +84,7 @@ $sel: "." + $tag;
           <template v-for="(item, index) in dep.items" :key="item.id">
             <div :id="item.id" :data-pid="dep.id" class="item content-item">
               <div>
-                <el-input v-if="dep.type !== 'array'" v-model="item.key" placeholder="placeholder"></el-input>
+                <el-input v-if="dep.type !== 'array'" v-model="item.key" placeholder="请填写key"></el-input>
                 <div v-else>{{item.key}}</div>
               </div>
               <template v-if="dep.type === 'array'">

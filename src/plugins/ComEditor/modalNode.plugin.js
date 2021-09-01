@@ -15,6 +15,24 @@ export let tabEditorConfig = function (defaultVal = {}) {
                         label: '名称'
                     },
                 },
+                pageVars: {
+                    type: 'array',
+                    items: {
+                        type: "object",
+                        properties: {
+                            name: {
+                                type: 'string',
+                                ui: {
+                                },
+                            },
+                            value: {
+                                type: 'string',
+                                ui: {
+                                },
+                            },
+                        }
+                    },
+                },
                 items: {
                     type: 'array',
                     "items": {
@@ -23,12 +41,10 @@ export let tabEditorConfig = function (defaultVal = {}) {
                             id: {
                                 type: 'string',
                                 ui: {
-                                    label: 'ID'
-                                },
-                            },
-                            label: {
-                                type: 'string',
-                                ui: {
+                                    label: 'ID',
+                                    widgetConfig: {
+                                        readonly: true
+                                    }
                                 },
                             },
                             name: {
@@ -57,14 +73,27 @@ export function install({
 
 
     class ModalNode extends V1Node {
-        constructor(id, items) {
-            super(id, items);
+        constructor(id, obj) {
+            super(id);
             this.type = 'modal';
+            this.keyReadonly = true
             this.editor = tabEditorConfig({
                 form2: {
                 }
             })
-            this.items = items
+            this.pageVars = obj.pageVars ?? []
+            this.items = obj.items ?? [
+                {
+                  id: id + '-0',
+                  name: 'default',
+                    key: 'default',
+                },
+                {
+                  id: id + '-1',
+                    name: 'footer',
+                    key: 'footer',
+                },
+            ]
         }
     }
 
@@ -75,10 +104,10 @@ export function install({
         group: 'UI',
         cls: ModalNode,
         fromJSON5(obj) {
-            return new ModalNode(obj.id, obj.items)
+            return new ModalNode(obj.id, obj)
         },
         handleItemAppend(newItem, dep) {
-            console.log('sdsdsdsds')
+            // console.log('sdsdsdsds')
             return newItem
         },
     }

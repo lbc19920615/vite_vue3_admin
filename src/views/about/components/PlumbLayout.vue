@@ -129,7 +129,9 @@ $sel: "." + $tag;
             <h3 style="margin: 10px 0;">items</h3>
             <template v-for="(item, index) in dep.items" :key="index">
               <div :id="item.id" :data-pid="dep.id" class="item content-item">
-                <div>{{item.id}}</div>
+                <div>
+                  <el-input :readonly="dep.keyReadonly" v-model="item.key" placeholder="请填写key"></el-input>
+                </div>
                 <button type="button" @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>
               </div>
             </template>

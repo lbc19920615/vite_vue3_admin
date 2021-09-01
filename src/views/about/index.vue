@@ -161,16 +161,6 @@ let tabDep = NodeDefMap.def('tab', 'i6', [
 ])
 
 let modalDep = NodeDefMap.def('modal', 'i7', [
-  {
-    id: 'i7-0',
-    label: 'label1',
-    name: 'name1',
-  },
-  {
-    id: 'i7-1',
-    label: 'label2',
-    name: 'name2',
-  },
 ])
 
 let plumbLayoutMixin = {

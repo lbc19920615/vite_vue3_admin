@@ -23,7 +23,10 @@ export let tabEditorConfig = function (defaultVal = {}) {
                             id: {
                                 type: 'string',
                                 ui: {
-                                    label: 'ID'
+                                    label: 'ID',
+                                    widgetConfig: {
+                                        readonly: true
+                                    }
                                 },
                             },
                             label: {
