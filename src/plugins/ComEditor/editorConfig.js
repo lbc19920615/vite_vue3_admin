@@ -47,92 +47,92 @@ export let formEditorConfig = function (defaultVal = {}) {
                     label: '名称',
                 },
             },
-            parts: {
-                type: 'array',
-                items: {
-                    type: "object",
-                    properties: {
-                        type: {
-                            type: 'string',
-                            ui: {
-                                label: '类型',
-                                widget: 'CusSelect',
-                                widgetConfig: {
-                                    enums: "ROOT_STATE('tools.partOptions', [])",
-                                },
-                                events: {
-                                }
-                            },
-                        },
-                        // type: {
-                        //     type: 'string',
-                        //     ui: {
-                        //         disabled: true
-                        //     }
-                        // },
-                        name: {
-                            type: 'string',
-                        },
-                        ui: {
-                            type: 'string',
-                            ui: {
-                                label: 'UI',
-                                widget: 'JsonCodeEditor',
-                                widgetConfig: {
-                                    style: {
-                                        height: "100px",
-                                    }
-                                }
-                            }
-                        },
-                        props: {
-                            type: 'string',
-                            ui: {
-                                widget: 'CusProps',
-                                widgetConfig: {
-                                }
-                            }
-                        },
-                        properties2: {
-                            type: 'string',
-                            reflect: 'props',
-                            reflectTpl: `A.getProps($VAL)`,
-                            ui: {
-                                widgetConfig: {
-                                    type: 'textarea'
-                                }
-                            }
-                        },
-                        properties: {
-                            type: 'string',
-                            ui: {
-                                label: 'SCHEMA',
-                                widget: 'JsonCodeEditor',
-                                widgetConfig: {
-                                    style: {
-                                        height: "500px",
-                                    }
-                                }
-                            }
-                        },
-                        defaultVal: {
-                            type: 'string',
-                            ui: {
-                                label: 'DEFAULT',
-                                widget: 'JsonCodeEditor',
-                                widgetConfig: {
-                                    style: {
-                                        height: "200px",
-                                    }
-                                }
-                            }
-                        },
-                    }
-                }
-            },
+            // parts: {
+            //     type: 'array',
+            //     items: {
+            //         type: "object",
+            //         properties: {
+            //             type: {
+            //                 type: 'string',
+            //                 ui: {
+            //                     label: '类型',
+            //                     widget: 'CusSelect',
+            //                     widgetConfig: {
+            //                         enums: "ROOT_STATE('tools.partOptions', [])",
+            //                     },
+            //                     events: {
+            //                     }
+            //                 },
+            //             },
+            //             // type: {
+            //             //     type: 'string',
+            //             //     ui: {
+            //             //         disabled: true
+            //             //     }
+            //             // },
+            //             name: {
+            //                 type: 'string',
+            //             },
+            //             ui: {
+            //                 type: 'string',
+            //                 ui: {
+            //                     label: 'UI',
+            //                     widget: 'JsonCodeEditor',
+            //                     widgetConfig: {
+            //                         style: {
+            //                             height: "100px",
+            //                         }
+            //                     }
+            //                 }
+            //             },
+            //             props: {
+            //                 type: 'string',
+            //                 ui: {
+            //                     widget: 'CusProps',
+            //                     widgetConfig: {
+            //                     }
+            //                 }
+            //             },
+            //             properties2: {
+            //                 type: 'string',
+            //                 reflect: 'props',
+            //                 reflectTpl: `A.getProps($VAL)`,
+            //                 ui: {
+            //                     widgetConfig: {
+            //                         type: 'textarea'
+            //                     }
+            //                 }
+            //             },
+            //             properties: {
+            //                 type: 'string',
+            //                 ui: {
+            //                     label: 'SCHEMA',
+            //                     widget: 'JsonCodeEditor',
+            //                     widgetConfig: {
+            //                         style: {
+            //                             height: "500px",
+            //                         }
+            //                     }
+            //                 }
+            //             },
+            //             defaultVal: {
+            //                 type: 'string',
+            //                 ui: {
+            //                     label: 'DEFAULT',
+            //                     widget: 'JsonCodeEditor',
+            //                     widgetConfig: {
+            //                         style: {
+            //                             height: "200px",
+            //                         }
+            //                     }
+            //                 }
+            //             },
+            //         }
+            //     }
+            // },
         }
     }, {
-        ['cur_deep_props']: `A.getProps(MODEL('parts[0].props'))`,
+        // ['cur_deep_props']: `A.getProps(MODEL('parts[0].props'))`,
         doubled: "MODEL('name', '') + ',s'"
     }, {
         defaultVal
