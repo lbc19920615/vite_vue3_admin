@@ -257,9 +257,5 @@ export default {
 </script>
 
 <style lang="scss">
-.deep-editor {
-   .el-form-item {
-    margin-bottom: 20px;
-  }
-}
+
 </style>

@@ -1,6 +1,6 @@
 <template>
   <template v-if="page.inited">
-    {{store.model}}
+    <div hidden>{{store.model}}</div>
     <HttpComponent
         :defs="page.defMap"
         :is="store.model.editor_step"
@@ -9,20 +9,27 @@
         <h3>{{ scope.key }}</h3>
       </template>
       <template #array_before="scope">
-        <!--                 {{scope}}-->
-        <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>
+<!--        <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>-->
       </template>
     </HttpComponent>
   </template>
 
 </template>
 <script>
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import HttpComponent from "@/components/HttpComponent.vue";
 import {extendControl2Page, useControl} from "@/mixins/framework";
-import {onMounted} from 'vue';
+import {onMounted, nextTick} from 'vue';
 export default {
+  name: 'CusForm',
   components: {HttpComponent},
+  mixins: [
+    CustomRenderControlMixin
+  ],
   setup(props, ctx) {
+    let { methods } = defineCustomRender(props, ctx, {
+
+    })
     let properties =  {
       editor_step: {
         type: String,
@@ -50,15 +57,18 @@ export default {
         // console.log('add:event', e, model)
         parts[partName].arrAppend(selfpath)
       },
-      ['model:update:all'](e) {
+      async ['model:update:all'](e) {
         let { model, key, newVal, config } = e
         // console.log('model:update:all', model)
         // if (config.process === page.store.model.editor_step) {
         //   console.log('model:update:all', model)
         // }
+        let val = ZY.JSON5.stringify(model)
         page.setData({
-          json: ZY.JSON5.stringify(model)
+          json: val
         })
+        await nextTick();
+        methods.on_change(val)
       },
     })
 

@@ -69,6 +69,23 @@ export default {
                                 }
                             }
                         },
+                        forms: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    value: {
+                                        type: 'string',
+                                        ui: {
+                                            widget: 'CusForm',
+                                            widgetConfig: {
+                                                enums: "ROOT_STATE('tools.propTypes', [])",
+                                            },
+                                        }
+                                    },
+                                }
+                            }
+                        },
                         events: {
                             type: 'array',
                             items: {

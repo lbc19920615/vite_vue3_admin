@@ -14,10 +14,10 @@
 <!--    <DeepPropEditor v-model:deps="store.model.deps" v-model:links="store.model.links"></DeepPropEditor>-->
 
 
-    <CusForm></CusForm>
+<!--    <CusForm></CusForm>-->
 
     <template v-if="store.model.textarea_step">
-      {{store.model.textarea_step}}
+<!--      {{store.model.textarea_step}}-->
       <HttpComponent
           :defs="allDef"
           :is="store.model.textarea_step"

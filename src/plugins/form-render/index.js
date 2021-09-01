@@ -3,6 +3,7 @@ import UnitInput from "@/components/UnitInput.vue";
 import CusDateTimePicker from "@/components/CustomForm/CusDateTimePicker.vue";
 import CusSelect from "@/components/CustomForm/CusSelect.vue";
 import CusProps from "@/components/CustomForm/CusProps.vue";
+import CusForm from "@/components/CustomForm/CusForm.vue";
 import CusSuggest from "@/components/CustomForm/CusSuggest.vue";
 import CusSubmitButton from "@/components/CustomForm/CusSubmitButton.vue";
 
@@ -28,6 +29,7 @@ const plugin = {
         app.component(CusDateTimePicker.name, CusDateTimePicker)
         app.component(CusSelect.name, CusSelect)
         app.component(CusProps.name, CusProps)
+        app.component(CusForm.name, CusForm)
         app.component(CusSuggest.name, CusSuggest)
         app.component(CodeJsEditor.name, CodeJsEditor)
         app.component(VantDateTimePicker.name, VantDateTimePicker)
