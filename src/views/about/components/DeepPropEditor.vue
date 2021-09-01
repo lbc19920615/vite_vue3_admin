@@ -1,6 +1,6 @@
 <template>
 <div class="deep-editor">
-  <div style="opacity: 0; font-size: 0;">{{store.model}}</div>
+  <div style="opacity: 0; font-size: 0; line-height: 0;">{{store.model}}</div>
 <!--  {{deps}}-->
   <el-row type="flex">
     <AsyncPlumbLayout
@@ -10,6 +10,7 @@
         :handle-dep="handleDep"
         @edit-dep="onEditDep"
         @save-data="onSaveDep"
+        :style="{height}"
     ></AsyncPlumbLayout>
 
 
@@ -172,6 +173,10 @@ export default {
   components: {AsyncPlumbLayout},
   props: {
     serviceName: String,
+    height: {
+      type: [Number, String],
+      default: '300px'
+    }
   },
   mixins: [
     plumbLayoutMixin,

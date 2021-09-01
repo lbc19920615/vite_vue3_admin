@@ -13,6 +13,9 @@
 <!--    {{store.computedModel}}-->
 <!--    <DeepPropEditor v-model:deps="store.model.deps" v-model:links="store.model.links"></DeepPropEditor>-->
 
+
+    <CusForm></CusForm>
+
     <template v-if="store.model.textarea_step">
       {{store.model.textarea_step}}
       <HttpComponent
@@ -347,13 +350,13 @@ let plumbLayoutMixin = {
   }
 }
 
-import {extendControl2Page, useControl, useAppPageControl, extendControlComputedWatch} from "@/mixins/framework";
+import {extendControl2Page, useControl, useAppPageControl} from "@/mixins/framework";
 import AutoHttpCom from "@/components/AutoHttpCom.vue";
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
 import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
 import {buildFormDepContent} from "@/views/about/build";
 import CustomElement from "@/components/CustomElement.vue";
-import {getDeepConfigFromLinksAndDeps} from "@/views/about/components/DeepPropEditor/utils";
+import CusForm from "@/components/CustomForm/CusForm.vue";
 
 export default defineComponent({
   mixins: [
@@ -371,6 +374,7 @@ export default defineComponent({
     }
   },
   components: {
+    CusForm,
     DeepPropEditor,
     AsyncPlumbLayout,
     AutoHttpCom,
