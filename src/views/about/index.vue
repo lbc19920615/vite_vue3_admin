@@ -328,13 +328,14 @@ let plumbLayoutMixin = {
     },
     handleAppend(newItem, dep) {
       // console.log('newItem', dep)
-      if (dep.type === 'column') {
-        newItem.h = 120
-      }
-      if (dep.type === 'row') {
-        newItem.w = '1fr'
-        newItem.h = 50
-      }
+      // if (dep.type === 'column') {
+      //   newItem.h = 120
+      // }
+      // if (dep.type === 'row') {
+      //   newItem.w = '1fr'
+      //   newItem.h = 50
+      // }
+      NodeDefMap.handleItemAppend(newItem, dep)
     },
     async onSaveData({deps, links = []}) {
       // console.log('onSaveData', deps, links)

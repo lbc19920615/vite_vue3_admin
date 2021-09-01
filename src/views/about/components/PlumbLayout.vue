@@ -75,9 +75,16 @@ $sel: "." + $tag;
     <div id="diagramContainer1" class="container">
       <div :id="dep.id" class="abs section"
            v-for="(dep,depIndex) in deps"
-           :key="depIndex"
+           :key="dep.id"
            >
-
+        <el-popconfirm
+            title="这是一段内容确定删除吗？"
+            @confirm="deleteDep(dep)"
+        >
+          <template #reference>
+            <el-button  size="small"  type="danger"><i class="el-icon-remove" ></i></el-button>
+          </template>
+        </el-popconfirm>
         <template v-if="dep.type === 'events'">
 
           <div class="item header" :data-pid="dep.id"
@@ -123,7 +130,7 @@ $sel: "." + $tag;
             <template v-for="(item, index) in dep.items" :key="index">
               <div :id="item.id" :data-pid="dep.id" class="item content-item">
                 <div>{{item.id}}</div>
-                <button @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>
+                <button type="button" @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>
               </div>
             </template>
             <el-button size="small"
@@ -141,63 +148,7 @@ $sel: "." + $tag;
 import {jsPlumb} from 'jsplumb'
 import {groupManagerMixin} from "./PlumbLayout/groupDialog";
 import {createFromJSON5} from "@/plugins/ComEditor/nodes";
-
-let itemsManagerMixin = {
-  methods: {
-    /**
-     * deleteItem
-     * @param dep
-     * @param item
-     * @param index
-     */
-    deleteItem(dep, item, index) {
-      this.removeItem(item)
-      dep.items.splice(index,1)
-      this.$nextTick(() => {
-        this.instance.repaintEverything()
-      })
-    },
-    /**
-     * deleteItem
-     * @param item
-     */
-    removeItem(item) {
-      let instance = this.instance
-      instance.removeAllEndpoints(item.id)
-    },
-    /**
-     * renderItem
-     * @param item
-     */
-    renderItem(item) {
-      let instance = this.instance
-      let config = this.config
-      instance.addEndpoint(item.id , {
-        anchors: ['Left']
-      }, config.baseStyle)
-      instance.addEndpoint(item.id , {
-        anchors: ['Right']
-      }, config.baseStyle)
-    },
-    /**
-     * appendItem
-     * @param dep
-     */
-    async appendItem(dep) {
-      let opt = dep
-      let newItem = {
-        id: opt.id + '-' + ZY.rid(12),
-      }
-      if (this.handleAppend) {
-        this.handleAppend(newItem, dep)
-      }
-      opt.items.push(newItem)
-      await this.$nextTick()
-      this.renderItem(newItem)
-      this.instance.repaintEverything()
-    },
-  }
-}
+import {plumbLayoutMixn} from "@/plugins/PlumbLayout/mixin";
 
 let actionMixins = {
   methods: {
@@ -237,9 +188,9 @@ let actionMixins = {
 export default {
   name: "PlumbLayout",
   mixins: [
+    plumbLayoutMixn,
     groupManagerMixin,
     actionMixins,
-    itemsManagerMixin,
   ],
   props: {
     rootId: String,
@@ -264,6 +215,7 @@ export default {
   },
   data() {
     return {
+      pointsMap: {},
       instance: null,
       config: {},
       deps: [
@@ -432,54 +384,74 @@ export default {
         })
       })
     },
-    addEndpoint(id, options) {
-      let self = this
-      let config = this.config
-      let instance = self.instance
-      if (document.getElementById(id)) {
-        instance.addEndpoint(id , options, config.baseStyle)
-      }
-    },
     /**
      * insDep
      */
     insDep(id, instance, items = []) {
       let self = this
       let config = this.config
-      // self.addEndpoint(id + '-top' , {
-      //   anchors: ['Top']
-      // }, config.baseStyle)
       self.addEndpoint(id + '-top' , {
         anchors: ['Left']
-      }, config.baseStyle)
-      // self.addEndpoint(id + '-evt' , {
-      //   anchors: ['Right']
-      // }, config.baseStyle)
-      // instance.addEndpoint(id + '-fun' , {
-      //   anchors: ['Right']
-      // }, config.baseStyle)
+      }, id)
       items.forEach(item => {
-        self.renderItem(item)
+        self.renderItem(item, id)
       })
       instance.draggable(id, {
       })
+    },
+    addEndpoint(id, options, depId, suffix = '') {
+      if (!this.pointsMap[depId]) {
+        this.pointsMap[depId] = {}
+      }
+      let self = this
+      let config = this.config
+      let instance = self.instance
+      if (document.getElementById(id)) {
+        let endpoint = instance.addEndpoint(id , options, config.baseStyle)
+        this.pointsMap[depId][id + suffix] = endpoint
+      }
+      // console.log(id, depId, this.pointsMap)
+    },
+    // this.insDep(dep.id, this.instance, dep.items)
+    uninsDep(dep) {
+      let depId = dep.id
+      let instance = this.instance
+      let ids = [
+        depId + '-top'
+      ]
+
+      ids.forEach(id => {
+        if (document.getElementById(id)) {
+          let points = this.pointsMap[depId]
+          // console.log(points, depId, this.pointsMap)
+          if (points) {
+            for (let [key,point] of Object.entries(points)) {
+              instance.deleteEndpoint(point)
+            }
+            delete this.pointsMap[depId]
+          }
+          // instance.deleteEndpoint(id)
+        }
+      })
+    },
+    deleteDep(dep) {
+      let id = dep.id
+      let index = this.deps.findIndex( v => v.id === id)
+      if (index > -1) {
+        // this.deps.splice(index, 1)
+        this.uninsDep(dep)
+        this.deps.splice(index, 1)
+      }
+      this.$nextTick(() => {
+        this.instance.repaintEverything()
+      })
+      // console.log('this.deps', index, this.deps)
     },
     /**
      * appendDep
      * @param dep {{}} required
      */
     async appendDep(dep) {
-      // let id = 'i' + '-' + uuidv4()
-      // let dep = {
-      //   id: id,
-      //   items: [
-      //   ],
-      //   config: {
-      //     version: 'v1',
-      //     closure: false
-      //   },
-      //   ...def
-      // }
       if (this.handleDep) {
         this.handleDep(dep)
       }

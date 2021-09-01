@@ -76,7 +76,11 @@ export function install({
         cls: ModalNode,
         fromJSON5(obj) {
             return new ModalNode(obj.id, obj.items)
-        }
+        },
+        handleItemAppend(newItem, dep) {
+            console.log('sdsdsdsds')
+            return newItem
+        },
     }
 
     return ret

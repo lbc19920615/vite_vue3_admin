@@ -103,6 +103,26 @@ export function def(type, ...args) {
   }
 }
 
+export function handleItemAppend(newItem, dep) {
+  let type = dep.type
+  if (dep.type === 'column') {
+    newItem.h = 120
+  }
+  else if (dep.type === 'row') {
+    newItem.w = '1fr'
+    newItem.h = 50
+  }
+  else {
+    if (clsDefs.has(type)) {
+      let clsDef = clsDefs.get(type)
+      if (clsDef && clsDef.handleItemAppend) {
+        clsDef.handleItemAppend(newItem, dep)
+      }
+    } else {
+      console.log('hahahahahahahahahaha')
+    }
+  }
+}
 
 export function create(type, jsonlikeobj) {
   if (type === 'row') {
