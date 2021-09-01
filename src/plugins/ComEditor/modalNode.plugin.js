@@ -56,10 +56,10 @@ export function install({
                         }) {
 
 
-    class TabNode extends V1Node {
+    class ModalNode extends V1Node {
         constructor(id, items) {
             super(id, items);
-            this.type = 'tab';
+            this.type = 'modal';
             this.editor = tabEditorConfig({
                 form2: {
                 }
@@ -69,13 +69,13 @@ export function install({
     }
 
     let ret = {
-        name: 'TabNode',
-        type: 'tab',
-        cls: TabNode,
-        desc: 'Tab',
+        name: 'ModalNode',
+        type: 'modal',
+        desc: 'Modal',
         group: 'UI',
+        cls: ModalNode,
         fromJSON5(obj) {
-            return new TabNode(obj.id, obj.items)
+            return new ModalNode(obj.id, obj.items)
         }
     }
 

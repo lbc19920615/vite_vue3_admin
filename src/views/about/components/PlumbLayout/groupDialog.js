@@ -39,25 +39,23 @@ export let groupManagerMixin = {
          * @param group {{}}
          */
         selectGroupTemplate(group = {}) {
-            console.log('group', group)
+            // console.log('group', group)
             if (!group.cls) {
                 showMsgError('no group.cls')
             }
             let id = 'i' + ZY.rid(6)
-            let dep
-            if (group.type === 'row' || group.type === 'column') {
-                dep = new NodeRefMap[group.cls](id, [])
-            } else {
-                dep = new NodeRefMap[group.cls](id, {})
-            }
+            let dep;
+            dep = NodeRefMap.create(group.type, {
+                id,
+                content: '',
+                data: [],
+                items: [],
+                editor: ''
+            })
             this.appendDep(
               dep
             )
             this.dialogVisible = false
-            // this.appendDep({
-            //     type: group.type
-            // })
-            // this.dialogVisible = false
         }
     }
 }

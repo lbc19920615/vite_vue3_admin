@@ -58,12 +58,16 @@ $sel: "." + $tag;
         v-model="dialogVisible" title="组选择" width="80vw"
     :close-on-click-modal="false"
     >
-      <el-row type="flex">
+      <el-row :gutter="20">
         <el-col :span="6"
-                v-for="group in groups"
-                @click="selectGroupTemplate(group)">
+                v-for="group in handleGroup(groups)"
+               >
           <div>{{group.type}}</div>
           <div>{{group.desc}}</div>
+          <div style="margin-bottom: 20px">
+            <el-button type="primary"
+                       @click="selectGroupTemplate(group)">选择</el-button>
+          </div>
         </el-col>
       </el-row>
     </el-dialog>
@@ -246,6 +250,12 @@ export default {
       }
     },
     handleDep: {
+      type: Function,
+      default() {
+        return function () {}
+      }
+    },
+    handleGroup: {
       type: Function,
       default() {
         return function () {}

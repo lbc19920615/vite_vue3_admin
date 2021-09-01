@@ -1,0 +1,74 @@
+<style lang="scss" scoped>
+
+</style>
+
+<template>
+<!--  <el-tabs class="render-tab" v-model="current">-->
+<!--    <el-tab-pane :label="item.label" :name="item.name"  v-for="(item, index) in rowv2">-->
+<!--      <slot v-bind="{item, index}"></slot>-->
+<!--    </el-tab-pane>-->
+<!--  </el-tabs>-->
+  <el-dialog
+      title="提示"
+      v-model="dialogVisible"
+      width="30%">
+    <div><slot v-bind="{item: rowv2[0], index: 0}"></slot></div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </template>
+  </el-dialog>
+</template>
+
+<script>
+
+export default {
+  name: "render-modal",
+  mixins: [
+  ],
+  components: {},
+  data() {
+    return {
+      rowv2: [
+      ],
+      dialogVisible: true,
+      current: '',
+    }
+  },
+  props: {
+    layout: {
+      type: Array,
+      default: []
+    }
+  },
+  watch: {
+    layout: {
+      handler(newVal) {
+        // console.log('newVal', newVal)
+        this.rowv2 = newVal
+        this.current = newVal[0].name
+        this.$nextTick(() => {
+          this.init().then(() => {
+          })
+        })
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    init() {
+      if (Array.isArray(this.rowv2)) {
+        this.rowv2.forEach(v => {
+        })
+      }
+      return Promise.resolve()
+    },
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

@@ -59,6 +59,7 @@
             :root-id="rootId"
             :handleAppend="handleAppend"
             :handle-dep="handleDep"
+            :handle-group="handleGroup"
             @save-data="onSaveData"
             @edit-dep="onEditDep"
         ></PlumbLayout>
@@ -141,7 +142,7 @@ let renderLayoutMixin = {
 
 
 
-let testDep = NodeDefMap.def('tab', 'i6', [
+let tabDep = NodeDefMap.def('tab', 'i6', [
   {
     id: 'i6-0',
     label: 'label1',
@@ -157,6 +158,19 @@ let testDep = NodeDefMap.def('tab', 'i6', [
     label: 'label3',
     name: 'name3',
   }
+])
+
+let modalDep = NodeDefMap.def('modal', 'i7', [
+  {
+    id: 'i7-0',
+    label: 'label1',
+    name: 'name1',
+  },
+  {
+    id: 'i7-1',
+    label: 'label2',
+    name: 'name2',
+  },
 ])
 
 let plumbLayoutMixin = {
@@ -205,7 +219,8 @@ let plumbLayoutMixin = {
             h: 50,
           }
         ]),
-        testDep,
+        tabDep,
+        modalDep,
         new NodeDefMap.FormNode('i3',
           {
             name: 'form1',
@@ -303,6 +318,14 @@ let plumbLayoutMixin = {
     handleDep(dep) {
       // console.log('handleDep', dep)
     },
+    handleGroup(groups) {
+      // console.log(NodeDefMap.getClsDefs())
+      let clsDefs = NodeDefMap.getClsDefs() ?? []
+      let arr = clsDefs.map(v=> {
+        return v[1]
+      })
+      return groups.concat(arr)
+    },
     handleAppend(newItem, dep) {
       // console.log('newItem', dep)
       if (dep.type === 'column') {
@@ -357,6 +380,7 @@ import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
 import {buildFormDepContent} from "@/views/about/build";
 import CustomElement from "@/components/CustomElement.vue";
 import CusForm from "@/components/CustomForm/CusForm.vue";
+import {getClsDefs} from "@/plugins/ComEditor/nodes.js";
 
 export default defineComponent({
   mixins: [

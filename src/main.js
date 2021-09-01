@@ -54,6 +54,9 @@ NodeDefMap.register(v1ArrayPlugin)
 import * as v1objectPlugin from '@/plugins/ComEditor/v1objectNode.plugin'
 NodeDefMap.register(v1objectPlugin)
 
+import * as modalNodePlugin from '@/plugins/ComEditor/modalNode.plugin'
+NodeDefMap.register(modalNodePlugin)
+
 import router, {addRoute} from './router'
 import store from './store'
 

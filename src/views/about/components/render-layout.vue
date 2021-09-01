@@ -38,6 +38,21 @@
           </template>
         </render-tab>
       </template>
+    <template  v-else-if="curObj.type === 'modal'">
+<!--              {{curObj}}-->
+      <render-modal :class="levelItemCls"
+                  :layout="curObj.items">
+        <template v-slot:default="{item}">
+          <!--            {{item}} {{getNext(item)}}-->
+          <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"
+                         :handle-def-map="handleDefMap"
+                         :page="page"
+                         :slotContent="innerSlots"
+                         :id="getNext(item)">
+          </render-layout>
+        </template>
+      </render-modal>
+    </template>
       <template v-else>
         <template v-if="curObj && curObj.type && curObj.content">
 <!--          {{curObj}} {{stepMap.test}}-->
@@ -58,6 +73,7 @@ import GridRow from "@/views/about/components/grid-row.vue";
 import GridColumn from "@/views/about/components/grid-column.vue";
 import RenderTab from "@/views/about/components/render-tab.vue";
 import AutoHttpCom from "@/components/AutoHttpCom.vue";
+import RenderModal from "@/views/about/components/render-modal.vue";
 
 export default {
   name: 'RenderLayout',
@@ -87,6 +103,7 @@ export default {
     slotContent: null
   },
   components: {
+    RenderModal,
     RenderTab,
     AutoHttpCom,
     GridColumn,

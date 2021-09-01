@@ -3,6 +3,10 @@ import {formEditorConfig, rowEditorConfig} from "./editorConfig";
 let plugins = new Map()
 let clsDefs = new Map()
 
+export function getClsDefs() {
+  return Array.from(clsDefs)
+}
+
 class V1Node {
   id;
   type;
@@ -90,7 +94,7 @@ export function register (value) {
 }
 
 export function def(type, ...args) {
-  // console.log(clsDefs, name)
+  // console.log(clsDefs, type)
   if (clsDefs.has(type)) {
     let clsDef = clsDefs.get(type)
     if (clsDef && clsDef.cls) {
