@@ -64,12 +64,6 @@ export let formEditorConfig = function (defaultVal = {}) {
             //                     }
             //                 },
             //             },
-            //             // type: {
-            //             //     type: 'string',
-            //             //     ui: {
-            //             //         disabled: true
-            //             //     }
-            //             // },
             //             name: {
             //                 type: 'string',
             //             },

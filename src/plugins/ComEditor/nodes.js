@@ -1,4 +1,4 @@
-import {formEditorConfig, rowEditorConfig} from "./editorConfig";
+import {baseConfig, rowEditorConfig} from "./editorConfig";
 
 let plugins = new Map()
 let clsDefs = new Map()
@@ -56,23 +56,51 @@ export class RowNode extends LayoutNode {
   }
 }
 
-export class FormNode extends ClosureNode {
-  constructor(id, data, defaultContent ) {
-    super(id);
-    this.type = 'form'
-    this.editor = `
-${formEditorConfig({
+let formEditorConfig = function () {
+  return  baseConfig( {
+    type: 'object',
+    ui: {
+      attrs: [
+        ['label-width', '100px']
+      ],
+    },
+    properties: {
+      name: {
+        type: 'string',
+        ui: {
+          label: '名称',
+        },
+      },
+      name1: {
+        type: 'string',
+        ui: {
+        },
+      },
+    }
+  }, {
+    // ['cur_deep_props']: `A.getProps(MODEL('parts[0].props'))`,
+    doubled: "MODEL('name', '') + ',s'"
+  }, {
+    defaultVal: {
       form2: {
         name: ZY.nid(),
         parts: [
           {
-            uis: '{}',
+            ui: '{}',
             props: '{links: [], deps: []}',
             properties: '{}',
           }
         ]
       }
-    })}`
+    }
+  })
+}
+
+export class FormNode extends ClosureNode {
+  constructor(id, data, defaultContent ) {
+    super(id);
+    this.type = 'form'
+    this.editor = `${formEditorConfig()}`
     this.data = data
     if (defaultContent) {
       this.content = defaultContent
@@ -132,7 +160,7 @@ export function create(type, jsonlikeobj) {
     return new ColumnNode(jsonlikeobj.id, jsonlikeobj.items)
   }
   else if (type === 'form')  {
-    return new FormNode(jsonlikeobj.id, jsonlikeobj.data, jsonlikeobj.content)
+    return new FormNode(jsonlikeobj.id, jsonlikeobj.data, jsonlikeobj.content, jsonlikeobj)
   }
   else {
     if (clsDefs.has(type)) {
@@ -155,7 +183,7 @@ export function createFromJSON5(type, jsonlikeobj) {
     return new ColumnNode(jsonlikeobj.id, jsonlikeobj.items)
   }
   else if (jsonlikeobj.type === 'form')  {
-    return new FormNode(jsonlikeobj.id, jsonlikeobj.data, jsonlikeobj.content)
+    return new FormNode(jsonlikeobj.id, jsonlikeobj.data, jsonlikeobj.content, jsonlikeobj)
   }
   else {
     if (clsDefs.has(jsonlikeobj.type)) {

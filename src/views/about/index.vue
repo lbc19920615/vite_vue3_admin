@@ -532,7 +532,6 @@ export default defineComponent({
         //   // console.log('sddddddddddddd');
         //   page.dispatchRoot('SetStoreEvents', model)
         // }
-
       },
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e
@@ -545,7 +544,6 @@ export default defineComponent({
         let { model, key, newVal, config } = e
         // console.log(key, model, config, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
-          console.log('sdsdsdsdsdsdsds', self.currentEditDep, model)
           self.currentEditDep.data = model
           if (self.currentEditDep.type === 'form') {
             try {
@@ -553,10 +551,10 @@ export default defineComponent({
                   model.parts,
                   model,
               )
+              // 设置Layout里dep的content 手动注入
               self.LayoutContext.setDep(self.currentEditDep.id, {
                 content: self.currentEditDep.content
               })
-              // console.log(self.currentEditDep.content )
             } catch (e) {
               console.error(e)
             }
