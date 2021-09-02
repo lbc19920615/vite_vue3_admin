@@ -24,7 +24,7 @@
       >
         <template #array_before="scope">
           <el-col>
-            <el-row class="u-sizeFull" justify="space-between" align="middle">
+            <el-row  justify="space-between" align="middle">
               <h3>{{ scope.selfpath }}</h3>
               <el-button size="small" @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>
             </el-row>
@@ -36,9 +36,6 @@
         </template>
         <template #form_before="scope">
           <el-space wrap>
-<!--            <CusSubmitButton-->
-<!--                :scope="scope"-->
-<!--                class="el-col z-submit-btn"></CusSubmitButton>-->
             <el-button type="primary" @click="page.callEvent('call:save', scope)">保存</el-button>
             <template v-if="showCurrent">
               <el-link href="/show" target="_blank">打开预览</el-link>
