@@ -79,8 +79,6 @@ import '@/components/WebElements/dialog'
 import * as remote from '@/plugins/remote'
 import StoreApp from "./StoreApp.vue";
 
-import * as highlightPlugin from '@/plugins/highlight'
-
 import CodeMirrorPlugin from '@/plugins/CodeMirrorEditor/index'
 
 // import VueGridLayout from '@/plugins/grid-layout'
@@ -113,13 +111,16 @@ window.startApp = function () {
   })
   // app.use(VueGridLayout)
   app.use(CustomFormRenderPlugin)
-  app.use(highlightPlugin)
   app.use(JsonViewer)
   app.use(CodeMirrorPlugin)
   app.use(eventBus)
   app.use(icons)
   app.use(router)
   app.use(store)
+  // import * as highlightPlugin from '@/plugins/highlight'
+  import('@/plugins/highlight').then(highlightPlugin => {
+    app.use(highlightPlugin)
+  })
   import('vant/es/index').then(res => {
     // console.log(res.default)
     app.use(res.default)
