@@ -25,18 +25,20 @@ export default {
     modelValue: String,
     ui: null,
     editorRef: null,
-    mode: {
-      type: String,
-      default: 'text/javascript'
-    },
+    // mode: {
+    //   type: String,
+    //   default: 'text/javascript'
+    // },
   },
   data() {
     let lock = new ZY.Lock(/* optional lock name, should be unique */)
     let widgetConfigStyle = ZY.lodash.get(this, 'ui.widgetConfig.style')
+    let mode = ZY.lodash.get(this, 'ui.widgetConfig.mode', 'text/javascript')
     return {
       content: '',
       lock,
       inited: false,
+      mode,
       styleObj: {
         ...widgetConfigStyle
       }

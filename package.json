@@ -11,6 +11,7 @@
     "stop": "npm run stop:ser && npm run rm"
   },
   "dependencies": {
+    "@emmetio/codemirror-plugin": "^1.2.4",
     "await-to-js": "^3.0.0",
     "axios": "^0.21.1",
     "bpmn-js": "^8.3.0",

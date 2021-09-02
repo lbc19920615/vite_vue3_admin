@@ -5,6 +5,8 @@
 <script setup>
 import {onMounted, ref, watch} from "vue";
 import CodeMirrorLib from "codemirror/lib/codemirror";
+import emmet from '@emmetio/codemirror-plugin/dist/extension.es';
+
 // base style
 import "codemirror/lib/codemirror.css";
 // language
@@ -80,6 +82,9 @@ import "codemirror/addon/edit/closetag.js";
 import "codemirror/addon/edit/closebrackets.js";
 import modeOption from "./modeOptions";
 const CodeMirror = window.CodeMirror || CodeMirrorLib;
+if (!CodeMirror.emmetBalance) {
+  emmet(CodeMirror);
+}
 const props = defineProps({
   mode: {
     default: "text/x-sql",
@@ -146,6 +151,7 @@ let editorRef = ref(null)
 let editor = null
 let codeEditor = null;
 const createMirror = () => {
+  console.log(props.mode)
   codeEditor = CodeMirror.fromTextArea(editor, {
     mode: props.mode,
     theme: props.theme,
@@ -154,6 +160,49 @@ const createMirror = () => {
     lineWrapping: false,
     autoCloseBrackets: true,
     matchBrackets: true,
+    extraKeys: {
+      'Tab': 'emmetExpandAbbreviation',
+      'Esc': 'emmetResetAbbreviation',
+      'Enter': 'emmetInsertLineBreak',
+      'Ctrl-E': 'emmetExpandAbbreviationAll',
+      // 'Ctrl-Space': 'emmetCaptureAbbreviation',
+      'Ctrl-Space': 'autocomplete',
+      'Ctrl-.': 'emmetEnterAbbreviationMode',
+      'Ctrl-W': 'emmetWrapWithAbbreviation',
+      'Cmd-D': 'emmetBalance',
+      'Ctrl-D': 'emmetBalanceInward',
+      'Cmd-/': 'emmetToggleComment',
+      'Cmd-Y': 'emmetEvaluateMath',
+      'Ctrl-Left': 'emmetGoToPreviousEditPoint',
+      'Ctrl-Right': 'emmetGoToNextEditPoint',
+      'Ctrl-P': 'emmetGoToTagPair',
+      'Ctrl-Up': 'emmetIncrementNumber1',
+      'Alt-Up': 'emmetIncrementNumber01',
+      'Ctrl-Alt-Up': 'emmetIncrementNumber10',
+      'Ctrl-Down': 'emmetDecrementNumber1',
+      'Alt-Down': 'emmetDecrementNumber01',
+      'Ctrl-Alt-Down': 'emmetDecrementNumber10',
+      'Ctrl-\'': 'emmetRemoveTag',
+      'Shift-Ctrl-\'': 'emmetSplitJoinTag',
+      'Shift-Ctrl-Right': 'emmetSelectNextItem',
+      'Shift-Ctrl-Left': 'emmetSelectPreviousItem',
+    },
+    emmet: {
+      markTagPairs: true,
+      preview: ['markup'],
+      config: {
+        markup: {
+          snippets: {
+            'foo': 'ul.nav>li'
+          }
+        },
+        stylesheet: {
+          snippets: {
+            'mySnippet': 'body {\n\t${0}\n}'
+          }
+        }
+      }
+    },
     ...modeOption[props.mode.split("/")[1]],
     ...props.options,
   });
