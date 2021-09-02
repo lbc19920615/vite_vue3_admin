@@ -148,7 +148,7 @@ export default {
                                                         label: '爱你',
                                                         value: 'sdsds',
                                                     }
-                                                ]
+                                                ],
                                             }
                                         }
                                     },
@@ -179,7 +179,8 @@ export default {
                                                         label: '爱你',
                                                         value: 'sdsds',
                                                     }
-                                                ]
+                                                ],
+                                                enums: "ROOT_STATE('tools.eventSuggests', [])",
                                             }
                                         }
                                     },

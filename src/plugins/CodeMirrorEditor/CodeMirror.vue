@@ -151,7 +151,6 @@ let editorRef = ref(null)
 let editor = null
 let codeEditor = null;
 const createMirror = () => {
-  console.log(props.mode)
   codeEditor = CodeMirror.fromTextArea(editor, {
     mode: props.mode,
     theme: props.theme,
