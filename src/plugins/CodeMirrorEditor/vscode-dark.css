@@ -32,7 +32,7 @@
 .cm-s-vscode-dark div.CodeMirror-selected {background: #1e496c}
 .cm-s-vscode-dark .CodeMirror-gutters {background: #252526; border-right: 1px solid grey; color: #606366}
 .cm-s-vscode-dark span.cm-builtin {color: #A9B7C6;}
-.cm-s-vscode-dark {font-family: Hack, Consolas, 'Microsoft Yahei', 'Courier New', monospace, serif;}
+.cm-s-vscode-dark {font-family: "Iosevka", Consolas, 'Microsoft Yahei', 'Courier New', monospace, serif;}
 .cm-s-vscode-dark .CodeMirror-matchingbracket {background-color: #3b514d; color: yellow !important;}
 
 .CodeMirror-hints.vscode-dark {
