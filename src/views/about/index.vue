@@ -17,10 +17,11 @@
 <!--    <CusForm></CusForm>-->
 
     <template v-if="store.model.textarea_step">
-<!--      {{store.model.textarea_step}}-->
+<!--      {{store.computedModel}}-->
       <HttpComponent
           :defs="allDef"
           :is="store.model.textarea_step"
+          :debug="true"
       >
         <template #array_before="scope">
           <el-col>

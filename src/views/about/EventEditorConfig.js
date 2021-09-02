@@ -196,7 +196,8 @@ export default {
                 computed: {
                     pagePropertiesComp: "A.getBeforeScript(MODEL('props'))",
                     doubled: "MODEL('events[0].name', '')",
-                    layoutSlotArrComputed: "A.slotArrToStr(MODEL('layoutSlotArr'))"
+                    layoutSlotArrComputed: "A.slotArrToStr(MODEL('layoutSlotArr'))",
+                    processes: `map(MODEL('events', []), v => v.name)`
                 }
             }]
         }, args: {src: 'comformscr2.twig'}
