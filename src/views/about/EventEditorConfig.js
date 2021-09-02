@@ -70,12 +70,33 @@ export default {
                                 }
                             }
                         },
-                        slots: {
+                        layoutSlots: {
                             type: 'string',
                             ui: {
                                 widget: 'CodeJsEditor',
                                 widgetConfig: {
                                     mode: 'text/html'
+                                }
+                            }
+                        },
+                        beforeScript: {
+                            type: 'string',
+                            ui: {
+                                widget: 'CodeJsEditor',
+                                widgetConfig: {
+                                    // mode: 'text/html'
+                                }
+                            }
+                        },
+                        onInited: {
+                            type: 'string',
+                            ui: {
+                                widget: 'CodeJsEditor',
+                                widgetConfig: {
+                                    style: {
+                                        height: '600px'
+                                    }
+                                    // mode: 'text/html'
                                 }
                             }
                         },

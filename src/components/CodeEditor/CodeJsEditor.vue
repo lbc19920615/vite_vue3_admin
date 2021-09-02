@@ -28,7 +28,7 @@ export default {
     mode: {
       type: String,
       default: 'text/javascript'
-    }
+    },
   },
   data() {
     let lock = new ZY.Lock(/* optional lock name, should be unique */)
