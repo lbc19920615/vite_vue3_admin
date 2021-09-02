@@ -72,8 +72,6 @@ import '@/styles/app.scss'
 
 import eventBus from 'vue3-eventbus'
 
-import '@/components/WebElements/dialog'
-
 import * as remote from '@/plugins/remote'
 import StoreApp from "./StoreApp.vue";
 
