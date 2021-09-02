@@ -1,0 +1,61 @@
+@use "sass:math";
+
+@mixin init-plumb-layout() {
+  width: 100%;
+  height: 600px;
+  border: 1px solid #eee;
+  .item {
+    min-height: 50px;
+    width: 100%;
+    border-bottom: 1px solid #999;
+    &:last-child {
+      border-bottom-color: transparent;
+    }
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .content-item {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+  .container {
+    position: absolute;
+  }
+  .abs {
+    position: absolute;
+  }
+  .section {
+    border: 1px solid #7272ff;
+    background-color: #ffffff;
+    z-index: 0;
+    width: 200px;
+  }
+
+  $leftTotal: 0;
+  $topTotal: 0;
+  $len: 10;
+  $half: 6;
+  @for $i from 1  through $len {
+    .section:nth-child(#{$i}) {
+      $index: $i - 1;
+      $lbase: math.max(70, math.random(100)) + 0px;
+      $tbase: math.max(50, math.random(80)) + 0px;
+      left: $lbase * $index;
+      @if $index < $half {
+        top: $tbase * $index;
+        $topTotal: $tbase * $index;
+      }
+      @else {
+        $topTotal: $topTotal - ($tbase * 2);
+        top: $topTotal;
+      }
+      //@debug $topTotal;
+    }
+  }
+  @debug $topTotal;
+}
