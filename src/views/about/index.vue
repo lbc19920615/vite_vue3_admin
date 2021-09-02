@@ -17,14 +17,15 @@
 <!--    <CusForm></CusForm>-->
 
     <template v-if="store.model.textarea_step">
-<!--      {{store.model.textarea_step}}-->
+<!--      {{store.computedModel}}-->
       <HttpComponent
           :defs="allDef"
           :is="store.model.textarea_step"
+          :debug="true"
       >
         <template #array_before="scope">
           <el-col>
-            <el-row class="u-sizeFull" justify="space-between" align="middle">
+            <el-row  justify="space-between" align="middle">
               <h3>{{ scope.selfpath }}</h3>
               <el-button size="small" @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>
             </el-row>
@@ -36,9 +37,6 @@
         </template>
         <template #form_before="scope">
           <el-space wrap>
-<!--            <CusSubmitButton-->
-<!--                :scope="scope"-->
-<!--                class="el-col z-submit-btn"></CusSubmitButton>-->
             <el-button type="primary" @click="page.callEvent('call:save', scope)">保存</el-button>
             <template v-if="showCurrent">
               <el-link href="/show" target="_blank">打开预览</el-link>
@@ -64,22 +62,30 @@
             @edit-dep="onEditDep"
         ></PlumbLayout>
 
-        <div style="width: 600px" v-loading="renderFormLoading">
-          <template v-if="renderFormDesigner">
-            <HttpComponent
-                :defs="allDef"
-                :is="store.model.editor_step"
-            >
-              <template #array_item_before="scope">
-                <h3>{{ scope.key }}</h3>
+        <el-drawer
+            title="编辑"
+            size="600px"
+            v-model="renderFormDesigner" destroy-on-close>
+          <template #default>
+            <div v-loading="renderFormLoading">
+              <template v-if="renderFormDesigner">
+                <HttpComponent
+                    :defs="allDef"
+                    :is="store.model.editor_step"
+                >
+                  <template #array_item_before="scope">
+                    <h3>{{ scope.key }}</h3>
+                  </template>
+                  <template #array_before="scope">
+                    <!--                 {{scope}}-->
+                    <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>
+                  </template>
+                </HttpComponent>
               </template>
-              <template #array_before="scope">
-                <!--                 {{scope}}-->
-                <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>
-              </template>
-            </HttpComponent>
+            </div>
           </template>
-        </div>
+        </el-drawer>
+
       </el-row>
     </template>
 
@@ -536,7 +542,7 @@ export default defineComponent({
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e
         if (config.process === page.store.model.textarea_step) {
-          console.log('sdsdsdsdsdsdsds', model)
+          // console.log('sdsdsdsdsdsdsds', model)
           page.dispatchRoot('SetStoreEvents', model)
         }
       },

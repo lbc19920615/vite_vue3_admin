@@ -131,7 +131,7 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
       cur = deps[0]
     }
   }
-  console.log(rootId, deepObj)
+  // console.log(rootId, deepObj)
   if (rootId) {
     handleDeep(cur, 'root')
     return deepObj.root

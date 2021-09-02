@@ -4,7 +4,6 @@
 import {defineComponent, watch, reactive, provide, ref, getCurrentInstance, inject} from "vue";
 import {fetchComponent} from "@/hooks/remote.js";
 import CustomRender from "./CustomRender.vue";
-import { v4 } from 'uuid'
 import {log} from "@/utils/logger";
 import {createRefManager, useRefsManager} from "@/hooks/ref";
 
@@ -87,7 +86,7 @@ export default defineComponent({
     let servicePartLink = {}
 
     async function handleIsChanged(newVal) {
-      comName = props.comPrefix + v4()
+      comName = props.comPrefix + ZY.rid()
       let config = props.defs.get(props.is)
       log(['fetchComponent', props.is, props.defs])
 

@@ -6,11 +6,11 @@ export async function loadPage(name) {
     let currentData = await ZY_EXT.store.getItem('play-events-model')
     // console.log(currentData)
     let res = await globalThis.importScripts('./configs/page1.js')
-    let obj = Object.assign({}, {
-      layoutSlots: currentData.layoutSlots
-    }, res.default)
+    let script = res.default ?? {}
+    script.def = Object.assign({}, currentData, script.def)
+    // console.log(script)
     return fetchVueComponent(
-      obj
+      script
     )
   }, 'z-page-' + name, {
     handleScript(script) {

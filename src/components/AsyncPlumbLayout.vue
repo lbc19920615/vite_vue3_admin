@@ -1,50 +1,11 @@
 <style lang="scss" scoped>
+@import "./PlumbLayout/index.scss";
+
 $tag: "async-plumb-layout";
 $sel: "." + $tag;
 
 #{$sel} {
-  width: 100%;
-  height: 600px;
-  border: 1px solid #eee;
-  .item {
-    min-height: 50px;
-    width: 100%;
-    border-bottom: 1px solid #999;
-    &:last-child {
-      border-bottom-color: transparent;
-    }
-  }
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .content-item {
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    box-sizing: border-box;
-  }
-  .container {
-    position: absolute;
-  }
-  .abs {
-    position: absolute;
-  }
-  .section {
-    border: 1px solid #7272ff;
-    background-color: #ffffff;
-    z-index: 0;
-    width: 200px;
-  }
-
-  @for $i from 1  through 10 {
-    .section:nth-child(#{$i}) {
-      $index: $i - 1;
-      left: 100px * $index;
-      top: 100px * $index;
-    }
-  }
+  @include init-plumb-layout();
 }
 </style>
 
@@ -262,7 +223,7 @@ export default {
      * init
      */
     init({deps = []} = {}) {
-      console.log('async layout init', deps)
+      // console.log('async layout init', deps)
       this.deps = deps
     },
     /**

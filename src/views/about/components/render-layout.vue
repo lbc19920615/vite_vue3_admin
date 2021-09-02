@@ -39,9 +39,11 @@
         </render-tab>
       </template>
     <template  v-else-if="curObj.type === 'modal'">
-<!--              {{curObj}}-->
       <render-modal :class="levelItemCls"
-                  :layout="curObj.items">
+                  :layout="curObj.items"
+                    :obj="curObj"
+                    :page="page"
+      >
         <template v-slot:default="{item}">
           <!--            {{item}} {{getNext(item)}}-->
           <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"
@@ -60,7 +62,7 @@
           <AutoHttpCom
               :slotContent="innerSlots"
               :page="page"
-              :def="getDef('test')"
+              :def="getDef(getObj(curObj, 'data.partName', 'UNDEFINED'))"
           >
           </AutoHttpCom>
         </template>
@@ -129,6 +131,9 @@ export default {
     }
   },
   methods: {
+    getObj(...args) {
+      return ZY.lodash.get(...args)
+    },
     render() {
       return this.$slots
     },

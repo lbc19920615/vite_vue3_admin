@@ -1,50 +1,11 @@
 <style lang="scss" scoped>
+@import "../../../components/PlumbLayout/index.scss";
+
 $tag: "plumb-layout";
 $sel: "." + $tag;
 
 #{$sel} {
-  width: 900px;
-  height: 600px;
-  border: 1px solid #eee;
-  .item {
-    min-height: 50px;
-    width: 100%;
-    border-bottom: 1px solid #999;
-    &:last-child {
-      border-bottom-color: transparent;
-    }
-  }
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .content-item {
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    box-sizing: border-box;
-  }
-  .container {
-    position: absolute;
-  }
-  .abs {
-    position: absolute;
-  }
-  .section {
-    border: 1px solid #7272ff;
-    background-color: #ffffff;
-    z-index: 0;
-    width: 200px;
-  }
-
-  @for $i from 1  through 10 {
-    .section:nth-child(#{$i}) {
-      $index: $i - 1;
-      left: 100px * $index;
-      top: 100px * $index;
-    }
-  }
+  @include init-plumb-layout();
 }
 </style>
 
@@ -127,6 +88,7 @@ $sel: "." + $tag;
 <!--          >events</div>-->
           <template v-if="!dep.config.closure">
             <h3 style="margin: 10px 0;">items</h3>
+<!--            <div v-if="dep.keyReadonly">{{dep.data}}</div>-->
             <template v-for="(item, index) in dep.items" :key="index">
               <div :id="item.id" :data-pid="dep.id" class="item content-item">
                 <div>

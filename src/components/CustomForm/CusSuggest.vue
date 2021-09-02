@@ -12,7 +12,7 @@
             <el-button @click="setRefMan(true)">选择</el-button>
           </template>
           <div  style="min-height: 200px">
-            <SimpleList v-if="refMan.showed" :suggest="state.suggest" @select-item="selectSuggest"></SimpleList>
+            <SimpleList v-if="refMan.showed" :suggest="getSuggest()" @select-item="selectSuggest"></SimpleList>
           </div>
         </el-popover>
       </template>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import {getCurrentInstance} from 'vue'
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
 import {useArrHandler, useReloadMan} from "@/views/home/hooks";
@@ -36,6 +37,7 @@ export default {
   setup(props, ctx) {
     let {part_key} = props.defs
     let JSON5 = ZY.JSON5
+    let instance = getCurrentInstance()
 
     let obj = {}
     let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
@@ -83,10 +85,25 @@ export default {
       methods.on_change(state.value)
     }
 
+    function getSuggest() {
+      if (props.ui.widgetConfig.enums) {
+        let obj =  instance.ctx.dxValueTemplate(props.ui.widgetConfig.enums)
+        console.log('getsdsdsd', obj)
+        return obj
+      }
+      else if (state.suggest) {
+        return state.suggest
+      }
+      else {
+        return []
+      }
+    }
+
     return {
       state,
       initSearch,
       searchSuggest,
+      getSuggest,
       selectSuggest,
       refMan,
       setRefMan,

@@ -31,7 +31,7 @@ export default {
         },
         keyMap: "sublime",
         showCursorWhenSelecting: true,
-        theme: "monokai",
+        // theme: "monokai",
         extraKeys: { "Ctrl": "autocomplete" }
     },
     "css": {

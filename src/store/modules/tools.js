@@ -1,3 +1,5 @@
+import {eventSuggests} from "@/plugins/form-render/const";
+
 const store = {
   // namespaced: true,
   state: () => ({
@@ -20,7 +22,8 @@ const store = {
         label: 'number',
         value: 'number',
       },
-    ]
+    ],
+    eventSuggests,
   }),
   mutations: {
 

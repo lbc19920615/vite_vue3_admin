@@ -46,19 +46,8 @@ export default defineComponent({
       // console.log('custom', newVal, widgetInstance)
       obj.value = newVal
       if (!lock.isLocked) {
-        // if (widgetInstance && widgetInstance.value) {
-        //   // console.log('widgetInstance', widgetInstance.value.handlePropChange)
-        //   if (widgetInstance.value.handlePropChange) {
-        //     insertOnce = true
-        //     widgetInstance.value.handlePropChange(newVal)
-        //     setTimeout(() => {
-        //       insertOnce = false
-        //     }, 30)
-        //   }
-        // }
         lock.lock(() => {
           if (widgetInstance && widgetInstance.value) {
-            // console.log('widgetInstance', widgetInstance.value.handlePropChange)
             if (widgetInstance.value.handlePropChange) {
               widgetInstance.value.handlePropChange(newVal)
             }

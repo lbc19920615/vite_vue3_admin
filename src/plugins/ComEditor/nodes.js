@@ -71,7 +71,7 @@ let formEditorConfig = function () {
           label: '名称',
         },
       },
-      name1: {
+      partName: {
         type: 'string',
         ui: {
         },

@@ -37,9 +37,16 @@ export let useAppPageControl = function (page) {
       console.log('eventHandler', type, e)
     }
   })
-
   provide('webComponentRef', webComponentRef)
   page.webComponentRef = webComponentRef
+
+  let modalManRef = createRefManager({
+    eventHandler({type, e}) {
+      console.log('eventHandler', type, e)
+    }
+  })
+  provide('modalManRef', modalManRef)
+  page.modalManRef = modalManRef
 
   async function openDialog(name) {
     let dialog = webComponentRef.find(name)
@@ -112,6 +119,8 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
     COMPUTED_CHANGE: 'COMPUTED_CHANGE_' + ZY.nid(6),
   }
 
+  let filter = {}
+
   function log(...args) {
     // console.log(...args)
   }
@@ -181,7 +190,9 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
   function setByPath(path, v) {
     let o = {}
     ZY.lodash.set(o, path, v)
-    storeControl.set(o)
+    if (storeControl) {
+      storeControl.set(o)
+    }
   }
 
   function setData(v) {
@@ -220,6 +231,7 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
     eventHandleMap,
     dispatchRoot,
     rootStore,
+    filter,
     setEventHandler,
     setData,
     setByPath,

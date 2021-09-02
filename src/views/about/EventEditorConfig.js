@@ -24,38 +24,6 @@ export default {
                     type: 'object',
                     ui: {attrs: [['label-width', '150px']]},
                     properties: {
-                        // obj: {
-                        //     type: 'object',
-                        //     properties: {
-                        //         events: {
-                        //             type: 'array',
-                        //             items: {
-                        //                 type: 'object',
-                        //                 properties: {
-                        //                     name: {
-                        //                         type: 'string'
-                        //                     },
-                        //                     code: {
-                        //                         type: 'string',
-                        //                         ui: {
-                        //                             widgetConfig: {
-                        //                                 type: 'textarea'
-                        //                             }
-                        //                         }
-                        //                     },
-                        //                     prop1: {
-                        //                         type: 'string',
-                        //                         reflect: 'name',
-                        //                         reflectTpl: `L.defaultTo($VAL, '') + 's'`,
-                        //                         // computedProp: 'doubled',
-                        //                         // computedTpl: `$VAL + 's'`
-                        //                         // reflect: `CUR('code')`
-                        //                     }
-                        //                 }
-                        //             }
-                        //         }
-                        //     }
-                        // },
                         name: {
                             type: 'string',
                             ui: {
@@ -70,16 +38,7 @@ export default {
                                 }
                             }
                         },
-                        slots: {
-                            type: 'string',
-                            ui: {
-                                widget: 'CodeJsEditor',
-                                widgetConfig: {
-                                    mode: 'text/html'
-                                }
-                            }
-                        },
-                        forms: {
+                        layoutSlotArr: {
                             type: 'array',
                             items: {
                                 type: 'object',
@@ -101,6 +60,87 @@ export default {
                                     value: {
                                         type: 'string',
                                         ui: {
+                                            widget: 'CodeJsEditor',
+                                            widgetConfig: {
+                                                mode: 'text/html'
+                                            }
+                                        }
+                                    },
+                                }
+                            }
+                        },
+                        layoutSlots: {
+                            type: 'string',
+                            computedProp: 'layoutSlotArrComputed',
+                            ui: {
+                                widgetConfig: {
+                                    readonly: true,
+                                    type: 'textarea'
+                                }
+                            }
+                        },
+                        props: {
+                            type: 'string',
+                            ui: {
+                                widget: 'CusProps',
+                                widgetConfig: {
+                                }
+                            }
+                        },
+                        pageProperties: {
+                            type: 'string',
+                            computedProp: 'pagePropertiesComp',
+                            ui: {
+                                widgetConfig: {
+                                    type: 'textarea',
+                                    readonly: true,
+                                }
+                            }
+                        },
+                        beforeScript: {
+                            type: 'string',
+                            ui: {
+                                widget: 'CodeJsEditor',
+                                widgetConfig: {
+                                    // mode: 'text/html'
+                                }
+                            }
+                        },
+                        onInited: {
+                            type: 'string',
+                            ui: {
+                                widget: 'CodeJsEditor',
+                                // widget: 'JsonCodeEditor',
+                                widgetConfig: {
+                                    style: {
+                                        height: '300px'
+                                    }
+                                    // mode: 'text/html'
+                                }
+                            }
+                        },
+                        forms: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    name: {
+                                        type: 'string',
+                                        ui: {
+                                            widget: 'CusSuggest',
+                                            widgetConfig: {
+                                                suggest: [
+                                                    {
+                                                        label: '爱你',
+                                                        value: 'sdsds',
+                                                    }
+                                                ],
+                                            }
+                                        }
+                                    },
+                                    value: {
+                                        type: 'string',
+                                        ui: {
                                             widget: 'CusForm',
                                             widgetConfig: {
                                                 enums: "ROOT_STATE('tools.propTypes', [])",
@@ -116,13 +156,26 @@ export default {
                                 type: 'object',
                                 properties: {
                                     name: {
-                                        type: 'string'
+                                        type: 'string',
+                                        ui: {
+                                            widget: 'CusSuggest',
+                                            widgetConfig: {
+                                                suggest: [
+                                                    {
+                                                        label: '爱你',
+                                                        value: 'sdsds',
+                                                    }
+                                                ],
+                                                enums: "ROOT_STATE('tools.eventSuggests', [])",
+                                            }
+                                        }
                                     },
                                     code: {
                                         type: 'string',
                                         ui: {
+                                            widget: 'CodeJsEditor',
                                             widgetConfig: {
-                                                type: 'textarea'
+
                                             }
                                         }
                                     },
@@ -130,6 +183,9 @@ export default {
                                         type: 'string',
                                         reflect: 'name',
                                         reflectTpl: `L.defaultTo($VAL, '') + 's'`,
+                                        widgetConfig: {
+                                            readonly: true
+                                        }
                                         // reflect: `CUR('code')`
                                     }
                                 }
@@ -137,7 +193,12 @@ export default {
                         }
                     }
                 },
-                computed: {doubled: "MODEL('events[0].name', '')"}
+                computed: {
+                    pagePropertiesComp: "A.getBeforeScript(MODEL('props'))",
+                    doubled: "MODEL('events[0].name', '')",
+                    layoutSlotArrComputed: "A.slotArrToStr(MODEL('layoutSlotArr'))",
+                    processes: `map(MODEL('events', []), v => v.name)`
+                }
             }]
         }, args: {src: 'comformscr2.twig'}
     }

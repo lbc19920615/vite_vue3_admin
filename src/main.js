@@ -16,8 +16,6 @@ import 'font-awesome/css/font-awesome.css'
 
 import '@/components/WebElements/index'
 
-import JsonViewer from "vue3-json-viewer";
-
 
 // element
 import ElementPlus from 'element-plus';
@@ -74,12 +72,8 @@ import '@/styles/app.scss'
 
 import eventBus from 'vue3-eventbus'
 
-import '@/components/WebElements/dialog'
-
 import * as remote from '@/plugins/remote'
 import StoreApp from "./StoreApp.vue";
-
-import * as highlightPlugin from '@/plugins/highlight'
 
 import CodeMirrorPlugin from '@/plugins/CodeMirrorEditor/index'
 
@@ -106,20 +100,24 @@ window.startApp = function () {
 
   app.use(moduleConfig)
   app.use(remote)
-  // app.use(vant)
   app.use(ElementPlus, {
     size: 'medium',
     locale
   })
-  // app.use(VueGridLayout)
   app.use(CustomFormRenderPlugin)
-  app.use(highlightPlugin)
-  app.use(JsonViewer)
   app.use(CodeMirrorPlugin)
   app.use(eventBus)
   app.use(icons)
   app.use(router)
   app.use(store)
+  // import JsonViewer from "vue3-json-viewer";
+  import("vue3-json-viewer").then(res => {
+    app.use(res.default)
+  })
+  // import * as highlightPlugin from '@/plugins/highlight'
+  import('@/plugins/highlight').then(highlightPlugin => {
+    app.use(highlightPlugin)
+  })
   import('vant/es/index').then(res => {
     // console.log(res.default)
     app.use(res.default)
