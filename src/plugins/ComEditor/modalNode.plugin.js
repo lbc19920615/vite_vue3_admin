@@ -15,6 +15,12 @@ export let tabEditorConfig = function (defaultVal = {}) {
                         label: '名称'
                     },
                 },
+                pageRef: {
+                    type: 'string',
+                    ui: {
+                        // label: '弹框名'
+                    },
+                },
                 pageVars: {
                     type: 'array',
                     items: {
@@ -81,19 +87,26 @@ export function install({
                 form2: {
                 }
             })
-            this.pageVars = obj.pageVars ?? []
-            this.items = obj.items ?? [
-                {
-                  id: id + '-0',
-                  name: 'default',
-                    key: 'default',
-                },
-                {
-                  id: id + '-1',
-                    name: 'footer',
-                    key: 'footer',
-                },
-            ]
+            // console.log('obj.items', obj)
+            let data = obj.data ?? {}
+            this.pageVars = data.pageVars ?? []
+            this.pageRef = data.pageRef ?? ''
+            if ( ZY.lodash.isEmpty(obj.items)) {
+                this.items = [
+                    {
+                        id: id + '-0',
+                        name: 'default',
+                        key: 'default',
+                    },
+                    {
+                        id: id + '-1',
+                        name: 'footer',
+                        key: 'footer',
+                    },
+                ]
+            } else {
+                this.items = obj.items
+            }
         }
     }
 
