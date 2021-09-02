@@ -16,8 +16,6 @@ import 'font-awesome/css/font-awesome.css'
 
 import '@/components/WebElements/index'
 
-import JsonViewer from "vue3-json-viewer";
-
 
 // element
 import ElementPlus from 'element-plus';
@@ -104,19 +102,20 @@ window.startApp = function () {
 
   app.use(moduleConfig)
   app.use(remote)
-  // app.use(vant)
   app.use(ElementPlus, {
     size: 'medium',
     locale
   })
-  // app.use(VueGridLayout)
   app.use(CustomFormRenderPlugin)
-  app.use(JsonViewer)
   app.use(CodeMirrorPlugin)
   app.use(eventBus)
   app.use(icons)
   app.use(router)
   app.use(store)
+  // import JsonViewer from "vue3-json-viewer";
+  import("vue3-json-viewer").then(res => {
+    app.use(res.default)
+  })
   // import * as highlightPlugin from '@/plugins/highlight'
   import('@/plugins/highlight').then(highlightPlugin => {
     app.use(highlightPlugin)
