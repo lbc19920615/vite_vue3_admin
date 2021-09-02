@@ -24,38 +24,6 @@ export default {
                     type: 'object',
                     ui: {attrs: [['label-width', '150px']]},
                     properties: {
-                        // obj: {
-                        //     type: 'object',
-                        //     properties: {
-                        //         events: {
-                        //             type: 'array',
-                        //             items: {
-                        //                 type: 'object',
-                        //                 properties: {
-                        //                     name: {
-                        //                         type: 'string'
-                        //                     },
-                        //                     code: {
-                        //                         type: 'string',
-                        //                         ui: {
-                        //                             widgetConfig: {
-                        //                                 type: 'textarea'
-                        //                             }
-                        //                         }
-                        //                     },
-                        //                     prop1: {
-                        //                         type: 'string',
-                        //                         reflect: 'name',
-                        //                         reflectTpl: `L.defaultTo($VAL, '') + 's'`,
-                        //                         // computedProp: 'doubled',
-                        //                         // computedTpl: `$VAL + 's'`
-                        //                         // reflect: `CUR('code')`
-                        //                     }
-                        //                 }
-                        //             }
-                        //         }
-                        //     }
-                        // },
                         name: {
                             type: 'string',
                             ui: {
@@ -106,8 +74,26 @@ export default {
                             computedProp: 'layoutSlotArrComputed',
                             ui: {
                                 widgetConfig: {
-                                    disabled: true,
+                                    readonly: true,
                                     type: 'textarea'
+                                }
+                            }
+                        },
+                        props: {
+                            type: 'string',
+                            ui: {
+                                widget: 'CusProps',
+                                widgetConfig: {
+                                }
+                            }
+                        },
+                        pageProperties: {
+                            type: 'string',
+                            computedProp: 'pagePropertiesComp',
+                            ui: {
+                                widgetConfig: {
+                                    type: 'textarea',
+                                    readonly: true,
                                 }
                             }
                         },
@@ -208,6 +194,7 @@ export default {
                     }
                 },
                 computed: {
+                    pagePropertiesComp: "A.getBeforeScript(MODEL('props'))",
                     doubled: "MODEL('events[0].name', '')",
                     layoutSlotArrComputed: "A.slotArrToStr(MODEL('layoutSlotArr'))"
                 }

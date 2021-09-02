@@ -188,7 +188,9 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
   function setByPath(path, v) {
     let o = {}
     ZY.lodash.set(o, path, v)
-    storeControl.set(o)
+    if (storeControl) {
+      storeControl.set(o)
+    }
   }
 
   function setData(v) {

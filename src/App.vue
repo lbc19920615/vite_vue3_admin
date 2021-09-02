@@ -67,6 +67,27 @@ ${item.value}
 
       return str.trim()
     },
+    getPropsObj(v) {
+      // console.log('getProps', v)
+      try {
+        let o = ZY.JSON5.parse(v)
+        let r =  getDeepConfigFromLinksAndDeps(o.links, o.deps)
+        return r
+      } catch (e) {
+        //
+      }
+      return {}
+    },
+    getBeforeScript(s) {
+      let tpl = function (v) {
+        let p = ZY.JSON5.stringify(v, null, 2)
+        return `
+        let properties = ${p};
+        `.trim()
+      }
+      let o = this.getPropsObj(s) ?? {}
+      return tpl(o.properties ?? {})
+    }
   },
   setup() {
     const router = useRouter()
