@@ -119,6 +119,8 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
     COMPUTED_CHANGE: 'COMPUTED_CHANGE_' + ZY.nid(6),
   }
 
+  let filter = {}
+
   function log(...args) {
     // console.log(...args)
   }
@@ -229,6 +231,7 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
     eventHandleMap,
     dispatchRoot,
     rootStore,
+    filter,
     setEventHandler,
     setData,
     setByPath,

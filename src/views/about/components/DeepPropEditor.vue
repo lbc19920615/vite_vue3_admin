@@ -40,7 +40,7 @@
 <script>
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
 import {getCurrentInstance, nextTick, toRaw} from "vue";
-import {usePage} from "@/mixins/framework";
+import {extendControl2Page, useControl, useAppPageControl} from "@/mixins/framework";
 
 let depManagerMixin = {
   data() {
@@ -193,20 +193,33 @@ export default {
     // let { $SERVICE_ID } = await globalThis.createServiceCom()
     // let serviceName = globalThis.createServiceComSync()
     let serviceName = props.serviceName
-    let page = usePage({
-      data: {
+    // let page = usePage({
+    //   data: {
+    //     editor_step: {
+    //       type: String,
+    //     },
+    //   },
+    //   filters: {
+    //     showCom: "ZY_NOT(MODEL('reload'))",
+    //   },
+    //   defaultVal: {
+    //     editor_step: '',
+    //   },
+    //   serviceName,
+    // })
+
+    let page = useControl({
+      properties: {
         editor_step: {
           type: String,
         },
       },
-      filters: {
-        showCom: "ZY_NOT(MODEL('reload'))",
-      },
-      defaultVal: {
-        editor_step: '',
-      },
-      serviceName,
+    }, {
+      onInited() {
+
+      }
     })
+    page = extendControl2Page(page)
 
     page.setEventHandler({
       ['model:update'](e) {
@@ -224,7 +237,7 @@ export default {
           import('./DeepPropEditor/DeepEditorConfig')
       )
       const config = res.default
-      config.name = ZY.nid()
+      config.name = ZY.rid()
 
       page.setDef(config, function ({done}) {
         let cached = null
@@ -240,17 +253,18 @@ export default {
         }
         done()
       })
-      await nextTick()
-      page.storeControl.set({
+      await nextTick();
+      // console.log('onEditDep', page.store.model, varName, config)
+      page.setData({
         [varName]: config.name
       })
     }
 
     return {
       loadStepByContent,
-      store: page.storeControl.store,
-      filter: page.storeControl.filter,
-      allDef: page.allDef,
+      store: page.store,
+      filter: page.filter,
+      allDef: page.defMap,
     }
   }
 }
