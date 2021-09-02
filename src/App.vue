@@ -52,7 +52,21 @@ export default defineComponent({
     },
     OBJ2JSON5(v = {}) {
       return ZY.JSON5.stringify(v)
-    }
+    },
+    slotArrToStr(arr = []) {
+      let str = ''
+      if (Array.isArray(arr)) {
+        arr.forEach((item) => {
+          str = str + `
+<template v-slot:${item.name}="scope">
+${item.value}
+</template>
+`
+        })
+      }
+
+      return str.trim()
+    },
   },
   setup() {
     const router = useRouter()

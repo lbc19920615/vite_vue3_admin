@@ -70,12 +70,44 @@ export default {
                                 }
                             }
                         },
+                        layoutSlotArr: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    name: {
+                                        type: 'string',
+                                        ui: {
+                                            widget: 'CusSuggest',
+                                            widgetConfig: {
+                                                suggest: [
+                                                    {
+                                                        label: '爱你',
+                                                        value: 'sdsds',
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    value: {
+                                        type: 'string',
+                                        ui: {
+                                            widget: 'CodeJsEditor',
+                                            widgetConfig: {
+                                                mode: 'text/html'
+                                            }
+                                        }
+                                    },
+                                }
+                            }
+                        },
                         layoutSlots: {
                             type: 'string',
+                            computedProp: 'layoutSlotArrComputed',
                             ui: {
-                                widget: 'CodeJsEditor',
                                 widgetConfig: {
-                                    mode: 'text/html'
+                                    disabled: true,
+                                    type: 'textarea'
                                 }
                             }
                         },
@@ -159,7 +191,10 @@ export default {
                         }
                     }
                 },
-                computed: {doubled: "MODEL('events[0].name', '')"}
+                computed: {
+                    doubled: "MODEL('events[0].name', '')",
+                    layoutSlotArrComputed: "A.slotArrToStr(MODEL('layoutSlotArr'))"
+                }
             }]
         }, args: {src: 'comformscr2.twig'}
     }
