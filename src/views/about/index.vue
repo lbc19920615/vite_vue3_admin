@@ -64,22 +64,30 @@
             @edit-dep="onEditDep"
         ></PlumbLayout>
 
-        <div style="width: 600px" v-loading="renderFormLoading">
-          <template v-if="renderFormDesigner">
-            <HttpComponent
-                :defs="allDef"
-                :is="store.model.editor_step"
-            >
-              <template #array_item_before="scope">
-                <h3>{{ scope.key }}</h3>
+        <el-drawer
+            title="编辑"
+            size="600px"
+            v-model="renderFormDesigner" destroy-on-close>
+          <template #default>
+            <div v-loading="renderFormLoading">
+              <template v-if="renderFormDesigner">
+                <HttpComponent
+                    :defs="allDef"
+                    :is="store.model.editor_step"
+                >
+                  <template #array_item_before="scope">
+                    <h3>{{ scope.key }}</h3>
+                  </template>
+                  <template #array_before="scope">
+                    <!--                 {{scope}}-->
+                    <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>
+                  </template>
+                </HttpComponent>
               </template>
-              <template #array_before="scope">
-                <!--                 {{scope}}-->
-                <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>
-              </template>
-            </HttpComponent>
+            </div>
           </template>
-        </div>
+        </el-drawer>
+
       </el-row>
     </template>
 
