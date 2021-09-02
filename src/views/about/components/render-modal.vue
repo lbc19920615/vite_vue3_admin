@@ -23,8 +23,8 @@
 </template>
 
 <script>
-
-export default {
+import {inject, defineComponent} from 'vue';
+export default defineComponent({
   name: "render-modal",
   mixins: [
   ],
@@ -33,7 +33,7 @@ export default {
     return {
       rowv2: [
       ],
-      dialogVisible: true,
+      dialogVisible: false,
       current: '',
     }
   },
@@ -41,7 +41,14 @@ export default {
     layout: {
       type: Array,
       default: []
-    }
+    },
+    obj: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    page: null
   },
   watch: {
     layout: {
@@ -63,10 +70,20 @@ export default {
         this.rowv2.forEach(v => {
         })
       }
+      console.log(this.obj)
+      let ref = this.obj.pageRef
+      this.page.modalManRef.register(this, ref)
       return Promise.resolve()
     },
+    toggle(v) {
+      this.dialogVisible = v
+    }
+  },
+  beforeUnmount() {
+    // console.log( this.obj.pageRef)
+    this.page.modalManRef.destory( this.obj.pageRef)
   }
-}
+})
 </script>
 
 <style scoped>

@@ -39,9 +39,11 @@
         </render-tab>
       </template>
     <template  v-else-if="curObj.type === 'modal'">
-<!--              {{curObj}}-->
       <render-modal :class="levelItemCls"
-                  :layout="curObj.items">
+                  :layout="curObj.items"
+                    :obj="curObj"
+                    :page="page"
+      >
         <template v-slot:default="{item}">
           <!--            {{item}} {{getNext(item)}}-->
           <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"

@@ -37,9 +37,16 @@ export let useAppPageControl = function (page) {
       console.log('eventHandler', type, e)
     }
   })
-
   provide('webComponentRef', webComponentRef)
   page.webComponentRef = webComponentRef
+
+  let modalManRef = createRefManager({
+    eventHandler({type, e}) {
+      console.log('eventHandler', type, e)
+    }
+  })
+  provide('modalManRef', modalManRef)
+  page.modalManRef = modalManRef
 
   async function openDialog(name) {
     let dialog = webComponentRef.find(name)
