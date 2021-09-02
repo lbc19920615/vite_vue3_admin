@@ -39,23 +39,27 @@
   $leftTotal: 0;
   $topTotal: 0;
   $len: 10;
-  $half: 6;
+  $half: 5;
   @for $i from 1  through $len {
     .section:nth-child(#{$i}) {
       $index: $i - 1;
-      $lbase: math.max(70, math.random(100)) + 0px;
+      $lbase: math.max(100, math.random(150)) + 0px;
       $tbase: math.max(50, math.random(80)) + 0px;
-      left: $lbase * $index;
       @if $index < $half {
+        left: $lbase * $index;
+        $leftTotal: $leftTotal + $lbase;
         top: $tbase * $index;
         $topTotal: $tbase * $index;
       }
       @else {
-        $topTotal: $topTotal - ($tbase * 2);
-        top: $topTotal;
+        $lindex: $index - $half;
+        $leftTotal: $leftTotal - ($tbase * $lindex);
+        left: math.max(10px,  $leftTotal);
+        $topTotal: $topTotal - ($tbase * $lindex);
+        top: math.max(10px,  $topTotal);
+
       }
       //@debug $topTotal;
     }
   }
-  @debug $topTotal;
 }
