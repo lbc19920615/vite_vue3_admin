@@ -170,13 +170,25 @@ export default {
                                 type: 'object',
                                 properties: {
                                     name: {
-                                        type: 'string'
+                                        type: 'string',
+                                        ui: {
+                                            widget: 'CusSuggest',
+                                            widgetConfig: {
+                                                suggest: [
+                                                    {
+                                                        label: '爱你',
+                                                        value: 'sdsds',
+                                                    }
+                                                ]
+                                            }
+                                        }
                                     },
                                     code: {
                                         type: 'string',
                                         ui: {
+                                            widget: 'CodeJsEditor',
                                             widgetConfig: {
-                                                type: 'textarea'
+
                                             }
                                         }
                                     },
@@ -184,6 +196,9 @@ export default {
                                         type: 'string',
                                         reflect: 'name',
                                         reflectTpl: `L.defaultTo($VAL, '') + 's'`,
+                                        widgetConfig: {
+                                            readonly: true
+                                        }
                                         // reflect: `CUR('code')`
                                     }
                                 }

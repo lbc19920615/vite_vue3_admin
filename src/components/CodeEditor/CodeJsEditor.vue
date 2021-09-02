@@ -1,18 +1,13 @@
 <template>
-<!--  <v-ace-editor-->
-<!--      v-model:value="content"-->
-<!--      @init="editorInit"-->
-<!--      @update:value="editorChange"-->
-<!--      lang="javascript"-->
-<!--      theme="chrome"-->
-<!--      :style="styleObj" />-->
   <CodeMirror
             v-if="inited"
               ref="editorRef"
               v-model="content"
               @update:modelValue="editorChange"
               :height="styleObj.height"
-              :mode="mode" />
+              :mode="mode"
+            theme="vscode-dark"
+  />
 </template>
 
 <script>
