@@ -35,6 +35,7 @@ import "codemirror/theme/hopscotch.css";
 import "codemirror/theme/solarized.css";
 import "codemirror/theme/lesser-dark.css";
 import "codemirror/addon/merge/merge.css";
+import "./vscode-dark.css"
 import "codemirror/addon/hint/sql-hint";
 import "codemirror/addon/display/placeholder";
 import "codemirror/addon/merge/merge.js";
@@ -103,10 +104,11 @@ const props = defineProps({
     },
   },
   theme: {
-    default: "base16-dark",
+    default: "vscode-dark",
     type: String,
     validator: (value) => {
       let themeArray = [
+        "vscode-dark",
         "base16-dark",
         "monokai",
         "paraiso-light",
@@ -187,6 +189,14 @@ watch(
     },
     { deep: true }
 );
+// watch(() => props.modelValue, (newVal) => {
+//   // console.log('sddddddddddddddddddd', newVal)
+//   if (codeEditor) {
+//     codeEditor.setValue(newVal ?? '')
+//   }
+// }, {
+//   immediate: true
+// })
 </script>
 
 <style>

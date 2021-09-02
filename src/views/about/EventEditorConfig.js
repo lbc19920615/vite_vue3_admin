@@ -92,9 +92,10 @@ export default {
                             type: 'string',
                             ui: {
                                 widget: 'CodeJsEditor',
+                                // widget: 'JsonCodeEditor',
                                 widgetConfig: {
                                     style: {
-                                        height: '600px'
+                                        height: '300px'
                                     }
                                     // mode: 'text/html'
                                 }

@@ -82,7 +82,7 @@ function handlePropChange(newval) {
     //   _edited = false
     // }, 1000)
   } else {
-    console.log('handlePropChange locked')
+    // console.log('handlePropChange locked')
     _edited = false
   }
 }
