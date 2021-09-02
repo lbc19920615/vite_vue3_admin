@@ -62,7 +62,7 @@
           <AutoHttpCom
               :slotContent="innerSlots"
               :page="page"
-              :def="getDef('test')"
+              :def="getDef(getObj(curObj, 'data.partName', 'UNDEFINED'))"
           >
           </AutoHttpCom>
         </template>
@@ -131,6 +131,9 @@ export default {
     }
   },
   methods: {
+    getObj(...args) {
+      return ZY.lodash.get(...args)
+    },
     render() {
       return this.$slots
     },
