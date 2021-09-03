@@ -6,3 +6,4 @@ dist-ssr
 .idea
 !.env.local
 remote/*.json
+package-lock.json
