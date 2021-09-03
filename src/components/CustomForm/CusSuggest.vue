@@ -1,7 +1,7 @@
 <template>
   <template v-if="inited">
 <!--        {{state}}-->
-    <el-input v-model="state.value" @input="onChange">
+    <el-input v-model="state.value" @change="onChange" @input="onChange">
       <template #append>
         <el-popover
             placement="bottom"

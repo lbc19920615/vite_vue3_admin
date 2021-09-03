@@ -50,8 +50,8 @@ export default {
                                             widgetConfig: {
                                                 suggest: [
                                                     {
-                                                        label: '爱你',
-                                                        value: 'sdsds',
+                                                        label: 'Form After',
+                                                        value: 'form_after',
                                                     }
                                                 ]
                                             }

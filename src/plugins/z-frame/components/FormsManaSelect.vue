@@ -1,7 +1,7 @@
 <template>
 <!--  {{state}}-->
   <simple-list :suggest="state.suggest"
-  @select-item="onSelect"
+  @select="onSelect"
   ></simple-list>
 </template>
 
@@ -17,11 +17,13 @@ export default {
     let state = reactive({
       suggest: []
     })
-    onMounted(() => {
+    onMounted(async () => {
+      await formMana.init();
+      await ZY.sleep(30)
       state.suggest = formMana.getOptions()
     })
     function onSelect(e) {
-      ctx.emit('select-item', e)
+      ctx.emit('select-form', e)
     }
     return {
       state,

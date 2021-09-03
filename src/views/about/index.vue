@@ -16,8 +16,13 @@
 
 <!--    <CusForm></CusForm>-->
     <CustomElement is="my-vue-dialog" name="dialog">
-      <template #default>
-        <FormsManaSelect></FormsManaSelect>
+      <template #default="scope">
+<!--        {{scope}}-->
+        <FormsManaSelect
+            @select-form="page.callEvent('forms:select-form', {
+              scope,
+              value: $event
+            })"></FormsManaSelect>
       </template>
     </CustomElement>
 
@@ -33,6 +38,9 @@
           <el-col>
             <el-space  align="middle">
               <h3>{{ scope.selfpath }}</h3>
+              <template v-if="scope.key === 'layoutSlotArr'">
+                <el-button size="small" @click="page.callEvent('add:arr:common', scope)">添加{{ scope.key }}</el-button>
+              </template>
               <template v-if="scope.key === 'events'">
                 <el-button size="small" @click="page.callEvent('add:events', scope)">添加{{ scope.key }}</el-button>
               </template>
@@ -520,7 +528,14 @@ export default defineComponent({
 
     let formsMana = useFormsMana();
 
+    let currentFromDialog = null
+
     page.setEventHandler({
+      ['add:arr:common'](e) {
+        let { parts, partName, selfpath, process } = e
+        // console.log('add:events', e, model)
+        parts[partName].arrAppend(selfpath)
+      },
       ['call:save'](e) {
         if (page.ctx.LayoutContext) {
           page.ctx.LayoutContext.save()
@@ -542,6 +557,17 @@ export default defineComponent({
         // console.log('add:events', e, model)
         parts[partName].arrAppend(selfpath)
       },
+      async ['forms:select-form'](e) {
+        let {value, scope} = e
+        let { parts, partName, selfpath, process } = currentFromDialog
+        // console.log('forms:select-form', e, currentFromDialog)
+        let obj = ZY.JSON5.parse(value.value)
+        let lastsds = parts[partName].arrAppend(selfpath)
+        await ZY.sleep(300)
+        lastsds.name = value.label
+        lastsds.value = obj
+        // page.webComponentRef.toggleDialog('dialog');
+      },
       ['save:forms'](e) {
         let { parts, partName } = e
         let model = parts[partName].getModel()
@@ -552,6 +578,7 @@ export default defineComponent({
         formsMana.setStorage(forms)
       },
       ['open:forms'](e) {
+        currentFromDialog = e
         page.webComponentRef.toggleDialog('dialog');
       },
       ['add:events'](e) {

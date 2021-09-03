@@ -48,6 +48,7 @@ export default {
     function select(scope) {
       state.value = scope.row.value
       ctx.emit('select-item', state.value)
+      ctx.emit('select', toRaw(scope.row))
     }
 
     watch(() => props.suggest, (newval) => {

@@ -38,7 +38,11 @@
       let slots = []
       for (let key in this.$slots) {
         let slotCom = this.$slots[key]
-        slots.push(slotCom())
+        slots.push(slotCom(
+            {
+              is: self.is
+            }
+        ))
       }
       this.webComponentRef = webComponentRef
       return h(this.is, {
