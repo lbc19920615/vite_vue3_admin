@@ -25,7 +25,7 @@ export class FormsMana {
       // formsMap = cached
       data.forEach((item, key) => {
         // console.log(item, key)
-        formsMap.set(key, value)
+        formsMap.set(key, item)
       })
     }
   }
