@@ -1,7 +1,7 @@
 <template>
   <template v-if="inited">
 <!--        {{state}}-->
-    <el-input v-model="state.value" @change="onChange" @input="onChange">
+    <el-input v-model="state.value" @input="onChange">
       <template #append>
         <el-popover
             placement="bottom"
@@ -79,6 +79,9 @@ export default {
 
     function selectSuggest(e) {
       state.value = e
+      setTimeout(() => {
+        onChange()
+      }, 30)
     }
 
     function onChange() {
@@ -88,7 +91,7 @@ export default {
     function getSuggest() {
       if (props.ui.widgetConfig.enums) {
         let obj =  instance.ctx.dxValueTemplate(props.ui.widgetConfig.enums)
-        console.log('getsdsdsd', obj)
+        // console.log('getsdsdsd', obj)
         return obj
       }
       else if (state.suggest) {
