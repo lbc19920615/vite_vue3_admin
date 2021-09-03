@@ -42,6 +42,9 @@
       }
       this.webComponentRef = webComponentRef
       return h(this.is, {
+        style: {
+          ['--dialog-inner-top']: '10vh'
+        },
         ...this.params,
         name: this.name,
         onInited: function (e) {

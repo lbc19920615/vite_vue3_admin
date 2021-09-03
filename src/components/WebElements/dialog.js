@@ -30,6 +30,10 @@ const MyVueElement = defineCustomElement({
 </style>
     `.replace('<style>', '').replace('</style>', '')
   ],
+  // style: {
+  //   ['--dialog-inner-top']: '10vh'
+  // },
+  // sstyle: "width: 700px"
   props: {
     // style: {
     //   type: Object,
@@ -39,7 +43,7 @@ const MyVueElement = defineCustomElement({
     // },
     sstyle: {
       type: String,
-      default: ""
+      default: "width: 700px"
     },
   },
   emits: ['inited'],
@@ -75,6 +79,9 @@ const MyVueElement = defineCustomElement({
         type: 'closed',
         args: {}
       })
+    },
+    toggle() {
+      this.toggleOpen(!this.opened)
     },
     toggleOpen(v) {
       this.opened = v

@@ -15,6 +15,11 @@
 
 
 <!--    <CusForm></CusForm>-->
+    <CustomElement is="my-vue-dialog" name="dialog">
+      <template #default>
+        <FormsManaSelect></FormsManaSelect>
+      </template>
+    </CustomElement>
 
     <template v-if="store.model.textarea_step">
 <!--      {{store.computedModel}}-->
@@ -32,7 +37,9 @@
                 <el-button size="small" @click="page.callEvent('add:events', scope)">添加{{ scope.key }}</el-button>
               </template>
               <template v-if="scope.key === 'forms'">
+                <el-button size="small" @click="page.callEvent(`add:${scope.key}`, scope)">添加{{ scope.key }}</el-button>
                 <el-button size="small" @click="page.callEvent(`save:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
+                <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}</el-button>
               </template>
             </el-space>
           </el-col>
@@ -383,8 +390,8 @@ import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
 import {buildFormDepContent} from "@/views/about/build";
 import CustomElement from "@/components/CustomElement.vue";
 import CusForm from "@/components/CustomForm/CusForm.vue";
-import {getClsDefs} from "@/plugins/ComEditor/nodes.js";
 import {useFormsMana} from "@/plugins/z-frame/formsMana";
+import FormsManaSelect from "@/plugins/z-frame/components/FormsManaSelect.vue";
 
 export default defineComponent({
   mixins: [
@@ -402,6 +409,7 @@ export default defineComponent({
     }
   },
   components: {
+    FormsManaSelect,
     CusForm,
     DeepPropEditor,
     AsyncPlumbLayout,
@@ -529,6 +537,11 @@ export default defineComponent({
         // console.log('add:events', e, model)
         parts[partName].arrAppend(selfpath)
       },
+      ['add:forms'](e) {
+        let { parts, partName, selfpath, process } = e
+        // console.log('add:events', e, model)
+        parts[partName].arrAppend(selfpath)
+      },
       ['save:forms'](e) {
         let { parts, partName } = e
         let model = parts[partName].getModel()
@@ -537,6 +550,9 @@ export default defineComponent({
         )
         // console.log('save:forms', forms, formsMana)
         formsMana.setStorage(forms)
+      },
+      ['open:forms'](e) {
+        page.webComponentRef.toggleDialog('dialog');
       },
       ['add:events'](e) {
         let { parts, partName, selfpath, process } = e

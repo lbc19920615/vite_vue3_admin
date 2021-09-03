@@ -2,14 +2,17 @@ import {onMounted, watch, toRaw, reactive} from "vue";
 
 /**
  *
- * @param refVar
+ * @param model
+ * @param key
  * @returns {{search: (function(...[*]): *), update: update, del: del}}
  */
-export function useArrHandler(refVar) {
+export function useArrHandler(model, key) {
   function del(index) {
+    let refVar = model[key]
     refVar.splice(index, 1)
   }
   function update(index, obj = {}) {
+    let refVar = model[key]
     if (refVar[index]) {
       let target = refVar[index]
       for (let k in obj) {
@@ -18,6 +21,8 @@ export function useArrHandler(refVar) {
     }
   }
   function search(fun) {
+    let refVar = model[key]
+    // console.log(refVar)
     let obj = toRaw(refVar)
     return ZY.lodash.filter(obj, fun)
   }

@@ -40,6 +40,13 @@ export let useAppPageControl = function (page) {
   provide('webComponentRef', webComponentRef)
   page.webComponentRef = webComponentRef
 
+  page.webComponentRef.toggleDialog = function (name) {
+    let dialog = webComponentRef.find(name)
+    if (dialog) {
+      dialog.toggle()
+    }
+  }
+
   let modalManRef = createRefManager({
     eventHandler({type, e}) {
       console.log('eventHandler', type, e)

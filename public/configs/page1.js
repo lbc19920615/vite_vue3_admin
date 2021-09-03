@@ -23,27 +23,10 @@ export default {
 //       `,
 //     onInited: `
 // <script>
-//      storeControl.set({
-//         textarea_step: 'sdsds'
-//     })
 //     renderC.detectLayout()
 //     renderC.detectEvent((events, {currentData} = {}) => {
-//       let obj = {}
-//       events.forEach(event => {
-//         obj[event.name] = new Function('e', event.code)
-//       })
-//       // console.log('setEvent', obj)
-//        page.setEventHandler(obj)
-//        let forms = currentData.forms
-//        forms.forEach(form => {
-//          let {value, name} = form
-//          let obj = ZY.JSON5.parse(value)
-//          let formDef = buildFormDep(obj, name)
-//          console.log(formDef.init.def.parts[0])
-//          setDefMap(formDef, name)
-//        })
-//        // console.log(forms)
-//        // setDefMap(pag)
+//       工具.初始化(currentData);
+//       工具.设置步骤();
 //     })
 // </script>
 //       `.replace('<script>', '').replace('</script>', '')

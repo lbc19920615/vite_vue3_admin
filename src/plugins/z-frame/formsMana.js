@@ -1,5 +1,3 @@
-import {values} from "lodash";
-
 const FORM_MANA_KEY = 'form-mana-key';
 
 const formsMap = new Map();
@@ -17,6 +15,16 @@ export class FormsMana {
       version: ZY.rid(),
       data: formsMap
     })
+  }
+  static getOptions() {
+    let v = []
+    formsMap.forEach((value, key) => {
+      v.push({
+        label: key,
+        value
+      })
+    })
+    return v
   }
   static async init() {
     let cached = await ZY_EXT.store.getItem(FORM_MANA_KEY)
