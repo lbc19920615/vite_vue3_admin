@@ -1,33 +1,76 @@
 <template>
   <div>
 <!--    {{state}}-->
-    <el-input v-model="state.search"></el-input>
-    <el-table :data="dataTable">
-      <el-table-column  prop="label" label="LABEL"></el-table-column>
-      <el-table-column  prop="value" label="VALUE"></el-table-column>
-      <el-table-column  label="ACTION">
-        <template v-slot:default="scope">
-          <el-button size="small" @click="select(scope)">选中</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <el-form-item>
+      <el-input v-model="state.search"></el-input>
+    </el-form-item>
+<!--    <el-table :data="dataTable">-->
+<!--      <el-table-column  prop="label" label="LABEL"></el-table-column>-->
+<!--      <el-table-column  prop="value" label="VALUE"></el-table-column>-->
+<!--      <el-table-column  label="ACTION">-->
+<!--        <template v-slot:default="scope">-->
+<!--          <el-button size="small" @click="select(scope)">选中</el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--    </el-table>-->
+
+    <z-table border stripe :actions="state.actions"
+             :actionProps="{width: '150px'}"
+             :column="state.column" :data="dataTable"></z-table>
   </div>
 </template>
 
 <script>
 import {computed, reactive, toRaw, watch} from 'vue'
 import {useArrHandler} from "@/views/home/hooks";
+import ZTable from '@/plugins/z-table/FreeTable/table.vue'
 
 export default {
   name: 'SimpleList',
   props: {
-    suggest: Array
+    suggest: Array,
+    column: Array
+  },
+  components: {
+    ZTable
   },
   setup(props, ctx) {
     // console.log(props)
+    let column = [
+      { label: 'Label', prop: 'label', width: 150 },
+      { label: 'Value', prop: 'value' },
+    ]
+
+    if (Array.isArray(props.column)) {
+      props.column.forEach(item => {
+        if (item.prop) {
+          let finded = column.find(v => v.prop === item.prop)
+          if (finded) {
+            finded = Object.assign(finded, item)
+          }
+        }
+      })
+    }
+
+    // console.log(column)
+
+    const actions = [
+      {
+        label: '选中',
+        on: {
+          click(scope) {
+            select(scope)
+          }
+        },
+        attrs: {},
+      }
+    ]
+
     let state = reactive({
       suggest: props.suggest ?? [],
-      search: ''
+      search: '',
+      actions,
+      column: column,
     })
 
     let handler = useArrHandler(state,'suggest')
@@ -57,6 +100,7 @@ export default {
     }, {
       immediate: true
     })
+
 
     return {
       dataTable,

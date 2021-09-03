@@ -1,12 +1,14 @@
 <template>
 <!--  {{state}}-->
-  <simple-list :suggest="state.suggest"
+  <simple-list
+      :suggest="state.suggest"
+      :column="state.column"
   @select="onSelect"
   ></simple-list>
 </template>
 
 <script>
-import {reactive, onMounted} from 'vue';
+import {reactive, onMounted, resolveComponent} from 'vue';
 import SimpleList from "@/components/SimpleList.vue";
 import {useFormsMana} from "@/plugins/z-frame/formsMana";
 export default {
@@ -15,7 +17,30 @@ export default {
   setup(props, ctx) {
     let formMana = useFormsMana()
     let state = reactive({
-      suggest: []
+      suggest: [],
+      column: [
+        {
+          prop: 'value',
+          label: 'VALUE',
+          render(h, props) {
+            const jsonviewer = resolveComponent('json-viewer')
+            const scope = props.scope
+            // console.log(jsonviewer, props)
+            let value = ZY.JSON5.parse( scope.row[scope.column.property])
+            let jsondom = h(jsonviewer, {
+              value: value,
+              expanded: true,
+              copyable: true,
+            })
+            return h('div', {
+              style: {
+                overflow: 'auto',
+                maxHeight: '350px',
+              }
+            }, [jsondom])
+          }
+        }
+      ]
     })
     onMounted(async () => {
       await formMana.init();
@@ -23,7 +48,10 @@ export default {
       state.suggest = formMana.getOptions()
     })
     function onSelect(e) {
-      ctx.emit('select-form', e)
+
+      e.label = e.label + '___' + ZY.rid(3)
+      console.log('select', e)
+      // ctx.emit('select-form', e)
     }
     return {
       state,

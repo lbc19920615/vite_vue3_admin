@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@emmetio/codemirror-plugin": "^1.2.4",
+    "async-validator": "^4.0.3",
     "await-to-js": "^3.0.0",
     "axios": "^0.21.1",
     "bpmn-js": "^8.3.0",

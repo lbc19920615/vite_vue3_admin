@@ -24,11 +24,9 @@ const MyVueElement = defineCustomElement({
   // defineCustomElement only: CSS to be injected into shadow root
   styles: [
     `
-<style>
     ${css}
     ${dialogStyle}  
-</style>
-    `.replace('<style>', '').replace('</style>', '')
+    `
   ],
   // style: {
   //   ['--dialog-inner-top']: '10vh'
@@ -41,6 +39,12 @@ const MyVueElement = defineCustomElement({
     //     return {}
     //   }
     // },
+    obj: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
     sstyle: {
       type: String,
       default: "width: 700px"
@@ -57,7 +61,7 @@ const MyVueElement = defineCustomElement({
   },
   mounted() {
     nextTick(() => {
-      // console.log(this.sstyle)
+      // console.log(this.obj)
       this.getStyle = this.sstyle
       // if (this.init) {
       //   let fun = new Function('$root', this.init)
