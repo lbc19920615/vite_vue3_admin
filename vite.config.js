@@ -29,17 +29,17 @@ export default (({mode}) => {
     resolve: {
       alias: [
         { find: '@', replacement: '/src' },
-        { find: '@expose', replacement: config.REMOTE_LIB_EXPOSE_URL },
-        { find: '__remote', replacement: config.REMOTE_LIB_ORIGIN },
+        { find: '@expose', replacement: config.VITE_REMOTE_LIB_EXPOSE_URL },
+        { find: '__remote', replacement: config.VITE_REMOTE_LIB_ORIGIN },
       ]
     },
     plugins: [
       md({}),
       htmlPlugin(),
-      fileloader({
-        virtualFileId: '@my-virtual-file',
-        origin: 'http://localhost:7002/getcontent'
-      }),
+      // fileloader({
+      //   virtualFileId: '@my-virtual-file',
+      //   origin: 'http://localhost:7002/getcontent'
+      // }),
       vue(),
       rawTransform([/\.bpmn$/]),
       vueJsx(),

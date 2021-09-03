@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
+    "gongsi": "vite --host 0.0.0.0 --mode gongsi",
     "build": "vite build",
     "serve": "vite preview",
     "ser": "pm2 start server.js --name vite_vue3_admin",

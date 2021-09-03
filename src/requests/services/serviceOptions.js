@@ -24,4 +24,3 @@ export function getConfigs(method, contentType, url, options) {
     };
     return configs;
 }
-//# sourceMappingURL=serviceOptions.js.map
