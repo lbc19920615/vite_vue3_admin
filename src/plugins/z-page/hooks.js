@@ -70,8 +70,8 @@ export function useRenderControl() {
         // console.log(currentData.uuid)
         // console.log(interval)
         // console.log('changed')
-        let oldVal = toRaw(state.events)
-        let newVal = currentData.events
+        let oldVal = toRaw(state)
+        let newVal = currentData
         // console.log(ZY.compareObj(oldVal, newVal))
         let equals = ZY.compareObj(oldVal, newVal)
         if (!equals) {
