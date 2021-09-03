@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{TITLE}}</title>
   <!-- UNPKG -->
-  <script async src="https://unpkg.com/es-module-shims@0.12.8/dist/es-module-shims.js"></script>
+  <script async  src="es-module-shims.js"></script>
 
 
       <!--    <link-->
@@ -20,8 +20,5 @@
     <div id="storeApp"></div>
     <div id="endofbody" style="position: fixed; left: 150px; bottom: 0; z-index: 111;"></div>
     <script type="module" src="/src/main.js"></script>
-    <script type="module">
-      globalThis.app = window.startApp()
-    </script>
   </body>
 </html>

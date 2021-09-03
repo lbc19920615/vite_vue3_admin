@@ -130,3 +130,5 @@ window.startApp = function () {
 
   return app
 }
+
+globalThis.app = window.startApp()
