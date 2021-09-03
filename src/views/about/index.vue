@@ -24,16 +24,22 @@
           :debug="true"
       >
         <template #array_before="scope">
+<!--          {{scope}}-->
           <el-col>
-            <el-row  justify="space-between" align="middle">
+            <el-space  align="middle">
               <h3>{{ scope.selfpath }}</h3>
-              <el-button size="small" @click="page.callEvent('add:event', scope)">添加{{ scope.key }}</el-button>
-            </el-row>
+              <template v-if="scope.key === 'events'">
+                <el-button size="small" @click="page.callEvent('add:events', scope)">添加{{ scope.key }}</el-button>
+              </template>
+              <template v-if="scope.key === 'forms'">
+                <el-button size="small" @click="page.callEvent(`save:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
+              </template>
+            </el-space>
           </el-col>
         </template>
         <template #array_item_after="scope">
           <!--                 {{scope}}-->
-          <el-button type="danger" size="small" @click="page.callEvent('remove:event', scope)">删除{{ scope.key }}</el-button>
+          <el-button type="danger" size="small" @click="page.callEvent('remove:events', scope)">删除{{ scope.key }}</el-button>
         </template>
         <template #form_before="scope">
           <el-space wrap>
@@ -94,7 +100,7 @@
 
 <script>
 
-import {defineComponent, nextTick, getCurrentInstance} from "vue";
+import {defineComponent, nextTick, getCurrentInstance, toRaw} from "vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
 import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
@@ -378,6 +384,7 @@ import {buildFormDepContent} from "@/views/about/build";
 import CustomElement from "@/components/CustomElement.vue";
 import CusForm from "@/components/CustomForm/CusForm.vue";
 import {getClsDefs} from "@/plugins/ComEditor/nodes.js";
+import {useFormsMana} from "@/plugins/z-frame/formsMana";
 
 export default defineComponent({
   mixins: [
@@ -503,6 +510,8 @@ export default defineComponent({
     page = useAppPageControl(page)
 
 
+    let formsMana = useFormsMana();
+
     page.setEventHandler({
       ['call:save'](e) {
         if (page.ctx.LayoutContext) {
@@ -517,15 +526,24 @@ export default defineComponent({
       },
       ['add:part'](e) {
         let { parts, partName, selfpath, process } = e
-        // console.log('add:event', e, model)
+        // console.log('add:events', e, model)
         parts[partName].arrAppend(selfpath)
       },
-      ['add:event'](e) {
+      ['save:forms'](e) {
+        let { parts, partName } = e
+        let model = parts[partName].getModel()
+        let forms = toRaw(
+            ZY.lodash.get(model, 'forms')
+        )
+        // console.log('save:forms', forms, formsMana)
+        formsMana.setStorage(forms)
+      },
+      ['add:events'](e) {
         let { parts, partName, selfpath, process } = e
-        // console.log('add:event', e, model)
+        // console.log('add:events', e, model)
         parts[partName].arrAppend(selfpath)
       },
-      ['remove:event'](e) {
+      ['remove:events'](e) {
         // console.log('sdsdsdsdsdsds', e)
         let { parts, partName, fromPath, indexKey } = e
         parts[partName].appSplice(fromPath, indexKey)

@@ -33,6 +33,8 @@ globalThis.ZY_EXT = ZY_EXT
 import request from '@/requests/index.js'
 globalThis.Req = request
 
+import * as ZformMana from '@/plugins/z-frame/formsMana'
+
 import * as Framework from "@/mixins/framework";
 globalThis.Framework = Framework
 
@@ -77,7 +79,6 @@ import StoreApp from "./StoreApp.vue";
 
 import CodeMirrorPlugin from '@/plugins/CodeMirrorEditor/index'
 
-// import VueGridLayout from '@/plugins/grid-layout'
 import CustomFormRenderPlugin from "@/plugins/form-render";
 import {initStoreApp} from "@/storeApp";
 
@@ -104,6 +105,7 @@ window.startApp = function () {
     size: 'medium',
     locale
   })
+  app.use(ZformMana)
   app.use(CustomFormRenderPlugin)
   app.use(CodeMirrorPlugin)
   app.use(eventBus)
