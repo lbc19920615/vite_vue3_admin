@@ -390,13 +390,21 @@ let plumbLayoutMixin = {
       // console.log(
       //     this.currentLayoutMap
       // )
-      await ZY_EXT.store.setItem('current-data', {
+      let currentData =  {
         uuid: ZY.nid(),
         currentLayoutMap,
         currentLinks,
-      })
+      }
+      await ZY_EXT.store.setItem('current-data', currentData)
 
       await ZY.sleep(500)
+
+
+      await this.onSaveLayout({
+        origin: { deps, links},
+        currentData
+      })
+
       this.showCurrent = true
     }
   }
@@ -542,6 +550,7 @@ export default defineComponent({
 
     let currentFromDialog = null
     let cachedPageControlModel = null
+    let cachedPageLayout = null
 
     page.setEventHandler({
       ['add:arr:common'](e) {
@@ -573,9 +582,6 @@ export default defineComponent({
       ['call:save'](e) {
         if (page.ctx.LayoutContext) {
           console.log('call:save', cachedPageControlModel)
-          if (cachedPageControlModel) {
-            page.dispatchRoot('SetStoreEvents', cachedPageControlModel)
-          }
           page.ctx.LayoutContext.save()
         }
       },
@@ -586,11 +592,19 @@ export default defineComponent({
         let obj = toRaw(
             model
         )
-        // console.log(obj)
-        ZY_EXT.saveObjAsJson5File({
+        let saved = {
           data: obj,
           date: Date.now()
-        }, 'forms_' + ZY.rid(6))
+        }
+
+        if (cachedPageLayout) {
+          saved.layout = cachedPageLayout
+        }
+
+        let fileName = obj.name ??  ZY.rid(6)
+
+        console.log('call:save:file', saved)
+        ZY_EXT.saveObjAsJson5File(saved, 'forms_' + fileName)
       },
       ['random:tab'](e) {
         let index = ZY.lodash.random(1,2)
@@ -761,7 +775,17 @@ export default defineComponent({
       return ret;
     }
 
+    async function onSaveLayout({origin}) {
+      if (cachedPageControlModel) {
+        await page.dispatchRoot('SetStoreEvents', cachedPageControlModel)
+      }
+      cachedPageLayout = ZY.JSON5.parse(ZY.JSON5.stringify(origin))
+      // console.log('currentData', origin, cachedPageControlModel)
+      return '';
+    }
+
     return {
+      onSaveLayout,
       loadStepByContent,
       store: page.store,
       page,
