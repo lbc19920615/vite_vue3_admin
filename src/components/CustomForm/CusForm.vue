@@ -1,6 +1,6 @@
 <template>
   <template v-if="page.inited">
-    <div hidden>{{store.model}}</div>
+    <div>{{store.model}}</div>
     <HttpComponent
         :defs="page.defMap"
         :is="store.model.editor_step"

@@ -61,12 +61,6 @@ let formDef = {
               }
             },
           },
-          // type: {
-          //     type: 'string',
-          //     ui: {
-          //         disabled: true
-          //     }
-          // },
           name: {
             type: 'string',
           },
@@ -101,18 +95,6 @@ let formDef = {
               }
             }
           },
-          // properties: {
-          //   type: 'string',
-          //   ui: {
-          //     label: 'SCHEMA',
-          //     widget: 'JsonCodeEditor',
-          //     widgetConfig: {
-          //       style: {
-          //         height: "500px",
-          //       }
-          //     }
-          //   }
-          // },
           defaultVal: {
             type: 'string',
             ui: {

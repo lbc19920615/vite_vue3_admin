@@ -48,7 +48,6 @@
               </template>
               <template v-if="scope.key === 'forms'">
                 <el-button size="small" @click="page.callEvent(`add:${scope.key}`, scope)">添加{{ scope.key }}</el-button>
-                <el-button size="small" @click="page.callEvent(`save:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
                 <el-button size="small" @click="page.callEvent(`save:${scope.key}:file`, scope)">保存{{ scope.key }}到本地</el-button>
                 <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}</el-button>
               </template>
@@ -56,8 +55,13 @@
           </el-col>
         </template>
         <template #array_item_after="scope">
-          <!--                 {{scope}}-->
-          <el-button type="danger" size="small" @click="page.callEvent('remove:events', scope)">删除{{ scope.key }}</el-button>
+<!--                           {{scope}}-->
+          <el-space wrap>
+            <el-button type="danger" size="small" @click="page.callEvent('remove:events', scope)">删除{{ scope.key }}</el-button>
+            <template v-if="scope.key === 'forms'">
+              <el-button size="small" @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
+            </template>
+          </el-space>
         </template>
         <template #form_before="scope">
           <el-space wrap>
@@ -589,6 +593,16 @@ export default defineComponent({
         // lastsds.name = value.label
         // lastsds.value = obj
         page.webComponentRef.toggleDialog('dialog');
+      },
+      ['save:single:forms'](e) {
+        let { parts, partName, selfpath } = e
+        let model = parts[partName].getModel()
+        let current = toRaw(ZY.lodash.get(model, selfpath))
+        // console.log(e, current)
+        ZY_EXT.saveObjAsJson5File({
+          data: current,
+          date: Date.now()
+        }, 'form_' + current.name)
       },
       ['save:forms'](e) {
         let { parts, partName } = e

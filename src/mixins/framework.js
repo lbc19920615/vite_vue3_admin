@@ -309,7 +309,8 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
     let [,res] = await ZY.awaitTo(
       loadPromise
     )
-    const config = res.default
+    const config = ZY.JSON5.parse(ZY.JSON5.stringify(res.default))
+    console.log('commonLoadStep', config)
     config.name = ZY.nid()
 
     setDef(config, function ({done}) {
