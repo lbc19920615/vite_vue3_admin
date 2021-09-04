@@ -15,7 +15,7 @@
 <!--    </el-table>-->
 
     <z-table border stripe :actions="state.actions"
-             :actionProps="{width: '150px'}"
+             :actionProps="actionProps"
              :column="state.column" :data="dataTable"></z-table>
   </div>
 </template>
@@ -29,7 +29,13 @@ export default {
   name: 'SimpleList',
   props: {
     suggest: Array,
-    column: Array
+    column: Array,
+    actionProps: {
+      type: Object,
+      default() {
+        return {width: '100px'}
+      }
+    }
   },
   components: {
     ZTable
