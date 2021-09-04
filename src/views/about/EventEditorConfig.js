@@ -153,6 +153,11 @@ export default {
                         },
                         events: {
                             type: 'array',
+                            ui: {
+                              attrs: [
+                                  ['id', 'page_events']
+                              ]
+                            },
                             items: {
                                 type: 'object',
                                 properties: {
