@@ -19,6 +19,52 @@ export let PageControl = {
 }
 
 /**
+ * PageControlMixin
+ * @type {{created(): void}}
+ */
+export let PageControlMixin = {
+  created() {
+    let pageManager = inject('pageManager')
+    // console.log(pageManager, this.$router.currentRoute); // path is /post
+
+    pageManager.register(this, this.$router.currentRoute.value.fullPath)
+    // console.log('pageManager', pageManager.getCurrentPage())
+  },
+}
+
+/**
+ * initWebComponentRefMan
+ * @param page
+ * @returns {{Refs: *}}
+ */
+function initWebComponentRefMan(page) {
+  let webComponentRef = createRefManager({
+    eventHandler({type, e}) {
+      console.log('eventHandler', type, e)
+    }
+  })
+
+  webComponentRef.toggleDialog = function (name) {
+    let dialog = webComponentRef.find(name)
+    if (dialog) {
+      dialog.toggle()
+    }
+  }
+
+  return webComponentRef
+}
+
+/**
+ * extendPartialPage
+ * @param page
+ */
+export let extendPartialPage = function (page) {
+  let webComponentRef = initWebComponentRefMan(page)
+  provide('webComponentRef', webComponentRef)
+  page.webComponentRef  = webComponentRef
+}
+
+/**
  *
  * @param page
  */
@@ -32,20 +78,9 @@ export let useAppPageControl = function (page) {
 
   page.pageManager = pageManager
 
-  let webComponentRef = createRefManager({
-    eventHandler({type, e}) {
-      console.log('eventHandler', type, e)
-    }
-  })
+  let webComponentRef = initWebComponentRefMan(page)
   provide('webComponentRef', webComponentRef)
-  page.webComponentRef = webComponentRef
-
-  page.webComponentRef.toggleDialog = function (name) {
-    let dialog = webComponentRef.find(name)
-    if (dialog) {
-      dialog.toggle()
-    }
-  }
+  page.webComponentRef  = webComponentRef
 
   let modalManRef = createRefManager({
     eventHandler({type, e}) {

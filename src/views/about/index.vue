@@ -94,7 +94,9 @@
         <el-drawer
             title="编辑"
             size="600px"
-            v-model="renderFormDesigner" destroy-on-close>
+            v-model="renderFormDesigner"
+            :lock-scroll="false"
+            destroy-on-close>
           <template #default>
             <div v-loading="renderFormLoading">
               <template v-if="renderFormDesigner">
@@ -399,7 +401,7 @@ let plumbLayoutMixin = {
   }
 }
 
-import {extendControl2Page, useControl, useAppPageControl} from "@/mixins/framework";
+import {extendControl2Page, useControl, useAppPageControl, PageControlMixin} from "@/mixins/framework";
 import AutoHttpCom from "@/components/AutoHttpCom.vue";
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
 import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
@@ -411,6 +413,7 @@ import FormsManaSelect from "@/plugins/z-frame/components/FormsManaSelect.vue";
 
 export default defineComponent({
   mixins: [
+    PageControlMixin,
     plumbLayoutMixin,
     renderLayoutMixin,
     depManagerMixin,

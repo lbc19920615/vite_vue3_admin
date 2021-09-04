@@ -32,6 +32,14 @@
         webComponentRef: null,
       }
     },
+    watch: {
+      name: {
+        handler(newVal) {
+          // console.log('name', newVal)
+        },
+        immediate: true
+      }
+    },
     render() {
       let self = this
       let webComponentRef = inject('webComponentRef')
@@ -45,6 +53,7 @@
         ))
       }
       this.webComponentRef = webComponentRef
+      // console.log('name', this.name)
       return h(this.is, {
         style: {
           ['--dialog-inner-top']: '10vh'

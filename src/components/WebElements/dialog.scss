@@ -57,6 +57,7 @@ $com: ".dialog";
   background: rgba(0,0,0, 0.5);
   z-index: 1111;
   display: none;
+  overflow: auto;
   &-body {
     padding: var(--dialog-body-padding);
   }

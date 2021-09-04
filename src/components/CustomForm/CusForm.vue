@@ -1,17 +1,23 @@
 <template>
   <template v-if="page.inited">
-    <div>{{store.model}}</div>
-    <HttpComponent
-        :defs="page.defMap"
-        :is="store.model.editor_step"
-    >
-      <template #array_item_before="scope">
-        <h3>{{ scope.key }}</h3>
+    <div hidden>{{store.model}}</div>
+    <el-button @click="openDialog">打开编辑</el-button>
+    <CustomElement is="my-vue-dialog" :name="dialogName"
+                   :params="{sstyle: 'width: 80vw; min-width: 720px;'}">
+      <template #default>
+        <HttpComponent
+            :defs="page.defMap"
+            :is="store.model.editor_step"
+        >
+          <template #array_item_before="scope">
+            <h3>{{ scope.key }}</h3>
+          </template>
+          <template #array_before="scope">
+            <!--        <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>-->
+          </template>
+        </HttpComponent>
       </template>
-      <template #array_before="scope">
-<!--        <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>-->
-      </template>
-    </HttpComponent>
+    </CustomElement>
   </template>
 
 </template>
@@ -20,10 +26,11 @@ import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-rende
 import HttpComponent from "@/components/HttpComponent.vue";
 import {extendControl2Page, useControl} from "@/mixins/framework";
 import {nextTick, onMounted} from 'vue';
+import CustomElement from "@/components/CustomElement.vue";
 
 export default {
   name: 'CusForm',
-  components: {HttpComponent},
+  components: {CustomElement, HttpComponent},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -48,8 +55,9 @@ export default {
       },
       json: {
         type: String,
-      }
+      },
     }
+    let dialogName = 'cus_form_dialog_' + ZY.rid(6)
     let computed = {}
     function onInited({storeControl}) {
     }
@@ -101,8 +109,17 @@ export default {
       )
     })
 
+    function openDialog() {
+      let currentPageWebComponentRef =  globalThis.getCurrentPage('page.webComponentRef')
+      if (currentPageWebComponentRef && currentPageWebComponentRef.toggleDialog) {
+        currentPageWebComponentRef.toggleDialog(dialogName);
+      }
+    }
+
     return {
+      dialogName,
       page,
+      openDialog,
       store: page.store
     }
 

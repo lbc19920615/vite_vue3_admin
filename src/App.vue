@@ -187,7 +187,7 @@ ${item.value}
     pageManager.getCurrentPage = function () {
       let currentRoute = router.currentRoute.value
       if (currentRoute) {
-        console.log(pageManager.Refs)
+        // console.log(pageManager.Refs)
         if (pageManager.Refs.has(currentRoute.fullPath)) {
           return pageManager.Refs.get(currentRoute.fullPath).context
         }
@@ -196,6 +196,14 @@ ${item.value}
     }
 
     provide('pageManager', pageManager)
+
+    globalThis.getCurrentPage = function (path = '') {
+      let obj = pageManager.getCurrentPage();
+      if (obj && path) {
+        return ZY.lodash.get(obj, path)
+      }
+      return obj
+    }
   }
 })
 </script>
