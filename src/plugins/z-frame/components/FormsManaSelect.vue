@@ -25,6 +25,10 @@ export default {
       suggest: [],
       column: [
         {
+         prop: 'label',
+         width: '150px'
+        },
+        {
           prop: 'value',
           label: 'VALUE',
           render(h, props) {
