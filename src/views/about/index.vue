@@ -12,7 +12,22 @@
 <!--    {{store.model}}-->
 <!--    {{store.computedModel}}-->
 <!--    <DeepPropEditor v-model:deps="store.model.deps" v-model:links="store.model.links"></DeepPropEditor>-->
-
+    <my-fixed>
+<!--      {{page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')}}-->
+      <el-card class="box-card" v-show="page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')">
+        <template #header>
+          <div class="card-header">
+            <span>跳转</span>
+          </div>
+        </template>
+        <div v-for="o in store.model.domes"
+             style="cursor: pointer;"
+             @click="jumpTo(o)"
+             :key="o" class="text item">
+          {{o.getAttribute('scroll-control')}}
+        </div>
+      </el-card>
+    </my-fixed>
 
 <!--    <CusForm></CusForm>-->
     <CustomElement is="my-vue-dialog" name="dialog"
@@ -126,7 +141,7 @@
 
 <script>
 
-import {defineComponent, nextTick, getCurrentInstance, toRaw} from "vue";
+import {defineComponent, nextTick, getCurrentInstance, toRaw, computed, watchEffect} from "vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
 import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
@@ -410,7 +425,13 @@ let plumbLayoutMixin = {
   }
 }
 
-import {extendControl2Page, useControl, useAppPageControl, PageControlMixin} from "@/mixins/framework";
+import {
+  extendControl2Page,
+  useControl,
+  useAppPageControl,
+  PageControlMixin,
+  extendControlComputedWatch
+} from "@/mixins/framework";
 import AutoHttpCom from "@/components/AutoHttpCom.vue";
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
 import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
@@ -528,22 +549,40 @@ export default defineComponent({
       },
       deps: {
         type: Array
+      },
+      domes: {
+        type: Array
       }
     }
-    let computed = {
-      ['curss']: `A.getDeeps(MODEL('links'),MODEL('deps'))`
+    let computedProps = {
+      ['curss']: `A.getDeeps(MODEL('links'),MODEL('deps'))`,
+      ['domes']: `E.getDoms()`
     }
-    let page = useControl({properties, computed}, {
+    let page = useControl({properties, computed: computedProps}, {
       onInited,
       extendContext: {
         // getDeeps(v1, v2) {
         //   // console.log('v1', v1, v2)
         //   return getDeepConfigFromLinksAndDeps(v1, v2)
         // }
+        getDoms() {
+          let ret = Array.of(
+              ...document.querySelectorAll('.http-com .z-form__object [scroll-control]')
+          )
+          return ret
+        }
       }
     })
     page = extendControl2Page(page)
     page = useAppPageControl(page)
+
+
+    // watchEffect(() => {
+    //   doms =  Array.of(
+    //       ...document.querySelectorAll('.http-com .z-form__object [scroll-control]')
+    //   )
+    //   console.log('dsdsds', doms)
+    // })
 
 
     let formsMana = useFormsMana();
@@ -784,10 +823,30 @@ export default defineComponent({
       return '';
     }
 
+    function detectChange() {
+      let doms =  Array.of(
+          ...document.querySelectorAll('.http-com .z-form__object [scroll-control]'))
+      page.setData({
+        domes: doms
+      })
+      if (Array.isArray(doms) && doms.length > 0) {
+        interval1.stop()
+      }
+    }
+
+    let interval1 = new ZY.Interval(detectChange, 6000);
+    interval1.start()
+
+    function jumpTo(o) {
+      // console.log(o)
+      ZY.U.scrollToView(o)
+    }
+
     return {
       onSaveLayout,
       loadStepByContent,
       store: page.store,
+      jumpTo,
       page,
       allDef: page.defMap,
     }

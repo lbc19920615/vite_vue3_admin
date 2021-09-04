@@ -142,7 +142,12 @@ export default defineComponent({
       SET_MODEL_READY: Symbol('SET_MODEL_READY')
     }
 
+    function onWatchEffect(e) {
+      console.log('onWatchEffect', e)
+    }
+
     return {
+      onWatchEffect,
       serviceNames,
       installServiceComponent,
       installExposeServices,
