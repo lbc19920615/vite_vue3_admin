@@ -7,7 +7,12 @@ import {elementMixin} from "@/components/WebElements/mixins";
 const MyVueElement = defineCustomElement({
     template: `
  <template>     {{selected}}</template>
-<slot></slot>
+<div class="host" :class="{'is-open': open}">
+<div class="action">
+  <button class="toggle" @click="toggle" type="button">toggle</button>
+</div>
+<div class="content"><slot></slot></div>
+</div>
     `,
     styles: [
         comStyle,
@@ -20,14 +25,16 @@ const MyVueElement = defineCustomElement({
     },
     data() {
         return {
-            className: '',
-            reload: false,
-            slotcon: null
+            open: false
         }
     },
     watch: {
     },
-
+    methods: {
+        toggle() {
+            this.open = !this.open
+        }
+    }
 })
 
 customElements.define('my-fixed', MyVueElement)

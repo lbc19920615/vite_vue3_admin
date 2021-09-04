@@ -143,7 +143,7 @@ export default defineComponent({
     }
 
     function onWatchEffect(e) {
-      console.log('onWatchEffect', e)
+      // console.log('onWatchEffect', e)
     }
 
     return {

@@ -1,7 +1,23 @@
-:host {
+.host {
   position: fixed;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
   z-index: 1001;
+}
+
+.action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+:not(.is-open) {
+  .content {
+    width: 0;
+    overflow: hidden;
+  }
+}
+
+.toggle {
+
 }
