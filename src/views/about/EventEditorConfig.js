@@ -100,8 +100,9 @@ export default {
                         beforeScript: {
                             type: 'string',
                             ui: {
-                                widget: 'CodeJsEditor',
+                                // widget: 'CodeJsEditor',
                                 widgetConfig: {
+                                    type: 'textarea',
                                     // mode: 'text/html'
                                 }
                             }
