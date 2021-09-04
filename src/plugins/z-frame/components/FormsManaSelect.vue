@@ -54,8 +54,8 @@ export default {
     // })
     function onSelect(e) {
       e.label = e.label + '___' + ZY.rid(3)
-      console.log('select', e)
-      // ctx.emit('select-form', e)
+      // console.log('select', e)
+      ctx.emit('select-form', e)
     }
     async function load() {
       await formMana.init();
@@ -70,7 +70,7 @@ export default {
     }
     useRefsManager(ret, [
         async function (def) {
-      console.log('sdsdsds', def)
+      // console.log('sdsdsds', def)
 
         }
     ])

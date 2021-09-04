@@ -73,9 +73,6 @@ export default {
       async ['model:update:all'](e) {
         let { model, key, newVal, config } = e
         // console.log('model:update:all', model)
-        // if (config.process === page.store.model.editor_step) {
-        //   console.log('model:update:all', model)
-        // }
         if (!locks) {
           let val = ZY.JSON5.stringify(model)
           page.setData({
@@ -95,7 +92,7 @@ export default {
           {
             async onMounted(config, {setPartModel}) {
               init(props)
-              console.log(cached)
+              console.log('formEditorConfig', cached)
               setPartModel(config.name, 'form2', cached)
               locks = false
               // console.log('eventModel', config, page.defMap)

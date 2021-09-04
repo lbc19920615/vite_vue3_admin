@@ -578,12 +578,17 @@ export default defineComponent({
         let {value, scope} = e
         let { parts, partName, selfpath, process } = currentFromDialog
         // console.log('forms:select-form', e, currentFromDialog)
-        let obj = ZY.JSON5.parse(value.value)
-        let lastsds = parts[partName].arrAppend(selfpath)
+        // let obj = ZY.JSON5.parse(value.value)
+        let appendData = {
+          name: value.label,
+          value: value.value
+        }
+        console.log(appendData)
+        parts[partName].arrAppend(selfpath, appendData)
         await ZY.sleep(300)
-        lastsds.name = value.label
-        lastsds.value = obj
-        // page.webComponentRef.toggleDialog('dialog');
+        // lastsds.name = value.label
+        // lastsds.value = obj
+        page.webComponentRef.toggleDialog('dialog');
       },
       ['save:forms'](e) {
         let { parts, partName } = e
