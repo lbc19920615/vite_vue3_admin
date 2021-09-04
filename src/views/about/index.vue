@@ -61,6 +61,7 @@
         <template #form_before="scope">
           <el-space wrap>
             <el-button type="primary" @click="page.callEvent('call:save', scope)">保存</el-button>
+            <el-button type="primary" @click="page.callEvent('call:save:file', scope)">保存文件</el-button>
             <template v-if="showCurrent">
               <el-link href="/show" target="_blank">打开预览</el-link>
             </template>
@@ -543,6 +544,19 @@ export default defineComponent({
           page.ctx.LayoutContext.save()
         }
       },
+      ['call:save:file'](e) {
+        // console.log(e)
+        let {partName, parts} = e
+        let model = parts[partName].getModel()
+        let obj = toRaw(
+            model
+        )
+        // console.log(obj)
+        ZY_EXT.saveObjAsJson5File({
+          data: obj,
+          date: Date.now()
+        }, 'forms_' + ZY.rid(6))
+      },
       ['random:tab'](e) {
         let index = ZY.lodash.random(1,2)
         page.setData({
@@ -556,7 +570,7 @@ export default defineComponent({
       },
       ['add:forms'](e) {
         let { parts, partName, selfpath, process } = e
-        // console.log('add:events', e, model)
+        // console.log('add:events', e)
         parts[partName].arrAppend(selfpath)
       },
       async ['forms:select-form'](e) {
