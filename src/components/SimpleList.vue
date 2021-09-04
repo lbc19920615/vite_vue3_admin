@@ -43,7 +43,7 @@ export default {
   setup(props, ctx) {
     // console.log(props)
     let column = [
-      { label: 'Label', prop: 'label', width: 150 },
+      { label: 'Label', prop: 'label' },
       { label: 'Value', prop: 'value' },
     ]
 
