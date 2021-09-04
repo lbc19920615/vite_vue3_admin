@@ -1,6 +1,6 @@
 import {getCurrentInstance, inject, nextTick, provide, onMounted, reactive, ref} from "vue";
 import {createRefManager, provideRefManager} from "@/hooks/ref";
-import {useRouter} from "vue-router";
+import {useRouter, useRoute} from "vue-router";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
 import {useStore} from "vuex";
 
@@ -397,6 +397,7 @@ export let usePage  = function ({data = {} , filters = {}, defaultVal = {}, serv
   const globalStore = inject('globalStore')
 
   let router = useRouter()
+
   let meta = {}
   if (router && router.currentRoute && router.currentRoute.value) {
     meta = router.currentRoute.value.meta

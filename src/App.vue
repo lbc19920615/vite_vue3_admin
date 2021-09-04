@@ -23,7 +23,7 @@
 <script>
 import {defineComponent, inject, provide} from "vue";
 import {createRefManager} from "@/hooks/ref";
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {fetchTwigComponent} from "@/hooks/remote.js";
 import {getDeepConfigFromLinksAndDeps} from "@/views/about/components/DeepPropEditor/utils";
 
@@ -203,6 +203,16 @@ ${item.value}
         return ZY.lodash.get(obj, path)
       }
       return obj
+    }
+
+    function reloadCurrentRoute() {
+      // let route = useRoute()
+      // console.log(router, route)
+      router.go(router.currentRoute.value)
+    }
+
+    return {
+      reloadCurrentRoute
     }
   }
 })

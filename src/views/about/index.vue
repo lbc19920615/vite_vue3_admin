@@ -67,6 +67,7 @@
           <el-space wrap>
             <el-button type="primary" @click="page.callEvent('call:save', scope)">保存</el-button>
             <el-button type="primary" @click="page.callEvent('call:save:file', scope)">保存文件</el-button>
+            <el-button type="primary" @click="page.callEvent('load:file')">加载文件</el-button>
             <template v-if="showCurrent">
               <el-link href="/show" target="_blank">打开预览</el-link>
             </template>
@@ -540,6 +541,7 @@ export default defineComponent({
     let formsMana = useFormsMana();
 
     let currentFromDialog = null
+    let cachedPageControlModel = null
 
     page.setEventHandler({
       ['add:arr:common'](e) {
@@ -547,8 +549,33 @@ export default defineComponent({
         // console.log('add:events', e, model)
         parts[partName].arrAppend(selfpath)
       },
+      async ['load:file'](e) {
+        let text = ''
+        const blob = await ZY_EXT.FS.fileOpen({
+          mimeTypes: ['text/*'],
+        });
+        if (blob) {
+          text = await blob.text()
+          try {
+            let obj = ZY.JSON5.parse(text)
+            let {data } = obj
+            if (data) {
+              console.log(data)
+              await page.dispatchRoot('SetStoreEvents', data)
+              await ZY.sleep(300)
+              location.reload()
+            }
+          } catch (e) {
+          //
+          }
+        }
+      },
       ['call:save'](e) {
         if (page.ctx.LayoutContext) {
+          console.log('call:save', cachedPageControlModel)
+          if (cachedPageControlModel) {
+            page.dispatchRoot('SetStoreEvents', cachedPageControlModel)
+          }
           page.ctx.LayoutContext.save()
         }
       },
@@ -646,16 +673,16 @@ export default defineComponent({
         let { scope, parts } = e
         let model = parts[scope.name].getModel()
         // console.log('submit:form',e, model);
-        // if (scope.process === page.store.model.textarea_step) {
-        //   // console.log('sddddddddddddd');
-        //   page.dispatchRoot('SetStoreEvents', model)
-        // }
+        if (scope.process === page.store.model.textarea_step) {
+          // console.log('sddddddddddddd');
+        }
       },
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e
         if (config.process === page.store.model.textarea_step) {
           // console.log('sdsdsdsdsdsdsds', model)
-          page.dispatchRoot('SetStoreEvents', model)
+          // page.dispatchRoot('SetStoreEvents', model)
+          cachedPageControlModel = model
         }
       },
       ['model:update'](e) {
