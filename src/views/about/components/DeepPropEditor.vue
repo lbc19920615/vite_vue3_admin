@@ -17,7 +17,9 @@
     <el-drawer
         title="编辑"
         size="600px"
-        v-model="renderFormDesigner" destroy-on-close>
+        v-model="renderFormDesigner"
+        :lock-scroll="false"
+        destroy-on-close>
       <template #default>
         <div  v-if="renderFormDesigner && currentEditDep">
           <template v-if="currentEditDep.type === 'object'">
