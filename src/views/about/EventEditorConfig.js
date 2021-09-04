@@ -155,7 +155,8 @@ export default {
                             type: 'array',
                             ui: {
                               attrs: [
-                                  ['id', 'page_events']
+                                  ['scroll-control', 'page_events'],
+                                  ['id', 'page_events'],
                               ]
                             },
                             items: {
