@@ -20,6 +20,7 @@
       <template #default="scope">
 <!--        {{scope}}-->
         <FormsManaSelect
+            com-name="form-mana-select"
             @select-form="page.callEvent('forms:select-form', {
               scope,
               value: $event
@@ -606,6 +607,7 @@ export default defineComponent({
       },
       ['open:forms'](e) {
         currentFromDialog = e
+        page.refsManager.runCom('form-mana-select', 'load')
         page.webComponentRef.toggleDialog('dialog');
       },
       ['add:events'](e) {

@@ -11,10 +11,15 @@
 import {reactive, onMounted, resolveComponent} from 'vue';
 import SimpleList from "@/components/SimpleList.vue";
 import {useFormsMana} from "@/plugins/z-frame/formsMana";
+import {useRefsManager} from "@/hooks/ref";
 export default {
   name: "FormsManaSelect",
   components: {SimpleList},
+  props: {
+    comName: String
+  },
   setup(props, ctx) {
+    let uuid = props.comName ?? 'form_mana_' + ZY.rid()
     let formMana = useFormsMana()
     let state = reactive({
       suggest: [],
@@ -42,21 +47,34 @@ export default {
         }
       ]
     })
-    onMounted(async () => {
-      await formMana.init();
-      await ZY.sleep(30)
-      state.suggest = formMana.getOptions()
-    })
+    // onMounted(async () => {
+    //   await formMana.init();
+    //   await ZY.sleep(30)
+    //   state.suggest = formMana.getOptions()
+    // })
     function onSelect(e) {
-
       e.label = e.label + '___' + ZY.rid(3)
       console.log('select', e)
       // ctx.emit('select-form', e)
     }
-    return {
-      state,
-      onSelect
+    async function load() {
+      await formMana.init();
+      await ZY.sleep(30)
+      state.suggest = formMana.getOptions()
     }
+    let ret = {
+      uuid,
+      state,
+      onSelect,
+      load,
+    }
+    useRefsManager(ret, [
+        async function (def) {
+      console.log('sdsdsds', def)
+
+        }
+    ])
+    return ret
   }
 }
 </script>

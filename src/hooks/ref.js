@@ -59,6 +59,25 @@ export function createRefManager({eventHandler}) {
     }
     return null
   }
+
+  /**
+   *
+   * @param name
+   * @param methodName
+   * @param args
+   * @returns {boolean}
+   */
+  RefsManager.runCom = function (name, methodName, ...args) {
+    let _com = RefsManager.find(name)
+    if (!_com) {
+      return false
+    }
+    if (!_com[methodName]) {
+      return false
+    }
+    _com[methodName](...args)
+    return true
+  }
   return RefsManager
 }
 
