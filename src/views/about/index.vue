@@ -1,5 +1,4 @@
 
-
 <template>
   <div class="page-search" v-if="page.inited">
 
@@ -64,7 +63,7 @@
         </template>
         <template #array_before="scope">
 <!--          {{scope}}-->
-          <el-col>
+          <el-col v-if="scope.key !== 'events'">
             <el-space  align="middle">
               <h3>{{ scope.selfpath }}</h3>
               <template v-if="scope.key === 'layoutSlotArr'">
@@ -776,7 +775,7 @@ export default defineComponent({
         {
           async onMounted(config) {
             let eventModel = await page.dispatchRoot('GetStoreEvents')
-            page.setPartModel(config.name, 'form2', eventModel)
+            page.setPartModel(config.name, 'form2', eventModel ?? {})
             // console.log('eventModel', config, eventModel)
           }
         }

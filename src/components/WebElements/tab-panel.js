@@ -13,7 +13,8 @@ const MyVueElement = defineCustomElement({
         elementMixin
     ],
     props: {
-       name: String
+       name: String,
+       label: String,
     },
     data() {
         return {
@@ -31,7 +32,10 @@ const MyVueElement = defineCustomElement({
     },
     mounted() {
         nextTick(() => {
-            console.log(this)
+            // console.log(this)
+            if (this.$parent && this.$parent.registerTabPanel) {
+                this.$parent.registerTabPanel(this)
+            }
         })
     }
 })

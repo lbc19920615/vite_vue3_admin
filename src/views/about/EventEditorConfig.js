@@ -172,20 +172,20 @@ export default {
                         },
                         events: {
                             type: 'array',
-                            tag: 'el-tabs',
-                            con_tag: 'el-tab-pane',
+                            tag: 'my-vue-tab',
+                            con_tag: 'my-vue-tab-pane',
                             ui: {
                               attrs: [
                                   ['scroll-control', 'page_events'],
-                                  ['id', 'page_events'],
+                                  ['slotPrefix', 'event'],
                               ],
                               conAttrs: [
-                                  // ['label', 'page_events'],
+                                  // ['class', 'my-tab'],
                                   {
                                       prefixValue: '"event"+',
                                       // prefixValue: 'valTpl("A.test("+',
                                       // suffixValue: ' +")" )',
-                                      handler: ['c', 'return [":label", c.indexKey]']
+                                      handler: ['c', 'return [":name", c.indexKey]']
                                   }
                               ]
                             },
