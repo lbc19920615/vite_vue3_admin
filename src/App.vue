@@ -87,6 +87,10 @@ ${item.value}
       }
       let o = this.getPropsObj(s) ?? {}
       return tpl(o.properties ?? {})
+    },
+    test(v) {
+      console.log('call app test')
+      return v
     }
   },
   setup() {

@@ -153,10 +153,21 @@ export default {
                         },
                         events: {
                             type: 'array',
+                            tag: 'el-tabs',
+                            con_tag: 'el-tab-pane',
                             ui: {
                               attrs: [
                                   ['scroll-control', 'page_events'],
                                   ['id', 'page_events'],
+                              ],
+                              conAttrs: [
+                                  // ['label', 'page_events'],
+                                  {
+                                      prefixValue: '"event"+',
+                                      // prefixValue: 'valTpl("A.test("+',
+                                      // suffixValue: ' +")" )',
+                                      handler: ['c', 'return [":label", c.indexKey]']
+                                  }
                               ]
                             },
                             items: {
@@ -164,6 +175,7 @@ export default {
                                 properties: {
                                     name: {
                                         type: 'string',
+                                        tag: 'div',
                                         ui: {
                                             widget: 'CusSuggest',
                                             widgetConfig: {
@@ -179,6 +191,7 @@ export default {
                                     },
                                     code: {
                                         type: 'string',
+                                        tag: 'div',
                                         ui: {
                                             widget: 'CodeJsEditor',
                                             widgetConfig: {
@@ -188,6 +201,7 @@ export default {
                                     },
                                     prop1: {
                                         type: 'string',
+                                        tag: 'div',
                                         reflect: 'name',
                                         reflectTpl: `L.defaultTo($VAL, '') + 's'`,
                                         widgetConfig: {

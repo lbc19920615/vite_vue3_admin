@@ -50,6 +50,16 @@
           :is="store.model.textarea_step"
           :debug="true"
       >
+        <template #array_prev="scope">
+          <template v-if="scope.key === 'events'">
+           <el-row>
+             <el-col>
+               <el-button size="small" @click="page.callEvent('add:events', scope)">添加{{ scope.key }}</el-button>
+             </el-col>
+           </el-row>
+          </template>
+
+        </template>
         <template #array_before="scope">
 <!--          {{scope}}-->
           <el-col>
@@ -57,9 +67,6 @@
               <h3>{{ scope.selfpath }}</h3>
               <template v-if="scope.key === 'layoutSlotArr'">
                 <el-button size="small" @click="page.callEvent('add:arr:common', scope)">添加{{ scope.key }}</el-button>
-              </template>
-              <template v-if="scope.key === 'events'">
-                <el-button size="small" @click="page.callEvent('add:events', scope)">添加{{ scope.key }}</el-button>
               </template>
               <template v-if="scope.key === 'forms'">
                 <el-button size="small" @click="page.callEvent(`add:${scope.key}`, scope)">添加{{ scope.key }}</el-button>
