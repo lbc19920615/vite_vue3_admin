@@ -1,9 +1,10 @@
 <template>
 <!--  {{state}}-->
+  <el-button style="margin-bottom: var(--z-size-20);" type="primary" @click="loadFile">加载</el-button>
   <simple-list
       :suggest="state.suggest"
       :column="state.column"
-  @select="onSelect"
+      @select="onSelect"
   ></simple-list>
 </template>
 
@@ -66,9 +67,14 @@ export default {
       await ZY.sleep(30)
       state.suggest = formMana.getOptions()
     }
+    async function loadFile() {
+      await formMana.loadFile();
+      await load()
+    }
     let ret = {
       uuid,
       state,
+      loadFile,
       onSelect,
       load,
     }

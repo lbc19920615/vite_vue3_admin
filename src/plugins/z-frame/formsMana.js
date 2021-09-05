@@ -16,6 +16,25 @@ export class FormsMana {
       data: formsMap
     })
   }
+  static async loadFile() {
+    let text = ''
+    const blob = await ZY_EXT.FS.fileOpen({
+      mimeTypes: ['text/*'],
+    });
+    if (blob) {
+      text = await blob.text()
+      try {
+        let obj = ZY.JSON5.parse(text)
+        let {data } = obj
+        if (Array.isArray(data)) {
+          await FormsMana.setStorage(data)
+          return data;
+        }
+      } catch (e) {
+        //
+      }
+    }
+  }
   static getOptions() {
     let v = []
     formsMap.forEach((value, key) => {

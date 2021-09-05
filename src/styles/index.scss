@@ -4,6 +4,12 @@
 @import 'element-ui.scss';
 @import 'sidebar.scss';
 
+:root {
+  @for $i from 1 through 50 {
+    --z-size-#{$i}: #{$i}px;
+  }
+}
+
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
