@@ -27,6 +27,9 @@ export default {
                         name: {
                             type: 'string',
                             ui: {
+                                attrs: [
+                                    ['scroll-control', 'page_name'],
+                                ],
                                 widget: 'CusSuggest',
                                 widgetConfig: {
                                     suggest: [
@@ -40,6 +43,11 @@ export default {
                         },
                         layoutSlotArr: {
                             type: 'array',
+                            ui: {
+                                attrs: [
+                                    ['scroll-control', 'page_slotArr'],
+                                ],
+                            },
                             items: {
                                 type: 'object',
                                 properties: {
@@ -82,6 +90,9 @@ export default {
                         props: {
                             type: 'string',
                             ui: {
+                                attrs: [
+                                    ['scroll-control', 'page_props'],
+                                ],
                                 widget: 'CusProps',
                                 widgetConfig: {
                                 }
@@ -110,6 +121,9 @@ export default {
                         onInited: {
                             type: 'string',
                             ui: {
+                                attrs: [
+                                    ['scroll-control', 'page_onInited'],
+                                ],
                                 widget: 'CodeJsEditor',
                                 // widget: 'JsonCodeEditor',
                                 widgetConfig: {
