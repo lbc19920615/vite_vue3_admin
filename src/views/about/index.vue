@@ -20,12 +20,14 @@
             <span>跳转</span>
           </div>
         </template>
-        <div v-for="o in store.model.domes"
-             style="cursor: pointer;"
-             @click="jumpTo(o)"
-             :key="o" class="text item">
-          {{o.getAttribute('scroll-control')}}
-        </div>
+       <el-space direction="vertical">
+         <div v-for="o in store.model.domes"
+              style="cursor: pointer;"
+              @click="jumpTo(o)"
+              :key="o" class="text item">
+           {{o.getAttribute('scroll-control')}}
+         </div>
+       </el-space>
       </el-card>
     </my-fixed>
 
