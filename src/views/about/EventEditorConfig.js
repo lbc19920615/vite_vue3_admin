@@ -122,6 +122,11 @@ export default {
                         },
                         forms: {
                             type: 'array',
+                            ui: {
+                                attrs: [
+                                    ['scroll-control', 'page_forms'],
+                                ],
+                            },
                             items: {
                                 type: 'object',
                                 properties: {
