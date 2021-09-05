@@ -1,3 +1,5 @@
+import {toRaw} from "vue";
+
 const FORM_MANA_KEY = 'form-mana-key';
 
 const formsMap = new Map();
@@ -15,6 +17,16 @@ export class FormsMana {
       version: ZY.rid(),
       data: formsMap
     })
+  }
+  static async saveCache2File(cached = null) {
+    if (!cached) {
+      cached = FormsMana.getOptions()
+    }
+    await ZY_EXT.saveObjAsJson5File({
+      data: toRaw(cached),
+      date: Date.now(),
+      version: "v1",
+    }, FORM_MANA_KEY + '_' + ZY.rid(6))
   }
   static async loadFile() {
     let text = ''

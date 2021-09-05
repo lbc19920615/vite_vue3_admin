@@ -446,7 +446,7 @@ import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
 import {buildFormDepContent} from "@/views/about/build";
 import CustomElement from "@/components/CustomElement.vue";
 import CusForm from "@/components/CustomForm/CusForm.vue";
-import {useFormsMana} from "@/plugins/z-frame/formsMana";
+import {FormsMana, useFormsMana} from "@/plugins/z-frame/formsMana";
 import FormsManaSelect from "@/plugins/z-frame/components/FormsManaSelect.vue";
 
 export default defineComponent({
@@ -704,16 +704,19 @@ export default defineComponent({
         // console.log('save:forms', forms, formsMana)
         formsMana.setStorage(forms)
       },
-      ['save:forms:file'](e) {
+      async ['save:forms:file'](e) {
         let {parts, partName} = e
         let model = parts[partName].getModel()
-        let forms = toRaw(
-            ZY.lodash.get(model, 'forms')
+        // let forms = toRaw(
+        //     ZY.lodash.get(model, 'forms')
+        // )
+        // ZY_EXT.saveObjAsJson5File({
+        //   data: forms,
+        //   date: Date.now()
+        // }, 'forms_' + ZY.rid(6))
+        await FormsMana.saveCache2File(
+            ZY.lodash.get(model, 'forms', [])
         )
-        ZY_EXT.saveObjAsJson5File({
-          data: forms,
-          date: Date.now()
-        }, 'forms_' + ZY.rid(6))
       },
       ['open:forms'](e) {
         currentFromDialog = e

@@ -1,6 +1,8 @@
 <template>
 <!--  {{state}}-->
-  <el-button style="margin-bottom: var(--z-size-20);" type="primary" @click="loadFile">加载</el-button>
+  <el-space style="margin-bottom: var(--z-size-20);" >
+    <el-button type="primary" @click="loadFile">加载</el-button>
+  </el-space>
   <simple-list
       :suggest="state.suggest"
       :column="state.column"
