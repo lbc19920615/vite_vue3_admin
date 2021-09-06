@@ -1,6 +1,8 @@
 <style lang="scss">
 .my-vue-tab {
   > .my-vue-tab__tabs {
+    --my-vue-tab--tabs-mb: var(--z-size-20);
+    margin-bottom: var(--my-vue-tab--tabs-mb);
     position: relative;
     display: flex;
     align-items: center;
