@@ -64,7 +64,7 @@
         <template #array_before="scope">
 <!--          {{scope}}-->
           <el-col v-if="scope.key !== 'events'">
-            <el-space  align="middle">
+            <el-space   align="middle">
               <h3>{{ scope.selfpath }}</h3>
               <template v-if="scope.key === 'layoutSlotArr'">
                 <el-button size="small" @click="page.callEvent('add:arr:common', scope)">添加{{ scope.key }}</el-button>
@@ -87,14 +87,16 @@
           </el-space>
         </template>
         <template #form_before="scope">
-          <el-space wrap>
-            <el-button type="primary" @click="page.callEvent('call:save', scope)">保存</el-button>
-            <el-button type="primary" @click="page.callEvent('call:save:file', scope)">保存文件</el-button>
-            <el-button type="primary" @click="page.callEvent('load:file')">加载文件</el-button>
-            <template v-if="showCurrent">
-              <el-link href="/show" target="_blank">打开预览</el-link>
-            </template>
-          </el-space>
+          <div class="mao-bo-li" style="position: sticky; top: 0; z-index: 111;">
+            <el-space>
+              <el-button type="primary" @click="page.callEvent('call:save', scope)">保存</el-button>
+              <el-button type="primary" @click="page.callEvent('call:save:file', scope)">保存文件</el-button>
+              <el-button type="primary" @click="page.callEvent('load:file')">加载文件</el-button>
+              <template v-if="showCurrent">
+                <el-link href="/show" target="_blank">打开预览</el-link>
+              </template>
+            </el-space>
+          </div>
         </template>
       </HttpComponent>
     </template>
