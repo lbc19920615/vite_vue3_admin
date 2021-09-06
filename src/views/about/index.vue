@@ -691,15 +691,14 @@ export default defineComponent({
         let { parts, partName, selfpath } = e
         let model = parts[partName].getModel()
         let current = toRaw(ZY.lodash.get(model, selfpath))
-        // console.log(e, current)
-        // ZY_EXT.saveObjAsJson5File({
-        //   data: current,
-        //   date: Date.now()
-        // }, 'form_' + current.name)
+        console.log('save:single:forms', e, current)
         await FormsMana.saveCache2File(
            [
              current
-           ]
+           ],
+            {
+              fileName: current.name
+            }
         )
       },
       ['save:forms'](e) {

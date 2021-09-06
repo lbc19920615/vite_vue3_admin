@@ -17,7 +17,7 @@ export class FormsMana {
       data: formsMap
     })
   }
-  static async saveCache2File(cached = null) {
+  static async saveCache2File(cached = null, {fileName = ZY.rid(6)} = {}) {
     let self = this
     if (!cached) {
       // cached = this.getOptions()
@@ -29,7 +29,7 @@ export class FormsMana {
       data: toRaw(cached),
       date: Date.now(),
       version: "v1",
-    }, self.STORAGE_KEY + '_' + ZY.rid(6))
+    }, self.STORAGE_KEY + '_' + fileName)
   }
   static async loadFile() {
     let self = this
