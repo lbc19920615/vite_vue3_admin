@@ -71,7 +71,7 @@
               </template>
               <template v-if="scope.key === 'forms'">
                 <el-button size="small" @click="page.callEvent(`add:${scope.key}`, scope)">添加{{ scope.key }}</el-button>
-                <el-button size="small" @click="page.callEvent(`save:${scope.key}:file`, scope)">保存{{ scope.key }}到本地</el-button>
+<!--                <el-button size="small" @click="page.callEvent(`save:${scope.key}:file`, scope)">保存{{ scope.key }}到本地</el-button>-->
                 <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}</el-button>
               </template>
             </el-space>

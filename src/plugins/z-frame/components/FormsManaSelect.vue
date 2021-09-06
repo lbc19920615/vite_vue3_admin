@@ -2,6 +2,7 @@
 <!--  {{state}}-->
   <el-space style="margin-bottom: var(--z-size-20);" >
     <el-button type="primary" @click="loadFile">加载</el-button>
+    <el-button type="primary" @click="exportFile">保存到本地</el-button>
   </el-space>
   <simple-list
       :suggest="state.suggest"
@@ -13,7 +14,7 @@
 <script>
 import {reactive, onMounted, resolveComponent} from 'vue';
 import SimpleList from "@/components/SimpleList.vue";
-import {useFormsMana} from "@/plugins/z-frame/formsMana";
+import {FormsMana, useFormsMana} from "@/plugins/z-frame/formsMana";
 import {useRefsManager} from "@/hooks/ref";
 export default {
   name: "FormsManaSelect",
@@ -73,9 +74,15 @@ export default {
       await formMana.loadFile();
       await load()
     }
+    async function exportFile() {
+      await FormsMana.saveCache2File(
+          FormsMana.getOptions()
+      )
+    }
     let ret = {
       uuid,
       state,
+      exportFile,
       loadFile,
       onSelect,
       load,

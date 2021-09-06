@@ -20,7 +20,10 @@ export class FormsMana {
   static async saveCache2File(cached = null) {
     let self = this
     if (!cached) {
-      cached = this.getOptions()
+      // cached = this.getOptions()
+      return Promise.reject(new Error('saveCache2File must has', {
+        cause: new Error('saveCache2File')
+      }))
     }
     await ZY_EXT.saveObjAsJson5File({
       data: toRaw(cached),
