@@ -77,16 +77,6 @@ export default {
           }, 300)
         })
 
-        // globalThis.app.component(comName, {
-        //   template: tpl,
-        //   data() {
-        //     return {
-        //       model: {
-        //       }
-        //     }
-        //   }
-        // })
-        // this.comName = comName
       } catch (e) {
         console.error(e)
       }

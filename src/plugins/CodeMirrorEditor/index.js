@@ -1,7 +1,8 @@
 import CodeMirror from "./CodeMirror.vue";
 
 const install = (app) => {
-    app.component('CodeMirror', CodeMirror);
+    CustomVueComponent.app = app
+    CustomVueComponent.register(CodeMirror)
 };
 
 export default {
