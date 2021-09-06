@@ -2,6 +2,19 @@ import { moduleConfig } from '__remote/public/vue-bs-loader.js'
 import { initTemplate } from '__remote/public/template-loader.js'
 globalThis.initTemplate = initTemplate
 
+class CustomVueComponent {
+  static defMap = new Map()
+  static app = null
+  static component(name, ctx) {
+    this.app.component(name, ctx)
+    this.defMap.set(name, ctx)
+  }
+  static register(ctx, name = ctx.name) {
+    this.component(name, ctx)
+  }
+}
+globalThis.CustomVueComponent = CustomVueComponent
+
 import * as Vue from 'vue/dist/vue.cjs'
 globalThis.Vue = Vue
 
@@ -121,10 +134,10 @@ window.startApp = function () {
   import('@/plugins/highlight').then(highlightPlugin => {
     app.use(highlightPlugin)
   })
-  import('vant/es/index').then(res => {
-    // console.log(res.default)
-    app.use(res.default)
-  })
+  // import('vant/es/index').then(res => {
+  //   // console.log(res.default)
+  //   app.use(res.default)
+  // })
   initStoreApp(storeApp)
 
   app.mount('#app')

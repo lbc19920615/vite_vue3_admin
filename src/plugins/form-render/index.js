@@ -18,33 +18,36 @@ import HttpComponent from '@/components/HttpComponent.vue'
 // import AceJsEditor from '@/components/CodeEditor/AceJsEditor.vue'
 import RenderLayout from '@/views/about/components/render-layout.vue'
 
+
+
 const plugin = {
     install(app) {
-        app.component(RenderLayout.name, RenderLayout)
+        CustomVueComponent.app = app
+        CustomVueComponent.register(RenderLayout)
 
         import('@/components/CodeEditor/JsonCodeEditor.vue').then(res => {
             let JsonCodeEditor = res.default
-            app.component('JsonCodeEditor', JsonCodeEditor)
+            CustomVueComponent.register(JsonCodeEditor,'JsonCodeEditor')
         })
 
-        app.component(CustomFormRender.name, CustomFormRender)
-        app.component(UnitInput.name, UnitInput)
-        app.component(CusDateTimePicker.name, CusDateTimePicker)
-        app.component(CusSelect.name, CusSelect)
-        app.component(CusProps.name, CusProps)
-        app.component(CusForm.name, CusForm)
-        app.component(CusSuggest.name, CusSuggest)
-        app.component(CodeJsEditor.name, CodeJsEditor)
-        app.component(CodeJsEditor.name, CodeJsEditor)
-        app.component(MyVueTab.name, MyVueTab)
-        app.component(MyVueTabPane.name, MyVueTabPane)
-        app.component(ZPagination.name, ZPagination)
-        // app.component(VantDateTimePicker.name, VantDateTimePicker)
-        // app.component(AceJsEditor.name, AceJsEditor)
+        CustomVueComponent.register(CustomFormRender)
+        CustomVueComponent.register(UnitInput)
+        CustomVueComponent.register(CusDateTimePicker)
+        CustomVueComponent.register(CusSelect)
+        CustomVueComponent.register(CusProps)
+        CustomVueComponent.register(CusForm)
+        CustomVueComponent.register(CusSuggest)
+        CustomVueComponent.register(CodeJsEditor)
+        CustomVueComponent.register(CodeJsEditor)
+        CustomVueComponent.register(MyVueTab)
+        CustomVueComponent.register(MyVueTabPane)
+        CustomVueComponent.register(ZPagination)
+        // CustomVueComponent.register(VantDateTimePicker.name, VantDateTimePicker)
+        // CustomVueComponent.register(AceJsEditor.name, AceJsEditor)
 
-        app.component(CusSubmitButton.name, CusSubmitButton)
-        app.component(jsxCom.name, jsxCom)
-        app.component(HttpComponent.name, HttpComponent)
+        CustomVueComponent.register(CusSubmitButton)
+        CustomVueComponent.register(jsxCom)
+        CustomVueComponent.register(HttpComponent)
     }
 };
 
