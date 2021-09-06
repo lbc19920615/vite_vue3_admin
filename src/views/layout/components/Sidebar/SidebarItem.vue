@@ -22,7 +22,7 @@
             </el-menu-item>
           </router-link>
         </template>
-        <el-submenu v-else :index="item.name||item.path" :key="item.name">
+        <el-sub-menu v-else :index="item.name||item.path" :key="item.name">
           <template #title>
             <svg-icon v-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
             <span v-if="item.meta&&item.meta.title">{{item.meta.title}}</span>
@@ -43,7 +43,7 @@
             </router-link>
           </template>
 
-        </el-submenu>
+        </el-sub-menu>
       </template>
     </template>
   </div>

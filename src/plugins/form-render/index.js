@@ -8,6 +8,7 @@ import CusSuggest from "@/components/CustomForm/CusSuggest.vue";
 import CusSubmitButton from "@/components/CustomForm/CusSubmitButton.vue";
 import MyVueTab from "@/components/MyVueTab.vue";
 import MyVueTabPane from "@/components/MyVueTabPane.vue";
+import ZPagination from "@/plugins/z-table/components/ZPagination.vue";
 
 // import VantDateTimePicker from "@/components/CustomVant/VantDateTimePicker.vue";
 
@@ -37,6 +38,7 @@ const plugin = {
         app.component(CodeJsEditor.name, CodeJsEditor)
         app.component(MyVueTab.name, MyVueTab)
         app.component(MyVueTabPane.name, MyVueTabPane)
+        app.component(ZPagination.name, ZPagination)
         // app.component(VantDateTimePicker.name, VantDateTimePicker)
         // app.component(AceJsEditor.name, AceJsEditor)
 
