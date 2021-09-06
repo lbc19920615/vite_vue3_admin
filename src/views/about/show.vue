@@ -1,30 +1,7 @@
 <style lang="scss">
-@function random-rgb($opacity: 1) {
-  @return rgb(random(255), random(255), random(255), $opacity)
-}
-
-@mixin random-bgr($opacity: 1){
-  background: random-rgb($opacity);
-}
-
-@for $i from 0 through 10 {
-  .render-layout-level-#{$i} {
-    width: 100%;
-    .vue-column-item {
-      @include random-bgr();
-      &:nth-child(2n+1) {
-        @include random-bgr(.5);
-      }
-    }
-    .vue-row-item {
-      @include random-bgr();
-      &:nth-child(2n+1) {
-        @include random-bgr(.5);
-      }
-    }
-  }
-}
+//@import './show.scss';
 </style>
+
 
 <template>
   <div class="z-page">

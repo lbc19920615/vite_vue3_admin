@@ -1,5 +1,5 @@
 import {loadComponent, fetchVueComponent} from "@/hooks/remote";
-import showCss from '@/views/about/show.scss';
+// import showCss from '@/views/about/show.scss';
 
 export async function loadPage(name) {
   return await loadComponent( async () => {
@@ -25,7 +25,7 @@ const { useRenderControl } = globalThis.ZPageHooks;
       return script
     },
     styles: [
-      showCss
+      // showCss
     ]
   })
 }
