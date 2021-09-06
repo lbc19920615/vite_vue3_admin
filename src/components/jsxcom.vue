@@ -3,7 +3,7 @@ import {defineComponent, h, inject, provide} from "vue";
 import { createRefManager } from "@/hooks/ref";
 
 export default defineComponent( {
-  name: 'slot-com',
+  name: 'SlotCom',
   props: {
     defs: null,
     attrs: {
