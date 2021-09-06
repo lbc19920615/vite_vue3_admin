@@ -1,5 +1,23 @@
 import {toRaw} from "vue";
 
+// let text = ''
+// const blob = await ZY_EXT.FS.fileOpen({
+//   mimeTypes: ['text/*'],
+// });
+// if (blob) {
+//   text = await blob.text()
+//   try {
+//     let obj = ZY.JSON5.parse(text)
+//     let {data } = obj
+//     if (Array.isArray(data)) {
+//       await self.setStorage(data)
+//       return data;
+//     }
+//   } catch (e) {
+//     //
+//   }
+// }
+
 export class FormsMana {
   static formsMap = new Map();
   static STORAGE_KEY = 'form-mana-key';
@@ -14,13 +32,12 @@ export class FormsMana {
     return ZY_EXT.store.setItem(self.STORAGE_KEY, {
       date: Date.now(),
       version: ZY.rid(),
-      data: formsMap
+      data: self.formsMap
     })
   }
   static async saveCache2File(cached = null, {fileName = ZY.rid(6)} = {}) {
     let self = this
     if (!cached) {
-      // cached = this.getOptions()
       return Promise.reject(new Error('saveCache2File must has', {
         cause: new Error('saveCache2File')
       }))
@@ -33,22 +50,12 @@ export class FormsMana {
   }
   static async loadFile() {
     let self = this
-    let text = ''
-    const blob = await ZY_EXT.FS.fileOpen({
-      mimeTypes: ['text/*'],
-    });
-    if (blob) {
-      text = await blob.text()
-      try {
-        let obj = ZY.JSON5.parse(text)
-        let {data } = obj
-        if (Array.isArray(data)) {
-          await self.setStorage(data)
-          return data;
-        }
-      } catch (e) {
-        //
-      }
+
+    let obj = await ZY_EXT.fileOpenJSON5()
+    let {data } = obj
+    if (Array.isArray(data)) {
+      await self.setStorage(data)
+      return data;
     }
   }
   static getOptions() {

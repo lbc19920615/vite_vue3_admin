@@ -618,7 +618,7 @@ export default defineComponent({
             let obj = ZY.JSON5.parse(text)
             let {data } = obj
             if (data) {
-              console.log(data)
+              // console.log(data)
               await page.dispatchRoot('SetStoreEvents', data)
               await ZY.sleep(300)
               location.reload()
@@ -630,7 +630,7 @@ export default defineComponent({
       },
       ['call:save'](e) {
         if (page.ctx.LayoutContext) {
-          console.log('call:save', cachedPageControlModel)
+          // console.log('call:save', cachedPageControlModel)
           page.ctx.LayoutContext.save()
         }
       },
@@ -646,9 +646,12 @@ export default defineComponent({
           date: Date.now()
         }
 
-        if (cachedPageLayout) {
-          saved.layout = cachedPageLayout
-        }
+        // if (cachedPageLayout) {
+        //   saved.layout = cachedPageLayout
+        // } else {
+        //
+        // }
+        saved.layout = page.ctx.LayoutContext.getToolsData()
 
         let fileName = obj.name ??  ZY.rid(6)
 

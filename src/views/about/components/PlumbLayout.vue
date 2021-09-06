@@ -112,49 +112,49 @@ $sel: "." + $tag;
 import {jsPlumb} from 'jsplumb'
 import {groupManagerMixin} from "./PlumbLayout/groupDialog";
 import {createFromJSON5} from "@/plugins/ComEditor/nodes";
-import {plumbLayoutMixn} from "@/plugins/PlumbLayout/mixin";
+import {plumbActionMixins, plumbLayoutMixn} from "@/plugins/PlumbLayout/mixin";
 
-let actionMixins = {
-  methods: {
-    /**
-     * getVisibleConnections
-     */
-    getVisibleConnections() {
-      let allConnections = this.instance.getConnections({
-
-      });
-      let ret = []
-      ret = allConnections.filter(v => {
-        return v.target && v.source
-      })
-      return ret
-    },
-    /**
-     * getLinkRealtions
-     */
-    getLinkRealtions() {
-      let allVisibleConnections = this.getVisibleConnections()
-      let ret = []
-      ret = allVisibleConnections.map(v => {
-        return {
-          toPID: v.target.dataset.pid,
-          fromPID: v.source.dataset.pid,
-          from: v.sourceId,
-          to: v.targetId
-        }
-      })
-      // console.log(ret)
-      return ret
-    }
-  }
-}
+// let actionMixins = {
+//   methods: {
+//     /**
+//      * getVisibleConnections
+//      */
+//     getVisibleConnections() {
+//       let allConnections = this.instance.getConnections({
+//
+//       });
+//       let ret = []
+//       ret = allConnections.filter(v => {
+//         return v.target && v.source
+//       })
+//       return ret
+//     },
+//     /**
+//      * getLinkRealtions
+//      */
+//     getLinkRealtions() {
+//       let allVisibleConnections = this.getVisibleConnections()
+//       let ret = []
+//       ret = allVisibleConnections.map(v => {
+//         return {
+//           toPID: v.target.dataset.pid,
+//           fromPID: v.source.dataset.pid,
+//           from: v.sourceId,
+//           to: v.targetId
+//         }
+//       })
+//       // console.log(ret)
+//       return ret
+//     }
+//   }
+// }
 
 export default {
   name: "PlumbLayout",
   mixins: [
     plumbLayoutMixn,
     groupManagerMixin,
-    actionMixins,
+    plumbActionMixins,
   ],
   props: {
     rootId: String,
@@ -430,34 +430,34 @@ export default {
     editDep(dep) {
       this.$emit('edit-dep', dep)
     },
-    getLinks() {
-      let links = this.getLinkRealtions()
-
-      let eventLinks = []
-
-      eventLinks = links.filter(v => {
-        let from = v.from
-        return from.endsWith('-evt')
-      })
-
-      let comLinks = []
-      let notCanLinks = [
-        'evt',
-        'fun'
-      ]
-      comLinks = links.filter(v => {
-        let from = v.from
-        let isMatched = notCanLinks.some(v => {
-          return from.endsWith(v)
-        })
-        // console.log('v', isMatched)
-        return v.to.endsWith('top') && !isMatched
-      })
-      return {
-        eventLinks,
-        comLinks,
-      }
-    },
+    // getLinks() {
+    //   let links = this.getLinkRealtions()
+    //
+    //   let eventLinks = []
+    //
+    //   eventLinks = links.filter(v => {
+    //     let from = v.from
+    //     return from.endsWith('-evt')
+    //   })
+    //
+    //   let comLinks = []
+    //   let notCanLinks = [
+    //     'evt',
+    //     'fun'
+    //   ]
+    //   comLinks = links.filter(v => {
+    //     let from = v.from
+    //     let isMatched = notCanLinks.some(v => {
+    //       return from.endsWith(v)
+    //     })
+    //     // console.log('v', isMatched)
+    //     return v.to.endsWith('top') && !isMatched
+    //   })
+    //   return {
+    //     eventLinks,
+    //     comLinks,
+    //   }
+    // },
     setDep(id, v) {
       let dep = this.deps.find(v => v.id === id)
       if (dep) {
@@ -466,18 +466,21 @@ export default {
         }
       }
     },
+
     /**
      * save
      */
     save() {
-      let links = this.getLinks()
-      let ret = {
-        deps: this.deps,
-        eventLinks: links.eventLinks,
-        links: links.comLinks,
-      }
-      ZY_EXT.store.setItem('play-deps', ZY.JSON5.parse(ZY.JSON5.stringify(this.deps)))
-      ZY_EXT.store.setItem('play-links', ZY.JSON5.parse(ZY.JSON5.stringify(links)))
+      // let links = this.getLinks()
+      // let ret = {
+      //   deps: this.deps,
+      //   eventLinks: links.eventLinks,
+      //   links: links.comLinks,
+      // }
+      let {data} = this.getToolsData()
+
+      ZY_EXT.store.setItem('play-deps', ZY.JSON5.parse(ZY.JSON5.stringify(data.deps)))
+      ZY_EXT.store.setItem('play-links', ZY.JSON5.parse(ZY.JSON5.stringify(data.links)))
 
       // console.log('links')
 
