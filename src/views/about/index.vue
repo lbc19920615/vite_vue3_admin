@@ -685,15 +685,20 @@ export default defineComponent({
         // lastsds.value = obj
         page.webComponentRef.toggleDialog('dialog');
       },
-      ['save:single:forms'](e) {
+      async ['save:single:forms'](e) {
         let { parts, partName, selfpath } = e
         let model = parts[partName].getModel()
         let current = toRaw(ZY.lodash.get(model, selfpath))
         // console.log(e, current)
-        ZY_EXT.saveObjAsJson5File({
-          data: current,
-          date: Date.now()
-        }, 'form_' + current.name)
+        // ZY_EXT.saveObjAsJson5File({
+        //   data: current,
+        //   date: Date.now()
+        // }, 'form_' + current.name)
+        await FormsMana.saveCache2File(
+           [
+             current
+           ]
+        )
       },
       ['save:forms'](e) {
         let { parts, partName } = e
