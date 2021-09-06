@@ -70,8 +70,8 @@ export default defineComponent({
         this.rowv2.forEach(v => {
         })
       }
-      console.log(this.obj)
-      let ref = this.obj.pageRef
+      console.log('render modal', this.obj)
+      let ref = ZY.lodash.get(this.obj, 'data.pageRef')
       this.page.modalManRef.register(this, ref)
       return Promise.resolve()
     },
