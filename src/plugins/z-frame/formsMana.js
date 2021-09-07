@@ -1,23 +1,5 @@
 import {toRaw} from "vue";
 
-// let text = ''
-// const blob = await ZY_EXT.FS.fileOpen({
-//   mimeTypes: ['text/*'],
-// });
-// if (blob) {
-//   text = await blob.text()
-//   try {
-//     let obj = ZY.JSON5.parse(text)
-//     let {data } = obj
-//     if (Array.isArray(data)) {
-//       await self.setStorage(data)
-//       return data;
-//     }
-//   } catch (e) {
-//     //
-//   }
-// }
-
 export class FormsMana {
   static formsMap = new Map();
   static STORAGE_KEY = 'form-mana-key';

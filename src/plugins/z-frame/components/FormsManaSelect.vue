@@ -29,8 +29,20 @@ export default {
       suggest: [],
       column: [
         {
-         prop: 'label',
-         width: '150px'
+           prop: 'label',
+           width: '150px'
+        },
+        {
+          prop: 'sdsds',
+          width: '150px',
+          label: 'NAME',
+          render(h, props) {
+            const scope = props.scope
+            let value = ZY.JSON5.parse( scope.row['value'])
+            return h('div', {
+
+            }, value.name ?? '')
+          }
         },
         {
           prop: 'value',

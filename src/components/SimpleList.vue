@@ -47,19 +47,24 @@ export default {
       { label: 'Value', prop: 'value' },
     ]
 
+    let customColumn = []
     if (Array.isArray(props.column)) {
       props.column.forEach(item => {
-        if (item.prop) {
+        let _item = item
+        if (_item.prop) {
           let finded = column.find(v => v.prop === item.prop)
           if (finded) {
-            finded = Object.assign(finded, item)
+            _item = Object.assign(finded, item)
           }
         }
+        customColumn.push(toRaw(_item))
       })
+    } else {
+      customColumn = column
     }
 
-    // console.log(column)
-
+    console.log(customColumn)
+    //
     const actions = [
       {
         label: '选中',
@@ -76,7 +81,7 @@ export default {
       suggest: props.suggest ?? [],
       search: '',
       actions,
-      column: column,
+      column: customColumn,
     })
 
     let handler = useArrHandler(state,'suggest')
