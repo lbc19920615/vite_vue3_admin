@@ -42,29 +42,32 @@ export default {
                         ui: {
                             type: 'object',
                             properties: {
-                                type: {
-                                    type: 'string',
-                                    ui: {
-                                        label: 'ui.type'
-                                    }
-                                },
+                                // type: {
+                                //     type: 'string',
+                                //     ui: {
+                                //         label: 'ui.type'
+                                //     }
+                                // },
                                 label: {
                                     type: 'string',
                                     ui: {
-                                        label: 'ui.label'
+                                        label: 'UI label'
                                     }
                                 },
                                 widget: {
                                     type: 'string',
                                     ui: {
-                                        label: 'ui.widget'
+                                        label: 'UI widget'
                                     }
                                 },
                                 widgetConfig: {
                                     type: 'string',
                                     ui: {
-                                        label: 'ui.widgetConfig',
-                                        widget: 'JsonCodeEditor', widgetConfig: {style: {}}
+                                        label: 'UI widgetConfig',
+                                        widget: 'JsonCodeEditor',
+                                        widgetConfig: {
+                                            style: {}
+                                        }
                                     }
                                 },
                             }
@@ -72,7 +75,12 @@ export default {
                         rules: {
                             type: 'string',
                             ui: {
-                                widget: 'JsonCodeEditor', widgetConfig: {style: {height: '200px'}}
+                                label: 'RULES',
+                                widget: 'JsonCodeEditor',
+                                // widget: 'CodeJsEditor',
+                                widgetConfig: {
+                                    style: {height: '200px'}
+                                }
                             }
                         }
                     }
