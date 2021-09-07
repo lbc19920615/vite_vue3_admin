@@ -13,7 +13,7 @@
   .item {
     min-height: 50px;
     width: 100%;
-    border-bottom: 1px solid #999;
+    border-bottom: 1px solid var(--el-color-info-light);
     &:last-child {
       border-bottom-color: transparent;
     }
@@ -36,7 +36,7 @@
     position: absolute;
   }
   .section {
-    border: 1px solid #7272ff;
+    border: 1px solid var(--el-color-primary);
     background-color: #ffffff;
     z-index: 0;
     //z-index: 1;
