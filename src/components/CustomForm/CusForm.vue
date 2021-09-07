@@ -43,7 +43,15 @@ export default {
     let { methods, init, data } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
         // console.log('handleValueInit', newVal, typeof newVal)
-        cached = ZY.JSON5.parse(newVal)
+        if (typeof newVal !== 'undefined') {
+          try {
+            cached = ZY.JSON5.parse(newVal)
+          } catch (e) {
+            console.error(new Error('json parse err', {
+              cause: e
+            }))
+          }
+        }
         return newVal
         // page.setPartModel('form-editor', 'form2', obj)
       }
@@ -100,8 +108,10 @@ export default {
           {
             async onMounted(config, {setPartModel}) {
               init(props)
-              console.log('formEditorConfig', cached)
-              setPartModel(config.name, 'form2', cached)
+              // console.log('formEditorConfig', cached)
+              if (cached) {
+                setPartModel(config.name, 'form2', cached)
+              }
               locks = false
               // console.log('eventModel', config, page.defMap)
             }
