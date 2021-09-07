@@ -16,7 +16,7 @@ $com: ".dialog";
     padding: .5rem 1rem;
     margin: 0;
     text-decoration: none;
-    background: #0069ed;
+    background: var(--el-color-primary);
     color: #ffffff;
     font-family: sans-serif;
     font-size: 1rem;
@@ -30,7 +30,7 @@ $com: ".dialog";
 
   #{$sel}:hover,
   #{$sel}:focus {
-    background: #0053ba;
+    background: var(--el-color-primary-light-2);
   }
 
   #{$sel}:focus {
@@ -54,9 +54,20 @@ $com: ".dialog";
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0, 0.5);
-  z-index: 1111;
-  display: none;
+  &:after {
+    content: '';
+    background: rgba(0,0,0, 0.5);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+  z-index: -111111;
+  //display: none;
+  //transition: opacity .5s ease, z-index .5s ease 1s;
+  opacity: 0;
   overflow: auto;
   &-body {
     padding: var(--dialog-body-padding);
@@ -75,10 +86,17 @@ $com: ".dialog";
   margin: 0 auto;
   position: relative;
   top: 0;
+  z-index: 11;
 }
 
 .dialog--opened {
-  display: block;
+  //display: block;
+  z-index: 1111;
+  opacity: 1;
+  &:after {
+    opacity: 1;
+    transition: opacity ease 1s;
+  }
 }
 
 .dialog--opened .dialog-inner {
