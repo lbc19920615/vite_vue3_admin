@@ -1,4 +1,4 @@
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../../../components/PlumbLayout/index.scss";
 
 $tag: "plumb-layout";
@@ -10,7 +10,7 @@ $sel: "." + $tag;
 </style>
 
 <template>
-  <div  class="plumb-layout">
+  <div  class="plumb-layout" :id="comId">
 <!--    <el-button @click="save">保存</el-button>-->
 <!--    <el-button @click="getLinkRealtions">get connect</el-button>-->
     <el-button @click="toggleGroupDialog(true)">添加组</el-button>
@@ -35,6 +35,7 @@ $sel: "." + $tag;
 
     <div id="diagramContainer1" class="container">
       <div :id="dep.id" class="abs section"
+           :dep-name="dep.id"
            v-for="(dep,depIndex) in deps"
            :key="dep.id"
            >
@@ -52,7 +53,7 @@ $sel: "." + $tag;
                :id="dep.id + '-top'">
             <div>
               <div>
-                <button @click="editDep(dep)"><i class="el-icon-edit" ></i></button>
+                <el-button size="small" @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
               </div>
               <div>type: {{dep.type}}</div>
               <div>type: {{dep.sub}}</div>
@@ -76,11 +77,14 @@ $sel: "." + $tag;
           <div class="item header" :data-pid="dep.id"
                :id="dep.id + '-top'">
             <div>
-              <div>
-                <button @click="editDep(dep)"><i class="el-icon-edit" ></i></button>
-              </div>
-              <div>type: {{dep.type}}</div>
-              <div>id: {{dep.id}}</div>
+              <el-space>
+                <div>type: {{dep.type}}</div>
+                <el-button size="small" @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
+              </el-space>
+              <div></div>
+              <el-space>
+                <div>id: {{dep.id}}</div>
+              </el-space>
             </div>
           </div>
 <!--          <div class="item content-item" :data-pid="dep.id"-->
@@ -94,7 +98,7 @@ $sel: "." + $tag;
                 <div>
                   <el-input :readonly="dep.keyReadonly" v-model="item.key" placeholder="请填写key"></el-input>
                 </div>
-                <button type="button" @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>
+                <el-button size="small" @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></el-button>
               </div>
             </template>
             <el-button size="small"
@@ -365,8 +369,7 @@ export default {
       items.forEach(item => {
         self.renderItem(item, id)
       })
-      instance.draggable(id, {
-      })
+      self.makeDraggable(id, instance, items)
     },
     addEndpoint(id, options, depId, suffix = '') {
       if (!this.pointsMap[depId]) {
@@ -482,16 +485,16 @@ export default {
       //   eventLinks: links.eventLinks,
       //   links: links.comLinks,
       // }
-      let {data} = this.getToolsData()
+      let ret = this.getToolsData()
 
-      this.saveCache2Storage(data)
+      this.saveCache2Storage(ret)
 
       // ZY_EXT.store.setItem('play-deps', ZY.JSON5.parse(ZY.JSON5.stringify(data.deps)))
       // ZY_EXT.store.setItem('play-links', ZY.JSON5.parse(ZY.JSON5.stringify(data.links)))
 
       // console.log('links')
 
-      this.$emit('save-data', data)
+      this.$emit('save-data', ret.data)
     }
   }
 }

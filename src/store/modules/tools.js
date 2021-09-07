@@ -1,4 +1,5 @@
-import {eventSuggests} from "@/plugins/form-render/const";
+import * as constVars from "@/plugins/form-render/const";
+
 
 const store = {
   // namespaced: true,
@@ -23,7 +24,9 @@ const store = {
         value: 'number',
       },
     ],
-    eventSuggests,
+    constVars,
+    // processSteps,
+    // eventSuggests,
   }),
   mutations: {
 

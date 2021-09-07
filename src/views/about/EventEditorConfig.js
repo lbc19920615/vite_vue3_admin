@@ -156,12 +156,7 @@ export default {
                                         ui: {
                                             widget: 'CusSuggest',
                                             widgetConfig: {
-                                                suggest: [
-                                                    {
-                                                        label: '爱你',
-                                                        value: 'sdsds',
-                                                    }
-                                                ],
+                                                enums: "ROOT_STATE('tools.constVars.processSteps', [])",
                                             }
                                         }
                                     },
@@ -205,13 +200,7 @@ export default {
                                         ui: {
                                             widget: 'CusSuggest',
                                             widgetConfig: {
-                                                suggest: [
-                                                    {
-                                                        label: '爱你',
-                                                        value: 'sdsds',
-                                                    }
-                                                ],
-                                                enums: "ROOT_STATE('tools.eventSuggests', [])",
+                                                enums: "ROOT_STATE('tools.constVars.eventSuggests', [])",
                                             }
                                         }
                                     },

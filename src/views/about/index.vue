@@ -367,6 +367,7 @@ let plumbLayoutMixin = {
         //   }
         // )
       ]
+      await self.usePosMap();
       await self.useDeps(defaultDeps)
       await self.$nextTick()
       await ZY.sleep(300)
@@ -763,7 +764,7 @@ export default defineComponent({
             // console.log('layout', obj.layout, obj)
             await page.ctx.LayoutContext.importToolsData(obj.layout)
             await ZY.sleep(300)
-            await page.ctx.LayoutContext.saveCache2Storage(obj.layout.data)
+            await page.ctx.LayoutContext.saveCache2Storage(obj.layout)
           }
         }
       },

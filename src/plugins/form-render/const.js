@@ -8,3 +8,10 @@ export let eventSuggests = [
     value: 'model:update',
   },
 ]
+
+export let processSteps = [
+  {
+    label: 'step1',
+    value: 'procecss-step1',
+  },
+]
