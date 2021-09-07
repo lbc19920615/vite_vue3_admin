@@ -82,7 +82,7 @@ export default {
                             computedProp: 'layoutSlotArrComputed',
                             ui: {
                                 widgetConfig: {
-                                    readonly: true,
+                                    disabled: true,
                                     type: 'textarea'
                                 }
                             }
@@ -104,12 +104,13 @@ export default {
                             ui: {
                                 widgetConfig: {
                                     type: 'textarea',
-                                    readonly: true,
+                                    disabled: true,
                                 }
                             }
                         },
                         beforeScript: {
                             type: 'string',
+                            hidden: true,
                             ui: {
                                 // widget: 'CodeJsEditor',
                                 widgetConfig: {
