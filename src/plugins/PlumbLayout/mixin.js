@@ -36,6 +36,7 @@ export let plumbActionMixins = {
 export let plumbLayoutMixn = {
   data() {
     return {
+      storagePrefix: 'play',
       posCssObj: {},
       posMap: {},
       comId: 'plumb_layout_' + ZY.rid(6)
@@ -160,7 +161,7 @@ export let plumbLayoutMixn = {
     },
 
     async usePosMap() {
-      let posMap = await ZY_EXT.store.getItem('play-posMap') ?? null
+      let posMap = await ZY_EXT.store.getItem( this.storagePrefix +'-posMap') ?? null
       // console.log('cached', cached)
       this.loadPosMap(posMap)
       return ''
@@ -211,9 +212,9 @@ export let plumbLayoutMixn = {
 
 
     async saveCache2Storage(data = {data: {deps: [], links: []},  posMap : {}}) {
-      ZY_EXT.store.setItem('play-deps', ZY.JSON5.parse(ZY.JSON5.stringify(data.data.deps)))
-      ZY_EXT.store.setItem('play-links', ZY.JSON5.parse(ZY.JSON5.stringify(data.data.links)))
-      ZY_EXT.store.setItem('play-posMap', ZY.JSON5.parse(ZY.JSON5.stringify(data.posMap)))
+      ZY_EXT.store.setItem( this.storagePrefix +'-deps', ZY.JSON5.parse(ZY.JSON5.stringify(data.data.deps)))
+      ZY_EXT.store.setItem( this.storagePrefix +'-links', ZY.JSON5.parse(ZY.JSON5.stringify(data.data.links)))
+      ZY_EXT.store.setItem( this.storagePrefix +'-posMap', ZY.JSON5.parse(ZY.JSON5.stringify(data.posMap)))
     }
   }
 }

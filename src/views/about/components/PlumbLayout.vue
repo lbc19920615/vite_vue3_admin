@@ -298,7 +298,7 @@ export default {
     },
     async useDeps(defaultDeps = []) {
       let deps = []
-      let cached = await ZY_EXT.store.getItem('play-deps') ?? defaultDeps
+      let cached = await ZY_EXT.store.getItem(this.storagePrefix + '-deps') ?? defaultDeps
       if (cached) {
         cached.forEach(item => {
           let dep = createFromJSON5(item.type, item)
@@ -313,7 +313,7 @@ export default {
     },
     async useLinks(defaultVal) {
       let deps = []
-      let links = await ZY_EXT.store.getItem('play-links')
+      let links = await ZY_EXT.store.getItem(this.storagePrefix + '-links')
       let cached = {
         eventLinks: [],
         links: links ?? [],
@@ -488,11 +488,6 @@ export default {
       let ret = this.getToolsData()
 
       this.saveCache2Storage(ret)
-
-      // ZY_EXT.store.setItem('play-deps', ZY.JSON5.parse(ZY.JSON5.stringify(data.deps)))
-      // ZY_EXT.store.setItem('play-links', ZY.JSON5.parse(ZY.JSON5.stringify(data.links)))
-
-      // console.log('links')
 
       this.$emit('save-data', ret.data)
     }
