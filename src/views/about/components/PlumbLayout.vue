@@ -309,17 +309,18 @@ export default {
     },
     async useLinks(defaultVal) {
       let deps = []
-      let cached = await ZY_EXT.store.getItem('play-links') ?? {
+      let links = await ZY_EXT.store.getItem('play-links')
+      let cached = {
         eventLinks: [],
-        comLinks: [],
+        links: links ?? [],
       }
       // console.log('cached', cached)
       if (cached) {
         if (cached.eventLinks) {
           this.insEventLinks(cached.eventLinks)
         }
-        if (cached.comLinks) {
-          this.insComLinks(cached.comLinks)
+        if (cached.links) {
+          this.insComLinks(cached.links)
         }
       }
       return deps
