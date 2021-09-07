@@ -36,7 +36,12 @@
     <CustomElement is="my-vue-dialog" name="form-event-dialog"
                    :params="{sstyle: 'width: 60vw; min-width: 720px;'}">
       <template #default="scope">
-                {{scope}}
+        <FormsEventSelect
+            com-name="form-event-select"
+            @select-form="page.callEvent('forms:select-event', {
+              scope,
+              value: $event
+            })"></FormsEventSelect>
       </template>
     </CustomElement>
 
@@ -65,6 +70,7 @@
            <el-space   align="middle">
              <h3>{{ scope.selfpath }}</h3>
              <el-button size="small" @click="page.callEvent('add:events', scope)">添加{{ scope.key }}</el-button>
+             <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}管理</el-button>
            </el-space>
           </template>
 
@@ -79,7 +85,7 @@
               </template>
               <template v-if="scope.key === 'forms'">
                 <el-button size="small" @click="page.callEvent(`add:${scope.key}`, scope)">添加{{ scope.key }}</el-button>
-                <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}</el-button>
+                <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}管理</el-button>
               </template>
 
               <!--                <el-button size="small" @click="page.callEvent(`save:${scope.key}:file`, scope)">保存{{ scope.key }}到本地</el-button>-->
@@ -693,12 +699,10 @@ export default defineComponent({
       },
       ['add:part'](e) {
         let { parts, partName, selfpath, process } = e
-        // console.log('add:events', e, model)
         parts[partName].arrAppend(selfpath)
       },
       ['add:forms'](e) {
         let { parts, partName, selfpath, process } = e
-        // console.log('add:events', e)
         parts[partName].arrAppend(selfpath)
       },
       async ['forms:select-form'](e) {
@@ -761,6 +765,25 @@ export default defineComponent({
         let { parts, partName, selfpath, process } = e
         // console.log('add:events', e, model)
         parts[partName].arrAppend(selfpath)
+      },
+      ['open:events'](e) {
+        currentFromDialog = e
+        page.refsManager.runCom('form-event-select', 'load')
+        page.webComponentRef.toggleDialog('form-event-dialog');
+      },
+      async ['forms:select-event'](e) {
+        let {value, scope} = e
+        let { parts, partName, selfpath, process } = currentFromDialog
+        console.log('forms:select-form', e, currentFromDialog)
+        // let obj = ZY.JSON5.parse(value.value)
+        // let appendData = {
+        //   name: value.label,
+        //   value: value.value
+        // }
+        // // console.log(appendData)
+        // parts[partName].arrAppend(selfpath, appendData)
+        // await ZY.sleep(300)
+        // page.webComponentRef.toggleDialog('form-mana-dialog');
       },
       ['remove:events'](e) {
         // console.log('sdsdsdsdsdsds', e)

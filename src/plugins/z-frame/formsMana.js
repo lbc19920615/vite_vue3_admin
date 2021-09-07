@@ -72,7 +72,7 @@ export function useFormsMana() {
 export function install(app = {config: {globalProperties: {}}}) {
   app.config.globalProperties.$FormsMana = FormsMana
 
-  FormsMana.init()
+  // FormsMana.init()
 
   globalThis._APP_FormsMana = FormsMana
 }
