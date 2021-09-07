@@ -11,7 +11,7 @@
 <!--    {{store.model}}-->
 <!--    {{store.computedModel}}-->
 <!--    <DeepPropEditor v-model:deps="store.model.deps" v-model:links="store.model.links"></DeepPropEditor>-->
-  <z-upload></z-upload>
+<!--  <z-upload></z-upload>-->
 
     <my-fixed>
 <!--      {{page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')}}-->
@@ -51,7 +51,7 @@
       <HttpComponent
           :defs="allDef"
           :is="store.model.textarea_step"
-          :debug="true"
+          :debug="false"
       >
         <template #array_prev="scope">
           <template v-if="scope.key === 'events'">
@@ -615,25 +615,38 @@ export default defineComponent({
         parts[partName].arrAppend(selfpath)
       },
       async ['load:file'](e) {
-        let text = ''
-        const blob = await ZY_EXT.FS.fileOpen({
-          mimeTypes: ['text/*'],
-        });
-        if (blob) {
-          text = await blob.text()
-          try {
-            let obj = ZY.JSON5.parse(text)
-            let {data } = obj
-            if (data) {
-              // console.log(data)
-              await page.dispatchRoot('SetStoreEvents', data)
-              await ZY.sleep(300)
-              location.reload()
-            }
-          } catch (e) {
-          //
-          }
+        // let text = ''
+        // const blob = await ZY_EXT.FS.fileOpen({
+        //   mimeTypes: ['text/*'],
+        // });
+        // if (blob) {
+        //   text = await blob.text()
+        //   try {
+        //     let obj = ZY.JSON5.parse(text)
+        //     let {data } = obj
+        //     if (data) {
+        //       // console.log(data)
+        //       await page.dispatchRoot('SetStoreEvents', data)
+        //       await ZY.sleep(300)
+        //       location.reload()
+        //     }
+        //   } catch (e) {
+        //   //
+        //   }
+        // }
+        let obj = await ZY_EXT.fileOpenJSON5()
+        if (obj.data) {
+          await page.dispatchRoot('SetStoreEvents', obj.data)
+          await ZY.sleep(300)
         }
+        if (obj.layout) {
+          // console.log('layout', obj.layout, obj)
+          await page.ctx.LayoutContext.importToolsData(obj.layout)
+          await ZY.sleep(300)
+          await page.ctx.LayoutContext.saveCache2Storage(obj.layout)
+        }
+        await ZY.sleep(300)
+        location.reload()
       },
       ['call:save'](e) {
         if (page.ctx.LayoutContext) {
