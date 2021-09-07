@@ -58,6 +58,8 @@ globalThis.ZPageHooks = ZPageHooks
 import * as ZPageBuild from "@/plugins/z-page/build";
 globalThis.ZPageBuild = ZPageBuild
 
+import * as ZFramePlugin from "@/plugins/z-frame/index";
+
 import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
 import * as tabNodePlugin from '@/plugins/ComEditor/tabNode.plugin'
 NodeDefMap.register(tabNodePlugin)
@@ -122,6 +124,7 @@ window.startApp = function () {
   app.use(ZformMana)
   app.use(CustomFormRenderPlugin)
   app.use(CodeMirrorPlugin)
+  app.use(ZFramePlugin)
   app.use(eventBus)
   app.use(icons)
   app.use(router)

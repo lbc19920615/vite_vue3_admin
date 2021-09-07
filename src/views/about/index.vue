@@ -11,6 +11,8 @@
 <!--    {{store.model}}-->
 <!--    {{store.computedModel}}-->
 <!--    <DeepPropEditor v-model:deps="store.model.deps" v-model:links="store.model.links"></DeepPropEditor>-->
+  <z-upload></z-upload>
+
     <my-fixed>
 <!--      {{page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')}}-->
       <el-card class="box-card" v-show="page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')">
