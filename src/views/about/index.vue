@@ -55,11 +55,10 @@
       >
         <template #array_prev="scope">
           <template v-if="scope.key === 'events'">
-           <el-row>
-             <el-col>
-               <el-button size="small" @click="page.callEvent('add:events', scope)">添加{{ scope.key }}</el-button>
-             </el-col>
-           </el-row>
+           <el-space   align="middle">
+             <h3>{{ scope.selfpath }}</h3>
+             <el-button size="small" @click="page.callEvent('add:events', scope)">添加{{ scope.key }}</el-button>
+           </el-space>
           </template>
 
         </template>
@@ -73,9 +72,10 @@
               </template>
               <template v-if="scope.key === 'forms'">
                 <el-button size="small" @click="page.callEvent(`add:${scope.key}`, scope)">添加{{ scope.key }}</el-button>
-<!--                <el-button size="small" @click="page.callEvent(`save:${scope.key}:file`, scope)">保存{{ scope.key }}到本地</el-button>-->
                 <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}</el-button>
               </template>
+
+              <!--                <el-button size="small" @click="page.callEvent(`save:${scope.key}:file`, scope)">保存{{ scope.key }}到本地</el-button>-->
             </el-space>
           </el-col>
         </template>

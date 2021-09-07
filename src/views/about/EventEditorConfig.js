@@ -140,6 +140,12 @@ export default {
                                 attrs: [
                                     ['scroll-control', 'page_forms'],
                                 ],
+                                class: [
+                                    // 'a-space-mb-20'
+                                ],
+                                conClass: [
+                                    'a-space-mb-20'
+                                ]
                             },
                             items: {
                                 type: 'object',
