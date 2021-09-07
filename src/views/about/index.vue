@@ -33,7 +33,14 @@
     </my-fixed>
 
 <!--    <CusForm></CusForm>-->
-    <CustomElement is="my-vue-dialog" name="dialog"
+    <CustomElement is="my-vue-dialog" name="form-event-dialog"
+                   :params="{sstyle: 'width: 60vw; min-width: 720px;'}">
+      <template #default="scope">
+                {{scope}}
+      </template>
+    </CustomElement>
+
+    <CustomElement is="my-vue-dialog" name="form-mana-dialog"
                    :params="{sstyle: 'width: 60vw; min-width: 720px;'}">
       <template #default="scope">
 <!--        {{scope}}-->
@@ -703,12 +710,10 @@ export default defineComponent({
           name: value.label,
           value: value.value
         }
-        console.log(appendData)
+        // console.log(appendData)
         parts[partName].arrAppend(selfpath, appendData)
         await ZY.sleep(300)
-        // lastsds.name = value.label
-        // lastsds.value = obj
-        page.webComponentRef.toggleDialog('dialog');
+        page.webComponentRef.toggleDialog('form-mana-dialog');
       },
       async ['save:single:forms'](e) {
         let { parts, partName, selfpath } = e
@@ -750,7 +755,7 @@ export default defineComponent({
       ['open:forms'](e) {
         currentFromDialog = e
         page.refsManager.runCom('form-mana-select', 'load')
-        page.webComponentRef.toggleDialog('dialog');
+        page.webComponentRef.toggleDialog('form-mana-dialog');
       },
       ['add:events'](e) {
         let { parts, partName, selfpath, process } = e
