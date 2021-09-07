@@ -3,15 +3,18 @@
   <div style="opacity: 0; font-size: 0; line-height: 0;">{{store.model}}</div>
 <!--  {{deps}}-->
   <el-row type="flex">
-    <AsyncPlumbLayout
-        @init="onPlumbLayoutInit"
-        :root-id="rootId"
-        :handleAppend="handleAppend"
-        :handle-dep="handleDep"
-        @edit-dep="onEditDep"
-        @save-data="onSaveDep"
-        :style="{height}"
-    ></AsyncPlumbLayout>
+    <el-button @click="dialogVisible = true">open</el-button>
+    <el-dialog    v-model="dialogVisible" title="组选择" width="80vw">
+      <AsyncPlumbLayout
+          @init="onPlumbLayoutInit"
+          :root-id="rootId"
+          :handleAppend="handleAppend"
+          :handle-dep="handleDep"
+          @edit-dep="onEditDep"
+          @save-data="onSaveDep"
+          :style="{height}"
+      ></AsyncPlumbLayout>
+    </el-dialog>
 
 
     <el-drawer
@@ -78,6 +81,7 @@ let plumbLayoutMixin = {
       showCurrent: true,
       currentLinks: [],
       jsonObj: {},
+      dialogVisible: false,
       layoutContext: null,
       currentLayoutMap: {},
     }
@@ -177,7 +181,7 @@ export default {
     serviceName: String,
     height: {
       type: [Number, String],
-      default: '300px'
+      default: '600px'
     }
   },
   mixins: [
