@@ -873,8 +873,13 @@ export default defineComponent({
     interval1.start()
 
     function jumpTo(o) {
-      // console.log(o)
-      ZY.U.scrollToView(o)
+      // console.log(o.getBoundingClientRect().top + window.scrollY)
+      let top = o.getBoundingClientRect().top + window.scrollY - 40
+      // ZY.U.scrollToView(o)
+      window.scrollTo({
+        top: top,
+        behavior: "smooth"
+      });
     }
 
     return {
