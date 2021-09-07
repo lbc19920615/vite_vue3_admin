@@ -7,7 +7,7 @@
 :root {
   @for $i from 1 through 50 {
     --z-size-#{$i}: #{$i}px;
-    .a-space-mb {
+    .a-space-mb-#{$i} {
       margin-bottom: var(--z-size-#{$i});
     }
   }

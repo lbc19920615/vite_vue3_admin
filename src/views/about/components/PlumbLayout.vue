@@ -326,27 +326,31 @@ export default {
     },
     insEventLinks(links = []) {
       let instance = this.instance
-      links.forEach(link => {
-        let endPoints1 = instance.getEndpoints(link.from)
-        let endPoints2 = instance.getEndpoints(link.to)
-        // console.log(endPoints1, endPoints2)
-        instance.connect({
-          source: endPoints1[0],
-          target: endPoints2[0]
+      if (Array.isArray(links)) {
+        links.forEach(link => {
+          let endPoints1 = instance.getEndpoints(link.from)
+          let endPoints2 = instance.getEndpoints(link.to)
+          // console.log(endPoints1, endPoints2)
+          instance.connect({
+            source: endPoints1[0],
+            target: endPoints2[0]
+          })
         })
-      })
+      }
     },
     insComLinks(links = []) {
       let instance = this.instance
-      links.forEach(link => {
-        let endPoints1 = instance.getEndpoints(link.from)
-        let endPoints2 = instance.getEndpoints(link.to)
-        // console.log(endPoints1, endPoints2)
-        instance.connect({
-          source: endPoints1[1],
-          target: endPoints2[0]
+      if (Array.isArray(links)) {
+        links.forEach(link => {
+          let endPoints1 = instance.getEndpoints(link.from)
+          let endPoints2 = instance.getEndpoints(link.to)
+          // console.log(endPoints1, endPoints2)
+          instance.connect({
+            source: endPoints1[1],
+            target: endPoints2[0]
+          })
         })
-      })
+      }
     },
     /**
      * insDep
@@ -479,12 +483,14 @@ export default {
       // }
       let {data} = this.getToolsData()
 
-      ZY_EXT.store.setItem('play-deps', ZY.JSON5.parse(ZY.JSON5.stringify(data.deps)))
-      ZY_EXT.store.setItem('play-links', ZY.JSON5.parse(ZY.JSON5.stringify(data.links)))
+      this.saveCache2Storage(data)
+
+      // ZY_EXT.store.setItem('play-deps', ZY.JSON5.parse(ZY.JSON5.stringify(data.deps)))
+      // ZY_EXT.store.setItem('play-links', ZY.JSON5.parse(ZY.JSON5.stringify(data.links)))
 
       // console.log('links')
 
-      this.$emit('save-data', ret)
+      this.$emit('save-data', data)
     }
   }
 }

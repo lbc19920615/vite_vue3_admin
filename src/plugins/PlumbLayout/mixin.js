@@ -138,9 +138,22 @@ export let plumbLayoutMixn = {
      *
      * @param o
      */
-    importToolsData(o = {data:{deps: [], links: [], eventLinks: []}, postMap: {}}) {
+    async importToolsData(o = {data:{deps: [], links: [], eventLinks: []}, postMap: {}}) {
       let {data, posMap} = o
-      console.log('importToolsData', data, posMap)
+      // console.log('importToolsData', data, posMap)
+      this.deps = data.deps
+      await this.$nextTick()
+      this.insDeps(this.deps)
+      await ZY.sleep(300)
+      this.insEventLinks(data.eventLinks)
+      this.insComLinks(data.links)
+    },
+
+
+
+    async saveCache2Storage(data = {deps: [], links: []}) {
+      ZY_EXT.store.setItem('play-deps', ZY.JSON5.parse(ZY.JSON5.stringify(data.deps)))
+      ZY_EXT.store.setItem('play-links', ZY.JSON5.parse(ZY.JSON5.stringify(data.links)))
     }
   }
 }

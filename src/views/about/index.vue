@@ -105,6 +105,10 @@
 <!--      <div>-->
 <!--        {{store.model}}-->
 <!--      </div>-->
+      <el-row class="a-space-mb-10">
+        <el-button type="primary" @click="page.callEvent('load:plumb:layout')">加载plumbLayout</el-button>
+      </el-row>
+
       <el-row style="flex-wrap: nowrap;">
         <PlumbLayout
             style="flex: 1"
@@ -239,127 +243,127 @@ let plumbLayoutMixin = {
     async onPlumbLayoutInit(self) {
       this.LayoutContext = self
       let defaultDeps  = [
-        new NodeDefMap.ColumnNode('i1',
-          [
-            {
-              id: 'i1-0',
-              h: 800
-            },
-            {
-              id: 'i1-1',
-              h: 120
-            },
-            {
-              id: 'i1-2',
-              h: 120
-            }
-          ]
-        ),
-        new NodeDefMap.RowNode('i2', [
-          {
-            id: 'i2-0',
-            w: '1fr',
-            h: 50,
-          },
-          {
-            id: 'i2-1',
-            w: '1fr',
-            h: 50,
-          },
-          {
-            id: 'i2-2',
-            w: '1fr',
-            h: 50,
-          }
-        ]),
-        tabDep,
-        modalDep,
-        new NodeDefMap.FormNode('i3',
-          {
-            name: 'form1',
-            parts: [
-              {
-                type: 'form',
-                name: 'form2',
-                ui: ZY.JSON5.stringify(
-                    {
-                      attrs: [
-                        [
-                          'label-width',
-                          '100px',
-                        ],
-                      ],
-                    }
-                    , null, 2),
-                defaultVal: ZY.JSON5.stringify({
-                  parts: [
-                    {
-                      key: '',
-                      ui_type: '',
-                      ui_label: '',
-                      ui_widgetConfig: '{}',
-                      rules: '{}'
-                    }
-                  ]
-                } , null, 2),
-                properties: ZY.JSON5.stringify(
-                    {
-                      parts: {
-                        type: 'array',
-                        items: {
-                          type: "object",
-                          properties: {
-                            key: {
-                              type: 'string',
-                              ui: {
-                              }
-                            },
-                            ui_type: {
-                              type: 'string',
-                              ui: {
-                              }
-                            },
-                            ui_label: {
-                              type: 'string',
-                              ui: {
-                              }
-                            },
-                            ui_widget: {
-                              type: 'string',
-                              ui: {
-                              }
-                            },
-                            ui_widgetConfig: {
-                              type: 'string',
-                              ui: {
-                                widget: 'CodeJsEditor',
-                                widgetConfig: {
-                                  style: {
-                                    // height: "200px",
-                                  }
-                                }
-                              }
-                            },
-                            rules: {
-                              type: 'string',
-                              ui: {
-                                widget: 'CodeJsEditor',
-                                widgetConfig: {
-                                  style: {
-                                    height: "200px",
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      },
-                    }
-                    , null, 2),
-              }
-            ]
-          }
-        )
+        // new NodeDefMap.ColumnNode('i1',
+        //   [
+        //     {
+        //       id: 'i1-0',
+        //       h: 800
+        //     },
+        //     {
+        //       id: 'i1-1',
+        //       h: 120
+        //     },
+        //     {
+        //       id: 'i1-2',
+        //       h: 120
+        //     }
+        //   ]
+        // ),
+        // new NodeDefMap.RowNode('i2', [
+        //   {
+        //     id: 'i2-0',
+        //     w: '1fr',
+        //     h: 50,
+        //   },
+        //   {
+        //     id: 'i2-1',
+        //     w: '1fr',
+        //     h: 50,
+        //   },
+        //   {
+        //     id: 'i2-2',
+        //     w: '1fr',
+        //     h: 50,
+        //   }
+        // ]),
+        // tabDep,
+        // modalDep,
+        // new NodeDefMap.FormNode('i3',
+        //   {
+        //     name: 'form1',
+        //     parts: [
+        //       {
+        //         type: 'form',
+        //         name: 'form2',
+        //         ui: ZY.JSON5.stringify(
+        //             {
+        //               attrs: [
+        //                 [
+        //                   'label-width',
+        //                   '100px',
+        //                 ],
+        //               ],
+        //             }
+        //             , null, 2),
+        //         defaultVal: ZY.JSON5.stringify({
+        //           parts: [
+        //             {
+        //               key: '',
+        //               ui_type: '',
+        //               ui_label: '',
+        //               ui_widgetConfig: '{}',
+        //               rules: '{}'
+        //             }
+        //           ]
+        //         } , null, 2),
+        //         properties: ZY.JSON5.stringify(
+        //             {
+        //               parts: {
+        //                 type: 'array',
+        //                 items: {
+        //                   type: "object",
+        //                   properties: {
+        //                     key: {
+        //                       type: 'string',
+        //                       ui: {
+        //                       }
+        //                     },
+        //                     ui_type: {
+        //                       type: 'string',
+        //                       ui: {
+        //                       }
+        //                     },
+        //                     ui_label: {
+        //                       type: 'string',
+        //                       ui: {
+        //                       }
+        //                     },
+        //                     ui_widget: {
+        //                       type: 'string',
+        //                       ui: {
+        //                       }
+        //                     },
+        //                     ui_widgetConfig: {
+        //                       type: 'string',
+        //                       ui: {
+        //                         widget: 'CodeJsEditor',
+        //                         widgetConfig: {
+        //                           style: {
+        //                             // height: "200px",
+        //                           }
+        //                         }
+        //                       }
+        //                     },
+        //                     rules: {
+        //                       type: 'string',
+        //                       ui: {
+        //                         widget: 'CodeJsEditor',
+        //                         widgetConfig: {
+        //                           style: {
+        //                             height: "200px",
+        //                           }
+        //                         }
+        //                       }
+        //                     }
+        //                   }
+        //                 }
+        //               },
+        //             }
+        //             , null, 2),
+        //       }
+        //     ]
+        //   }
+        // )
       ]
       await self.useDeps(defaultDeps)
       await self.$nextTick()
@@ -748,6 +752,17 @@ export default defineComponent({
         // console.log('submit:form',e, model);
         if (scope.process === page.store.model.textarea_step) {
           // console.log('sddddddddddddd');
+        }
+      },
+      async ['load:plumb:layout']() {
+        if (page.ctx.LayoutContext) {
+          let obj = await ZY_EXT.fileOpenJSON5()
+          if (obj.layout) {
+            // console.log('layout', obj.layout, obj)
+            await page.ctx.LayoutContext.importToolsData(obj.layout)
+            await ZY.sleep(300)
+            await page.ctx.LayoutContext.saveCache2Storage(obj.layout.data)
+          }
         }
       },
       ['model:update:all'](e) {
