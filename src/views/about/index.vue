@@ -10,7 +10,6 @@
 
 <!--    {{store.model}}-->
 <!--    {{store.computedModel}}-->
-<!--    <DeepPropEditor v-model:deps="store.model.deps" v-model:links="store.model.links"></DeepPropEditor>-->
 <!--  <z-upload></z-upload>-->
 
     <my-fixed>
@@ -354,64 +353,6 @@ export default defineComponent({
 
     function onInited({storeControl}) {
       // console.log('page inited')
-      storeControl.set({
-        links: [
-          {
-            "toPID": "i222",
-            "fromPID": "i111",
-            "from": "i111-0",
-            "to": "i222-top"
-          },
-          {
-            "toPID": "i333",
-            "fromPID": "i222",
-            "from": "i222-0",
-            "to": "i333-top"
-          },
-        ],
-        deps: [
-            NodeDefMap.create('object', {
-              id: 'i111',
-              items: [
-                {
-                  id: 'i111-0',
-                  key: 'parts',
-                  data: '',
-                },
-                {
-                  id: 'i111-1',
-                  key: 'other',
-                  data: '',
-                },
-              ]
-            }),
-          NodeDefMap.create('array', {
-            id: 'i222',
-            items: [
-              {
-                id: 'i222-0',
-                key: 'items',
-                data: '',
-              },
-            ]
-          }),
-          NodeDefMap.create('object', {
-            id: 'i333',
-            items: [
-              {
-                id: 'i333-0',
-                key: 'name1',
-                data: '',
-              },
-              {
-                id: 'i333-1',
-                key: 'name2',
-                data: '',
-              },
-            ]
-          }),
-        ],
-      })
     }
     let properties =  {
       editor_step: {
@@ -443,10 +384,7 @@ export default defineComponent({
     let page = useControl({properties, computed: computedProps}, {
       onInited,
       extendContext: {
-        // getDeeps(v1, v2) {
-        //   // console.log('v1', v1, v2)
-        //   return getDeepConfigFromLinksAndDeps(v1, v2)
-        // }
+
         getDoms() {
           let ret = Array.of(
               ...document.querySelectorAll('.http-com .z-form__object [scroll-control]')
@@ -457,15 +395,6 @@ export default defineComponent({
     })
     page = extendControl2Page(page)
     page = useAppPageControl(page)
-
-
-    // watchEffect(() => {
-    //   doms =  Array.of(
-    //       ...document.querySelectorAll('.http-com .z-form__object [scroll-control]')
-    //   )
-    //   console.log('dsdsds', doms)
-    // })
-
 
     let formsMana = useFormsMana();
 
@@ -480,25 +409,6 @@ export default defineComponent({
         parts[partName].arrAppend(selfpath)
       },
       async ['load:file'](e) {
-        // let text = ''
-        // const blob = await ZY_EXT.FS.fileOpen({
-        //   mimeTypes: ['text/*'],
-        // });
-        // if (blob) {
-        //   text = await blob.text()
-        //   try {
-        //     let obj = ZY.JSON5.parse(text)
-        //     let {data } = obj
-        //     if (data) {
-        //       // console.log(data)
-        //       await page.dispatchRoot('SetStoreEvents', data)
-        //       await ZY.sleep(300)
-        //       location.reload()
-        //     }
-        //   } catch (e) {
-        //   //
-        //   }
-        // }
         let obj = await ZY_EXT.fileOpenJSON5()
         if (obj.data) {
           await page.dispatchRoot('SetStoreEvents', obj.data)
@@ -530,12 +440,7 @@ export default defineComponent({
           data: obj,
           date: Date.now()
         }
-
-        // if (cachedPageLayout) {
-        //   saved.layout = cachedPageLayout
-        // } else {
-        //
-        // }
+        
         saved.layout = page.ctx.LayoutContext.getToolsData()
 
         let fileName = obj.name ??  ZY.rid(6)
