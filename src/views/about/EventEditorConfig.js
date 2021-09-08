@@ -55,12 +55,16 @@ export default {
                                         handler: ['c', 'return [":name", c.indexKey]']
                                     }
                                 ],
+                                conClass: [
+                                    'a-space-mb-20'
+                                ]
                             },
                             items: {
                                 type: 'object',
                                 properties: {
                                     name: {
                                         type: 'string',
+                                        tag: 'div',
                                         ui: {
                                             widget: 'CusSuggest',
                                             widgetConfig: {
@@ -75,6 +79,7 @@ export default {
                                     },
                                     value: {
                                         type: 'string',
+                                        tag: 'div',
                                         ui: {
                                             widget: 'CodeJsEditor',
                                             widgetConfig: {
