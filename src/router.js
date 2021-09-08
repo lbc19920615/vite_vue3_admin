@@ -10,6 +10,16 @@ export const constantRouterMap = [
     hidden: true
   },
   {
+    path: "/about-no",
+    name: "AboutNo",
+
+    meta: {
+      title: 'AboutNo',
+      // icon: 'shangdian'
+    },
+    component: () => import('@/views/about/index.vue'),
+  },
+  {
     path: '',
     name: 'main',
     component: Layout,
