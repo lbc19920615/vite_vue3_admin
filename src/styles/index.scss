@@ -10,6 +10,9 @@
     .a-space-mb-#{$i} {
       margin-bottom: var(--z-size-#{$i});
     }
+    .a-space-pt-#{$i} {
+      padding-top: var(--z-size-#{$i});
+    }
   }
 }
 

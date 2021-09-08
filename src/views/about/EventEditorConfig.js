@@ -22,13 +22,18 @@ export default {
                 serviceTpl: {def: {}, args: {src: 'bservice.twig'}},
                 def: {
                     type: 'object',
-                    ui: {attrs: [['label-width', '150px']]},
+                    ui: {
+                        attrs: [['label-width', '150px']]
+                    },
                     properties: {
                         name: {
                             type: 'string',
                             ui: {
                                 attrs: [
                                     ['scroll-control', 'page_name'],
+                                ],
+                                class: [
+                                  'a-space-pt-20'
                                 ],
                                 widget: 'CusSuggest',
                                 widgetConfig: {
@@ -191,7 +196,8 @@ export default {
                             tag: 'my-vue-tab',
                             con_tag: 'my-vue-tab-pane',
                             ui: {
-                              attrs: [
+                              attrs:
+                                [
                                   ['scroll-control', 'page_events'],
                                   ['slotPrefix', 'event'],
                               ],
