@@ -43,9 +43,17 @@ export default {
                         },
                         layoutSlotArr: {
                             type: 'array',
+                            tag: 'my-vue-tab',
+                            con_tag: 'my-vue-tab-pane',
                             ui: {
                                 attrs: [
                                     ['scroll-control', 'page_slotArr'],
+                                ],
+                                conAttrs: [
+                                    {
+                                        prefixValue: '"slot"+',
+                                        handler: ['c', 'return [":name", c.indexKey]']
+                                    }
                                 ],
                             },
                             items: {

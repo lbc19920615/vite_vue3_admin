@@ -65,27 +65,25 @@
              <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}管理</el-button>
            </el-space>
           </template>
-
-        </template>
-        <template #array_before="scope">
-<!--          {{scope}}-->
-          <el-col v-if="scope.key !== 'events'">
+          <template v-if="scope.key === 'layoutSlotArr'">
             <el-space   align="middle">
               <h3>{{ scope.selfpath }}</h3>
-              <template v-if="scope.key === 'layoutSlotArr'">
-                <el-button size="small" @click="page.callEvent('add:arr:common', scope)">添加{{ scope.key }}</el-button>
-              </template>
+              <el-button size="small" @click="page.callEvent('add:arr:common', scope)">添加{{ scope.key }}</el-button>
+            </el-space>
+          </template>
+        </template>
+        <template #array_before="scope">
+          <el-col v-if="scope.key !== 'events' && scope.key !== 'layoutSlotArr'">
+            <el-space align="middle">
+              <h3>{{ scope.selfpath }}</h3>
               <template v-if="scope.key === 'forms'">
                 <el-button size="small" @click="page.callEvent(`add:${scope.key}`, scope)">添加{{ scope.key }}</el-button>
                 <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}管理</el-button>
               </template>
-
-              <!--                <el-button size="small" @click="page.callEvent(`save:${scope.key}:file`, scope)">保存{{ scope.key }}到本地</el-button>-->
             </el-space>
           </el-col>
         </template>
         <template #array_item_after="scope">
-<!--                           {{scope}}-->
           <el-space wrap>
             <el-button type="danger" size="small" @click="page.callEvent('remove:events', scope)">删除{{ scope.key }}</el-button>
             <template v-if="scope.key === 'forms'">
