@@ -357,27 +357,16 @@ export default defineComponent({
       textarea_step: {
         type: String
       },
-      selected: {
-        type: String
-      },
-      links: {
-        type: Array
-      },
-      deps: {
-        type: Array
-      },
       domes: {
         type: Array
       }
     }
     let computedProps = {
       ['curss']: `A.getDeeps(MODEL('links'),MODEL('deps'))`,
-      ['domes']: `E.getDoms()`
     }
     let page = useControl({properties, computed: computedProps}, {
       onInited,
       extendContext: {
-
         getDoms() {
           let ret = Array.of(
               ...document.querySelectorAll('.http-com .z-form__object [scroll-control]')
@@ -440,12 +429,6 @@ export default defineComponent({
 
         console.log('call:save:file', saved)
         ZY_EXT.saveObjAsJson5File(saved, 'forms_' + fileName)
-      },
-      ['random:tab'](e) {
-        let index = ZY.lodash.random(1,2)
-        page.setData({
-          selected: 'tab-panel-' + index
-        })
       },
       ['add:part'](e) {
         let { parts, partName, selfpath, process } = e
