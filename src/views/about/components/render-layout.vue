@@ -168,8 +168,8 @@ export default {
       if (typeof this.cachedMap[partName] === 'undefined') {
         this.lock.lock(() => {
           this.cachedMap[partName] = true
-        }, 1000)
-        return true
+        }, 100)
+        // return true
       } else {
       //
         return this.cachedMap[partName]
@@ -192,12 +192,12 @@ export default {
     },
     getDef(partName) {
       if (!this.lock.isLocked) {
-        console.log('sdsdsds')
+        console.log('reload start')
        this.lock.lock(async () => {
          this.cachedMap[partName] = false
          await ZY.sleep(500)
          this.cachedMap[partName] = true
-         console.log('sdsdsds')
+         console.log('reload end')
        }, 3000)
       }
       if (this.handleDefMap) {
