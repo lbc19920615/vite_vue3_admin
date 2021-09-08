@@ -74,6 +74,7 @@
                 :slotContent="innerSlots"
                 :page="page"
                 :def="getDef(getObj(curObj, 'data.partName', 'UNDEFINED'))"
+                :is="getObj(page.stepMap, getObj(curObj, 'data.partName', 'UNDEFINED'))"
             >
             </AutoHttpCom>
           </template>

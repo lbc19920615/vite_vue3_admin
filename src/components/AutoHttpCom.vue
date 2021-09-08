@@ -19,6 +19,7 @@ export default defineComponent( {
     let step = ref('')
     let config
     let httpCtx = null
+    let oldIs = undefined
 
     function load(newDef) {
       config = ZY.JSON5.parse(newDef)
@@ -40,8 +41,12 @@ export default defineComponent( {
     }
 
     watch(() => props.def, (newVal) => {
-      // console.log('is change', props.def)
-      load(newVal)
+      // console.log('is change', oldIs, props.is)
+      if (typeof oldIs === 'undefined') {
+
+        load(newVal)
+        oldIs = props.is
+      }
     }, {
       immediate: true
     })
