@@ -299,9 +299,10 @@ export default {
       })
     },
     /**
-     * save
+     *
+     * @returns {{eventLinks: *[], deps: [], links: *[]}}
      */
-    save() {
+    doSaveAction() {
       let links = this.getLinkRealtions()
 
       let eventLinks = []
@@ -313,8 +314,8 @@ export default {
 
       let comLinks = []
       let notCanLinks = [
-          'evt',
-          'fun'
+        'evt',
+        'fun'
       ]
       comLinks = links.filter(v => {
         let from = v.from
@@ -329,8 +330,16 @@ export default {
         eventLinks: eventLinks,
         links: comLinks,
       }
+      return ret
+    },
 
-      // console.log('links', comLinks, eventLinks)
+    /**
+     * save
+     */
+    save() {
+      let ret = this.doSaveAction()
+
+      console.log('links', ret)
 
       this.$emit('save-data', ret)
     }

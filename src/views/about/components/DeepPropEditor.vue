@@ -3,8 +3,10 @@
   <div style="opacity: 0; font-size: 0; line-height: 0;">{{store.model}}</div>
 <!--  {{deps}}-->
   <el-row type="flex">
-    <el-button @click="dialogVisible = true">open</el-button>
-    <el-dialog    v-model="dialogVisible" title="组选择" width="80vw">
+    <el-button @click="dialogVisible = true">编辑</el-button>
+    <el-dialog   v-model="dialogVisible" title="" width="80vw"
+    :before-close="onBeforeClose"
+    >
       <AsyncPlumbLayout
           @init="onPlumbLayoutInit"
           :root-id="rootId"
@@ -18,7 +20,7 @@
 
 
     <el-drawer
-        title="编辑"
+        title="属性"
         size="600px"
         v-model="renderFormDesigner"
         :lock-scroll="false"
@@ -266,8 +268,15 @@ export default {
       })
     }
 
+    function onBeforeClose(done) {
+      self.layoutContext.save()
+      // console.log('onBeforeClose', self.layoutContext)
+      done()
+    }
+
     return {
       loadStepByContent,
+      onBeforeClose,
       store: page.store,
       filter: page.filter,
       allDef: page.defMap,
