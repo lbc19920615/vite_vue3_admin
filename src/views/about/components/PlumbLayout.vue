@@ -98,11 +98,15 @@ $sel: "." + $tag;
                 <div>
                   <el-input :readonly="dep.keyReadonly" v-model="item.key" placeholder="请填写key"></el-input>
                 </div>
-                <el-button size="small" @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></el-button>
+                <template v-if="!dep.noToolsRemove">
+                  <el-button size="small" @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></el-button>
+                </template>
               </div>
             </template>
+            <template v-if="!dep.noToolsAdd">
             <el-button size="small"
                        @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
+            </template>
           </template>
 
         </template>

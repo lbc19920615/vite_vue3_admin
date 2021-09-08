@@ -82,7 +82,9 @@ export function install({
         constructor(id, obj) {
             super(id);
             this.type = 'modal';
-            this.keyReadonly = true
+            this.keyReadonly = true;
+            this.noToolsRemove = true;
+            this.noToolsAdd = true;
             this.editor = tabEditorConfig({
                 form2: {
                 }
