@@ -2,12 +2,6 @@
 <template>
   <div class="page-search" v-if="page.inited">
 
-<!--    <button @click="page.callEvent('random:tab')">时空</button>-->
-<!--    <CustomElement is="my-tab" name="tab" :selected="store.model.selected">-->
-<!--      <CustomElement is="my-tab-panel" :params="{slot: 'tab-panel-1', selected: store.model.selected === 'tab-panel-1'}">tab1</CustomElement>-->
-<!--      <CustomElement is="my-tab-panel" :params="{slot: 'tab-panel-2', selected: store.model.selected === 'tab-panel-2'}">tab2</CustomElement>-->
-<!--    </CustomElement>-->
-
 <!--    {{store.model}}-->
 <!--    {{store.computedModel}}-->
 <!--  <z-upload></z-upload>-->
@@ -31,7 +25,6 @@
       </el-card>
     </my-fixed>
 
-<!--    <CusForm></CusForm>-->
     <CustomElement is="my-vue-dialog" name="form-event-dialog"
                    :params="{sstyle: 'width: 60vw; min-width: 720px;'}">
       <template #default="scope">
@@ -440,7 +433,7 @@ export default defineComponent({
           data: obj,
           date: Date.now()
         }
-        
+
         saved.layout = page.ctx.LayoutContext.getToolsData()
 
         let fileName = obj.name ??  ZY.rid(6)
