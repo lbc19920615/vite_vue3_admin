@@ -173,7 +173,7 @@
 
 <script>
 
-import {defineComponent, nextTick, getCurrentInstance, toRaw, computed, watchEffect} from "vue";
+import {defineComponent, nextTick, getCurrentInstance, toRaw} from "vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
 import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
@@ -225,29 +225,6 @@ let renderLayoutMixin = {
   }
 }
 
-
-
-// let tabDep = NodeDefMap.def('tab', 'i6', [
-//   {
-//     id: 'i6-0',
-//     label: 'label1',
-//     name: 'name1',
-//   },
-//   {
-//     id: 'i6-1',
-//     label: 'label2',
-//     name: 'name2',
-//   },
-//   {
-//     id: 'i6-2',
-//     label: 'label3',
-//     name: 'name3',
-//   }
-// ])
-//
-// let modalDep = NodeDefMap.def('modal', 'i7', [
-// ])
-
 let plumbLayoutMixin = {
   data() {
     return {
@@ -261,127 +238,6 @@ let plumbLayoutMixin = {
     async onPlumbLayoutInit(self) {
       this.LayoutContext = self
       let defaultDeps  = [
-        // new NodeDefMap.ColumnNode('i1',
-        //   [
-        //     {
-        //       id: 'i1-0',
-        //       h: 800
-        //     },
-        //     {
-        //       id: 'i1-1',
-        //       h: 120
-        //     },
-        //     {
-        //       id: 'i1-2',
-        //       h: 120
-        //     }
-        //   ]
-        // ),
-        // new NodeDefMap.RowNode('i2', [
-        //   {
-        //     id: 'i2-0',
-        //     w: '1fr',
-        //     h: 50,
-        //   },
-        //   {
-        //     id: 'i2-1',
-        //     w: '1fr',
-        //     h: 50,
-        //   },
-        //   {
-        //     id: 'i2-2',
-        //     w: '1fr',
-        //     h: 50,
-        //   }
-        // ]),
-        // tabDep,
-        // modalDep,
-        // new NodeDefMap.FormNode('i3',
-        //   {
-        //     name: 'form1',
-        //     parts: [
-        //       {
-        //         type: 'form',
-        //         name: 'form2',
-        //         ui: ZY.JSON5.stringify(
-        //             {
-        //               attrs: [
-        //                 [
-        //                   'label-width',
-        //                   '100px',
-        //                 ],
-        //               ],
-        //             }
-        //             , null, 2),
-        //         defaultVal: ZY.JSON5.stringify({
-        //           parts: [
-        //             {
-        //               key: '',
-        //               ui_type: '',
-        //               ui_label: '',
-        //               ui_widgetConfig: '{}',
-        //               rules: '{}'
-        //             }
-        //           ]
-        //         } , null, 2),
-        //         properties: ZY.JSON5.stringify(
-        //             {
-        //               parts: {
-        //                 type: 'array',
-        //                 items: {
-        //                   type: "object",
-        //                   properties: {
-        //                     key: {
-        //                       type: 'string',
-        //                       ui: {
-        //                       }
-        //                     },
-        //                     ui_type: {
-        //                       type: 'string',
-        //                       ui: {
-        //                       }
-        //                     },
-        //                     ui_label: {
-        //                       type: 'string',
-        //                       ui: {
-        //                       }
-        //                     },
-        //                     ui_widget: {
-        //                       type: 'string',
-        //                       ui: {
-        //                       }
-        //                     },
-        //                     ui_widgetConfig: {
-        //                       type: 'string',
-        //                       ui: {
-        //                         widget: 'CodeJsEditor',
-        //                         widgetConfig: {
-        //                           style: {
-        //                             // height: "200px",
-        //                           }
-        //                         }
-        //                       }
-        //                     },
-        //                     rules: {
-        //                       type: 'string',
-        //                       ui: {
-        //                         widget: 'CodeJsEditor',
-        //                         widgetConfig: {
-        //                           style: {
-        //                             height: "200px",
-        //                           }
-        //                         }
-        //                       }
-        //                     }
-        //                   }
-        //                 }
-        //               },
-        //             }
-        //             , null, 2),
-        //       }
-        //     ]
-        //   }
-        // )
       ]
       await self.usePosMap();
       await self.useDeps(defaultDeps)
@@ -403,14 +259,6 @@ let plumbLayoutMixin = {
       return groups.concat(arr)
     },
     handleAppend(newItem, dep) {
-      // console.log('newItem', dep)
-      // if (dep.type === 'column') {
-      //   newItem.h = 120
-      // }
-      // if (dep.type === 'row') {
-      //   newItem.w = '1fr'
-      //   newItem.h = 50
-      // }
       NodeDefMap.handleItemAppend(newItem, dep)
     },
     async onSaveData({deps, links = []}) {
