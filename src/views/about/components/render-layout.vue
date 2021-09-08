@@ -59,12 +59,32 @@
         <template v-if="curObj && curObj.type && curObj.content">
 <!--          {{curObj}} {{stepMap.test}}-->
 <!--          :def="curObj.content"-->
-          <AutoHttpCom
-              :slotContent="innerSlots"
-              :page="page"
-              :def="getDef(getObj(curObj, 'data.partName', 'UNDEFINED'))"
-          >
-          </AutoHttpCom>
+<!--          {{page.stepMap}}-->
+<!--          {{getObj(curObj, 'data.partName', 'UNDEFINED')}}-->
+<!--          {{getObj(page.stepMap, getObj(curObj, 'data.partName', 'UNDEFINED'))}}-->
+
+<!--          v-if="getShow(-->
+<!--          getObj(curObj, 'data.partName', 'UNDEFINED'),-->
+<!--          getObj(page.stepMap, getObj(curObj, 'data.partName', 'UNDEFINED'))-->
+<!--          )"-->
+
+          <template  v-if="getShow(getObj(curObj, 'data.partName', 'UNDEFINED'))">
+
+            <AutoHttpCom
+                :slotContent="innerSlots"
+                :page="page"
+                :def="getDef(getObj(curObj, 'data.partName', 'UNDEFINED'))"
+            >
+            </AutoHttpCom>
+          </template>
+
+
+<!--          <AutoHttpCom-->
+<!--              :slotContent="innerSlots"-->
+<!--              :page="page"-->
+<!--              :def="getDef(getObj(curObj, 'data.partName', 'UNDEFINED'))"-->
+<!--          >-->
+<!--          </AutoHttpCom>-->
         </template>
       </template>
   </div>
@@ -113,7 +133,9 @@ export default {
   },
   data() {
     return {
+      lock: new ZY.Lock(),
       innerSlots: this.slotContent ? this.slotContent : this.$slots,
+      cachedMap: {}
     }
   },
   computed: {
@@ -128,9 +150,32 @@ export default {
     },
     levelItemCls() {
       return ['layout-level-' + this.level]
-    }
+    },
+
   },
   methods: {
+    getShow(partName) {
+      // let oldVal = this.cachedMap[partName]
+      // if (oldVal !== newVal) {
+      //   if (!lock.isLocked) {
+      //     lock.lock(() => {
+      //
+      //     }, 1000)
+      //   }
+      //   return false
+      // }
+      // return true
+      if (typeof this.cachedMap[partName] === 'undefined') {
+        this.lock.lock(() => {
+          this.cachedMap[partName] = true
+        }, 1000)
+        return true
+      } else {
+      //
+        return this.cachedMap[partName]
+      }
+      // console.log(this.cachedMap)
+    },
     getObj(...args) {
       return ZY.lodash.get(...args)
     },
@@ -146,8 +191,18 @@ export default {
       return id
     },
     getDef(partName) {
+      if (!this.lock.isLocked) {
+        console.log('sdsdsds')
+       this.lock.lock(async () => {
+         this.cachedMap[partName] = false
+         await ZY.sleep(500)
+         this.cachedMap[partName] = true
+         console.log('sdsdsds')
+       }, 3000)
+      }
       if (this.handleDefMap) {
         let r = this.handleDefMap(partName)
+        // console.log('sdsdsds', this.cachedMap[partName])
         return ZY.JSON5.stringify(r)
       }
       return '{}'

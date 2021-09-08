@@ -65,7 +65,7 @@ export function useRenderControl() {
     }
 
     let detectEventChangeContext = {}
-    async function detectEventChange() {
+    async function detectEventChange(isFirst) {
         let currentData = await ZY_EXT.store.getItem('play-events-model')
         // console.log(currentData.uuid)
         // console.log(interval)
@@ -81,7 +81,7 @@ export function useRenderControl() {
             }
             // console.log('sdsdsdsdsdsdsdsds', currentData.events)
             if (detectEventChangeContext.cb) {
-                detectEventChangeContext.cb(currentData.events,  {state, currentData})
+                detectEventChangeContext.cb(currentData.events,  {state, isFirst, currentData})
             }
         }
     }
@@ -92,7 +92,7 @@ export function useRenderControl() {
         if (interval2) {
             interval2.stop()
         }
-        detectEventChange()
+        detectEventChange(true)
         interval2 = new ZY.Interval(detectEventChange, 6000);
         interval2.start()
     }
