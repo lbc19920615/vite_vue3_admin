@@ -76,7 +76,7 @@ $sel: "." + $tag;
 
           <div class="item header" :data-pid="dep.id"
                :id="dep.id + '-top'">
-            <div>
+            <div class="a-space-mb-10">
               <el-space>
                 <div>type: {{dep.type}}</div>
                 <el-button size="small" @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
@@ -91,7 +91,7 @@ $sel: "." + $tag;
 <!--               :id="dep.id + '-evt'"-->
 <!--          >events</div>-->
           <template v-if="!dep.config.closure">
-            <h3 style="margin: 10px 0;">items</h3>
+<!--            <h3 style="margin: 10px 0;">items</h3>-->
 <!--            <div v-if="dep.keyReadonly">{{dep.data}}</div>-->
             <template v-for="(item, index) in dep.items" :key="index">
               <div :id="item.id" :data-pid="dep.id" class="item content-item">
