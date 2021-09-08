@@ -132,7 +132,7 @@
         ></PlumbLayout>
 
         <el-drawer
-            title="编辑"
+            title="属性"
             size="600px"
             v-model="renderFormDesigner"
             :lock-scroll="false"
@@ -145,11 +145,16 @@
                     :is="store.model.editor_step"
                 >
                   <template #array_item_before="scope">
-                    <h3>{{ scope.key }}</h3>
+                    <el-divider></el-divider>
                   </template>
                   <template #array_before="scope">
-                    <!--                 {{scope}}-->
-                    <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>
+                    <el-space align="middle">
+                      <h3>{{ scope.key }}</h3>
+                      <template v-if="scope.key !== 'items'">
+                        <el-button type="primary" size="small"
+                                   @click="page.callEvent('add:arr:common', scope)">添加{{ scope.key }}</el-button>
+                      </template>
+                    </el-space>
                   </template>
                 </HttpComponent>
               </template>
