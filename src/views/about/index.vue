@@ -99,6 +99,9 @@
             <template v-if="scope.key === 'forms'">
               <el-button size="small" @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
             </template>
+            <template v-if="scope.key === 'events'">
+              <el-button size="small" @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
+            </template>
           </el-space>
         </template>
         <template #form_before="scope">
@@ -224,26 +227,26 @@ let renderLayoutMixin = {
 
 
 
-let tabDep = NodeDefMap.def('tab', 'i6', [
-  {
-    id: 'i6-0',
-    label: 'label1',
-    name: 'name1',
-  },
-  {
-    id: 'i6-1',
-    label: 'label2',
-    name: 'name2',
-  },
-  {
-    id: 'i6-2',
-    label: 'label3',
-    name: 'name3',
-  }
-])
-
-let modalDep = NodeDefMap.def('modal', 'i7', [
-])
+// let tabDep = NodeDefMap.def('tab', 'i6', [
+//   {
+//     id: 'i6-0',
+//     label: 'label1',
+//     name: 'name1',
+//   },
+//   {
+//     id: 'i6-1',
+//     label: 'label2',
+//     name: 'name2',
+//   },
+//   {
+//     id: 'i6-2',
+//     label: 'label3',
+//     name: 'name3',
+//   }
+// ])
+//
+// let modalDep = NodeDefMap.def('modal', 'i7', [
+// ])
 
 let plumbLayoutMixin = {
   data() {
@@ -469,6 +472,7 @@ import {buildFormDepContent} from "@/views/about/build";
 import CustomElement from "@/components/CustomElement.vue";
 import CusForm from "@/components/CustomForm/CusForm.vue";
 import {FormsMana, useFormsMana} from "@/plugins/z-frame/formsMana";
+import {FormsEvent} from "@/plugins/z-frame/formsEvent";
 import FormsManaSelect from "@/plugins/z-frame/components/FormsManaSelect.vue";
 
 export default defineComponent({
@@ -771,19 +775,32 @@ export default defineComponent({
         page.refsManager.runCom('form-event-select', 'load')
         page.webComponentRef.toggleDialog('form-event-dialog');
       },
+      async ['save:single:events'](e) {
+        let { parts, partName, selfpath } = e
+        let model = parts[partName].getModel()
+        let current = toRaw(ZY.lodash.get(model, selfpath))
+        console.log('save:single:events', e, current)
+        await FormsEvent.saveCache2File(
+            [
+              {
+                name: current.name,
+                value: current
+              }
+            ],
+            {
+              fileName: current.name
+            }
+        )
+      },
       async ['forms:select-event'](e) {
         let {value, scope} = e
         let { parts, partName, selfpath, process } = currentFromDialog
         console.log('forms:select-form', e, currentFromDialog)
-        // let obj = ZY.JSON5.parse(value.value)
-        // let appendData = {
-        //   name: value.label,
-        //   value: value.value
-        // }
+        let appendData = value
         // // console.log(appendData)
-        // parts[partName].arrAppend(selfpath, appendData)
-        // await ZY.sleep(300)
-        // page.webComponentRef.toggleDialog('form-mana-dialog');
+        parts[partName].arrAppend(selfpath, appendData)
+        await ZY.sleep(300)
+        page.webComponentRef.toggleDialog('form-event-dialog');
       },
       ['remove:events'](e) {
         // console.log('sdsdsdsdsdsds', e)

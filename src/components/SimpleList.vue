@@ -63,7 +63,7 @@ export default {
       customColumn = column
     }
 
-    console.log(customColumn)
+    // console.log(customColumn)
     //
     const actions = [
       {
@@ -89,7 +89,9 @@ export default {
     function search(options = [], v) {
       return handler.search(
           function (o) {
-            return o.value.includes(v) || o.label.includes(v)
+            console.log(o)
+            return true
+            // return o.value.includes(v) || o.label.includes(v)
           }
       ) ?? []
     }

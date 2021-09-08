@@ -1,22 +1,22 @@
 import {createStaticFormCls} from "./BaseForm.js";
 
-export class FormsMana extends createStaticFormCls() {
+export class FormsEvent extends createStaticFormCls() {
   static STORAGE_KEY = 'form-event-key';
   constructor() {
     super();
   }
 }
 
-globalThis._APP_FormsEvent = FormsMana
+globalThis._APP_FormsEvent = FormsEvent
 
-export function useFormsMana() {
-  return FormsMana;
+export function useFormsEvent() {
+  return FormsEvent;
 }
 
 export function install(app = {config: {globalProperties: {}}}) {
-  app.config.globalProperties.$FormsMana = FormsMana
+  app.config.globalProperties.$FormsEvent = FormsEvent
 
-  // FormsMana.init()
+  // FormsEvent.init()
 
-  globalThis._APP_FormsMana = FormsMana
+  globalThis._APP_FormsEvent = FormsEvent
 }

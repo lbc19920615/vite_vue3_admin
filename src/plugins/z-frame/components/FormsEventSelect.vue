@@ -14,7 +14,7 @@
 <script>
 import {reactive, onMounted, resolveComponent} from 'vue';
 import SimpleList from "@/components/SimpleList.vue";
-import {FormsMana, useFormsMana} from "@/plugins/z-frame/formsEvent";
+import {useFormsEvent} from "@/plugins/z-frame/formsEvent";
 import {useRefsManager} from "@/hooks/ref";
 export default {
   name: "FormsEventSelect",
@@ -24,7 +24,7 @@ export default {
   },
   setup(props, ctx) {
     let uuid = props.comName ?? 'form_event_' + ZY.rid()
-    let formMana = useFormsMana()
+    let formMana = useFormsEvent()
     let state = reactive({
       suggest: [],
       column: [
@@ -32,18 +32,19 @@ export default {
            prop: 'label',
            width: '150px'
         },
-        {
-          prop: 'sdsds',
-          width: '150px',
-          label: 'NAME',
-          render(h, props) {
-            const scope = props.scope
-            let value = ZY.JSON5.parse( scope.row['value'])
-            return h('div', {
-
-            }, value.name ?? '')
-          }
-        },
+        // {
+        //   prop: 'sdsds',
+        //   width: '150px',
+        //   label: 'NAME',
+        //   render(h, props) {
+        //     const scope = props.scope
+        //     let value = scope.row.value
+        //     console.log(value)
+        //     return h('div', {
+        //
+        //     }, value.name ?? '')
+        //   }
+        // },
         {
           prop: 'value',
           label: 'VALUE',
@@ -51,7 +52,7 @@ export default {
             const jsonviewer = resolveComponent('json-viewer')
             const scope = props.scope
             // console.log(jsonviewer, props)
-            let value = ZY.JSON5.parse( scope.row[scope.column.property])
+            let value = scope.row.value
             let jsondom = h(jsonviewer, {
               value: value,
               expanded: true,
@@ -73,22 +74,25 @@ export default {
     //   state.suggest = formMana.getOptions()
     // })
     function onSelect(e) {
-      e.label = e.label + '___' + ZY.rid(3)
+      // e.label = e.label + '___' + ZY.rid(3)
       // console.log('select', e)
-      ctx.emit('select-form', e)
+      let clonedObj = ZY.JSON5.parse(ZY.JSON5.stringify(e.value))
+      ctx.emit('select-form', clonedObj)
     }
     async function load() {
       await formMana.init();
       await ZY.sleep(30)
       state.suggest = formMana.getOptions()
+      // let options  = formMana.getOptions()
+      // console.log(options)
     }
     async function loadFile() {
       await formMana.loadFile();
       await load()
     }
     async function exportFile() {
-      await FormsMana.saveCache2File(
-          FormsMana.getOptions()
+      await formMana.saveCache2File(
+          formMana.getOptions()
       )
     }
     let ret = {

@@ -8,6 +8,7 @@ export function createStaticFormCls() {
     static async setStorage(v = null) {
       let self = this
       if (Array.isArray(v)) {
+        console.log(v)
         v.forEach((item) => {
           // formsMap[item.name] = item.value
           self.formsMap.set(item.name, item.value)
@@ -38,7 +39,8 @@ export function createStaticFormCls() {
       let self = this
 
       let obj = await ZY_EXT.fileOpenJSON5()
-      let {data} = obj
+      // console.log('loadFile', obj)
+      let { data } = obj
       if (Array.isArray(data)) {
         await self.setStorage(data)
         return data;
@@ -63,8 +65,9 @@ export function createStaticFormCls() {
       if (cached) {
         let {data = new Map()} = cached
         // formsMap = cached
+        // console.log(data)
         data.forEach((item, key) => {
-          // console.log(item, key)
+          console.log(item, key)
           self.formsMap.set(key, item)
         })
       }

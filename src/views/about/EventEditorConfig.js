@@ -189,7 +189,10 @@ export default {
                                       // suffixValue: ' +")" )',
                                       handler: ['c', 'return [":name", c.indexKey]']
                                   }
-                              ]
+                              ],
+                                conClass: [
+                                    'a-space-mb-20'
+                                ]
                             },
                             items: {
                                 type: 'object',
