@@ -142,10 +142,42 @@ const props = defineProps({
 });
 const emit = defineEmits();
 // let editor = document.getElementById("editor");
+
+/**
+ * insertText
+ * @param data {string}
+ * @param nextLine {boolean}
+ */
+function insertText(data = '', {nextLine =  false} = {}) {
+  var cm = codeEditor;
+  // console.log(cm)
+  var doc = cm.getDoc();
+  var cursor = doc.getCursor(); // gets the line number in the cursor position
+  var line = doc.getLine(cursor.line); // get the line contents
+  var pos = {
+    line: cursor.line
+  };
+  // console.log(line.length, typeof line)
+  if (nextLine) {
+    // check if the line is empty
+    // add the data
+    doc.replaceRange("\n" + data, pos);
+  } else {
+    // add a new line and the data
+    doc.replaceRange(data, pos);
+  }
+}
+
+function getValue(...args) {
+  return codeEditor.getValue(...args)
+}
+
 defineExpose({
   setModel(newVal) {
     codeEditor.setValue(newVal)
-  }
+  },
+  insertText: insertText,
+  getValue: getValue
 })
 let editorRef = ref(null)
 let editor = null

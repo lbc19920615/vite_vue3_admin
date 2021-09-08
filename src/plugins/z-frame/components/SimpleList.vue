@@ -89,7 +89,7 @@ export default {
     function search(options = [], v) {
       return handler.search(
           function (o) {
-            console.log(o)
+            // console.log(o)
             return true
             // return o.value.includes(v) || o.label.includes(v)
           }

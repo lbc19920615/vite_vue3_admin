@@ -1,21 +1,25 @@
 <template>
  <div class="code-js-editor">
-   <el-space>
+<!--   {{state}}-->
+   <el-space class="a-space-mb-10"  align="middle">
      <el-popover
          placement="bottom"
          :width="700"
          trigger="click"
+         v-model:visible="state.visible"
      >
        <template #reference>
-         <el-button class="a-space-mb-10" @click="setRefMan(true)">快捷代码</el-button>
+         <el-button size="small" @click="setRefMan(true)">快捷代码</el-button>
        </template>
        <div  style="min-height: 200px">
          <SimpleList v-if="refMan.showed"
                      :column="state.column"
-                     :suggest="getSuggest()" ></SimpleList>
+                     :suggest="getSuggest()"
+                    @select-item="onSelect"
+         ></SimpleList>
        </div>
      </el-popover>
-
+<!--      <el-button @click="test">test</el-button>-->
    </el-space>
    <CodeMirror
        v-if="inited"
@@ -106,7 +110,8 @@ export default {
           prop: 'value',
           label: 'VALUE',
         }
-      ]
+      ],
+      visible: false
     })
 
 
@@ -124,8 +129,31 @@ export default {
       }
     }
 
+    function test() {
+      instance.ctx.$refs.editorRef.insertText(`
+sdsds
+`)
+    }
+
+    function onChange() {
+      let newVal = instance.ctx.$refs.editorRef.getValue()
+      // console.log('newVal', newVal, instance.ctx.content)
+      // instance.ctx.editorChange(state.value)
+      state.visible = false
+    }
+
+    function onSelect(str) {
+      instance.ctx.$refs.editorRef.insertText(str)
+
+      setTimeout(() => {
+        onChange()
+      }, 30)
+    }
+
     return {
       state,
+      onSelect,
+      test,
       getSuggest,
       refMan,
       setRefMan
