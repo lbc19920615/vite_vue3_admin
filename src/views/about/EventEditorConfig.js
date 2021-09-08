@@ -156,12 +156,19 @@ export default {
                         },
                         forms: {
                             type: 'array',
+                            tag: 'my-vue-tab',
+                            con_tag: 'my-vue-tab-pane',
                             ui: {
                                 attrs: [
                                     ['scroll-control', 'page_forms'],
                                 ],
+                                conAttrs: [
+                                    {
+                                        prefixValue: '"form"+',
+                                        handler: ['c', 'return [":name", c.indexKey]']
+                                    }
+                                ],
                                 class: [
-                                    // 'a-space-mb-20'
                                 ],
                                 conClass: [
                                     'a-space-mb-20'
@@ -172,6 +179,7 @@ export default {
                                 properties: {
                                     name: {
                                         type: 'string',
+                                        tag: 'div',
                                         ui: {
                                             widget: 'CusSuggest',
                                             widgetConfig: {
@@ -181,6 +189,7 @@ export default {
                                     },
                                     value: {
                                         type: 'string',
+                                        tag: 'div',
                                         ui: {
                                             widget: 'CusForm',
                                             widgetConfig: {

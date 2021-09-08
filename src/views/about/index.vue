@@ -71,9 +71,15 @@
               <el-button size="small" @click="page.callEvent('add:arr:common', scope)">添加{{ scope.key }}</el-button>
             </el-space>
           </template>
+          <template v-if="scope.key === 'forms'">
+            <el-space   align="middle">
+              <h3>{{ scope.selfpath }}</h3>
+              <el-button size="small" @click="page.callEvent('add:forms', scope)">添加{{ scope.key }}</el-button>
+            </el-space>
+          </template>
         </template>
         <template #array_before="scope">
-          <el-col v-if="scope.key !== 'events' && scope.key !== 'layoutSlotArr'">
+          <el-col v-if="scope.key !== 'events' && scope.key !== 'layoutSlotArr' && scope.key !== 'forms'" >
             <el-space align="middle">
               <h3>{{ scope.selfpath }}</h3>
               <template v-if="scope.key === 'forms'">
