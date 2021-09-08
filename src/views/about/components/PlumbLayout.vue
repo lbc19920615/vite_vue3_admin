@@ -85,6 +85,7 @@ $sel: "." + $tag;
               <el-space>
                 <div>id: {{dep.id}}</div>
               </el-space>
+              <div v-if="dep.data">part: {{dep.data.partName ?? ''}}</div>
             </div>
           </div>
 <!--          <div class="item content-item" :data-pid="dep.id"-->
@@ -92,7 +93,6 @@ $sel: "." + $tag;
 <!--          >events</div>-->
           <template v-if="!dep.config.closure">
 <!--            <h3 style="margin: 10px 0;">items</h3>-->
-<!--            <div v-if="dep.keyReadonly">{{dep.data}}</div>-->
             <template v-for="(item, index) in dep.items" :key="index">
               <div :id="item.id" :data-pid="dep.id" class="item content-item">
                 <div>
