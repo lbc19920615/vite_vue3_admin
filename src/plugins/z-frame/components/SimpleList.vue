@@ -22,7 +22,7 @@
 
 <script>
 import {computed, reactive, toRaw, watch} from 'vue'
-import {useArrHandler} from "@/views/home/hooks";
+import {useArrHandler} from "../hooks/index";
 import ZTable from '@/plugins/z-table/FreeTable/table.vue'
 
 export default {

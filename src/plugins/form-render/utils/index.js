@@ -54,6 +54,19 @@ export let CustomRenderControlMixin = {
     }
 }
 
+export let provideDxValueTemplateMixin = {
+    props: {
+        context: null,
+    },
+    methods: {
+        dxValueTemplate(v) {
+            let curFormCon = inject('curFormCon')
+            // console.log('context', this.context, v)
+            return curFormCon.dxValue(this.context, v)
+        }
+    }
+}
+
 export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     let lock = new ZY.Lock(/* optional lock name, should be unique */)
     let model = null;

@@ -26,11 +26,11 @@ import {getCurrentInstance} from 'vue'
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
 import {useArrHandler, useReloadMan} from "@/views/home/hooks";
-import SimpleList from "@/components/SimpleList.vue";
+// import SimpleList from "@/components/SimpleList.vue";
 
 export default {
   name: 'CusSuggest',
-  components: {SimpleList, DeepPropEditor},
+  components: {DeepPropEditor},
   mixins: [
     CustomRenderControlMixin
   ],

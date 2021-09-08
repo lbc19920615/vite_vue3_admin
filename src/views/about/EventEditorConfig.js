@@ -128,6 +128,7 @@ export default {
                                 widget: 'CodeJsEditor',
                                 // widget: 'JsonCodeEditor',
                                 widgetConfig: {
+                                    enums: "ROOT_STATE('tools.constVars.processSteps', [])",
                                     style: {
                                         height: '300px'
                                     }

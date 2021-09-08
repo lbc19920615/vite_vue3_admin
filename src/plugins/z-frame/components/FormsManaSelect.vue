@@ -13,12 +13,11 @@
 
 <script>
 import {reactive, onMounted, resolveComponent} from 'vue';
-import SimpleList from "@/components/SimpleList.vue";
 import {FormsMana, useFormsMana} from "@/plugins/z-frame/formsMana";
 import {useRefsManager} from "@/hooks/ref";
 export default {
   name: "FormsManaSelect",
-  components: {SimpleList},
+  components: {},
   props: {
     comName: String
   },

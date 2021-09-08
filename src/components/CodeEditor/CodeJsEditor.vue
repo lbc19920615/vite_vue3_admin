@@ -1,20 +1,44 @@
 <template>
-  <CodeMirror
-            v-if="inited"
-              ref="editorRef"
-              v-model="content"
-              @update:modelValue="editorChange"
-              :height="styleObj.height"
-              :mode="mode"
-            theme="vscode-dark"
-  />
+ <div class="code-js-editor">
+   <el-space>
+     <el-popover
+         placement="bottom"
+         :width="700"
+         trigger="click"
+     >
+       <template #reference>
+         <el-button class="a-space-mb-10" @click="setRefMan(true)">快捷代码</el-button>
+       </template>
+       <div  style="min-height: 200px">
+         <SimpleList v-if="refMan.showed"
+                     :column="state.column"
+                     :suggest="getSuggest()" ></SimpleList>
+       </div>
+     </el-popover>
+
+   </el-space>
+   <CodeMirror
+       v-if="inited"
+       ref="editorRef"
+       v-model="content"
+       @update:modelValue="editorChange"
+       :height="styleObj.height"
+       :mode="mode"
+       theme="vscode-dark"
+   />
+ </div>
 </template>
 
 <script>
+import {useReloadMan} from "@/views/home/hooks";
+import {getCurrentInstance, reactive, resolveComponent} from "vue";
+import {provideDxValueTemplateMixin} from "@/plugins/form-render/utils";
+
 export default {
   name: 'CodeJsEditor',
-  components: {
-  },
+  mixins: [
+    provideDxValueTemplateMixin
+  ],
   emits: ['update:value', 'init'],
   props: {
     modelValue: String,
@@ -64,6 +88,47 @@ export default {
         this.$emit('update:modelValue', e)
         this.$emit('fchange', e);
       }, 1000)
+    }
+  },
+  setup(props, ctx) {
+    let instance = getCurrentInstance()
+    let [refMan, setRefMan] = useReloadMan({timeout: 500})
+
+    let suggest = props.ui.widgetConfig.suggest ?? []
+
+    let state = reactive({
+      column: [
+        {
+          prop: 'label',
+          width: '150px'
+        },
+        {
+          prop: 'value',
+          label: 'VALUE',
+        }
+      ]
+    })
+
+
+    function getSuggest() {
+      if (props.ui.widgetConfig.enums) {
+        let obj =  instance.ctx.dxValueTemplate(props.ui.widgetConfig.enums)
+        // console.log('getsdsdsd', obj)
+        return obj
+      }
+      else if (suggest) {
+        return suggest
+      }
+      else {
+        return []
+      }
+    }
+
+    return {
+      state,
+      getSuggest,
+      refMan,
+      setRefMan
     }
   }
 }
