@@ -75,6 +75,7 @@
             <el-space   align="middle">
               <h3>{{ scope.selfpath }}</h3>
               <el-button size="small" @click="page.callEvent('add:forms', scope)">添加{{ scope.key }}</el-button>
+              <el-button size="small" @click="page.callEvent(`open:forms`, scope)">打开{{ scope.key }}管理</el-button>
             </el-space>
           </template>
         </template>
@@ -82,10 +83,6 @@
           <el-col v-if="scope.key !== 'events' && scope.key !== 'layoutSlotArr' && scope.key !== 'forms'" >
             <el-space align="middle">
               <h3>{{ scope.selfpath }}</h3>
-              <template v-if="scope.key === 'forms'">
-                <el-button size="small" @click="page.callEvent(`add:${scope.key}`, scope)">添加{{ scope.key }}</el-button>
-                <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}管理</el-button>
-              </template>
             </el-space>
           </el-col>
         </template>
