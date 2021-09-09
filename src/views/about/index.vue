@@ -6,8 +6,6 @@
 <!--    {{store.computedModel}}-->
 <!--  <z-upload></z-upload>-->
 
-
-
     <my-fixed>
 <!--      {{page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')}}-->
       <el-card class="box-card" v-show="page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')">
@@ -67,18 +65,21 @@
              <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}管理</el-button>
            </el-space>
           </template>
-          <template v-if="scope.key === 'layoutSlotArr'">
+          <template v-else-if="scope.key === 'layoutSlotArr'">
             <el-space   align="middle">
               <h3>{{ scope.selfpath }}</h3>
               <el-button size="small" @click="page.callEvent('add:arr:common', scope)">添加{{ scope.key }}</el-button>
             </el-space>
           </template>
-          <template v-if="scope.key === 'forms'">
+          <template v-else-if="scope.key === 'forms'">
             <el-space   align="middle">
               <h3>{{ scope.selfpath }}</h3>
               <el-button size="small" @click="page.callEvent('add:forms', scope)">添加{{ scope.key }}</el-button>
               <el-button size="small" @click="page.callEvent(`open:forms`, scope)">打开{{ scope.key }}管理</el-button>
             </el-space>
+          </template>
+          <template v-else>
+<!-- -->
           </template>
         </template>
         <template #array_before="scope">
@@ -110,6 +111,19 @@
               </template>
             </el-space>
           </div>
+        </template>
+        <template #prop_before="scope">
+<!--          {{scope}}-->
+          <template v-if="scope.selfpath === 'props'">
+            <h3>页面变量</h3>
+          </template>
+          <template v-else-if="scope.selfpath === 'onInited'">
+            <h3>当初始化</h3>
+          </template>
+          <template v-else>
+<!--            -->
+          </template>
+
         </template>
       </HttpComponent>
     </template>

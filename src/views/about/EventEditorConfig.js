@@ -94,6 +94,7 @@ export default {
                         layoutSlots: {
                             type: 'string',
                             computedProp: 'layoutSlotArrComputed',
+                            hidden: true,
                             ui: {
                                 widgetConfig: {
                                     disabled: true,
@@ -114,6 +115,7 @@ export default {
                         },
                         pageProperties: {
                             type: 'string',
+                            hidden: true,
                             computedProp: 'pagePropertiesComp',
                             ui: {
                                 widgetConfig: {
