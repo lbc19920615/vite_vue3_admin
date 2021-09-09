@@ -11,8 +11,10 @@
     <NativeDialog title="你好" :open="store.model.openDialog"
     @closed="closeDialog"
     >
-      <z-iframe src="/about-form-no" style="width: 100%; height: 100%;"
-                :show="store.model.openDialog"></z-iframe>
+<!--      <z-iframe src="/about-form-no" style="width: 100%; height: 100%;"-->
+<!--                :show="store.model.openDialog"></z-iframe>-->
+
+      <FormManager v-if="store.model.openDialog"></FormManager>
     </NativeDialog>
   </div>
 </template>
