@@ -7,6 +7,7 @@
             placement="bottom"
             :width="400"
             trigger="click"
+            :append-to-body="false"
         >
           <template #reference>
             <el-button @click="setRefMan(true)">选择</el-button>
