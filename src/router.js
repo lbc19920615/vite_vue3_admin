@@ -20,6 +20,16 @@ export const constantRouterMap = [
     component: () => import('@/views/about/index.vue'),
   },
   {
+    path: "/about-form-no",
+    name: "AboutFormNo",
+
+    meta: {
+      title: 'AboutFormNo',
+      // icon: 'shangdian'
+    },
+    component: () => import('@/views/about/form.vue'),
+  },
+  {
     path: '',
     name: 'main',
     component: Layout,
