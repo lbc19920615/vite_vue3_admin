@@ -36,7 +36,7 @@ export const constantRouterMap = [
     redirect: 'dashboard',
     hidden: false,
     meta: {
-      title: 'views',
+      title: '页面',
       icon: 'shangdian'
     },
     children: [
@@ -44,17 +44,18 @@ export const constantRouterMap = [
         path: "dashboard",
         name: "Home",
         meta: {
-          title: 'dashboard',
+          title: '首页',
           // icon: 'shangdian'
         },
-        component: () => import('@/views/home/index.vue'),
+        // component: () => import('@/views/home/index.vue'),
+        component: () => import('@/views/home/index2.vue'),
       },
       {
         path: "about",
         name: "About",
 
         meta: {
-          title: 'About',
+          title: '页面设计',
           // icon: 'shangdian'
         },
         component: () => import('@/views/about/index.vue'),
@@ -62,9 +63,8 @@ export const constantRouterMap = [
       {
         path: "form",
         name: "Form",
-
         meta: {
-          title: 'Form',
+          title: '接口获取',
           // icon: 'shangdian'
         },
         component: () => import('@/views/home/search.vue'),
@@ -72,9 +72,8 @@ export const constantRouterMap = [
       {
         path: "demo",
         name: "Demo",
-
         meta: {
-          title: 'Demo',
+          title: '流程设计',
           // icon: 'shangdian'
         },
         component: () => import('@/views/home/demo.vue'),
@@ -93,7 +92,7 @@ export const asyncRouterMap = [
     parent: 'main',
     path: "show",
     name: "Show",
-
+    hidden: true,
     meta: {
       title: 'Show',
       // icon: 'shangdian'

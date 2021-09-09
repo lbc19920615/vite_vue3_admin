@@ -105,6 +105,7 @@ export default {
                         props: {
                             type: 'string',
                             ui: {
+                                label: '&nbsp;',
                                 attrs: [
                                     ['scroll-control', 'page_props'],
                                 ],
@@ -138,6 +139,7 @@ export default {
                         onInited: {
                             type: 'string',
                             ui: {
+                                label: '&nbsp;',
                                 attrs: [
                                     ['scroll-control', 'page_onInited'],
                                 ],
