@@ -1,9 +1,10 @@
 import {loadComponent, fetchVueComponent} from "@/hooks/remote";
+import {VARS_PAGE_MODEL_NAME} from "@/vars";
 // import showCss from '@/views/about/show.scss';
 
 export async function loadPage(name) {
   return await loadComponent( async () => {
-    let currentData = await ZY_EXT.store.getItem('play-events-model')
+    let currentData = await ZY_EXT.store.getItem(VARS_PAGE_MODEL_NAME)
     // console.log(currentData)
     let res = await globalThis.importScripts('./configs/page1.js')
     let script = res.default ?? {}

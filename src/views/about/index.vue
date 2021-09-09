@@ -6,6 +6,8 @@
 <!--    {{store.computedModel}}-->
 <!--  <z-upload></z-upload>-->
 
+
+
     <my-fixed>
 <!--      {{page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')}}-->
       <el-card class="box-card" v-show="page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')">
@@ -175,6 +177,22 @@ import {defineComponent, nextTick, getCurrentInstance, toRaw} from "vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
 import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
+import {
+  extendControl2Page,
+  useControl,
+  useAppPageControl,
+  PageControlMixin,
+} from "@/mixins/framework";
+import AutoHttpCom from "@/components/AutoHttpCom.vue";
+import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
+import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
+import {buildFormDepContent} from "@/views/about/build";
+import CustomElement from "@/components/CustomElement.vue";
+import CusForm from "@/components/CustomForm/CusForm.vue";
+import {FormsMana, useFormsMana} from "@/plugins/z-frame/formsMana";
+import {FormsEvent} from "@/plugins/z-frame/formsEvent";
+import FormsManaSelect from "@/plugins/z-frame/components/FormsManaSelect.vue";
+import FormManager from "@/views/about/components/FormManager.vue";
 
 
 let depManagerMixin = {
@@ -304,22 +322,6 @@ let plumbLayoutMixin = {
   }
 }
 
-import {
-  extendControl2Page,
-  useControl,
-  useAppPageControl,
-  PageControlMixin,
-  extendControlComputedWatch
-} from "@/mixins/framework";
-import AutoHttpCom from "@/components/AutoHttpCom.vue";
-import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
-import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
-import {buildFormDepContent} from "@/views/about/build";
-import CustomElement from "@/components/CustomElement.vue";
-import CusForm from "@/components/CustomForm/CusForm.vue";
-import {FormsMana, useFormsMana} from "@/plugins/z-frame/formsMana";
-import {FormsEvent} from "@/plugins/z-frame/formsEvent";
-import FormsManaSelect from "@/plugins/z-frame/components/FormsManaSelect.vue";
 
 export default defineComponent({
   mixins: [
@@ -338,6 +340,7 @@ export default defineComponent({
     }
   },
   components: {
+    FormManager,
     FormsManaSelect,
     CusForm,
     DeepPropEditor,

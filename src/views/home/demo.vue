@@ -5,6 +5,8 @@
   top: 0;
   width: 80vw;
   z-index: 1111;
+  margin: 0 auto;
+  transform: translateY(10vh);
 }
 dialog::backdrop {
   background: repeating-linear-gradient(
@@ -23,11 +25,10 @@ dialog::backdrop {
     <iframe ref="iframe"  src="http://192.168.1.67:8080/#/main" style="width: 100%; height: 600px;" frameborder="0"></iframe>
     <dialog id="dialog1" ref="dialog1" class="demo1-dialog" >
       <el-row class="a-space-mb-10" justify="space-between">
-        <header>hello</header>
+        <header>你好</header>
         <el-button size="small" icon="el-icon-close" @click="closeDialog"></el-button>
       </el-row>
-      <iframe ref="iframe2"
-              src="/about-no" style="width: 100%; height: 600px;" frameborder="0"></iframe>
+      <FormManager></FormManager>
     </dialog>
   </div>
 </template>
@@ -37,9 +38,11 @@ dialog::backdrop {
 import {extendControl2Page, useAppPageControl, useControl} from "@/mixins/framework";
 import CustomElement from "@/components/CustomElement.vue";
 import {getCurrentInstance, onMounted} from "vue";
+import FormManager from "@/views/about/components/FormManager.vue";
 
 export default {
   components: {
+    FormManager,
     CustomElement,
   },
   setup() {
@@ -63,25 +66,18 @@ export default {
     page = extendControl2Page(page)
     page = useAppPageControl(page)
 
-    onMounted(() => {
-      import('__remote/public/message.js').then(Lib => {
-        let channel = new MessageChannel();
+    let Lib = null
+    let sendMessage = null
 
+    onMounted(() => {
+      import('__remote/public/message.js').then(res => {
+        Lib = res
         let ifr = ctx.$refs.iframe
         let ifrWindow = ifr.contentWindow;
 
-        ifr.addEventListener("load", iframeLoaded, false);
 
-        function sendMessage(obj) {
-          ifrWindow.postMessage(obj, '*', [channel.port2]);
-        }
-
-        function iframeLoaded() {
-          sendMessage(new Lib.CommandMessage('open', [1,2,3]));
-        }
-
-        channel.port1.onmessage = handleMessage;
         function handleMessage(e) {
+          console.log(e)
           let data = e.data
           let isCustom = Lib.detectIsCustomMessage(data)
           if (isCustom) {
@@ -92,11 +88,26 @@ export default {
             }
           }
         }
+
+        function onIframeLoaded() {
+          sendMessage = function (obj) {
+            const {port1, port2} = new MessageChannel();
+            port1.onmessage = handleMessage;
+            ifrWindow.postMessage(obj, '*', [port2]);
+          }
+          sendMessage(new Lib.CommandMessage('ping', [1,2,3]));
+
+          openDialog()
+        }
+
+        ifr.addEventListener("load", onIframeLoaded, false);
+
       })
 
     })
 
     function closeDialog() {
+      sendMessage(new Lib.CommandMessage('update:prop:form', ['form-112121212121']));
       page.setData({
         openDialog: false
       })

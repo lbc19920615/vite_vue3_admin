@@ -19,7 +19,8 @@ const store = {
         }
       ]
     },
-    currentPlayGround: {}
+    currentPlayGround: {},
+    pageStoreName: 'play-events-model'
   }),
   mutations: {
     SET_COUNT: (state, v) => {
@@ -46,14 +47,16 @@ const store = {
     SetStoreData: ({commit}, payload) => {
       commit('SET_PLAY', payload)
     },
-    SetStoreEvents: ({commit}, payload) => {
+    SetStoreEvents: ({commit, state}, payload) => {
+      let {pageStoreName} = state
       let JSON5 = ZY.JSON5
       let cloned = JSON5.parse(JSON5.stringify(payload))
-      ZY_EXT.store.setItem('play-events-model', cloned)
+      ZY_EXT.store.setItem(pageStoreName, cloned)
       // commit('SET_EVENTS', payload)
     },
-    GetStoreEvents: async () => {
-      return ZY_EXT.store.getItem('play-events-model')
+    GetStoreEvents: async ({state}) => {
+      let {pageStoreName} = state
+      return ZY_EXT.store.getItem(pageStoreName)
     }
   },
   getters: {

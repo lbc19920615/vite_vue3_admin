@@ -1,4 +1,5 @@
 import {reactive, ref, toRaw} from "vue";
+import {VARS_PAGE_MODEL_NAME} from "@/vars";
 
 
 export function useRenderControl() {
@@ -66,7 +67,7 @@ export function useRenderControl() {
 
     let detectEventChangeContext = {}
     async function detectEventChange(isFirst) {
-        let currentData = await ZY_EXT.store.getItem('play-events-model')
+        let currentData = await ZY_EXT.store.getItem(VARS_PAGE_MODEL_NAME)
         // console.log(currentData.uuid)
         // console.log(interval)
         // console.log('changed')
