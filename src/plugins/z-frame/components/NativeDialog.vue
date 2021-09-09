@@ -8,14 +8,15 @@
   margin: 0 auto;
   transform: translateY(10vh);
   height: var(--n-dialog-height, 80vh);
-  --dialog-padding:  var(--n-dialog-padding, 20px);
-  --nav-height:  var(--n-dialog-header-height, 40px);
+  --dialog-padding-v: var(--n-dialog-padding-v, 0px);
+  --dialog-padding:  var(--dialog-padding-v) var(--n-dialog-padding-h, 20px);
+  --nav-height:  var(--n-dialog-header-height, 50px);
   padding: var(--dialog-padding);
   &__header {
     height: var(--nav-height);
   }
   &__content {
-    height: calc(100% - var(--nav-height) - (var(--dialog-padding) / 2));
+    height: calc(100% - var(--nav-height) - (var(--dialog-padding-v)));
   }
 }
 .native-dialog::backdrop {
@@ -32,7 +33,7 @@
 
 <template>
   <dialog ref="dialogRef" class="native-dialog" >
-    <el-row class="a-space-mb-10 native-dialog__header"
+    <el-row class="native-dialog__header"
             align="middle" justify="space-between">
       <header>{{title}}</header>
       <el-button size="small" icon="el-icon-close"
