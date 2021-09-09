@@ -37,12 +37,7 @@ export default {
                                 ],
                                 widget: 'CusSuggest',
                                 widgetConfig: {
-                                    suggest: [
-                                        {
-                                            label: '爱你',
-                                            value: 'sdsds',
-                                        }
-                                    ]
+                                    enums: "ROOT_STATE('tools.constVars_pageNames', [])",
                                 }
                             }
                         },

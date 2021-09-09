@@ -15,3 +15,10 @@ export let processSteps = [
     value: 'procecss-step1',
   },
 ]
+
+export let pageNames = [
+  {
+    label: 'page1',
+    value: 'page1',
+  },
+]
