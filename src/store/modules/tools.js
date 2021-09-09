@@ -1,5 +1,9 @@
 import * as constVars from "@/plugins/form-render/const";
 
+let obj = {}
+for (let [key, value] of Object.entries(constVars)) {
+  obj['constVars_' + key] = value
+}
 
 const store = {
   // namespaced: true,
@@ -24,7 +28,8 @@ const store = {
         value: 'number',
       },
     ],
-    constVars,
+    // constVars: constVars,
+    ...obj,
     // processSteps,
     // eventSuggests,
   }),

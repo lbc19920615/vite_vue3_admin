@@ -75,7 +75,7 @@ export default {
                                         ui: {
                                             widget: 'CusSuggest',
                                             widgetConfig: {
-                                                enums: "ROOT_STATE('tools.constVars.processSteps', [])",
+                                                enums: "ROOT_STATE('tools.constVars_processSteps', [])",
                                             }
                                         }
                                     },

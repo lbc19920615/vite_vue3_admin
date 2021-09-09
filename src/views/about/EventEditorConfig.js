@@ -146,7 +146,7 @@ export default {
                                 widget: 'CodeJsEditor',
                                 // widget: 'JsonCodeEditor',
                                 widgetConfig: {
-                                    enums: "ROOT_STATE('tools.constVars.processSteps', [])",
+                                    enums: "ROOT_STATE('tools.constVars_processSteps', [])",
                                     style: {
                                         height: '300px'
                                     }
@@ -183,7 +183,7 @@ export default {
                                         ui: {
                                             widget: 'CusSuggest',
                                             widgetConfig: {
-                                                enums: "ROOT_STATE('tools.constVars.processSteps', [])",
+                                                enums: "ROOT_STATE('tools.constVars_processSteps', [])",
                                             }
                                         }
                                     },
@@ -232,7 +232,7 @@ export default {
                                         ui: {
                                             widget: 'CusSuggest',
                                             widgetConfig: {
-                                                enums: "ROOT_STATE('tools.constVars.eventSuggests', [])",
+                                                enums: "ROOT_STATE('tools.constVars_eventSuggests', [])",
                                             }
                                         }
                                     },
