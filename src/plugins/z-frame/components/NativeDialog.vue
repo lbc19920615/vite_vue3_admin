@@ -1,4 +1,4 @@
-<style>
+<style lang="scss">
 .native-dialog {
   position: fixed;
   left: 0;
@@ -8,6 +8,15 @@
   margin: 0 auto;
   transform: translateY(10vh);
   height: var(--n-dialog-height, 80vh);
+  --dialog-padding:  var(--n-dialog-padding, 20px);
+  --nav-height:  var(--n-dialog-header-height, 40px);
+  padding: var(--dialog-padding);
+  &__header {
+    height: var(--nav-height);
+  }
+  &__content {
+    height: calc(100% - var(--nav-height) - (var(--dialog-padding) / 2));
+  }
 }
 .native-dialog::backdrop {
   background: repeating-linear-gradient(
@@ -23,12 +32,13 @@
 
 <template>
   <dialog ref="dialogRef" class="native-dialog" >
-    <el-row class="a-space-mb-10" justify="space-between">
+    <el-row class="a-space-mb-10 native-dialog__header"
+            align="middle" justify="space-between">
       <header>{{title}}</header>
       <el-button size="small" icon="el-icon-close"
                  @click="closeDialog"></el-button>
     </el-row>
-    <slot></slot>
+    <div class="native-dialog__content"><slot></slot></div>
   </dialog>
 </template>
 

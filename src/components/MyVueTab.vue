@@ -60,7 +60,7 @@
 export default {
   name: "MyVueTab",
   mounted() {
-    console.log('tab mounted')
+    // console.log('tab mounted')
   },
   data() {
     return {
@@ -89,7 +89,7 @@ export default {
         // 设置active bar
         let tabEl = document.querySelector(`[my-vue-tab-name=${name}]`)
         let computedStyle = getComputedStyle(tabEl)
-        console.log(tabEl, computedStyle.width)
+        // console.log(tabEl, computedStyle.width)
         this.activeBarStyle.width = computedStyle.width
         this.activeBarStyle.transform = `translateX(${tabEl.offsetLeft}px)`
       }

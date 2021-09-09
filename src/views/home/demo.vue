@@ -11,7 +11,8 @@
     <NativeDialog title="你好" :open="store.model.openDialog"
     @closed="closeDialog"
     >
-      <iframe ref="iframe" v-if="store.model.openDialog" src="/about-form-no" style="width: 100%; height: 600px;" frameborder="0"></iframe>
+      <iframe ref="iframe" v-if="store.model.openDialog" src="/about-form-no"
+              style="width: 100%; height: 100%;" frameborder="0"></iframe>
     </NativeDialog>
   </div>
 </template>
