@@ -1,10 +1,11 @@
 <style lang="scss">
-
-
+.page-demo {
+  --n-dialog-width: 96vw;
+}
 </style>
 
 <template>
-  <div v-if="page.inited">
+  <div class="page-demo" v-if="page.inited">
     <iframe ref="iframe"  src="http://192.168.1.67:8080/#/main" style="width: 100%; height: 600px;" frameborder="0"></iframe>
 
     <NativeDialog title="你好" :open="store.model.openDialog"
