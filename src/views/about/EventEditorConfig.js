@@ -46,6 +46,7 @@ export default {
                             tag: 'my-vue-tab',
                             con_tag: 'my-vue-tab-pane',
                             ui: {
+                                label: 'Slot',
                                 attrs: [
                                     ['scroll-control', 'page_slotArr'],
                                 ],
