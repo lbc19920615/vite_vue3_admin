@@ -27,14 +27,14 @@ import 'normalize.css/normalize.css'
 import 'suitcss-utils-size/index.css'
 import 'font-awesome/css/font-awesome.css'
 
-import '@/components/WebElements/index'
-
 
 // element
 import ElementPlus from 'element-plus';
 // import 'element-plus/lib/theme-chalk/index.css';
 import 'element-plus/dist/index.css';
 import locale from 'element-plus/lib/locale/lang/zh-cn'
+
+import '@/components/WebElements/index'
 
 // vant
 
@@ -76,13 +76,15 @@ NodeDefMap.register(modalNodePlugin)
 import router, {addRoute} from './router'
 import store from './store'
 
-let routes = await store.dispatch('GenerateRoutes', {
-  roles: ['admin']
-})
-routes.forEach(routeEntry => {
-  // console.log(routeEntry)
-  addRoute(routeEntry)
-})
+(async () => {
+  let routes = await store.dispatch('GenerateRoutes', {
+    roles: ['admin']
+  })
+  routes.forEach(routeEntry => {
+    // console.log(routeEntry)
+    addRoute(routeEntry)
+  })
+})()
 
 import icons from './icons/index'
 import '@/styles/index.scss' // global css

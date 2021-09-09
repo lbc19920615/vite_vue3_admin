@@ -1,4 +1,4 @@
-import {defineCustomElement, nextTick, inject} from 'vue'
+import {defineCustomElement, nextTick} from 'vue'
 import css from 'font-awesome/css/font-awesome.css'
 import dialogStyle from './dialog.scss'
 
