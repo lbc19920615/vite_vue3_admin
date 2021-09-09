@@ -11,8 +11,8 @@
     <NativeDialog title="你好" :open="store.model.openDialog"
     @closed="closeDialog"
     >
-      <iframe ref="iframe" v-if="store.model.openDialog" src="/about-form-no"
-              style="width: 100%; height: 100%;" frameborder="0"></iframe>
+      <z-iframe src="/about-form-no" style="width: 100%; height: 100%;"
+                :show="store.model.openDialog"></z-iframe>
     </NativeDialog>
   </div>
 </template>
@@ -24,9 +24,11 @@ import CustomElement from "@/components/CustomElement.vue";
 import {getCurrentInstance, onMounted} from "vue";
 import FormManager from "@/views/about/components/FormManager.vue";
 import NativeDialog from "@/plugins/z-frame/components/NativeDialog.vue";
+import ZIframe from "@/plugins/z-frame/components/ZIframe.vue";
 
 export default {
   components: {
+    ZIframe,
     NativeDialog,
     FormManager,
     CustomElement,
