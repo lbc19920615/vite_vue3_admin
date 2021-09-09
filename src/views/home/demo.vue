@@ -11,7 +11,7 @@
     <NativeDialog title="你好" :open="store.model.openDialog"
     @closed="closeDialog"
     >
-      <FormManager></FormManager>
+      <FormManager v-if="store.model.openDialog"></FormManager>
     </NativeDialog>
   </div>
 </template>
