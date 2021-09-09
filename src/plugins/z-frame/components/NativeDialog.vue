@@ -3,10 +3,11 @@
   position: fixed;
   left: 0;
   top: 0;
-  width: 80vw;
+  width: var(--n-dialog-width, 80vw);
   z-index: 1111;
   margin: 0 auto;
   transform: translateY(10vh);
+  height: var(--n-dialog-height, 80vh);
 }
 .native-dialog::backdrop {
   background: repeating-linear-gradient(
