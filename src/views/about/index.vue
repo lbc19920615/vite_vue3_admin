@@ -60,20 +60,20 @@
         <template #array_prev="scope">
           <template v-if="scope.key === 'events'">
            <el-space   align="middle">
-             <h3>{{ scope.selfpath }}</h3>
+             <h3>事件</h3>
              <el-button size="small" @click="page.callEvent('add:events', scope)">添加{{ scope.key }}</el-button>
              <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}管理</el-button>
            </el-space>
           </template>
           <template v-else-if="scope.key === 'layoutSlotArr'">
             <el-space   align="middle">
-              <h3>{{ scope.selfpath }}</h3>
+              <h3>片段</h3>
               <el-button size="small" @click="page.callEvent('add:arr:common', scope)">添加{{ scope.key }}</el-button>
             </el-space>
           </template>
           <template v-else-if="scope.key === 'forms'">
             <el-space   align="middle">
-              <h3>{{ scope.selfpath }}</h3>
+              <h3>表单</h3>
               <el-button size="small" @click="page.callEvent('add:forms', scope)">添加{{ scope.key }}</el-button>
               <el-button size="small" @click="page.callEvent(`open:forms`, scope)">打开{{ scope.key }}管理</el-button>
             </el-space>
