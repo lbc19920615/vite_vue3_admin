@@ -6,6 +6,8 @@
 <!--    {{store.computedModel}}-->
 <!--  <z-upload></z-upload>-->
 
+    <ZLayoutEditor @save-layout="demo.onSaveLayout"></ZLayoutEditor>
+
     <my-fixed>
 <!--      {{page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')}}-->
       <el-card class="box-card" v-show="page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')">
@@ -129,9 +131,6 @@
     </template>
 
     <template v-if="page.inited">
-<!--      <div>-->
-<!--        {{store.model}}-->
-<!--      </div>-->
       <el-row class="a-space-mb-10">
         <el-button type="primary" @click="page.callEvent('load:plumb:layout')">加载plumbLayout</el-button>
       </el-row>
@@ -197,16 +196,14 @@ import {
   useAppPageControl,
   PageControlMixin,
 } from "@/mixins/framework";
-import AutoHttpCom from "@/components/AutoHttpCom.vue";
-import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
 import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
 import {buildFormDepContent} from "@/views/about/build";
 import CustomElement from "@/components/CustomElement.vue";
-import CusForm from "@/components/CustomForm/CusForm.vue";
 import {FormsMana, useFormsMana} from "@/plugins/z-frame/formsMana";
 import {FormsEvent} from "@/plugins/z-frame/formsEvent";
 import FormsManaSelect from "@/plugins/z-frame/components/FormsManaSelect.vue";
 import FormManager from "@/views/about/components/FormManager.vue";
+import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
 
 
 let depManagerMixin = {
@@ -293,7 +290,7 @@ let plumbLayoutMixin = {
     },
     async onSaveData({deps, links = []}) {
       // console.log('onSaveData', deps, links)
-      this.page.rootStore.dispatch('SetStoreData', {deps, links})
+      // this.page.rootStore.dispatch('SetStoreData', {deps, links})
       let map = {
         [this.rootId]: deps.find(v => v.id === this.rootId)
       }
@@ -354,12 +351,10 @@ export default defineComponent({
     }
   },
   components: {
+    ZLayoutEditor,
     FormManager,
     FormsManaSelect,
-    CusForm,
     DeepPropEditor,
-    AsyncPlumbLayout,
-    AutoHttpCom,
     PlumbLayout,
     RenderLayout,
     CustomElement,
@@ -372,9 +367,6 @@ export default defineComponent({
     }
     let properties =  {
       editor_step: {
-        type: String,
-      },
-      code_str: {
         type: String,
       },
       textarea_step: {
@@ -695,10 +687,17 @@ export default defineComponent({
       });
     }
 
+    let demo = {
+      onSaveLayout(e) {
+        console.log('onSaveLayout', e)
+      }
+    }
+
     return {
       onSaveLayout,
       loadStepByContent,
       store: page.store,
+      demo,
       jumpTo,
       page,
       allDef: page.defMap,

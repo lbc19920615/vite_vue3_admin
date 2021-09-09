@@ -33,7 +33,7 @@ $sel: "." + $tag;
       </el-row>
     </el-dialog>
 
-    <div id="diagramContainer1" class="container">
+    <div :id="containerId" ref="container" class="container">
       <div :id="dep.id" class="abs section"
            :dep-name="dep.id"
            v-for="(dep,depIndex) in deps"
@@ -121,41 +121,7 @@ import {jsPlumb} from 'jsplumb'
 import {groupManagerMixin} from "./PlumbLayout/groupDialog";
 import {createFromJSON5} from "@/plugins/ComEditor/nodes";
 import {plumbActionMixins, plumbLayoutMixn} from "@/plugins/PlumbLayout/mixin";
-
-// let actionMixins = {
-//   methods: {
-//     /**
-//      * getVisibleConnections
-//      */
-//     getVisibleConnections() {
-//       let allConnections = this.instance.getConnections({
-//
-//       });
-//       let ret = []
-//       ret = allConnections.filter(v => {
-//         return v.target && v.source
-//       })
-//       return ret
-//     },
-//     /**
-//      * getLinkRealtions
-//      */
-//     getLinkRealtions() {
-//       let allVisibleConnections = this.getVisibleConnections()
-//       let ret = []
-//       ret = allVisibleConnections.map(v => {
-//         return {
-//           toPID: v.target.dataset.pid,
-//           fromPID: v.source.dataset.pid,
-//           from: v.sourceId,
-//           to: v.targetId
-//         }
-//       })
-//       // console.log(ret)
-//       return ret
-//     }
-//   }
-// }
+import {createPlumbConfig} from "@/plugins/PlumbLayout/utils";
 
 export default {
   name: "PlumbLayout",
@@ -203,82 +169,12 @@ export default {
   },
   mounted() {
     let self = this
-    let config = {}
-    config.connectorPaintStyle = {
-      lineWidth: 1,
-      stroke: '#4caf50',
-      // joinstyle: 'round',
-      fill: 'pink',
-      outlineColor: '',
-      outlineWidth: ''
-    }
 
-    // 鼠标悬浮在连接线上的样式
-    config.connectorHoverStyle = {
-      lineWidth: 2,
-      stroke: 'red',
-      outlineWidth: 10,
-      outlineColor: ''
-    }
-
-    config.baseStyle = {
-      endpoint: ['Dot', {
-        radius: 8,
-        fill: '#ff5722'
-      }], // 端点的形状
-      ConnectorStyle: config.connectorPaintStyle, // 连接线的颜色，大小样式
-      ConnectorHoverStyle: config.connectorHoverStyle,
-      paintStyle: {
-        fill: '#4caf50',
-        radius: 6
-        // lineWidth: 0
-      }, // 端点的颜色样式
-      hoverPaintStyle: {
-        fill: 'red',
-        Stroke: 'red'
-      },
-      isSource: true, // 是否可以拖动（作为连线起点）
-      connector: ['Straight', {
-        gap: 0,
-        cornerRadius: 5,
-        alwaysRespectStubs: true
-      }], // 连接线的样式种类有[Bezier],[Flowchart],[StateMachine ],[Straight ]
-      isTarget: true, // 是否可以放置（连线终点）
-      maxConnections: -1, // 设置连接点最多可以连接几条线
-      connectorOverlays: [
-        ['Arrow', {
-          width: 10,
-          length: 10,
-          location: 1
-        }],
-        ['Label', {
-          label: '<button class="delete-node-btn">X</button>',
-          cssClass: '',
-          labelStyle: {
-            color: 'red'
-          },
-          events: {
-            click: function (labelOverlay, originalEvent) {
-              // console.log('click on label overlay for :', labelOverlay.component)
-              // console.log(labelOverlay)
-              // console.log(originalEvent)
-              // jsPlumb.deleteConnection(labelOverlay.component)
-              if (labelOverlay.component.isDetachAllowed()) {
-                // console.log('isDetachAllowed', self.instance)
-                self.instance.deleteConnection(labelOverlay.component)
-                // jsPlumb.repaint()
-              }
-            }
-          }
-        }]
-      ]
-    }
-
-    self.config = config
+    self.config = createPlumbConfig(self);
 
     jsPlumb.ready(function () {
       self.instance = jsPlumb.getInstance({
-        Container: 'diagramContainer1'
+        Container: self.$refs.container
       })
       self.$emit('init', self)
     })

@@ -34,12 +34,17 @@ export let plumbActionMixins = {
 }
 
 export let plumbLayoutMixn = {
+  props: {
+    storePrefix: String
+  },
   data() {
+    let comId = 'plumb_layout_' + ZY.rid(6)
     return {
-      storagePrefix: 'play',
+      storagePrefix: this.storePrefix ?? 'play',
       posCssObj: {},
       posMap: {},
-      comId: 'plumb_layout_' + ZY.rid(6)
+      comId: comId,
+      containerId: 'diagramContainer_' + comId
     }
   },
   methods: {
