@@ -7,7 +7,7 @@
 <template>
   <template v-if="inited">
 <!--        {{state}}-->
-    {{ui.widgetConfig.teleportTo}}
+<!--    {{ui.widgetConfig.teleportTo}}-->
     <el-input v-model="state.value" @input="onChange">
       <template #append>
         <e-popover
