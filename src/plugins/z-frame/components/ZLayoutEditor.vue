@@ -67,8 +67,7 @@ import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
 import {
   extendControl2Page,
   useControl,
-  useAppPageControl,
-  PageControlMixin,
+  // PageControlMixin,
 } from "@/mixins/framework";
 import {buildFormDepContent} from "./ZLayoutEditor/build";
 import CustomElement from "@/components/CustomElement.vue";
@@ -200,7 +199,6 @@ let plumbLayoutMixin = {
 export default defineComponent({
   name: 'ZLayoutEditor',
   mixins: [
-    PageControlMixin,
     plumbLayoutMixin,
     renderLayoutMixin,
     depManagerMixin,
@@ -248,7 +246,7 @@ export default defineComponent({
       }
     })
     page = extendControl2Page(page)
-    page = useAppPageControl(page)
+    // page = useAppPageControl(page)
 
     // let currentFromDialog = null
     let cachedPageLayout = null
