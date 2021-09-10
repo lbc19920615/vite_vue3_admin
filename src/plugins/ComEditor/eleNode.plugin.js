@@ -26,9 +26,21 @@ export let EditorConfig = function (defaultVal = {}) {
                     ui: {
                         label: 'text',
                         widgetConfig: {
+                            type: 'textarea',
+                            readonly: true,
+                        }
+                    },
+                    computedProp: 'computedEditText'
+                },
+                editText: {
+                    type: 'string',
+                    ui: {
+                        label: '文字',
+                        widgetConfig: {
                             type: 'textarea'
                         }
                     },
+                    computedProp: 'text'
                 },
                 attrs: {
                     type: 'array',
@@ -48,7 +60,7 @@ export let EditorConfig = function (defaultVal = {}) {
                 },
             }
         }, {
-            doubled: "MODEL('name', '') + ',s'"
+          computedEditText: "MODEL('editText', '')"
         },
         {
             defaultVal: defaultVal

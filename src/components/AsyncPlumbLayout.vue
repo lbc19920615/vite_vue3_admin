@@ -66,49 +66,48 @@ $sel: "." + $tag;
 import {jsPlumb} from 'jsplumb'
 import * as NodeDefMap from "@/plugins/ComEditor/nodes";
 import {createPlumbConfig} from "@/plugins/PlumbLayout/utils";
-import {plumbLayoutMixn} from "@/plugins/PlumbLayout/mixin";
+import {plumbActionMixins, plumbLayoutMixn} from "@/plugins/PlumbLayout/mixin";
 
-
-let actionMixins = {
-  methods: {
-    /**
-     * getVisibleConnections
-     */
-    getVisibleConnections() {
-      let allConnections = this.instance.getConnections({
-
-      });
-      let ret = []
-      ret = allConnections.filter(v => {
-        return v.target && v.source
-      })
-      return ret
-    },
-    /**
-     * getLinkRealtions
-     */
-    getLinkRealtions() {
-      let allVisibleConnections = this.getVisibleConnections()
-      let ret = []
-      ret = allVisibleConnections.map(v => {
-        return {
-          toPID: v.target.dataset.pid,
-          fromPID: v.source.dataset.pid,
-          from: v.sourceId,
-          to: v.targetId
-        }
-      })
-      // console.log(ret)
-      return ret
-    }
-  }
-}
+// let actionMixins = {
+//   methods: {
+//     /**
+//      * getVisibleConnections
+//      */
+//     getVisibleConnections() {
+//       let allConnections = this.instance.getConnections({
+//
+//       });
+//       let ret = []
+//       ret = allConnections.filter(v => {
+//         return v.target && v.source
+//       })
+//       return ret
+//     },
+//     /**
+//      * getLinkRealtions
+//      */
+//     getLinkRealtions() {
+//       let allVisibleConnections = this.getVisibleConnections()
+//       let ret = []
+//       ret = allVisibleConnections.map(v => {
+//         return {
+//           toPID: v.target.dataset.pid,
+//           fromPID: v.source.dataset.pid,
+//           from: v.sourceId,
+//           to: v.targetId
+//         }
+//       })
+//       // console.log(ret)
+//       return ret
+//     }
+//   }
+// }
 
 export default {
   name: "AsyncPlumbLayout",
   mixins: [
     plumbLayoutMixn,
-    actionMixins,
+    plumbActionMixins,
   ],
   props: {
     rootId: String,
