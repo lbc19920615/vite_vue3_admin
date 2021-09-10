@@ -44,7 +44,7 @@ $sel: "." + $tag;
             @confirm="deleteDep(dep)"
         >
           <template #reference>
-            <el-button  size="small"  type="danger"><i class="el-icon-remove" ></i></el-button>
+            <el-button  size="mini"  type="danger"><i class="el-icon-remove" ></i></el-button>
           </template>
         </el-popconfirm>
         <template v-if="dep.type === 'events'">
@@ -53,7 +53,7 @@ $sel: "." + $tag;
                :id="dep.id + '-top'">
             <div>
               <div>
-                <el-button size="small" @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
+                <el-button size="mini" @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
               </div>
               <div>type: {{dep.type}}</div>
               <div>type: {{dep.sub}}</div>
@@ -79,7 +79,7 @@ $sel: "." + $tag;
             <div class="a-space-mb-10">
               <el-space>
                 <div>type: {{dep.type}}</div>
-                <el-button size="small" @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
+                <el-button size="mini" @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
               </el-space>
               <div></div>
               <el-space>
@@ -99,12 +99,12 @@ $sel: "." + $tag;
                   <el-input :readonly="dep.keyReadonly" v-model="item.key" placeholder="请填写key"></el-input>
                 </div>
                 <template v-if="!dep.noToolsRemove">
-                  <el-button size="small" @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></el-button>
+                  <el-button size="mini" @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></el-button>
                 </template>
               </div>
             </template>
             <template v-if="!dep.noToolsAdd">
-            <el-button size="small"
+            <el-button size="mini"
                        @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
             </template>
           </template>
