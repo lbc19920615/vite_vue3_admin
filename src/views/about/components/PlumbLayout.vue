@@ -5,16 +5,58 @@ $tag: "plumb-layout";
 $sel: "." + $tag;
 
 #{$sel} {
-  @include init-plumb-layout();
+  @include init-plumb-layout() {
+    border: none;
+    --tools-height: 0px;
+    --com-panel-width: initial;
+    $panel-tra: width .5s ease;
+    .tools {
+      //height: var(--tools-height);
+    }
+    .com-panel {
+      width: calc(var(--com-panel-width));
+
+      transition: $panel-tra;
+    }
+    .container {
+      position: relative;
+      width: calc(100% - var(--com-panel-width));
+      height: calc(var(--plumb-con-height) - var(--tools-height));
+      border: 1px solid #eee;
+    }
+
+    .playground {
+      display: flex;
+      contain: layout;
+
+      //@container (max-width: 700px){
+      //  .playground {
+      //    display: block;
+      //    background-color: #0d84ff;
+      //  }
+      //}
+    }
+
+    .element-panel {
+      width: calc(var(--ele-panel-width));
+    }
+
+    &--panel-opened {
+      .container {
+        //background-color: #0d84ff;
+        transition: $panel-tra;
+      }
+    }
+
+  }
 }
 </style>
 
 <template>
-  <div  class="plumb-layout" :id="comId">
+  <div  class="plumb-layout" :id="comId" :class="classObj" :style="styleObj">
 <!--    <el-button @click="save">保存</el-button>-->
 <!--    <el-button @click="getLinkRealtions">get connect</el-button>-->
-    <el-button @click="toggleGroupDialog(true)">添加组</el-button>
-
+<!--    {{styleObj}}-->
     <el-dialog
         v-model="dialogVisible" title="组选择" width="80vw"
     :close-on-click-modal="false"
@@ -33,88 +75,101 @@ $sel: "." + $tag;
       </el-row>
     </el-dialog>
 
-    <div :id="containerId" ref="container" class="container">
-      <div :id="dep.id" class="abs section"
-           :dep-name="dep.id"
-           v-for="(dep,depIndex) in deps"
-           :key="dep.id"
-           >
-        <el-popconfirm
-            title="这是一段内容确定删除吗？"
-            @confirm="deleteDep(dep)"
+
+    <div class="playground">
+      <div class="com-panel">
+        <div class="a-space-mb-10">
+          <el-button size="small" @click="togglePanel">toggle</el-button>
+        </div>
+        <el-row align="middle" class="tools">
+          <el-button size="small" @click="toggleGroupDialog(true)">添加组</el-button>
+        </el-row>
+        <div class="element-panel">sdsd</div>
+      </div>
+      <div :id="containerId" ref="container" class="container">
+        <div :id="dep.id" class="abs section"
+             :dep-name="dep.id"
+             v-for="(dep,depIndex) in deps"
+             :key="dep.id"
         >
-          <template #reference>
-            <el-button  size="mini"
-                        type="danger"><i class="el-icon-remove" ></i></el-button>
-          </template>
-        </el-popconfirm>
-        <template v-if="dep.type === 'events'">
+          <el-popconfirm
+              title="这是一段内容确定删除吗？"
+              @confirm="deleteDep(dep)"
+          >
+            <template #reference>
+              <el-button  size="mini"
+                          type="danger"><i class="el-icon-remove" ></i></el-button>
+            </template>
+          </el-popconfirm>
+          <template v-if="dep.type === 'events'">
 
-          <div class="item header" :data-pid="dep.id"
-               :id="dep.id + '-top'">
-            <div>
+            <div class="item header" :data-pid="dep.id"
+                 :id="dep.id + '-top'">
               <div>
-                <el-button size="mini"
-                           @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
-              </div>
-              <div>type: {{dep.type}}</div>
-              <div>type: {{dep.sub}}</div>
-              <div>id: {{dep.id}}</div>
-            </div>
-          </div>
-          <template v-if="!dep.config.closure">
-            <h3 style="margin: 10px 0;">items</h3>
-            <template v-for="(item, index) in dep.items" :key="index">
-              <div :id="item.id" :data-pid="dep.id" class="item content-item">
-<!--                <div>{{item.id}}</div>-->
-                <div>{{item.name}}</div>
-              </div>
-            </template>
-          </template>
-
-        </template>
-
-        <template v-else>
-
-          <div class="item header" :data-pid="dep.id"
-               :id="dep.id + '-top'">
-            <div class="a-space-mb-10">
-              <el-space>
-                <div>type: {{dep.type}}</div>
-                <el-button size="mini" @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
-              </el-space>
-              <div></div>
-              <el-space>
-                <div>id: {{dep.id}}</div>
-              </el-space>
-              <div v-if="dep.data">part: {{dep.data.partName ?? ''}}</div>
-            </div>
-          </div>
-<!--          <div class="item content-item" :data-pid="dep.id"-->
-<!--               :id="dep.id + '-evt'"-->
-<!--          >events</div>-->
-          <template v-if="!dep.config.closure">
-<!--            <h3 style="margin: 10px 0;">items</h3>-->
-            <template v-for="(item, index) in dep.items" :key="index">
-              <div :id="item.id" :data-pid="dep.id" class="item content-item">
                 <div>
-                  <el-input :readonly="dep.keyReadonly" v-model="item.key" placeholder="请填写key"></el-input>
+                  <el-button size="mini"
+                             @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
                 </div>
-                <template v-if="!dep.noToolsRemove">
-                  <el-button size="mini" @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></el-button>
-                </template>
+                <div>type: {{dep.type}}</div>
+                <div>type: {{dep.sub}}</div>
+                <div>id: {{dep.id}}</div>
               </div>
+            </div>
+            <template v-if="!dep.config.closure">
+              <h3 style="margin: 10px 0;">items</h3>
+              <template v-for="(item, index) in dep.items" :key="index">
+                <div :id="item.id" :data-pid="dep.id" class="item content-item">
+                  <!--                <div>{{item.id}}</div>-->
+                  <div>{{item.name}}</div>
+                </div>
+              </template>
             </template>
-            <template v-if="!dep.noToolsAdd">
-            <el-button size="mini"
-                       @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
-            </template>
+
           </template>
 
-        </template>
+          <template v-else>
 
+            <div class="item header" :data-pid="dep.id"
+                 :id="dep.id + '-top'">
+              <div class="a-space-mb-10">
+                <el-space>
+                  <div>type: {{dep.type}}</div>
+                  <el-button size="mini" @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
+                </el-space>
+                <div></div>
+                <el-space>
+                  <div>id: {{dep.id}}</div>
+                </el-space>
+                <div v-if="dep.data">part: {{dep.data.partName ?? ''}}</div>
+              </div>
+            </div>
+            <!--          <div class="item content-item" :data-pid="dep.id"-->
+            <!--               :id="dep.id + '-evt'"-->
+            <!--          >events</div>-->
+            <template v-if="!dep.config.closure">
+              <!--            <h3 style="margin: 10px 0;">items</h3>-->
+              <template v-for="(item, index) in dep.items" :key="index">
+                <div :id="item.id" :data-pid="dep.id" class="item content-item">
+                  <div>
+                    <el-input :readonly="dep.keyReadonly" v-model="item.key" placeholder="请填写key"></el-input>
+                  </div>
+                  <template v-if="!dep.noToolsRemove">
+                    <el-button size="mini" @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></el-button>
+                  </template>
+                </div>
+              </template>
+              <template v-if="!dep.noToolsAdd">
+                <el-button size="mini"
+                           @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
+              </template>
+            </template>
+
+          </template>
+
+        </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -125,10 +180,38 @@ import {createFromJSON5} from "@/plugins/ComEditor/nodes";
 import {plumbActionMixins, plumbLayoutMixn} from "@/plugins/PlumbLayout/mixin";
 import {createPlumbConfig} from "@/plugins/PlumbLayout/utils";
 
+let UIMixin = {
+  computed: {
+    styleObj() {
+      return {
+        ['--ele-panel-width']: '320px',
+        ['--com-panel-width']: this.panelOpend ? '320px' : '70px',
+        ['--plumb-height']: '600px',
+      }
+    },
+    classObj() {
+      return {
+        ['plumb-layout--panel-opened']: this.panelOpend
+      }
+    }
+  },
+  data() {
+    return {
+      panelOpend: true
+    }
+  },
+  methods: {
+    togglePanel() {
+      this.panelOpend = !this.panelOpend
+    },
+  }
+}
+
 export default {
   name: "PlumbLayout",
   mixins: [
     plumbLayoutMixn,
+      UIMixin,
     groupManagerMixin,
     plumbActionMixins,
   ],
@@ -159,15 +242,15 @@ export default {
       instance: null,
       config: {},
       deps: [
-      ]
+      ],
     }
   },
   watch: {
-    deps: {
-      async handler(newVal) {
-
-      },
-    }
+    // deps: {
+    //   async handler(newVal) {
+    //
+    //   },
+    // }
   },
   mounted() {
     let self = this
@@ -182,6 +265,7 @@ export default {
     })
   },
   methods: {
+
     /**
      * init
      */
@@ -341,34 +425,6 @@ export default {
     editDep(dep) {
       this.$emit('edit-dep', dep)
     },
-    // getLinks() {
-    //   let links = this.getLinkRealtions()
-    //
-    //   let eventLinks = []
-    //
-    //   eventLinks = links.filter(v => {
-    //     let from = v.from
-    //     return from.endsWith('-evt')
-    //   })
-    //
-    //   let comLinks = []
-    //   let notCanLinks = [
-    //     'evt',
-    //     'fun'
-    //   ]
-    //   comLinks = links.filter(v => {
-    //     let from = v.from
-    //     let isMatched = notCanLinks.some(v => {
-    //       return from.endsWith(v)
-    //     })
-    //     // console.log('v', isMatched)
-    //     return v.to.endsWith('top') && !isMatched
-    //   })
-    //   return {
-    //     eventLinks,
-    //     comLinks,
-    //   }
-    // },
     setDep(id, v) {
       let dep = this.deps.find(v => v.id === id)
       if (dep) {

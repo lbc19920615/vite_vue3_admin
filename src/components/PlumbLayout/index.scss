@@ -2,7 +2,8 @@
 
 @mixin init-plumb-layout() {
   width: 100%;
-  height: 600px;
+  --plumb-con-height:  var(--plumb-height, 600px);
+  height: var(--plumb-con-height);
   border: 1px solid #eee;
   @at-root {
     :root {
@@ -60,4 +61,5 @@
       }
     }
   }
+  @content;
 }
