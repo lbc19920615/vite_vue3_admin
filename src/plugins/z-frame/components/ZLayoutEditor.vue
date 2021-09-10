@@ -3,11 +3,9 @@
   <div class="page-search" v-if="page.inited">
 
     <template v-if="page.inited">
-      <el-row class="a-space-mb-10">
+      <el-row class="a-space-mb-10" v-if="controls">
         <el-button type="primary"
                    @click="page.callEvent('call:save')">保存</el-button>
-<!--        <el-button type="primary"-->
-<!--                   @click="page.callEvent('load:plumb:layout')">加载</el-button>-->
       </el-row>
 
       <el-row style="flex-wrap: nowrap;">
@@ -211,6 +209,10 @@ export default defineComponent({
     storePrefix: {
       type: String,
       default: 'play'
+    },
+    controls: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

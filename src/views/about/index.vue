@@ -130,6 +130,7 @@
 
     <ZLayoutEditor
         :ref="layoutRef"
+        :controls="false"
         @save-layout="demo.onSaveLayout"></ZLayoutEditor>
   </div>
 </template>
