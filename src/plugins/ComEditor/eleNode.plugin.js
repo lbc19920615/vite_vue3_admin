@@ -21,6 +21,15 @@ export let EditorConfig = function (defaultVal = {}) {
                         label: '标签名'
                     },
                 },
+                textContent: {
+                    type: 'string',
+                    ui: {
+                        label: 'text',
+                        widgetConfig: {
+                            type: 'textarea'
+                        }
+                    },
+                },
                 attrs: {
                     type: 'array',
                     "items": {

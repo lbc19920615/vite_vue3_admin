@@ -42,9 +42,15 @@ function buildRootXmlLink(curContext, context) {
       innerText = innerText + buildRootXmlLink(toDepContextItem, context)
     }
   })
-  let str = `
-<${rawData.tagName} ${attrStr}>${innerText}</${rawData.tagName}>
-`.trim();
+  let str = ''
+  if (rawData.tagName) {
+    str = `<${rawData.tagName} ${attrStr}>${innerText}</${rawData.tagName}>`;
+  } else {
+    if (rawData.textContent) {
+      innerText = rawData.textContent
+    }
+    str = innerText
+  }
   curContext.str = str
   return str
 }
