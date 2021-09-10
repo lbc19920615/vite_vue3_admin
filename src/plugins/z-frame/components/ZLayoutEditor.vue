@@ -371,6 +371,10 @@ export default defineComponent({
       return '';
     }
 
+    function getToolsData() {
+      return self.LayoutContext.getToolsData()
+    }
+
     function save() {
       if (self.LayoutContext) {
         self.LayoutContext.save()
@@ -379,6 +383,7 @@ export default defineComponent({
 
     return {
       onSaveLayout,
+      getToolsData,
       loadStepByContent,
       store: page.store,
       save,

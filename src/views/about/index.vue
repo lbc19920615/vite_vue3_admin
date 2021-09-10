@@ -235,7 +235,9 @@ export default defineComponent({
           date: Date.now()
         }
 
-        saved.layout = page.ctx.LayoutContext.getToolsData()
+        // saved.layout = page.ctx.LayoutContext.getToolsData()
+
+        saved.layout = page.runRefMethod('layout', 'getToolsData')
 
         let fileName = obj.name ??  ZY.rid(6)
 
