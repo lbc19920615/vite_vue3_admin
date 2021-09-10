@@ -352,12 +352,15 @@ export default defineComponent({
       return ret;
     }
 
-    async function onSaveLayout({origin}) {
+    async function onSaveLayout({origin, currentData}) {
       // if (cachedPageControlModel) {
       //   await page.dispatchRoot('SetStoreEvents', cachedPageControlModel)
       // }
       cachedPageLayout = ZY.JSON5.parse(ZY.JSON5.stringify(origin))
-      ctx.emit('save-layout', cachedPageLayout)
+      ctx.emit('save-layout', {
+        cachedPageLayout,
+        currentData,
+      })
       // console.log('currentData', origin, cachedPageControlModel)
       return '';
     }

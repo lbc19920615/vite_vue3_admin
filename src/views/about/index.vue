@@ -418,7 +418,8 @@ export default defineComponent({
         if (cachedPageControlModel) {
           await page.dispatchRoot('SetStoreEvents', cachedPageControlModel)
         }
-        console.log('onSaveLayout', e, cachedPageControlModel)
+        console.log('onSaveLayout', e)
+        await ZY_EXT.store.setItem('current-data', e.currentData)
       }
     }
 
