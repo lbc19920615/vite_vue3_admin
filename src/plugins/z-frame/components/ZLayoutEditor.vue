@@ -4,7 +4,7 @@
 
     <template v-if="page.inited">
       <el-row class="a-space-mb-10"
-              vs-if="controls">
+              v-if="controls">
         <el-button type="primary"
                    @click="page.callEvent('call:save')">保存</el-button>
         <el-button type="primary"
@@ -20,6 +20,7 @@
             :handleAppend="handleAppend"
             :handle-dep="handleDep"
             :handle-group="handleGroup"
+            @delete-dep="onDeleteDep"
             @save-data="onSaveData"
             @edit-dep="onEditDep"
         ></PlumbLayout>
@@ -98,8 +99,13 @@ let depManagerMixin = {
       await ZY.sleep(30)
       this.renderFormLoading = false
       this.renderFormDesigner = true
+    },
+    async onDeleteDep({dep}) {
+      let depId = dep.id
+      // console.log(dep, this.LayoutContext.deletePos(depId))
+      this.LayoutContext.deletePos(depId)
     }
-  }
+  },
 }
 
 let renderLayoutMixin = {

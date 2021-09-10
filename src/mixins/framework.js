@@ -261,7 +261,7 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
   let comRefs = new Map();
 
   function runRefMethod(name, methodName, ...args) {
-    let layoutRef = page.comRefs.get(name)
+    let layoutRef = comRefs.get(name)
     if (layoutRef && layoutRef[methodName] && layoutRef[methodName].constructor) {
       // const isAsync = layoutRef[methodName].constructor.name === "AsyncFunction";
       // if (isAsync) {}

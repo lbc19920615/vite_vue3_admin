@@ -44,7 +44,8 @@ $sel: "." + $tag;
             @confirm="deleteDep(dep)"
         >
           <template #reference>
-            <el-button  size="mini"  type="danger"><i class="el-icon-remove" ></i></el-button>
+            <el-button  size="mini"
+                        type="danger"><i class="el-icon-remove" ></i></el-button>
           </template>
         </el-popconfirm>
         <template v-if="dep.type === 'events'">
@@ -53,7 +54,8 @@ $sel: "." + $tag;
                :id="dep.id + '-top'">
             <div>
               <div>
-                <el-button size="mini" @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
+                <el-button size="mini"
+                           @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
               </div>
               <div>type: {{dep.type}}</div>
               <div>type: {{dep.sub}}</div>
@@ -316,6 +318,7 @@ export default {
       }
       this.$nextTick(() => {
         this.instance.repaintEverything()
+        this.$emit('delete-dep', {dep})
       })
       // console.log('this.deps', index, this.deps)
     },

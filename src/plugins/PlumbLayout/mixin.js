@@ -166,10 +166,16 @@ export let plumbLayoutMixn = {
     },
 
     async usePosMap() {
-      let posMap = await ZY_EXT.store.getItem( this.storagePrefix +'-posMap') ?? null
+      let posMap = await ZY_EXT.store.getItem( this.storagePrefix +'-posMap') ?? {}
       // console.log('cached', cached)
       this.loadPosMap(posMap)
       return ''
+    },
+
+    deletePos(id) {
+      if ( this.posMap ) {
+        Reflect.deleteProperty(this.posMap, id)
+      }
     },
 
     loadPosMap(posMap) {
