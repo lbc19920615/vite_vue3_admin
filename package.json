@@ -48,6 +48,7 @@
     "vue3-eventbus": "^2.0.0",
     "vue3-highlightjs": "^1.0.5",
     "vue3-json-viewer": "^1.0.4",
+    "vuedraggable": "^4.1.0",
     "vuex": "^4.0.0",
     "vuex-persist": "^3.1.3"
   },

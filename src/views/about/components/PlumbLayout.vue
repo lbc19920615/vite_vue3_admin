@@ -48,6 +48,11 @@ $sel: "." + $tag;
       }
     }
 
+    .list-group {
+      min-height: 150px;
+      border: 1px solid #eee;
+    }
+
   }
 }
 </style>
@@ -84,7 +89,31 @@ $sel: "." + $tag;
         <el-row align="middle" class="tools">
           <el-button size="small" @click="toggleGroupDialog(true)">添加组</el-button>
         </el-row>
-        <div class="element-panel">sdsd</div>
+        <div class="element-panel">
+          <draggable
+              class="dragArea list-group"
+              v-model="myArray"
+              group="people"
+              @start="onDropStart"
+              @end="onDropEnd"
+              :group="{ name: 'people', pull: 'clone', put: false }"
+              :sort="false"
+              item-key="id">
+            <template #item="{element}">
+              <div>{{element.name}}</div>
+            </template>
+          </draggable>
+
+          <draggable
+              class="dragArea list-group"
+              :list="list2"
+              group="people"
+          >
+            <template #item="{element}">
+              <div>{{element.name}}</div>
+            </template>
+          </draggable>
+        </div>
       </div>
       <div :id="containerId" ref="container" class="container">
         <div :id="dep.id" class="abs section"
@@ -179,8 +208,12 @@ import {groupManagerMixin} from "./PlumbLayout/groupDialog";
 import {createFromJSON5} from "@/plugins/ComEditor/nodes";
 import {plumbActionMixins, plumbLayoutMixn} from "@/plugins/PlumbLayout/mixin";
 import {createPlumbConfig} from "@/plugins/PlumbLayout/utils";
+import draggable from 'vuedraggable'
 
 let UIMixin = {
+  components: {
+    draggable
+  },
   computed: {
     styleObj() {
       return {
@@ -197,10 +230,38 @@ let UIMixin = {
   },
   data() {
     return {
-      panelOpend: true
+      panelOpend: true,
+      myArray: [
+        {
+          name: 'sdsds1',
+          value: 'sdsds1',
+          id: ZY.rid(),
+        },
+        {
+          name: 'sdsds2',
+          value: 'sdsds2',
+          id: ZY.rid(),
+        },
+      ],
+      list2: [
+        {
+          name: 'sdsds3',
+          value: 'sdsds2',
+          id: ZY.rid(),
+        },
+      ],
+      isDragging: false
     }
   },
   methods: {
+    onDropStart(e) {
+      // console.log('onDropEnd', e)
+      this.isDragging = true
+    },
+    onDropEnd(e) {
+      // console.log('onDropEnd', e)
+      this.isDragging = false
+    },
     togglePanel() {
       this.panelOpend = !this.panelOpend
     },
