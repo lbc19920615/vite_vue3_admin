@@ -40,6 +40,7 @@
                  @click="closeDialog"></el-button>
     </el-row>
     <div class="native-dialog__content"><slot></slot></div>
+    <div id="dialog_popover"></div>
   </dialog>
 </template>
 

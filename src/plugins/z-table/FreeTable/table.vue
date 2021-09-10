@@ -1,5 +1,8 @@
+<style lang="scss">
+
+</style>
 <template>
-  <div class="free-table">
+  <div class="z-table">
     <el-table ref="elTable" :data="data" v-bind="$attrs" v-on="$listeners">
       <template v-for="item in tbColumns"   :key="item.prop">
         <el-table-column
@@ -22,7 +25,10 @@
       </template>
       <el-table-column v-bind="actionProps" label="ACTION">
         <template v-slot:default="scope">
-          <el-button size="small"
+          <el-button
+              class="z-table__button"
+              type="primary"
+              size="small"
                      v-bind="action.attrs"
                      v-for="action in actions"
                      @click="runAction(scope, action, 'click')">{{action.label}}</el-button>

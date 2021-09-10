@@ -37,6 +37,7 @@ export default {
                                 ],
                                 widget: 'CusSuggest',
                                 widgetConfig: {
+                                    teleportTo: "#dialog_popover",
                                     enums: "ROOT_STATE('tools.constVars_pageNames', [])",
                                 }
                             }
@@ -70,6 +71,7 @@ export default {
                                         ui: {
                                             widget: 'CusSuggest',
                                             widgetConfig: {
+                                                teleportTo: "#dialog_popover",
                                                 enums: "ROOT_STATE('tools.constVars_processSteps', [])",
                                             }
                                         }

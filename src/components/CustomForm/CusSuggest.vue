@@ -1,21 +1,30 @@
+<style lang="scss" scoped>
+.cus-suggest__button {
+  //margin: initial;
+}
+</style>
+
 <template>
   <template v-if="inited">
 <!--        {{state}}-->
+    {{ui.widgetConfig.teleportTo}}
     <el-input v-model="state.value" @input="onChange">
       <template #append>
-        <el-popover
+        <e-popover
+            class="cus-suggest__popover"
             placement="bottom"
             :width="400"
             trigger="click"
-            :append-to-body="false"
+            :append-to-body="true"
+            :teleportTo="getWidgetConfig('teleportTo')"
         >
           <template #reference>
-            <el-button @click="setRefMan(true)">选择</el-button>
+            <el-button class="cus-suggest__button" @click="setRefMan(true)">选择</el-button>
           </template>
           <div  style="min-height: 200px">
             <SimpleList v-if="refMan.showed" :suggest="getSuggest()" @select-item="selectSuggest"></SimpleList>
           </div>
-        </el-popover>
+        </e-popover>
       </template>
     </el-input>
   </template>
@@ -27,11 +36,12 @@ import {getCurrentInstance} from 'vue'
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
 import {useArrHandler, useReloadMan} from "@/views/home/hooks";
+import {EPopover} from "@/components/EPopover/index.js";
 // import SimpleList from "@/components/SimpleList.vue";
 
 export default {
   name: 'CusSuggest',
-  components: {DeepPropEditor},
+  components: {EPopover, DeepPropEditor},
   mixins: [
     CustomRenderControlMixin
   ],
