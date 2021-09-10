@@ -258,6 +258,23 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
     return rootStore.dispatch(...args)
   }
 
+  let comRefs = new Map();
+
+  function runRefMethod(name, methodName, ...args) {
+    let layoutRef = page.comRefs.get(name)
+    if (layoutRef && layoutRef[methodName] && layoutRef[methodName].constructor) {
+      // const isAsync = layoutRef[methodName].constructor.name === "AsyncFunction";
+      // if (isAsync) {}
+      return layoutRef[methodName].apply(null, args)
+    }
+  }
+
+  function setRef(name) {
+    return function (target, options) {
+      comRefs.set(name, target)
+    }
+  }
+
   onMounted(() => {
     if (!inited.value) {
       init.bind(this)()
@@ -265,10 +282,13 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
   })
 
   return {
+    setRef,
     EVENT_TYPES,
     store,
     dxValue,
+    runRefMethod,
     val,
+    comRefs,
     callEvent,
     eventHandleMap,
     dispatchRoot,

@@ -13,7 +13,7 @@
       <el-row style="flex-wrap: nowrap;">
         <PlumbLayout
             style="flex: 1"
-            storePrefix="zlayout"
+            :storePrefix="storePrefix"
             @init="onPlumbLayoutInit"
             :root-id="rootId"
             :handleAppend="handleAppend"
@@ -133,13 +133,13 @@ let plumbLayoutMixin = {
       this.LayoutContext = self
       let defaultDeps  = [
       ]
-      // await self.usePosMap();
-      // await self.useDeps(defaultDeps)
-      // await self.$nextTick()
-      // await ZY.sleep(300)
-      // self.insDeps(self.deps)
-      // await ZY.sleep(300)
-      // self.useLinks()
+      await self.usePosMap();
+      await self.useDeps(defaultDeps)
+      await self.$nextTick()
+      await ZY.sleep(300)
+      self.insDeps(self.deps)
+      await ZY.sleep(300)
+      self.useLinks()
     },
     handleDep(dep) {
       // console.log('handleDep', dep)
@@ -207,6 +207,12 @@ export default defineComponent({
     renderLayoutMixin,
     depManagerMixin,
   ],
+  props: {
+    storePrefix: {
+      type: String,
+      default: 'play'
+    }
+  },
   data() {
     return {
       rootId: 'i1',
@@ -243,7 +249,6 @@ export default defineComponent({
     page = useAppPageControl(page)
 
     // let currentFromDialog = null
-    let cachedPageControlModel = null
     let cachedPageLayout = null
 
     page.setEventHandler({
@@ -254,7 +259,6 @@ export default defineComponent({
       },
       ['call:save'](e) {
         if (self.LayoutContext) {
-          // console.log('call:save', cachedPageControlModel)
           self.LayoutContext.save()
         }
       },
@@ -347,10 +351,17 @@ export default defineComponent({
       return '';
     }
 
+    function save() {
+      if (self.LayoutContext) {
+        self.LayoutContext.save()
+      }
+    }
+
     return {
       onSaveLayout,
       loadStepByContent,
       store: page.store,
+      save,
       page,
       allDef: page.defMap,
     }
