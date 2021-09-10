@@ -56,13 +56,15 @@ export function useRenderControl() {
     }
 
     let interval1
-    function detectLayout() {
+    function detectLayout(interval = true) {
         if (interval1) {
             interval1.stop()
         }
         detectChange()
-        interval1 = new ZY.Interval(detectChange, 6000);
-        interval1.start()
+        if (interval) {
+            interval1 = new ZY.Interval(detectChange, 6000);
+            interval1.start()
+        }
     }
 
     let detectEventChangeContext = {}
@@ -88,14 +90,16 @@ export function useRenderControl() {
     }
 
     let interval2
-    function detectEvent(cb) {
+    function detectEvent(cb, interval = true) {
         detectEventChangeContext.cb = cb
         if (interval2) {
             interval2.stop()
         }
         detectEventChange(true)
-        interval2 = new ZY.Interval(detectEventChange, 6000);
-        interval2.start()
+        if (interval) {
+            interval2 = new ZY.Interval(detectEventChange, 6000);
+            interval2.start()
+        }
     }
 
     return {
