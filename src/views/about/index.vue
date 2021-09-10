@@ -50,6 +50,11 @@
       </template>
     </CustomElement>
 
+    <ZLayoutEditor
+        :ref="layoutRef"
+        :controls="false"
+        @save-layout="demo.onSaveLayout"></ZLayoutEditor>
+
     <template v-if="store.model.textarea_step">
       <!--      {{store.computedModel}}-->
       <HttpComponent
@@ -128,10 +133,6 @@
       </HttpComponent>
     </template>
 
-    <ZLayoutEditor
-        :ref="layoutRef"
-        :controls="false"
-        @save-layout="demo.onSaveLayout"></ZLayoutEditor>
   </div>
 </template>
 

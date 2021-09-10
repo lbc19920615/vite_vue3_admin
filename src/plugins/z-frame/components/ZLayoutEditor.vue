@@ -3,9 +3,12 @@
   <div class="page-search" v-if="page.inited">
 
     <template v-if="page.inited">
-      <el-row class="a-space-mb-10" v-if="controls">
+      <el-row class="a-space-mb-10"
+              vs-if="controls">
         <el-button type="primary"
                    @click="page.callEvent('call:save')">保存</el-button>
+        <el-button type="primary"
+                   @click="page.callEvent('get:xml')">获取xml</el-button>
       </el-row>
 
       <el-row style="flex-wrap: nowrap;">
@@ -60,7 +63,7 @@
 
 <script>
 
-import {defineComponent, nextTick, getCurrentInstance} from "vue";
+import {defineComponent, nextTick, getCurrentInstance, toRaw} from "vue";
 import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
 import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
@@ -71,6 +74,7 @@ import {
 } from "@/mixins/framework";
 import {buildFormDepContent} from "./ZLayoutEditor/build";
 import CustomElement from "@/components/CustomElement.vue";
+import {buildXml} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
 
 let depManagerMixin = {
   data() {
@@ -248,8 +252,7 @@ export default defineComponent({
     page = extendControl2Page(page)
     // page = useAppPageControl(page)
 
-    // let currentFromDialog = null
-    let cachedPageLayout = null
+    let cachedPageLayout;
 
     page.setEventHandler({
       ['add:arr:common'](e) {
@@ -260,6 +263,14 @@ export default defineComponent({
       ['call:save'](e) {
         if (self.LayoutContext) {
           self.LayoutContext.save()
+        }
+      },
+      ['get:xml'](e) {
+        if (self.LayoutContext) {
+
+
+          let { data } = self.LayoutContext.getToolsData();
+          buildXml(data)
         }
       },
       // async ['load:plumb:layout']() {
