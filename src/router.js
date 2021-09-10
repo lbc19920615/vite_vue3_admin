@@ -126,16 +126,16 @@ router.beforeEach(async (to, from, next) => {
     to.meta = {}
   }
 
-  if (!metaCache.has(to.name)) {
-    to.meta.pageServiceName = `Page${to.name}Service`
-    global.createServiceCom({
-      def: {},
-      args: {}
-    },  to.meta.pageServiceName)
-    metaCache.set(to.name, to)
-  } else {
-    to.meta = Object.assign({}, to.meta, metaCache.get(to.name).meta)
-  }
+  // if (!metaCache.has(to.name)) {
+  //   to.meta.pageServiceName = `Page${to.name}Service`
+  //   global.createServiceCom({
+  //     def: {},
+  //     args: {}
+  //   },  to.meta.pageServiceName)
+  //   metaCache.set(to.name, to)
+  // } else {
+  //   to.meta = Object.assign({}, to.meta, metaCache.get(to.name).meta)
+  // }
 
   // console.log(to.name, to.meta)
 
