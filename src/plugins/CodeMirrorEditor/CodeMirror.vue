@@ -259,7 +259,11 @@ onMounted(() => {
   // editor = document.getElementById("editor");
   // editor.value = "";
   editor = editorRef.value
-  createMirror();
+  if (editor) {
+    createMirror();
+  } else {
+    console.error('no editor')
+  }
 });
 watch(
     props,
