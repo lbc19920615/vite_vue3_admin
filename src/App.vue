@@ -135,7 +135,7 @@ ${item.value}
 
 
     globalThis.createServiceComFromCache = function (id = globalThis.ServiceID()) {
-      // console.log('cachedServiceDef', cachedServiceDef)
+      console.log('cachedServiceDef', cachedServiceDef)
 
        return new Promise(resolve => {
          function run(script) {

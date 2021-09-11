@@ -25,7 +25,7 @@ import App from './App.vue'
 import 'normalize.css/normalize.css'
 
 import 'suitcss-utils-size/index.css'
-import 'font-awesome/css/font-awesome.css'
+// import 'font-awesome/css/font-awesome.css'
 
 
 // element
