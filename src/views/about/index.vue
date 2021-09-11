@@ -139,7 +139,7 @@
 
 <script>
 
-import {defineComponent, nextTick, getCurrentInstance, toRaw, ref} from "vue";
+import {defineComponent, nextTick, getCurrentInstance, toRaw, ref, onMounted} from "vue";
 import {
   extendControl2Page,
   useControl,
@@ -168,10 +168,20 @@ export default defineComponent({
     CustomElement,
   },
   setup() {
-    let self = getCurrentInstance().ctx
-
     function onInited({storeControl}) {
-      // console.log('page inited')
+      console.log('page inited')
+      page.commonLoadStep(
+          import('./EventEditorConfig'),
+          'textarea_step',
+          {
+            async onMounted(config) {
+              console.log('commonLoadStep onMounted')
+              let eventModel = await page.dispatchRoot('GetStoreEvents')
+              page.setPartModel(config.name, 'form2', eventModel ?? {})
+              // console.log('eventModel', config, eventModel)
+            }
+          }
+      )
     }
     let properties =  {
       textarea_step: {
@@ -379,21 +389,9 @@ export default defineComponent({
       },
       ['model:update'](e) {
         let { model, key, newVal, config } = e
-        // console.log(key, model, config, self.currentEditDep)
       }
     })
 
-    page.commonLoadStep(
-        import('./EventEditorConfig'),
-        'textarea_step',
-        {
-          async onMounted(config) {
-            let eventModel = await page.dispatchRoot('GetStoreEvents')
-            page.setPartModel(config.name, 'form2', eventModel ?? {})
-            // console.log('eventModel', config, eventModel)
-          }
-        }
-    )
 
     function detectChange() {
       let doms =  Array.of(
@@ -430,6 +428,10 @@ export default defineComponent({
     }
 
     let layoutRef = page.setRef('layout')
+
+    onMounted(() => {
+      console.log('onMounted')
+    })
 
     return {
       layoutRef,
