@@ -105,10 +105,13 @@ export default defineComponent({
               if (part.serviceTpl) {
                pArr.push(new Promise(async (resolve) => {
                  let serviceName = 'Service' + ZY.nid()
-                 let res = await global.createServiceCom(part.serviceTpl, serviceName)
-                 // console.log(res, part)
-                 part.service = res.name
-                 servicePartLink[part.name] = res.name
+                 // let res = await global.createServiceCom(part.serviceTpl, serviceName)
+                 // part.service = res.name
+                 // servicePartLink[part.name] = res.name
+
+                 await global.createServiceComFromCacheFix(part.serviceTpl, serviceName)
+                 part.service = serviceName
+                 servicePartLink[part.name] = serviceName
                  resolve()
                }))
               }

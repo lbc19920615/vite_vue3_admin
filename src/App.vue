@@ -163,6 +163,10 @@ ${item.value}
        })
     }
 
+    globalThis.createServiceComFromCacheFix = function (config, serviceID) {
+      return  globalThis.createServiceComFromCache(serviceID)
+    }
+
     /**
      * createServiceCom
      * @param def
