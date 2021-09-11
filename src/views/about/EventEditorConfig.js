@@ -88,6 +88,24 @@ export default {
                                             }
                                         }
                                     },
+                                    propsCopy: {
+                                        type: 'string',
+                                        reflect: 'props',
+                                        reflectTpl: `A.propsToJSON5($VAL, 'props')`,
+                                        ui: {
+                                           widgetConfig: {
+                                               readonly: true
+                                           }
+                                        }
+                                    },
+                                    props: {
+                                        type: 'string',
+                                        ui: {
+                                            widget: 'CusPropsEditor',
+                                            widgetConfig: {
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         },

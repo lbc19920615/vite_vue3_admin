@@ -303,17 +303,34 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
 
 export function extendCommonArrEventHandler(page) {
   let EVENT_NAMES = {
-    ARR_APPEND_COMMON: 'ARR_APPEND_COMMON'
+    ARR_APPEND_COMMON: 'ARR_APPEND_COMMON',
+    ARR_REMOVE_COMMON: 'ARR_REMOVE_COMMON'
+  }
+  let _bindFun = null
+  function onChange(v) {
+    _bindFun = v
   }
   page.setEventHandler({
     [EVENT_NAMES.ARR_APPEND_COMMON](e) {
       let { parts, partName, selfpath, process } = e
       // console.log('add:events', e, model)
-      parts[partName].arrAppend(selfpath)
+      parts[partName].arrAppend(selfpath);
+      if (_bindFun) {
+        _bindFun(EVENT_NAMES.ARR_APPEND_COMMON, e)
+      }
+    },
+    [EVENT_NAMES.ARR_REMOVE_COMMON](e) {
+      // console.log('sdsdsdsdsdsds', e)
+      let { parts, partName, fromPath, indexKey } = e
+      parts[partName].appSplice(fromPath, indexKey)
+      if (_bindFun) {
+        _bindFun(EVENT_NAMES.ARR_APPEND_COMMON, e)
+      }
     },
   })
 
   return {
+    onChange,
     EVENT_NAMES
   }
 }

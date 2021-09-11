@@ -51,8 +51,6 @@
 <!--        store-prefix="zlayout"-->
 <!--        :controls="true"></ZLayoutEditor>-->
 
-    <ZProps></ZProps>
-
     <template v-if="store.model.textarea_step">
       <!--      {{store.computedModel}}-->
       <HttpComponent
@@ -154,7 +152,6 @@ import {FormsEvent} from "@/plugins/z-frame/formsEvent";
 import FormsManaSelect from "@/plugins/z-frame/components/FormsManaSelect.vue";
 import FormManager from "@/views/about/components/FormManager.vue";
 import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
-import ZProps from "@/plugins/z-frame/components/ZProps.vue";
 
 export default defineComponent({
   mixins: [
@@ -165,7 +162,6 @@ export default defineComponent({
     }
   },
   components: {
-    ZProps,
     ZLayoutEditor,
     FormManager,
     FormsManaSelect,

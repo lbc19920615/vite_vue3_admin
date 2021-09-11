@@ -8,7 +8,7 @@ let formDef = {
         ],
     },
     properties: {
-        parts: {
+        props: {
             type: 'array',
             items: {
                 type: "object",
@@ -30,7 +30,7 @@ let computed = {}
 let _config = baseConfig({
     defaultVal: {
         form2: {
-            parts: [
+            props: [
                 // {
                 //     name: 'form_' + ZY.rid(6),
                 //     value: ''

@@ -14,8 +14,15 @@
       <template #array_before="scope">
        <el-col>
 <!--         <h3>{{ scope.key }}</h3>-->
-         <el-button  @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加{{ scope.key }}</el-button>
+         <el-button type="primary" size="small"
+             @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加{{ scope.key }}</el-button>
        </el-col>
+      </template>
+      <template #array_item_after="scope">
+        <el-col>
+          <el-button type="danger" size="small"
+              @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除{{ scope.key }}</el-button>
+        </el-col>
       </template>
     </HttpComponent>
   </div>
@@ -24,7 +31,7 @@
 <script>
 import HttpComponent from "@/components/HttpComponent.vue";
 import {extendControl2Page, useControl, extendCommonArrEventHandler} from "@/mixins/framework";
-import {onMounted} from "vue";
+import {onMounted, toRaw} from "vue";
 export default {
   name: 'ZProps',
   components: {HttpComponent},
@@ -42,13 +49,10 @@ export default {
   methods: {
 
   },
-  setup(props) {
+  setup(props, ctx) {
     let locks = true
     let properties =  {
       editor_step: {
-        type: String,
-      },
-      json: {
         type: String,
       },
     }
@@ -61,7 +65,16 @@ export default {
       }
     })
     page = extendControl2Page(page)
-    let { EVENT_NAMES } = extendCommonArrEventHandler(page)
+    let { EVENT_NAMES, onChange } = extendCommonArrEventHandler(page)
+
+    onChange( (type, e) => {
+      let { parts, partName, selfpath, process } = e
+      let model = parts[partName].getModel()
+      let newVal = toRaw(model)
+      console.log(type, e, toRaw(model))
+      ctx.emit('update:value', newVal)
+      ctx.emit('change', newVal)
+    })
 
     onMounted(function () {
       page.commonLoadStep(

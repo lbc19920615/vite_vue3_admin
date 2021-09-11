@@ -88,6 +88,28 @@ ${item.value}
       let o = this.getPropsObj(s) ?? {}
       return tpl(o.properties ?? {})
     },
+    propsToJSON5(item, path) {
+      // console.log('propsToEntries', item)
+      if (item) {
+        let obj = {}
+        let props = ZY.lodash.get(item, path)
+        if (props) {
+          props.forEach(prop => {
+            let key = prop.name
+            let value = undefined
+            // try {
+            //   value = ZY.JSON5.parse(prop.value)
+            // } catch (e) {
+            //   value = prop.value
+            // }
+            value = prop.value
+            obj[key] = value
+          })
+          return ZY.JSON5.stringify(obj)
+        }
+      }
+      return '{}'
+    },
     test(v) {
       console.log('call app test')
       return v
