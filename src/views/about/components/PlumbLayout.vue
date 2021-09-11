@@ -18,7 +18,7 @@ $sel: "." + $tag;
 
       transition: $panel-tra;
     }
-    .container {
+    .container-con {
       position: relative;
       width: calc(100% - var(--com-panel-width));
       height: calc(var(--plumb-con-height) - var(--tools-height));
@@ -37,12 +37,23 @@ $sel: "." + $tag;
       //}
     }
 
+    .drag-put-area {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1111;
+      background-color: rgba(255,255,255,.5);
+      color: transparent;
+    }
+
     .element-panel {
       width: calc(var(--ele-panel-width));
     }
 
     &--panel-opened {
-      .container {
+      .container-con {
         //background-color: #0d84ff;
         transition: $panel-tra;
       }
@@ -50,7 +61,8 @@ $sel: "." + $tag;
 
     .list-group {
       min-height: 150px;
-      border: 1px solid #eee;
+
+      //border: 1px solid #eee;
     }
 
   }
@@ -90,10 +102,10 @@ $sel: "." + $tag;
           <el-button size="small" @click="toggleGroupDialog(true)">添加组</el-button>
         </el-row>
         <div class="element-panel">
+<!--          {{list1}}-->
           <draggable
               class="dragArea list-group"
-              v-model="myArray"
-              group="people"
+              v-model="list1"
               @start="onDropStart"
               @end="onDropEnd"
               :group="{ name: 'people', pull: 'clone', put: false }"
@@ -104,10 +116,100 @@ $sel: "." + $tag;
             </template>
           </draggable>
 
+        </div>
+      </div>
+      <div class="container-con">
+        <div :id="containerId" ref="container"  class="container">
+          <div :id="dep.id" class="abs section"
+               :dep-name="dep.id"
+               v-for="(dep,depIndex) in deps"
+               :key="dep.id"
+          >
+            <el-popconfirm
+                title="这是一段内容确定删除吗？"
+                @confirm="deleteDep(dep)"
+            >
+              <template #reference>
+                <el-button  size="mini"
+                            type="danger"><i class="el-icon-remove" ></i></el-button>
+              </template>
+            </el-popconfirm>
+            <template v-if="dep.type === 'events'">
+
+              <div class="item header" :data-pid="dep.id"
+                   :id="dep.id + '-top'">
+                <div>
+                  <div>
+                    <el-button size="mini"
+                               @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
+                  </div>
+                  <div>type: {{dep.type}}</div>
+                  <div>type: {{dep.sub}}</div>
+                  <div>id: {{dep.id}}</div>
+                </div>
+              </div>
+              <template v-if="!dep.config.closure">
+                <h3 style="margin: 10px 0;">items</h3>
+                <template v-for="(item, index) in dep.items" :key="index">
+                  <div :id="item.id" :data-pid="dep.id" class="item content-item">
+                    <!--                <div>{{item.id}}</div>-->
+                    <div>{{item.name}}</div>
+                  </div>
+                </template>
+              </template>
+
+            </template>
+
+            <template v-else>
+
+              <div class="item header" :data-pid="dep.id"
+                   :id="dep.id + '-top'">
+                <div class="a-space-mb-10">
+                  <el-space>
+                    <div>type: {{dep.type}}</div>
+                    <el-button size="mini" @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
+                  </el-space>
+                  <div></div>
+                  <el-space>
+                    <div>id: {{dep.id}}</div>
+                  </el-space>
+                  <div v-if="dep.data">part: {{dep.data.partName ?? ''}}</div>
+                </div>
+              </div>
+              <!--          <div class="item content-item" :data-pid="dep.id"-->
+              <!--               :id="dep.id + '-evt'"-->
+              <!--          >events</div>-->
+              <template v-if="!dep.config.closure">
+                <!--            <h3 style="margin: 10px 0;">items</h3>-->
+                <template v-for="(item, index) in dep.items" :key="index">
+                  <div :id="item.id" :data-pid="dep.id" class="item content-item">
+                    <div>
+                      <el-input :readonly="dep.keyReadonly" v-model="item.key" placeholder="请填写key"></el-input>
+                    </div>
+                    <template v-if="!dep.noToolsRemove">
+                      <el-button size="mini" @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></el-button>
+                    </template>
+                  </div>
+                </template>
+                <template v-if="!dep.noToolsAdd">
+                  <el-button size="mini"
+                             @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
+                </template>
+              </template>
+
+            </template>
+
+          </div>
+        </div>
+        <div class="drag-put-area" v-show="isDragging">
+<!--          {{list2}}-->
           <draggable
               class="dragArea list-group"
               :list="list2"
               group="people"
+              :sort="false"
+              item-key="id"
+              @change="onList2Change"
           >
             <template #item="{element}">
               <div>{{element.name}}</div>
@@ -115,88 +217,7 @@ $sel: "." + $tag;
           </draggable>
         </div>
       </div>
-      <div :id="containerId" ref="container" class="container">
-        <div :id="dep.id" class="abs section"
-             :dep-name="dep.id"
-             v-for="(dep,depIndex) in deps"
-             :key="dep.id"
-        >
-          <el-popconfirm
-              title="这是一段内容确定删除吗？"
-              @confirm="deleteDep(dep)"
-          >
-            <template #reference>
-              <el-button  size="mini"
-                          type="danger"><i class="el-icon-remove" ></i></el-button>
-            </template>
-          </el-popconfirm>
-          <template v-if="dep.type === 'events'">
 
-            <div class="item header" :data-pid="dep.id"
-                 :id="dep.id + '-top'">
-              <div>
-                <div>
-                  <el-button size="mini"
-                             @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
-                </div>
-                <div>type: {{dep.type}}</div>
-                <div>type: {{dep.sub}}</div>
-                <div>id: {{dep.id}}</div>
-              </div>
-            </div>
-            <template v-if="!dep.config.closure">
-              <h3 style="margin: 10px 0;">items</h3>
-              <template v-for="(item, index) in dep.items" :key="index">
-                <div :id="item.id" :data-pid="dep.id" class="item content-item">
-                  <!--                <div>{{item.id}}</div>-->
-                  <div>{{item.name}}</div>
-                </div>
-              </template>
-            </template>
-
-          </template>
-
-          <template v-else>
-
-            <div class="item header" :data-pid="dep.id"
-                 :id="dep.id + '-top'">
-              <div class="a-space-mb-10">
-                <el-space>
-                  <div>type: {{dep.type}}</div>
-                  <el-button size="mini" @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
-                </el-space>
-                <div></div>
-                <el-space>
-                  <div>id: {{dep.id}}</div>
-                </el-space>
-                <div v-if="dep.data">part: {{dep.data.partName ?? ''}}</div>
-              </div>
-            </div>
-            <!--          <div class="item content-item" :data-pid="dep.id"-->
-            <!--               :id="dep.id + '-evt'"-->
-            <!--          >events</div>-->
-            <template v-if="!dep.config.closure">
-              <!--            <h3 style="margin: 10px 0;">items</h3>-->
-              <template v-for="(item, index) in dep.items" :key="index">
-                <div :id="item.id" :data-pid="dep.id" class="item content-item">
-                  <div>
-                    <el-input :readonly="dep.keyReadonly" v-model="item.key" placeholder="请填写key"></el-input>
-                  </div>
-                  <template v-if="!dep.noToolsRemove">
-                    <el-button size="mini" @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></el-button>
-                  </template>
-                </div>
-              </template>
-              <template v-if="!dep.noToolsAdd">
-                <el-button size="mini"
-                           @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
-              </template>
-            </template>
-
-          </template>
-
-        </div>
-      </div>
     </div>
 
   </div>
@@ -231,7 +252,7 @@ let UIMixin = {
   data() {
     return {
       panelOpend: true,
-      myArray: [
+      list1: [
         {
           name: 'sdsds1',
           value: 'sdsds1',
@@ -244,11 +265,11 @@ let UIMixin = {
         },
       ],
       list2: [
-        {
-          name: 'sdsds3',
-          value: 'sdsds2',
-          id: ZY.rid(),
-        },
+        // {
+        //   name: 'sdsds3',
+        //   value: 'sdsds2',
+        //   id: ZY.rid(),
+        // },
       ],
       isDragging: false
     }
@@ -265,7 +286,10 @@ let UIMixin = {
     togglePanel() {
       this.panelOpend = !this.panelOpend
     },
-  }
+    onList2Change(e) {
+      console.log('onList2Change', e)
+    }
+  },
 }
 
 export default {

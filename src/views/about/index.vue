@@ -1,13 +1,10 @@
 
 <template>
   <div class="page-search" v-if="page.inited">
-
     {{store.model}}
 <!--    {{store.computedModel}}-->
-<!--  <z-upload></z-upload>-->
 
     <my-fixed>
-<!--      {{page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')}}-->
       <el-card class="box-card" v-show="page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')">
         <template #header>
           <div class="card-header">
