@@ -15,7 +15,7 @@ monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
   noSyntaxValidation: true,
 });
 
-self.MonacoEnvironment = {
+globalThis.MonacoEnvironment = {
   getWorker(workerId, label) {
     // console.log('getWorker', workerId, label)
     if (label === 'json') {
