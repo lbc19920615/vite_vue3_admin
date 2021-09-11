@@ -301,6 +301,23 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
   }
 }
 
+export function extendCommonArrEventHandler(page) {
+  let EVENT_NAMES = {
+    ARR_APPEND_COMMON: 'ARR_APPEND_COMMON'
+  }
+  page.setEventHandler({
+    [EVENT_NAMES.ARR_APPEND_COMMON](e) {
+      let { parts, partName, selfpath, process } = e
+      // console.log('add:events', e, model)
+      parts[partName].arrAppend(selfpath)
+    },
+  })
+
+  return {
+    EVENT_NAMES
+  }
+}
+
 export function extendControl2Page(control = {eventHandleMap: {}}) {
   let ctx = getCurrentInstance().ctx
   control.ctx = ctx

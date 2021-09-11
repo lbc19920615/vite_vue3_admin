@@ -37,9 +37,6 @@ export default {
   setup(props, ctx) {
     let locks = true
     let cached = null
-    // setTimeout(() => {
-    //   locks = false
-    // }, 10000)
     let { methods, init, data } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
         // console.log('handleValueInit', newVal, typeof newVal)
