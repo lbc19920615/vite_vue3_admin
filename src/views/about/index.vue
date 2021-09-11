@@ -238,9 +238,10 @@ export default defineComponent({
         saved.layout = page.runRefMethod('layout', 'getToolsData')
 
         let fileName = obj.name ??  ZY.rid(6)
+        let time = ZY.Time.formatDateTime(new Date(), 'YYYY-MM-DD')
 
         console.log('call:save:file', saved)
-        ZY_EXT.saveObjAsJson5File(saved, 'forms_' + fileName)
+        ZY_EXT.saveObjAsJson5File(saved, `forms_${fileName}_${time}`)
       },
       ['add:part'](e) {
         let { parts, partName, selfpath, process } = e
