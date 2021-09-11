@@ -103,6 +103,13 @@ export default {
                                         ui: {
                                             widget: 'CusPropsEditor',
                                             widgetConfig: {
+                                                valueConfig: {
+                                                  ui: {
+                                                      widgetConfig: {
+                                                          type: 'textarea'
+                                                      }
+                                                  }
+                                                }
                                             }
                                         }
                                     }

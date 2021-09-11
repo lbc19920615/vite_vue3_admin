@@ -4,6 +4,7 @@
 
 <template>
   <div class="z-props" v-if="page.inited">
+    {{valueConfig}}
     <HttpComponent
         :defs="page.defMap"
         :is="store.model.editor_step"
@@ -36,7 +37,8 @@ export default {
   name: 'ZProps',
   components: {HttpComponent},
   props: {
-    value: null
+    value: null,
+    valueConfig: Object
   },
   data() {
     return {
@@ -76,9 +78,24 @@ export default {
       ctx.emit('change', newVal)
     })
 
+
     onMounted(function () {
+      let loaded =  async function () {
+        let res = await import('./ZProps/edtorConfig.js')
+        let config = ZY.JSON5.parse(ZY.JSON5.stringify(res.default))
+        let defObj = config.init.def.parts[0].def.properties.props
+        // console.log(defObj)
+        let _valueConfig = defObj.items.properties.value
+        if (props.valueConfig) {
+          _valueConfig = Object.assign(_valueConfig, props.valueConfig)
+        }
+
+        return {
+          default: config
+        }
+      }
       page.commonLoadStep(
-          import('./ZProps/edtorConfig.js'),
+          loaded(),
           'editor_step',
           {
             async onMounted(config, {setPartModel}) {

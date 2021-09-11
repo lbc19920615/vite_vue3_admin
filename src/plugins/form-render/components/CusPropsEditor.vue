@@ -2,7 +2,7 @@
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
 <!--    {{state.value}}-->
-    <ZProps v-model:value="state.value" @change="onChange"></ZProps>
+    <ZProps v-model:value="state.value" :valueConfig="widgetConfig.valueConfig" @change="onChange"></ZProps>
   </template>
 
 </template>
