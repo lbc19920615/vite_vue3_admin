@@ -34,12 +34,7 @@ export let groupManagerMixin = {
             if (v) {
             }
         },
-        /**
-         * selectGroupTemplate
-         * @param group {{}}
-         */
-        selectGroupTemplate(group = {}) {
-            // console.log('group', group)
+        buildDepFromGroup(group) {
             if (!group.cls) {
                 showMsgError('no group.cls')
             }
@@ -52,10 +47,19 @@ export let groupManagerMixin = {
                 items: [],
                 editor: ''
             })
+            return dep
+        },
+        /**
+         * selectGroupTemplate
+         * @param group {{}}
+         */
+        selectGroupTemplate(group = {}) {
+            // console.log('group', group)
+            let dep = this.buildDepFromGroup(group)
             this.appendDep(
               dep
             )
             this.dialogVisible = false
-        }
+        },
     }
 }

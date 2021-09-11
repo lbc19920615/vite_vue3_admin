@@ -74,13 +74,14 @@ $sel: "." + $tag;
 <!--    <el-button @click="save">保存</el-button>-->
 <!--    <el-button @click="getLinkRealtions">get connect</el-button>-->
 <!--    {{styleObj}}-->
+<!--    {{buildedGroups}}-->
     <el-dialog
         v-model="dialogVisible" title="组选择" width="80vw"
     :close-on-click-modal="false"
     >
       <el-row :gutter="20">
         <el-col :span="6"
-                v-for="group in handleGroup(groups)"
+                v-for="group in buildedGroups"
                >
           <div>{{group.type}}</div>
           <div>{{group.desc}}</div>
@@ -100,6 +101,7 @@ $sel: "." + $tag;
         </div>
         <el-row align="middle" class="tools">
           <el-button size="small" @click="toggleGroupDialog(true)">添加组</el-button>
+<!--          <el-button size="small" @click="insertEleGroup()">添加ele</el-button>-->
         </el-row>
         <div class="element-panel">
 <!--          {{list1}}-->
@@ -110,6 +112,7 @@ $sel: "." + $tag;
               @end="onDropEnd"
               :group="{ name: 'people', pull: 'clone', put: false }"
               :sort="false"
+              :disabled="disableDrag"
               item-key="id">
             <template #item="{element}">
               <div>{{element.name}}</div>
@@ -170,10 +173,13 @@ $sel: "." + $tag;
                     <el-button size="mini" @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
                   </el-space>
                   <div></div>
-                  <el-space>
-                    <div>id: {{dep.id}}</div>
-                  </el-space>
-                  <div v-if="dep.data">part: {{dep.data.partName ?? ''}}</div>
+<!--                  <el-space>-->
+<!--                    <div>id: {{dep.id}}</div>-->
+<!--                  </el-space>-->
+                  <div v-if="dep.type === 'ele'">
+                    <div v-if="dep.data && dep.data.tagName">标签名: {{dep.data.tagName}}</div>
+                  </div>
+                  <div v-if="dep.data && dep.data.partName">part: {{dep.data.partName}}</div>
                 </div>
               </div>
               <!--          <div class="item content-item" :data-pid="dep.id"-->
@@ -230,6 +236,7 @@ import {createFromJSON5} from "@/plugins/ComEditor/nodes";
 import {plumbActionMixins, plumbLayoutMixn} from "@/plugins/PlumbLayout/mixin";
 import {createPlumbConfig} from "@/plugins/PlumbLayout/utils";
 import draggable from 'vuedraggable'
+import {toRaw} from "vue";
 
 let UIMixin = {
   components: {
@@ -254,14 +261,20 @@ let UIMixin = {
       panelOpend: true,
       list1: [
         {
-          name: 'sdsds1',
+          name: '输入框',
           value: 'sdsds1',
           id: ZY.rid(),
+          data: {
+            tagName: 'el-input'
+          }
         },
         {
-          name: 'sdsds2',
+          name: '按钮',
           value: 'sdsds2',
           id: ZY.rid(),
+          data: {
+            tagName: 'el-button'
+          }
         },
       ],
       list2: [
@@ -271,13 +284,15 @@ let UIMixin = {
         //   id: ZY.rid(),
         // },
       ],
-      isDragging: false
+      isDragging: false,
+      disableDrag: false
     }
   },
   methods: {
     onDropStart(e) {
       // console.log('onDropEnd', e)
       this.isDragging = true
+      this.disableDrag = true
     },
     onDropEnd(e) {
       // console.log('onDropEnd', e)
@@ -286,8 +301,15 @@ let UIMixin = {
     togglePanel() {
       this.panelOpend = !this.panelOpend
     },
-    onList2Change(e) {
+    async onList2Change(e) {
       console.log('onList2Change', e)
+      await this.$nextTick();
+      let {added = {}} = e
+      let elementRawData = toRaw(added.element.data)
+      this.insertEleGroup({
+        tagName: elementRawData.tagName
+      })
+      this.disableDrag = false
     }
   },
 }
@@ -328,6 +350,7 @@ export default {
       config: {},
       deps: [
       ],
+
     }
   },
   watch: {
@@ -336,6 +359,11 @@ export default {
     //
     //   },
     // }
+  },
+  computed: {
+    buildedGroups() {
+      return this.handleGroup(this.groups)
+    }
   },
   mounted() {
     let self = this
@@ -516,6 +544,25 @@ export default {
         for (let k in v) {
           dep[k] = v[k]
         }
+      }
+    },
+
+
+    /**
+     * 快捷安装ele节点
+     * @param defaultData
+     */
+    insertEleGroup(defaultData = null) {
+      let eleGroup = this.buildedGroups.find(v => v.type === 'ele')
+      if (eleGroup) {
+        let dep = this.buildDepFromGroup(eleGroup)
+        // console.log(dep)
+        dep.data = defaultData ?? {
+          tagName: 'div'
+        }
+        this.appendDep(
+            dep
+        )
       }
     },
 
