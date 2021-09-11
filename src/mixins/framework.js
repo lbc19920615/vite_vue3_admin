@@ -275,6 +275,10 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
     }
   }
 
+  function getRef(name) {
+    return comRefs.get(name)
+  }
+
   onMounted(() => {
     if (!inited.value) {
       init.bind(this)()
@@ -282,6 +286,7 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
   })
 
   return {
+    getRef,
     setRef,
     EVENT_TYPES,
     store,

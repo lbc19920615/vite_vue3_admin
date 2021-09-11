@@ -6,7 +6,7 @@
 
 <template>
   <div class="page-demo" v-if="page.inited">
-    <iframe ref="iframe"  src="http://192.168.1.67:8080/#/main" style="width: 100%; height: 600px;" frameborder="0"></iframe>
+    <iframe :ref="iframeRef"  src="http://192.168.1.67:8080/#/main" style="width: 100%; height: 600px;" frameborder="0"></iframe>
 
     <NativeDialog title="你好" :open="store.model.openDialog"
     @closed="closeDialog"
@@ -37,6 +37,7 @@ export default {
   },
   setup() {
     let ctx = getCurrentInstance().ctx
+    // console.log('ctx', ctx)
     function onInited({storeControl}) {
       // console.log('page inited')
     }
@@ -56,15 +57,17 @@ export default {
     page = extendControl2Page(page)
     page = useAppPageControl(page)
 
+    let iframeRef = page.setRef('iframe')
+
     let Lib = null
     let sendMessage = null
 
     onMounted(() => {
       import('__remote/public/message.js').then(res => {
         Lib = res
-        let ifr = ctx.$refs.iframe
+        let ifr = page.getRef('iframe')
         let ifrWindow = ifr.contentWindow;
-
+        console.log(ifrWindow)
 
         function handleMessage(e) {
           // console.log(e)
@@ -101,17 +104,16 @@ export default {
       page.setData({
         openDialog: false
       })
-      // ctx.$refs.dialog1.close()
     }
 
     function openDialog() {
       page.setData({
         openDialog: true
       })
-      // ctx.$refs.dialog1.showModal()
     }
 
     return {
+      iframeRef,
       closeDialog,
       store: page.store,
       page,
