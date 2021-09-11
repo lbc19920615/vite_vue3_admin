@@ -259,7 +259,7 @@ onMounted(() => {
   // editor = document.getElementById("editor");
   // editor.value = "";
   if (editorRef) {
-    console.log('editorRef', editorRef)
+    // console.log('editorRef', editorRef)
     if (editorRef.__v_isRef) {
       editor = editorRef.value
     } else {
