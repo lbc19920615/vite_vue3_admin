@@ -258,11 +258,18 @@ const createMirror = () => {
 onMounted(() => {
   // editor = document.getElementById("editor");
   // editor.value = "";
-  editor = editorRef.value
-  if (editor) {
-    createMirror();
-  } else {
-    console.error('no editor')
+  if (editorRef) {
+    console.log('editorRef', editorRef)
+    if (editorRef.__v_isRef) {
+      editor = editorRef.value
+    } else {
+      editor = editorRef
+    }
+    if (editor) {
+      createMirror();
+    } else {
+      console.error('no editor', editorRef)
+    }
   }
 });
 watch(
