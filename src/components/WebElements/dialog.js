@@ -1,10 +1,10 @@
 import {defineCustomElement, nextTick} from 'vue'
-import css from 'font-awesome/css/font-awesome.css'
 import dialogStyle from './dialog.scss'
 
 const MyVueElement = defineCustomElement({
   // normal Vue component options here
   template: `
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
   <div class="dialog" :class="{'dialog--opened': opened, 'dialog--ani': ani}">
     <div class="dialog-inner" v-bind:style="getStyle">
       <div class="dialog-header">
@@ -24,7 +24,7 @@ const MyVueElement = defineCustomElement({
   // defineCustomElement only: CSS to be injected into shadow root
   styles: [
     `
-    ${css}
+
     ${dialogStyle}  
     `
   ],
