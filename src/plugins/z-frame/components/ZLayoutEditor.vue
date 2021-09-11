@@ -279,17 +279,6 @@ export default defineComponent({
           buildXml(data)
         }
       },
-      // async ['load:plumb:layout']() {
-      //   if (page.ctx.LayoutContext) {
-      //     let obj = await ZY_EXT.fileOpenJSON5()
-      //     if (obj.layout) {
-      //       // console.log('layout', obj.layout, obj)
-      //       await page.ctx.LayoutContext.importToolsData(obj.layout)
-      //       await ZY.sleep(300)
-      //       await page.ctx.LayoutContext.saveCache2Storage(obj.layout)
-      //     }
-      //   }
-      // },
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e
       },
@@ -375,6 +364,14 @@ export default defineComponent({
       return self.LayoutContext.getToolsData()
     }
 
+    function importToolsData(data) {
+      return  page.ctx.LayoutContext.importToolsData(data)
+    }
+
+    function saveCache2Storage(data) {
+      return  page.ctx.LayoutContext.saveCache2Storage(data)
+    }
+
     function save() {
       if (self.LayoutContext) {
         self.LayoutContext.save()
@@ -382,6 +379,8 @@ export default defineComponent({
     }
 
     return {
+      importToolsData,
+      saveCache2Storage,
       onSaveLayout,
       getToolsData,
       loadStepByContent,

@@ -1,7 +1,7 @@
 
 <template>
   <div class="page-search" v-if="page.inited">
-    {{store.model}}
+<!--    {{store.model}}-->
 <!--    {{store.computedModel}}-->
 
     <my-fixed>
@@ -210,9 +210,11 @@ export default defineComponent({
         }
         if (obj.layout) {
           // console.log('layout', obj.layout, obj)
-          await page.ctx.LayoutContext.importToolsData(obj.layout)
+          // await page.ctx.LayoutContext.importToolsData(obj.layout)
+          await page.runRefMethod('layout', 'importToolsData', obj.layout)
           await ZY.sleep(300)
-          await page.ctx.LayoutContext.saveCache2Storage(obj.layout)
+          // await page.ctx.LayoutContext.saveCache2Storage(obj.layout)
+          await page.runRefMethod('layout', 'saveCache2Storage', obj.layout)
         }
         await ZY.sleep(300)
         location.reload()
@@ -232,7 +234,6 @@ export default defineComponent({
           date: Date.now()
         }
 
-        // saved.layout = page.ctx.LayoutContext.getToolsData()
 
         saved.layout = page.runRefMethod('layout', 'getToolsData')
 
