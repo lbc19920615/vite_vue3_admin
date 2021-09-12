@@ -138,8 +138,8 @@
 </template>
 
 <script>
-
-import {defineComponent, nextTick, getCurrentInstance, toRaw, ref, onMounted} from "vue";
+import "@/register";
+import {defineComponent, toRaw, onMounted} from "vue";
 import {
   extendControl2Page,
   useControl,

@@ -71,6 +71,7 @@
             let {type, args} = e.detail[0]
             // console.log('type', type, args)
             self.obj.emit(type, args)
+            self.$emit(type, args)
           }
         }
       }, slots)

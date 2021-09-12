@@ -3,11 +3,14 @@
     <div hidden>{{store.model}}</div>
     <el-button @click="openDialog">打开编辑</el-button>
     <CustomElement is="my-vue-dialog" :name="dialogName"
-                   :params="{sstyle: 'width: 80vw; min-width: 720px;'}">
+                   :params="{sstyle: 'width: 80vw; min-width: 720px;'}"
+    @closed="onClosed"
+    >
       <template #default>
         <HttpComponent
             :defs="page.defMap"
             :is="store.model.editor_step"
+            v-if="store.model.dialog_open"
         >
           <template #array_item_before="scope">
             <h3>{{ scope.key }}</h3>
@@ -61,6 +64,9 @@ export default {
       json: {
         type: String,
       },
+      dialog_open: {
+        type: Boolean
+      }
     }
     let dialogName = 'cus_form_dialog_' + ZY.rid(6)
     let computed = {}
@@ -121,12 +127,18 @@ export default {
       if (currentPageWebComponentRef && currentPageWebComponentRef.toggleDialog) {
         currentPageWebComponentRef.toggleDialog(dialogName);
       }
+      page.setByPath('dialog_open', true)
+    }
+
+    function onClosed() {
+      console.log('onClosed')
     }
 
     return {
       dialogName,
       page,
       openDialog,
+      onClosed,
       store: page.store
     }
 

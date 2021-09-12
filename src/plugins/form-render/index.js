@@ -26,10 +26,6 @@ const plugin = {
         CustomVueComponent.app = app
         CustomVueComponent.register(RenderLayout)
 
-        import('@/components/CodeEditor/JsonCodeEditor.vue').then(res => {
-            let JsonCodeEditor = res.default
-            CustomVueComponent.register(JsonCodeEditor,'JsonCodeEditor')
-        })
 
         CustomVueComponent.register(CustomFormRender)
         CustomVueComponent.register(UnitInput)
