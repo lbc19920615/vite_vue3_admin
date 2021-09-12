@@ -48,8 +48,7 @@ export default defineComponent({
   },
   async setup(props, ctx) {
     const globalStore = inject('globalStore')
-    let self = getCurrentInstance().ctx
-    // console.log(self)
+    let uuid =  ZY.nid();
     let obj;
 
     function render() {
@@ -86,40 +85,38 @@ export default defineComponent({
     let servicePartLink = {}
 
     async function handleIsChanged(newVal) {
-      comName = props.comPrefix + ZY.rid()
       let config = props.defs.get(props.is)
-      log(['fetchComponent', props.is, props.defs])
+      log(['fetchComponent', props.is, props.defs, config])
 
-      if (config) {
-        if (config.init) {
-          config.init.def.process = props.is
-          config.init.onReady = handler
-          config.init.def.servicePartLink = servicePartLink
-          let parts = config.init.def.parts
-          let pArr = []
-          if (Array.isArray(parts)) {
-            parts.forEach(part => {
-              if (part.service) {
-                servicePartLink[part.name] = part.service
-              }
-              if (part.serviceTpl) {
-               pArr.push(new Promise(async (resolve) => {
-                 let serviceName = 'Service' + ZY.nid()
-                 // let res = await global.createServiceCom(part.serviceTpl, serviceName)
-                 // part.service = res.name
-                 // servicePartLink[part.name] = res.name
+      if (config && config.init) {
+        comName = props.comPrefix + ZY.rid()
+        config.init.def.process = props.is
+        config.init.onReady = handler
+        config.init.def.servicePartLink = servicePartLink
+        let parts = config.init.def.parts
+        let pArr = []
+        if (Array.isArray(parts)) {
+          parts.forEach(part => {
+            if (part.service) {
+              servicePartLink[part.name] = part.service
+            }
+            if (part.serviceTpl) {
+              pArr.push(new Promise(async (resolve) => {
+                let serviceName = 'Service' + ZY.rid()
+                // let res = await global.createServiceCom(part.serviceTpl, serviceName)
+                // part.service = res.name
+                // servicePartLink[part.name] = res.name
 
-                 await global.createServiceComFromCacheFix(part.serviceTpl, serviceName)
-                 part.service = serviceName
-                 servicePartLink[part.name] = serviceName
-                 resolve()
-               }))
-              }
-            })
-          }
-          await Promise.allSettled(pArr)
-          await fetchComponent(comName, config.init)
+                await global.createServiceComFromCacheFix(part.serviceTpl, serviceName)
+                part.service = serviceName
+                servicePartLink[part.name] = serviceName
+                resolve()
+              }))
+            }
+          })
         }
+        await Promise.allSettled(pArr)
+        await fetchComponent(comName, config.init)
       }
     }
 
@@ -147,7 +144,7 @@ export default defineComponent({
     }
 
     let ret = {
-      uuid: ZY.nid(),
+      uuid,
       ui,
       servicePartLink,
       runPart,
@@ -166,6 +163,9 @@ export default defineComponent({
       },
       function () {
         // PubSub.unsubscribe(FETCH_COMPONENT_READY, handler)
+        // console.log(servicePartLink)
+        let serviceNames = Object.values(servicePartLink) ?? []
+        globalStore.destory(serviceNames)
       }
     ], {
       type: 'httpCom'

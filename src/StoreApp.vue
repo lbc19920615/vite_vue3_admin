@@ -110,6 +110,15 @@ export default defineComponent({
       }
     }
 
+    function destory(serviceIds = []) {
+      serviceIds.forEach(serviceId => {
+        let findedIndex = serviceNames.value.findIndex(v => v === serviceId)
+        if (findedIndex > -1) {
+          serviceNames.value.splice(findedIndex, 1)
+        }
+      })
+    }
+
 
 
     /**
@@ -152,6 +161,7 @@ export default defineComponent({
       installServiceComponent,
       installExposeServices,
       EVENT_TYPES,
+      destory,
       installService,
       run,
     }

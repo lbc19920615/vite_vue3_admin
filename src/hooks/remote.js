@@ -117,7 +117,9 @@ export async function loadComponent(p, comName = '', {handleScript, handleTpl, s
  * @param cb
  * @returns {Promise<void>}
  */
-export async function fetchComponent(comName = '', {def, args, onReady } = {}) {
+export async function fetchComponent(comName = '', options = {}) {
+    let {def, args, onReady } = options
+    // console.log('fetchComponent', comName, options)
     try {
         // console.log('this.formDef', this.formDef)
         // let data = new FormData()

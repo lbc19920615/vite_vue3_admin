@@ -32,7 +32,7 @@
 <script>
 import HttpComponent from "@/components/HttpComponent.vue";
 import {extendControl2Page, useControl, extendCommonArrEventHandler} from "@/mixins/framework";
-import {onMounted, toRaw} from "vue";
+import {onBeforeUnmount, onMounted, toRaw} from "vue";
 export default {
   name: 'ZProps',
   components: {HttpComponent},
@@ -44,12 +44,6 @@ export default {
     return {
       loading: false,
     }
-  },
-  watch: {
-
-  },
-  methods: {
-
   },
   setup(props, ctx) {
     let locks = true
@@ -78,6 +72,10 @@ export default {
       ctx.emit('change', newVal)
     })
 
+
+    onBeforeUnmount(() => {
+      page.destory()
+    })
 
     onMounted(function () {
       let loaded =  async function () {

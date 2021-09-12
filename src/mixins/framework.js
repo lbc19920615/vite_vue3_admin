@@ -167,7 +167,7 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
     // console.log(...args)
   }
   let storeControl
-  let serviceId = 'AsyncComService' + ZY.nid(8).toLowerCase()
+  let serviceId = 'PageControlService' + ZY.nid(8).toLowerCase()
     .replace('_', '')
     .replace('-', '')
 
@@ -279,6 +279,11 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
     return comRefs.get(name)
   }
 
+  function destory() {
+    console.log(serviceId, globalStore.serviceNames)
+    globalStore.destory([serviceId]);
+  }
+
   onMounted(() => {
     if (!inited.value) {
       init.bind(this)()
@@ -288,6 +293,7 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
   return {
     getRef,
     setRef,
+    destory,
     EVENT_TYPES,
     store,
     dxValue,
