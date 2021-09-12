@@ -1,6 +1,31 @@
-import { moduleConfig } from '__remote/public/vue-bs-loader.js'
-import { initTemplate } from '__remote/public/template-loader.js'
-globalThis.initTemplate = initTemplate
+// import { moduleConfig } from '__remote/public/vue-bs-loader.js'
+
+const getGlobal = function() {
+  if (typeof self !== 'undefined') { return self; }
+  if (typeof window !== 'undefined') { return window; }
+  if (typeof global !== 'undefined') { return global; }
+  throw new Error('unable to locate global object');
+};
+
+const _global = getGlobal();
+_global.global = _global;
+
+// import { initTemplate } from '__remote/public/template-loader.js'
+_global.initTemplate = async function initTemplate(id, global, { html = '' } = {}) {
+  const document = global.document;
+  if (!document.getElementById(id)) {
+    try {
+      const template = document.createElement('template');
+      template.innerHTML = html;
+      template.id = id;
+      document.body.appendChild(template);
+    } catch (e) {
+      console.error(new Error('loadTwigComponent failed'));
+    }
+  } else {
+    //
+  }
+}
 
 class CustomVueComponent {
   static defMap = new Map()
@@ -120,7 +145,7 @@ window.startApp = function () {
     }
   })
 
-  app.use(moduleConfig)
+  // app.use(moduleConfig)
   app.use(remote)
   app.use(ElementPlus, {
     size: 'medium',
