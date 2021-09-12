@@ -12,6 +12,7 @@ $sel: "." + $tag;
     $panel-tra: width .5s ease;
     .tools {
       //height: var(--tools-height);
+      margin-bottom: 15px;
     }
     .com-panel {
       width: calc(var(--com-panel-width));
@@ -23,6 +24,8 @@ $sel: "." + $tag;
       width: calc(100% - var(--com-panel-width));
       height: calc(var(--plumb-con-height) - var(--tools-height));
       border: 1px solid #eee;
+      background-color: rgba(255,255,255,.7);
+      //backdrop-filter: blur(2px);
     }
 
     .playground {
@@ -59,10 +62,43 @@ $sel: "." + $tag;
       }
     }
 
-    .list-group {
-      min-height: 150px;
 
-      //border: 1px solid #eee;
+    $row-item-length: 2;
+    $row-gutter-length: $row-item-length * 2;
+    $row-gutter-deliver:  $row-item-length + 1;
+    $element-list-item-g: 12px;
+    $element-list-item-x: $element-list-item-g *   $row-gutter-length / $row-gutter-deliver;
+    $first-last-with: $element-list-item-g * $row-item-length - $element-list-item-x;
+    .element-list-item {
+
+      --element-list-item-h: 30px;
+      height: var(--element-list-item-h);
+      width: calc(100% - #{$element-list-item-g * 2} - 2px);
+      //background-color: #0d84ff;
+      //margin-top: 15px;
+      margin-bottom: 15px;
+      border: 1px solid #eeeeee;
+      border-radius: 4px;
+      font-size: 13px;
+      line-height:  var(--element-list-item-h);
+      box-sizing: border-box;
+      padding: 0 10px;
+
+      cursor: pointer;
+
+    }
+
+    .list-group-item {
+      &:nth-child(2n+1) {
+        .element-list-item {
+          margin-left: $element-list-item-x;
+        }
+      }
+      &:nth-child(2n) {
+        .element-list-item {
+          margin-left: $element-list-item-x - $first-last-with;
+        }
+      }
     }
 
   }
@@ -113,9 +149,12 @@ $sel: "." + $tag;
               :group="{ name: 'people', pull: 'clone', put: false }"
               :sort="false"
               :disabled="disableDrag"
-              item-key="id">
+              item-key="id"
+              tag="el-row"
+              style="align-items: flex-start; flex-wrap: wrap;"
+          >
             <template #item="{element}">
-              <div>{{element.name}}</div>
+              <el-col class="list-group-item" :span="12"><div class="element-list-item">{{element.name}}</div></el-col>
             </template>
           </draggable>
 
@@ -274,6 +313,14 @@ let UIMixin = {
           id: ZY.rid(),
           data: {
             tagName: 'el-button'
+          }
+        },
+        {
+          name: '下拉',
+          value: 'sdsds2',
+          id: ZY.rid(),
+          data: {
+            tagName: 'el-select'
           }
         },
       ],
