@@ -73,9 +73,6 @@ export default {
     })
 
 
-    onBeforeUnmount(() => {
-      page.destory()
-    })
 
     onMounted(function () {
       let loaded =  async function () {

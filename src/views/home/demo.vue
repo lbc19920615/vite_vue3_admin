@@ -51,8 +51,8 @@ export default {
     let page = useControl({properties, computed: computedProps}, {
       onInited,
       extendContext: {
-
-      }
+      },
+      servicePrefix: 'PageDemoLiuchengService'
     })
     page = extendControl2Page(page)
     page = useAppPageControl(page)

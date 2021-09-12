@@ -87,7 +87,8 @@ function onInited({storeControl}) {
   // console.log('sdsdsds', storeControl.store)
 }
 let page = useControl({properties, computed}, {
-  onInited
+  onInited,
+  servicePrefix: 'PageFormIndexService'
 })
 extendControl2Page(page)
 let store = page.store

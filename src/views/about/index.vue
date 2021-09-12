@@ -196,7 +196,8 @@ export default defineComponent({
     let page = useControl({properties, computed: computedProps}, {
       onInited,
       extendContext: {
-      }
+      },
+      servicePrefix: 'PageDemoIndexService'
     })
     page = extendControl2Page(page)
     page = useAppPageControl(page)

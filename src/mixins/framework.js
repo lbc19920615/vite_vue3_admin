@@ -1,4 +1,4 @@
-import {getCurrentInstance, inject, nextTick, provide, onMounted, reactive, ref} from "vue";
+import {getCurrentInstance, inject, nextTick, provide, onMounted, reactive, ref, onBeforeUnmount} from "vue";
 import {createRefManager, provideRefManager} from "@/hooks/ref";
 import {useRouter, useRoute} from "vue-router";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
@@ -72,6 +72,8 @@ export let useAppPageControl = function (page) {
   let ctx = getCurrentInstance().ctx
   let router = useRouter()
   let pageManager = inject('pageManager')
+
+  page.setAutoGC(false)
   // console.log(pageManager, this.$router.currentRoute); // path is /post
 
   pageManager.register(ctx, router.currentRoute.value.fullPath)
@@ -144,10 +146,10 @@ export function useConstObj() {
  * @param extendContext
  * @returns {{val: ((function(*=): (*))|*), dxValue: ((function(*=): (undefined))|*), inited, callEvent: callEvent, setData: setData, eventHandleMap: {}, rootStore, setByPath: setByPath, dispatchRoot: (function(...[*]): *), EVENT_TYPES: {ARR_APPEND: string, ARR_SPLICE: string, COMPUTED_CHANGE: string}, store, setEventHandler: setEventHandler}}
  */
-export function useControl({properties, computed, filters}, {onInited, extendContext = {}}) {
+export function useControl({properties, computed, filters}, {onInited, extendContext = {}, defaultGC = true, servicePrefix = 'ControlService'}) {
   const rootStore = useStore()
   const globalStore = inject('globalStore')
-
+  let autoGC = defaultGC
   let inited = ref(false)
   let store = reactive({
     model: {},
@@ -161,13 +163,14 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
     COMPUTED_CHANGE: 'COMPUTED_CHANGE_' + ZY.nid(6),
   }
 
+
   let filter = {}
 
   function log(...args) {
     // console.log(...args)
   }
   let storeControl
-  let serviceId = 'PageControlService' + ZY.nid(8).toLowerCase()
+  let serviceId = servicePrefix + ZY.nid(8).toLowerCase()
     .replace('_', '')
     .replace('-', '')
 
@@ -280,7 +283,7 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
   }
 
   function destory() {
-    console.log(serviceId, globalStore.serviceNames)
+    // console.log(serviceId, globalStore.serviceNames)
     globalStore.destory([serviceId]);
   }
 
@@ -290,10 +293,21 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
     }
   })
 
+  function setAutoGC(v) {
+    autoGC = v
+  }
+
+  onBeforeUnmount(() => {
+    if (autoGC) {
+      destory()
+    }
+  })
+
   return {
     getRef,
     setRef,
     destory,
+    setAutoGC,
     EVENT_TYPES,
     store,
     dxValue,
