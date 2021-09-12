@@ -139,9 +139,9 @@ window.startApp = function () {
     app.use(res.default)
   })
   // import * as highlightPlugin from '@/plugins/highlight'
-  import('@/plugins/highlight').then(highlightPlugin => {
-    app.use(highlightPlugin)
-  })
+  // import('@/plugins/highlight').then(highlightPlugin => {
+  //   app.use(highlightPlugin)
+  // })
   // import('vant/es/index').then(res => {
   //   // console.log(res.default)
   //   app.use(res.default)
