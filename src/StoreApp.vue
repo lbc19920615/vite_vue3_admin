@@ -141,7 +141,7 @@ export default defineComponent({
         // }
         return this.$refs[name][method].apply(null, args)
       } else {
-        // console.error('no service')
+        console.error('no service', name, method)
         // return Promise.reject(new Error('no service'))
       }
     }
