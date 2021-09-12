@@ -28,6 +28,10 @@ export default defineComponent({
     comPrefix: {
       type: String,
       default: 'http-com-'
+    },
+    comId: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -48,7 +52,7 @@ export default defineComponent({
   },
   async setup(props, ctx) {
     const globalStore = inject('globalStore')
-    let uuid =  ZY.nid();
+    let uuid =  ZY.rid();
     let obj;
 
     function render() {
@@ -84,12 +88,19 @@ export default defineComponent({
     let comName = ''
     let servicePartLink = {}
 
+    let comId = ''
+    if (props.comId) {
+      comId =  props.comId
+    } else {
+      comId =  ZY.rid()
+    }
+
     async function handleIsChanged(newVal) {
       let config = props.defs.get(props.is)
       log(['fetchComponent', props.is, props.defs, config])
 
       if (config && config.init) {
-        comName = props.comPrefix + ZY.rid()
+        comName = props.comPrefix + comId
         config.init.def.process = props.is
         config.init.onReady = handler
         config.init.def.servicePartLink = servicePartLink
