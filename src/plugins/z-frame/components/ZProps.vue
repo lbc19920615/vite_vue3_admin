@@ -4,7 +4,7 @@
 
 <template>
   <div class="z-props" v-if="page.inited">
-    {{valueConfig}}
+<!--    {{valueConfig}}-->
     <HttpComponent
         :defs="page.defMap"
         :is="store.model.editor_step"
