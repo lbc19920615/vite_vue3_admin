@@ -1,4 +1,4 @@
-import {getCurrentInstance, inject, nextTick, provide, onMounted, reactive, ref, onBeforeUnmount} from "vue";
+import {getCurrentInstance, inject, nextTick, provide, onMounted, reactive, ref, onBeforeUnmount, toRaw} from "vue";
 import {createRefManager, provideRefManager} from "@/hooks/ref";
 import {useRouter, useRoute} from "vue-router";
 import {defineAutoStoreControl} from "@/hooks/autoVue";
@@ -64,6 +64,9 @@ export let extendPartialPage = function (page) {
   page.webComponentRef  = webComponentRef
 }
 
+let lastCachedPhoto = new Map()
+globalThis.APP_lastCachedPhoto = lastCachedPhoto
+
 /**
  *
  * @param page
@@ -73,7 +76,20 @@ export let useAppPageControl = function (page) {
   let router = useRouter()
   let pageManager = inject('pageManager')
 
+  let cachedRouteObj = null
+  if (router && router.currentRoute && router.currentRoute.value) {
+    cachedRouteObj = router.currentRoute.value
+  }
+
   page.setAutoGC(false)
+
+  onBeforeUnmount(() => {
+    let cachedModel = page.getPartAllModel()
+    // console.log('cachedRouteObj', cachedRouteObj, cachedModel)
+
+
+    lastCachedPhoto.set(cachedRouteObj, cachedModel)
+  })
   // console.log(pageManager, this.$router.currentRoute); // path is /post
 
   pageManager.register(ctx, router.currentRoute.value.fullPath)
@@ -364,6 +380,7 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
   let ctx = getCurrentInstance().ctx
   control.ctx = ctx
   let httpComContext = {}
+  let cachedHttpCom = {}
   let allDef = new Map()
   let events = new Map()
   control.defMap = allDef
@@ -375,6 +392,7 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
       if (type === 'http-component:com:mounted') {
         let name = e.httpComponentContext.is
         httpComContext[name] = e.httpComponentContext
+        cachedHttpCom[name] = e
         // console.log(name)
         if (events.has(name)) {
           events.get(name)({
@@ -408,6 +426,25 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
   }
   control.getPartModel  = getPartModel
 
+
+  function getPartAllModel() {
+    let ret = {}
+    for (let stepName in cachedHttpCom) {
+      let e = cachedHttpCom[stepName]
+      let parts = e.httpComponentComContext.parts
+      ret[stepName] = {
+        model: {}
+      }
+      for (let [partName, part] of Object.entries(parts)) {
+        ret[stepName].model[partName] = toRaw(part.getModel())
+      }
+      // ret[setpName] = getPartModel(setpName)
+    }
+    return ret
+  }
+  control.getPartAllModel = getPartAllModel
+
+
   function setDef(config, fun) {
     allDef.set(config.name, config)
     events.set(config.name, fun)
@@ -415,6 +452,7 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
   }
 
   control.setDef = setDef
+
 
 
   async function commonLoadStep( loadPromise, varName = '', {
@@ -483,6 +521,7 @@ export let usePage  = function ({data = {} , filters = {}, defaultVal = {}, serv
   }
   // console.log('meta', meta)
   let httpComContext = {}
+
   let allDef = new Map()
   let events = new Map()
   let storeControl;
@@ -509,6 +548,7 @@ export let usePage  = function ({data = {} , filters = {}, defaultVal = {}, serv
       }
     }
   })
+
   function setPartModel(stepName, partName, model) {
     // console.log('httpComContext', stepName, partName)
     return httpComContext[stepName].runPart(partName, 'setModel',
