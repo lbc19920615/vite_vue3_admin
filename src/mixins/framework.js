@@ -87,8 +87,12 @@ export let useAppPageControl = function (page) {
     let cachedModel = page.getPartAllModel()
     // console.log('cachedRouteObj', cachedRouteObj, cachedModel)
 
+let urlCachedPath = cachedRouteObj.fullPath
 
-    lastCachedPhoto.set(cachedRouteObj, cachedModel)
+    lastCachedPhoto.set(urlCachedPath, {
+      model: cachedModel,
+      route: cachedRouteObj
+    })
   })
   // console.log(pageManager, this.$router.currentRoute); // path is /post
 
