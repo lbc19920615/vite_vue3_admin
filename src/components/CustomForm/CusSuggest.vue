@@ -12,7 +12,7 @@
       <template #append>
         <e-popover
             class="cus-suggest__popover"
-            placement="bottom"
+            :placement="widgetConfig.placement"
             :width="400"
             trigger="click"
             :append-to-body="true"
