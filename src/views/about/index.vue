@@ -107,9 +107,8 @@
               <el-button type="primary" @click="page.callEvent('call:save', scope)">保存</el-button>
               <el-button type="primary" @click="page.callEvent('call:save:file', scope)">保存文件</el-button>
               <el-button type="primary" @click="page.callEvent('load:file')">加载文件</el-button>
-              <template v-if="showCurrent">
-                <el-link href="/show" target="_blank">打开预览</el-link>
-              </template>
+              <el-link href="/show/sdsds" target="_blank">打开预览</el-link>
+              <router-link class="el-link" to="/form" >跳转Form</router-link>
             </el-space>
           </div>
         </template>
@@ -138,6 +137,7 @@
 </template>
 
 <script>
+import '@/plugins/form-render/ext.js';
 import "@/register";
 import {defineComponent, toRaw, onMounted} from "vue";
 import {
@@ -152,6 +152,8 @@ import {FormsEvent} from "@/plugins/z-frame/formsEvent";
 import FormsManaSelect from "@/plugins/z-frame/components/FormsManaSelect.vue";
 import FormManager from "@/views/about/components/FormManager.vue";
 import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
+
+
 
 export default defineComponent({
   mixins: [

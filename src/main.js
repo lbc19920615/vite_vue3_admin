@@ -46,17 +46,14 @@ globalThis.Vue = Vue
 import * as vuex from 'vuex'
 globalThis.Vuex = vuex
 
-import App from './App.vue'
+
 import 'normalize.css/normalize.css'
-
 import 'suitcss-utils-size/index.css'
-// import 'font-awesome/css/font-awesome.css'
-
+import App from './App.vue'
 
 // element
 import ElementPlus from 'element-plus';
-// import 'element-plus/lib/theme-chalk/index.css';
-import 'element-plus/dist/index.css';
+import 'element-plus/theme-chalk/src/index.scss';
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 
 import '@/components/WebElements/index'
@@ -101,18 +98,8 @@ NodeDefMap.register(modalNodePlugin)
 import * as eleNodePlugin from '@/plugins/ComEditor/eleNode.plugin'
 NodeDefMap.register(eleNodePlugin)
 
-import router, {addRoute} from './router'
+import router from './router'
 import store from './store'
-
-(async () => {
-  let routes = await store.dispatch('GenerateRoutes', {
-    roles: ['admin']
-  })
-  routes.forEach(routeEntry => {
-    // console.log(routeEntry)
-    addRoute(routeEntry)
-  })
-})()
 
 import icons from './icons/index'
 import '@/styles/index.scss' // global css

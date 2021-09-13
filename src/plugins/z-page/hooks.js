@@ -1,11 +1,16 @@
-import {reactive, ref, toRaw} from "vue";
+import {reactive,  toRaw} from "vue";
 import {VARS_PAGE_MODEL_NAME} from "@/vars";
-
+import {useRouter} from 'vue-router';
 
 export function useRenderControl() {
+    let router = useRouter()
+    let currentRoute = router.currentRoute
+    let params = {}
+    if (currentRoute && currentRoute.value) {
+        params = currentRoute.value.params
+    }
+    console.log(params)
 
-    // let currentLayoutMap = reactive({})
-    // let currentLinks = reactive([])
     let state = reactive({
         rootId: '',
         currentLayoutMap: {},

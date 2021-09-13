@@ -1,7 +1,9 @@
-import { createWebHistory, createRouter } from "vue-router";
+import { createWebHistory, createRouter, createRouterMatcher } from "vue-router";
+
 
 import Layout from './views/layout/Layout.vue'
 import {loadPage} from "@/remote";
+import store from "@/store";
 
 export const constantRouterMap = [
   {
@@ -60,15 +62,15 @@ export const constantRouterMap = [
         },
         component: () => import('@/views/about/index.vue'),
       },
-      {
-        path: "form",
-        name: "Form",
-        meta: {
-          title: '接口获取',
-          // icon: 'shangdian'
-        },
-        component: () => import('@/views/home/search.vue'),
-      },
+      // {
+      //   path: "form",
+      //   name: "Form",
+      //   meta: {
+      //     title: '接口获取',
+      //     // icon: 'shangdian'
+      //   },
+      //   component: () => import('@/views/home/search.vue'),
+      // },
       {
         path: "demo",
         name: "Demo",
@@ -78,28 +80,48 @@ export const constantRouterMap = [
         },
         component: () => import('@/views/home/demo.vue'),
       },
+      {
+        z_parent: 'main',
+        path: "show/:name",
+        name: "Show",
+        hidden: true,
+        meta: {
+          title: 'Show',
+        },
+        component: () => loadPage('Show'),
+        uuid: 'sdsdsdsdsdsd'
+      },
     ]
   },
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '/404',
-    meta: { hidden: true }
-  }
+  // {
+  //   path: '/:pathMatch(.*)*',
+  //   redirect: '/404',
+  //   meta: { hidden: true }
+  // }
 ];
 
 export const asyncRouterMap = [
+  // {
+  //   z_parent: 'main',
+  //   path: "show/:name",
+  //   name: "Show",
+  //   // hidden: true,
+  //   meta: {
+  //     title: 'Show',
+  //   },
+  //   component: () => loadPage('Show'),
+  //   uuid: 'sdsdsdsdsdsd'
+  // },
   {
-    parent: 'main',
-    path: "show",
-    name: "Show",
-    hidden: true,
+    z_parent: 'main',
+    path: "form",
+    name: "Form",
     meta: {
-      title: 'Show',
+      title: '接口获取',
       // icon: 'shangdian'
     },
-    // component: () => import('@/views/about/show.vue'),
-    component: () => loadPage('show')
-  }
+    component: () => import('@/views/home/search.vue'),
+  },
 ]
 
 
@@ -113,18 +135,38 @@ const router = createRouter({
 
 export function addRoute(args) {
   // console.log(args)
-  router.addRoute(args.parent, args)
+  if (args.z_parent) {
+    // console.log('sdsdsdsd')
+    router.addRoute(args.z_parent, args)
+  } else {
+    router.addRoute(args)
+  }
 }
 
-let metaCache = new Map()
+(async () => {
+
+  let routes = await store.dispatch('GenerateRoutes', {
+    roles: ['admin']
+  })
+  routes.forEach(routeEntry => {
+    // console.log(routeEntry)
+    addRoute(routeEntry)
+  })
+})()
+
+// let metaCache = new Map()
+let locks = false
 router.beforeEach(async (to, from, next) => {
-  // ...
-  // 返回 false 以取消导航
+
+
+  // console.log(router.getRoutes())
 
 
   if (!to.meta) {
     to.meta = {}
   }
+
+
 
   // if (!metaCache.has(to.name)) {
   //   to.meta.pageServiceName = `Page${to.name}Service`
@@ -137,9 +179,18 @@ router.beforeEach(async (to, from, next) => {
   //   to.meta = Object.assign({}, to.meta, metaCache.get(to.name).meta)
   // }
 
-  // console.log(to.name, to.meta)
+  // console.log(to, to.meta)
 
   next()
+// if (to.fullPath === '/form' && !locks) {
+//   locks = true
+//   next({...to})
+// } else {
+//
+//   next()
+// }
 })
+
+globalThis.APP_router = router;
 
 export default router;

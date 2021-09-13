@@ -210,11 +210,7 @@ let plumbLayoutMixin = {
         currentLayoutMap,
         currentLinks,
       }
-      // await ZY_EXT.store.setItem('current-data', currentData)
-
-      // await ZY.sleep(500)
-
-
+      
       await this.onSaveLayout({
         origin: { deps, links},
         currentData

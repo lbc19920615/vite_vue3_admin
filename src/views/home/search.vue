@@ -32,6 +32,11 @@
     </el-row>
   </div>
 </template>
+<script>
+export default {
+  name: 'Form'
+}
+</script>
 <script setup>
 import SubmitButton from "@/components/SubmitButton.vue"
 import EwSelect from "@/components/Ew/EwSelect.vue"
