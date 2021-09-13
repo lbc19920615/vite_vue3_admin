@@ -97,7 +97,7 @@ let depManagerMixin = {
       }
       if (Array.isArray(dep.editorTpl)) {
         let [name] = dep.editorTpl
-        let editor = NodeDefMap.getEditorConfig(name)()
+        let editor = NodeDefMap.getEditorConfig(name)(dep)
         // console.log('sdsdsdsdsds', name, editor)
         await this.loadStepByContent(editor, 'editor_step')
       }

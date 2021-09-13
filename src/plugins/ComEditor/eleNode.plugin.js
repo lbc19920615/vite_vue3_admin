@@ -81,7 +81,8 @@ export let EditorConfig = function (defaultVal = {}) {
 //     })
 // }
 
-registerEditorConfig('ele',  function () {
+registerEditorConfig('ele',  function (dep) {
+    console.log('eleNode buildConfig', dep)
     return EditorConfig({
         form2: {
         }
