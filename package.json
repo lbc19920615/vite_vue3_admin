@@ -1,6 +1,6 @@
 {
   "name": "vite_vue3_admin",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "gongsi": "vite --host 0.0.0.0 --mode gongsi",
