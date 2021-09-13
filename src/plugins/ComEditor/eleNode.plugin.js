@@ -55,6 +55,7 @@ export let EditorConfig = function ( { properties = {}, computed = {} } = {}, de
                                 ui: {
                                     widget: 'CusSuggest',
                                     widgetConfig: {
+                                        placement: 'top'
                                     }
                                 },
                             },
@@ -66,25 +67,6 @@ export let EditorConfig = function ( { properties = {}, computed = {} } = {}, de
                         }
                     }
                 },
-                rules: {
-                    type: 'array',
-                    ui: {
-                      label: '校验'
-                    },
-                    items: {
-                        type: "object",
-                        properties: {
-                            value: {
-                                type: 'string',
-                                ui: {
-                                    widget: 'CusFormRules',
-                                    widgetConfig: {
-                                    }
-                                },
-                            },
-                        }
-                    }
-                }
             }
         }, {
           computedEditText: "MODEL('editText', '')",
@@ -127,6 +109,25 @@ registerEditorConfig('ele',  function (dep) {
                     }
                 },
             },
+            rules: {
+                type: 'array',
+                ui: {
+                    label: '校验'
+                },
+                items: {
+                    type: "object",
+                    properties: {
+                        value: {
+                            type: 'string',
+                            ui: {
+                                widget: 'CusFormRules',
+                                widgetConfig: {
+                                }
+                            },
+                        },
+                    }
+                }
+            }
         },
         computed: {
             computedProp1: "A.getInputEdit(MODEL('inputEdit', ''))"
