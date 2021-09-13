@@ -23,6 +23,7 @@
             @delete-dep="onDeleteDep"
             @save-data="onSaveData"
             @edit-dep="onEditDep"
+            @ele-drag-change="onFires('ele-drag-change', $event)"
         ></PlumbLayout>
 
         <el-drawer
@@ -135,18 +136,30 @@ let plumbLayoutMixin = {
       currentLayoutMap: {},
     }
   },
+  props: {
+    autoLoad: {
+      type: Boolean,
+      default: true
+    }
+  },
   methods: {
     async onPlumbLayoutInit(self) {
       this.LayoutContext = self
-      let defaultDeps  = [
-      ]
-      await self.usePosMap();
-      await self.useDeps(defaultDeps)
-      await self.$nextTick()
-      await ZY.sleep(300)
-      self.insDeps(self.deps)
-      await ZY.sleep(300)
-      self.useLinks()
+      if (this.autoLoad) {
+        let defaultDeps  = [
+        ]
+        await self.usePosMap();
+        await self.useDeps(defaultDeps)
+        await self.$nextTick()
+        await ZY.sleep(300)
+        self.insDeps(self.deps)
+        await ZY.sleep(300)
+        self.useLinks()
+      }
+      this.$emit('plumb-inited', {
+        LayoutContext: self,
+        context: this
+      })
     },
     handleDep(dep) {
       // console.log('handleDep', dep)
@@ -376,6 +389,15 @@ export default defineComponent({
       return  page.ctx.LayoutContext.saveCache2Storage(data)
     }
 
+    function clearLayoutStorage(data) {
+      return  page.ctx.LayoutContext.clearStorage(data)
+    }
+
+
+    function onFires(name, e) {
+      ctx.emit(name, e)
+    }
+
     function save() {
       if (self.LayoutContext) {
         self.LayoutContext.save()
@@ -383,10 +405,13 @@ export default defineComponent({
     }
 
     return {
+      getXML,
+      onFires,
       importToolsData,
       saveCache2Storage,
       onSaveLayout,
       getToolsData,
+      clearLayoutStorage,
       loadStepByContent,
       store: page.store,
       save,

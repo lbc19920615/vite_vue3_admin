@@ -1,3 +1,9 @@
+export function clearPlumbLayoutStorage(storagePrefix) {
+  ZY_EXT.store.removeItem( storagePrefix +'-deps')
+  ZY_EXT.store.removeItem( storagePrefix +'-links')
+  ZY_EXT.store.removeItem( storagePrefix +'-posMap')
+}
+
 export let plumbActionMixins = {
   methods: {
     /**
@@ -221,6 +227,10 @@ export let plumbLayoutMixn = {
     },
 
 
+
+    async clearStorage() {
+      clearPlumbLayoutStorage(this.storagePrefix)
+    },
 
     async saveCache2Storage(data = {data: {deps: [], links: []},  posMap : {}}) {
       ZY_EXT.store.setItem( this.storagePrefix +'-deps', ZY.JSON5.parse(ZY.JSON5.stringify(data.data.deps)))

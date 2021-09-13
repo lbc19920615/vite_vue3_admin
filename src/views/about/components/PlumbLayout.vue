@@ -50,7 +50,7 @@ $sel: "." + $tag;
       z-index: 1111;
       background-color: rgba(255,255,255,.5);
       color: transparent;
-      background-color: #0d84ff;
+      //background-color: #0d84ff;
       .list-group {
         height: 100%;
       }
@@ -354,7 +354,7 @@ let UIMixin = {
       this.panelOpend = !this.panelOpend
     },
     async onList2Change(e) {
-      console.log('onList2Change', e)
+      // console.log('onList2Change', e)
       await this.$nextTick();
       let {added = {}} = e
       let elementRawData = toRaw(added.element.data)
@@ -362,6 +362,7 @@ let UIMixin = {
         tagName: elementRawData.tagName
       })
       this.disableDrag = false
+      this.$emit('ele-drag-change')
     }
   },
 }
