@@ -66,7 +66,7 @@ export default {
         if (newVal) {
           obj = JSON5.parse(newVal)
         }
-        // openDialog()
+        openDialog()
         return newVal
       }
     })

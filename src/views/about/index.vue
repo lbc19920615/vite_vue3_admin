@@ -137,6 +137,7 @@
 </template>
 
 <script>
+
 import '@/plugins/form-render/ext.js';
 import "@/register";
 import {defineComponent, toRaw, onMounted} from "vue";

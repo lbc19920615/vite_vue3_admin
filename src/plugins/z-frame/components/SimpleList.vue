@@ -13,10 +13,11 @@
 <!--        </template>-->
 <!--      </el-table-column>-->
 <!--    </el-table>-->
-
-    <z-table border stripe :actions="state.actions"
-             :actionProps="actionProps"
-             :column="state.column" :data="dataTable"></z-table>
+    <div class="simple-list-con" :class="conClass">
+      <z-table border stripe :actions="state.actions"
+               :actionProps="actionProps"
+               :column="state.column" :data="dataTable"></z-table>
+    </div>
   </div>
 </template>
 
@@ -35,7 +36,8 @@ export default {
       default() {
         return {width: '100px'}
       }
-    }
+    },
+    conClass: String
   },
   components: {
     ZTable
