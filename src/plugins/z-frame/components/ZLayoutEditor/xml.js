@@ -44,6 +44,12 @@ function buildRootXmlLink(curContext, context) {
   })
   let str = ''
   if (rawData.tagName) {
+    innerText = innerText.trim()
+    if (!innerText) {
+      if (rawData.textContent) {
+        innerText = rawData.textContent
+      }
+    }
     str = `<${rawData.tagName} ${attrStr}>${innerText}</${rawData.tagName}>`;
   } else {
     if (rawData.textContent) {
