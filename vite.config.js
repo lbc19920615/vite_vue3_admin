@@ -36,10 +36,6 @@ export default (({mode}) => {
     plugins: [
       md({}),
       htmlPlugin(),
-      // fileloader({
-      //   virtualFileId: '@my-virtual-file',
-      //   origin: 'http://localhost:7002/getcontent'
-      // }),
       vue(),
       rawTransform([/\.bpmn$/]),
       vueJsx(),

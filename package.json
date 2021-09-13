@@ -42,7 +42,6 @@
     "vue-resizable": "^2.0.5",
     "vue-router": "^4.0.6",
     "vue-sfc-parser": "^0.1.2",
-    "vue3-ace-editor": "^2.0.2",
     "vue3-eventbus": "^2.0.0",
     "vue3-highlightjs": "^1.0.5",
     "vue3-json-viewer": "^1.0.4",
@@ -60,11 +59,8 @@
     "marked": "^2.0.1",
     "node-fetch": "^2.6.1",
     "postcss": "^7.0.35",
-    "qs": "^6.10.1",
-    "query-ast": "^1.0.4",
     "sass": "^1.32.8",
     "sast": "^0.8.1",
-    "scss-parser": "^1.0.5",
     "vite": "^2.4.4"
   }
 }
