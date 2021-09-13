@@ -260,6 +260,15 @@ export default defineComponent({
 
     let cachedPageLayout;
 
+    function getXML() {
+      let xml = ''
+      if (self.LayoutContext) {
+        let { data } = self.LayoutContext.getToolsData();
+        xml = buildXml(data)
+      }
+      return xml
+    }
+
     page.setEventHandler({
       ['add:arr:common'](e) {
         let { parts, partName, selfpath, process } = e
@@ -272,12 +281,7 @@ export default defineComponent({
         }
       },
       ['get:xml'](e) {
-        if (self.LayoutContext) {
-
-
-          let { data } = self.LayoutContext.getToolsData();
-          buildXml(data)
-        }
+        getXML()
       },
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e

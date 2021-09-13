@@ -89,6 +89,7 @@ export function buildXml(data) {
   })
 
 
-  console.log(str)
+  // console.log(str)
+  return str
   // console.log(eleDeps, multiRoots, linkFromPIDS, linkToPIDS, links)
 }

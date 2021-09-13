@@ -88,6 +88,16 @@ export default {
                                             }
                                         }
                                     },
+                                    layouts: {
+                                        type: 'string',
+                                        tag: 'div',
+                                        ui: {
+                                            widget: 'CusLayoutEditor',
+                                            widgetConfig: {
+                                                suffix: 'slayout'
+                                            }
+                                        }
+                                    },
                                     propsCopy: {
                                         type: 'string',
                                         reflect: 'props',

@@ -50,6 +50,10 @@ $sel: "." + $tag;
       z-index: 1111;
       background-color: rgba(255,255,255,.5);
       color: transparent;
+      background-color: #0d84ff;
+      .list-group {
+        height: 100%;
+      }
     }
 
     .element-panel {
