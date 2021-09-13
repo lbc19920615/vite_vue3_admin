@@ -1,3 +1,9 @@
+<style>
+.plumb-layout__tools {
+  display: none;
+}
+</style>
+
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
@@ -7,7 +13,7 @@
     </el-row>
     <el-dialog
         v-model="state.dialogVisible"
-        title="Dom编辑" width="80vw"
+        title="DOM编辑" width="80vw"
         :close-on-click-modal="false"
         @closed="onClosed"
     >

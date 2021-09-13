@@ -140,8 +140,8 @@ $sel: "." + $tag;
         <div class="a-space-mb-10">
           <el-button size="small" @click="togglePanel">toggle</el-button>
         </div>
-        <el-row align="middle" class="tools">
-          <el-button size="small" @click="toggleGroupDialog(true)">添加组</el-button>
+        <el-row align="middle" class="tools plumb-layout__tools">
+          <el-button size="small" class="add-group-btn" @click="toggleGroupDialog(true)">添加组</el-button>
 <!--          <el-button size="small" @click="insertEleGroup()">添加ele</el-button>-->
         </el-row>
         <div class="element-panel">
