@@ -1,7 +1,7 @@
 import {baseConfig} from "@/plugins/ComEditor/editorConfig";
 import {registerEditorConfig} from "@/plugins/ComEditor/nodes";
 
-export let EditorConfig = function (defaultVal = {}) {
+export let EditorConfig = function ( { properties = {}, computed = {} } = {}, defaultVal = {}) {
     return baseConfig( {
             type: 'object',
             ui: {
@@ -44,28 +44,7 @@ export let EditorConfig = function (defaultVal = {}) {
                     },
                     computedProp: 'text'
                 },
-                prop1: {
-                    type: 'string',
-                    computedProp: 'computedProp1',
-                    ui: {
-                        widgetConfig: {
-                            type: 'textarea',
-                            rows: 1,
-                            disabled: true,
-                        }
-                    },
-                    // reflect: 'inputEdit',
-                    // reflectTpl: 'A.getInputEdit($M, $VAL, $R)'
-                },
-                inputEdit: {
-                    type: 'string',
-                    ui: {
-                        label: 'INPUT',
-                        widget: 'CusFormAttr',
-                        widgetConfig: {
-                        }
-                    },
-                },
+                ...properties,
                 attrs: {
                     type: 'array',
                     "items": {
@@ -90,7 +69,7 @@ export let EditorConfig = function (defaultVal = {}) {
             }
         }, {
           computedEditText: "MODEL('editText', '')",
-          computedProp1: "A.getInputEdit(MODEL('inputEdit', ''))"
+          ...computed
         },
         {
             defaultVal: defaultVal
@@ -108,6 +87,32 @@ export let EditorConfig = function (defaultVal = {}) {
 registerEditorConfig('ele',  function (dep) {
     console.log('eleNode buildConfig', dep)
     return EditorConfig({
+        properties: {
+            beforeAttrs: {
+                type: 'string',
+                computedProp: 'computedProp1',
+                ui: {
+                    widgetConfig: {
+                        type: 'textarea',
+                        rows: 1,
+                        disabled: true,
+                    }
+                },
+            },
+            inputEdit: {
+                type: 'string',
+                ui: {
+                    label: 'INPUT',
+                    widget: 'CusFormAttr',
+                    widgetConfig: {
+                    }
+                },
+            },
+        },
+        computed: {
+            computedProp1: "A.getInputEdit(MODEL('inputEdit', ''))"
+        },
+    },{
         form2: {
         }
     })
@@ -126,6 +131,7 @@ export function install({
             this.type = 'ele';
             this.editor = '';
             this.editorTpl = ['ele']
+            this.lib = obj.lib
             if ( ZY.lodash.isEmpty(obj.items)) {
                 this.items = [
                     {

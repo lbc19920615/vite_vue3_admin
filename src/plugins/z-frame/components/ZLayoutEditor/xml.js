@@ -36,7 +36,7 @@ function buildRootXmlLink(curContext, context) {
   // console.log('id', id, ele)
   let {data, items} = ele
   let rawData = toRaw(data)
-  let attrStr = buildAttrs(rawData.attrs)
+
   let rawItems = toRaw(items)
   let toDepContext = []
   rawItems.forEach(rawItem => {
@@ -63,6 +63,13 @@ function buildRootXmlLink(curContext, context) {
       innerText = innerText + buildRootXmlLink(toDepContextItem, context)
     }
   })
+
+
+  let attrStr = buildAttrs(rawData.attrs)
+  let afterAttrs = rawData.afterAttrs ?? ''
+  let beforeAttrs = rawData.beforeAttrs ?? ''
+  // console.log('rawData', rawData)
+
   let str = ''
   if (rawData.tagName) {
     innerText = innerText.trim()
@@ -71,7 +78,7 @@ function buildRootXmlLink(curContext, context) {
         innerText = rawData.textContent
       }
     }
-    str = `<${rawData.tagName} ${attrStr}>${innerText}</${rawData.tagName}>`;
+    str = `<${rawData.tagName} ${beforeAttrs} ${attrStr} ${afterAttrs}>${innerText}</${rawData.tagName}>`;
   } else {
     if (rawData.textContent) {
       innerText = rawData.textContent
@@ -92,31 +99,53 @@ export function buildXml(data) {
   let linkFromPIDS = links.map((item) => item.fromPID)
   let linkToPIDS = links.map((item) => item.toPID)
   let linkFroms = links.map((item) => item.from)
-  eleDeps.forEach((eleDep) => {
-    let id = eleDep.id
-    if (linkFromPIDS.includes(id) && !linkToPIDS.includes(id)) {
-      multiRoots.push(eleDep)
+  let append = {
+    eleDeps,
+    linkToPIDS,
+    linkFroms,
+    links,
+    linkFromPIDS
+  }
+  if (linkToPIDS.length === 0 && linkFromPIDS.length === 0) {
+    if (eleDeps.length === 1) {
+      multiRoots.push(eleDeps[0])
+      let eleDep = eleDeps[0]
+      let id = eleDep.id
       context[id] = {
         str: '',
         id: eleDep.id,
-        append: {
-          eleDeps,
-          linkToPIDS,
-          linkFroms,
-          links,
-          linkFromPIDS
-        }
+        append
       }
     }
-  })
+  }
+  else {
+    eleDeps.forEach((eleDep) => {
+      let id = eleDep.id
+
+      if (linkFromPIDS.includes(id) && !linkToPIDS.includes(id)) {
+        multiRoots.push(eleDep)
+        context[id] = {
+          str: '',
+          id: eleDep.id,
+          append
+        }
+      }
+
+    })
+  }
 
   let str = ''
+
+// if (multiRoots.length < 1 && Array.isArray(deps) && deps.length  === 1) {
+//   multiRoots = deps
+// }
+
   multiRoots.forEach((multiRoot) => {
     str = str + buildRootXmlLink(context[multiRoot.id], context)
   })
 
 
-  // console.log(str)
+  console.log(multiRoots)
   return str
   // console.log(eleDeps, multiRoots, linkFromPIDS, linkToPIDS, links)
 }

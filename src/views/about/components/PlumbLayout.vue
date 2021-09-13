@@ -309,8 +309,9 @@ let UIMixin = {
           value: '',
           id: ZY.rid(),
           data: {
-            tagName: 'el-input'
-          }
+            tagName: 'el-input',
+          },
+          lib: 'input'
         },
         {
           name: '按钮',
@@ -318,7 +319,8 @@ let UIMixin = {
           id: ZY.rid(),
           data: {
             tagName: 'el-button'
-          }
+          },
+          lib: 'input'
         },
         {
           name: '下拉',
@@ -326,7 +328,8 @@ let UIMixin = {
           id: ZY.rid(),
           data: {
             tagName: 'el-select'
-          }
+          },
+          lib: 'input'
         },
       ],
       list2: [
@@ -360,7 +363,7 @@ let UIMixin = {
       let elementRawData = toRaw(added.element.data)
       this.insertEleGroup({
         tagName: elementRawData.tagName
-      })
+      }, added.element)
       this.disableDrag = false
       this.$emit('ele-drag-change')
     }
@@ -605,14 +608,15 @@ export default {
      * 快捷安装ele节点
      * @param defaultData
      */
-    insertEleGroup(defaultData = null) {
+    insertEleGroup(defaultData = null, element) {
       let eleGroup = this.buildedGroups.find(v => v.type === 'ele')
       if (eleGroup) {
         let dep = this.buildDepFromGroup(eleGroup)
-        // console.log(dep)
+        console.log(eleGroup, dep)
         dep.data = defaultData ?? {
           tagName: 'div'
         }
+        dep.lib = element.lib
         this.appendDep(
             dep
         )

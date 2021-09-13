@@ -1,8 +1,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-    Cus Form Attr
-    {{state.value}}
+<!--    {{state.value}}-->
    <el-form-item label="占位提示">
       <el-input v-model="state.value.placeholder" @change="onChange"></el-input>
    </el-form-item>
