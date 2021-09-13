@@ -26,6 +26,7 @@ import {createRefManager} from "@/hooks/ref";
 import {useRoute, useRouter} from "vue-router";
 import {fetchTwigComponent} from "@/hooks/remote.js";
 import {getDeepConfigFromLinksAndDeps} from "@/views/about/components/DeepPropEditor/utils";
+import {buildXml} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
 
 export default defineComponent({
   mounted() {
@@ -109,6 +110,15 @@ ${item.value}
         }
       }
       return '{}'
+    },
+    buildXML(data) {
+      if (data) {
+        let obj = ZY.JSON5.parse(data)
+        let str = buildXml(obj.data)
+        console.log('buildXML', obj, str)
+        return str
+      }
+      return ''
     },
     test(v) {
       console.log('call app test')

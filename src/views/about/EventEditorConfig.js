@@ -88,6 +88,17 @@ export default {
                                             }
                                         }
                                     },
+                                    value2: {
+                                        type: 'string',
+                                        reflect: 'layouts',
+                                        reflectTpl: `A.buildXML($VAL)`,
+                                        ui: {
+                                            widgetConfig: {
+                                                type: 'textarea',
+                                                disabled: true,
+                                            }
+                                        }
+                                    },
                                     layouts: {
                                         type: 'string',
                                         tag: 'div',
