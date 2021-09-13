@@ -1,4 +1,5 @@
 <style lang="scss">
+@use "sass:math";
 @import "../../../components/PlumbLayout/index.scss";
 
 $tag: "plumb-layout";
@@ -67,7 +68,7 @@ $sel: "." + $tag;
     $row-gutter-length: $row-item-length * 2;
     $row-gutter-deliver:  $row-item-length + 1;
     $element-list-item-g: 12px;
-    $element-list-item-x: $element-list-item-g *   $row-gutter-length / $row-gutter-deliver;
+    $element-list-item-x: math.div($element-list-item-g *   $row-gutter-length, $row-gutter-deliver) ;
     $first-last-with: $element-list-item-g * $row-item-length - $element-list-item-x;
     .element-list-item {
 
