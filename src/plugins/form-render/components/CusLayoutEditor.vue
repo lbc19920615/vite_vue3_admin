@@ -66,6 +66,7 @@ export default {
         if (newVal) {
           obj = JSON5.parse(newVal)
         }
+        openDialog()
         return newVal
       }
     })
@@ -74,11 +75,19 @@ export default {
     })
     init(props)
 
+    async function openDialog() {
+      state.dialogVisible =true
+
+      await ZY_EXT.store.setItem('layout-store-prefix', storePrefix)
+    }
+
+
     async function onPlumbInited({context}) {
-      console.log('handleValueInit', part_key, obj, context)
+      // console.log('handleValueInit', part_key, obj, context)
       await context.importToolsData(obj)
       await ZY.sleep(300)
       await context.saveCache2Storage(obj)
+
     }
 
 
@@ -88,23 +97,17 @@ export default {
     }
 
     function onSaveLayout(e) {
-
     }
 
     function getXML() {
       let v = layoutRef.getXML()
-      console.log('getXML', v)
+      // console.log('getXML', v)
     }
 
     function onEleDragChange() {
       // console.log('onEleDragChange')
     }
 
-    async function openDialog() {
-      state.dialogVisible =true
-
-      await ZY_EXT.store.setItem('layout-store-prefix', storePrefix)
-    }
 
     async function onClosed() {
       let v = layoutRef.getToolsData()
@@ -112,6 +115,8 @@ export default {
       await layoutRef.saveCache2Storage(v)
       methods.on_change(JSON5.stringify(v))
     }
+
+
 
     onBeforeUnmount(() => {
       if (layoutRef) {

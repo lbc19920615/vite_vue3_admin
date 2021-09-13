@@ -26,7 +26,8 @@ import {createRefManager} from "@/hooks/ref";
 import {useRoute, useRouter} from "vue-router";
 import {fetchTwigComponent} from "@/hooks/remote.js";
 import {getDeepConfigFromLinksAndDeps} from "@/views/about/components/DeepPropEditor/utils";
-import {buildXml} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
+import {buildObjAttrs, buildXml} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
+import {parseFormAttrToObj} from "@/plugins/form-render/utils/CusFormAttr";
 
 export default defineComponent({
   mounted() {
@@ -115,10 +116,15 @@ ${item.value}
       if (data) {
         let obj = ZY.JSON5.parse(data)
         let str = buildXml(obj.data)
-        console.log('buildXML', obj, str)
+        // console.log('buildXML', obj, str)
         return str
       }
       return ''
+    },
+    getInputEdit(editInputStr) {
+      let obj = parseFormAttrToObj(editInputStr)
+      // console.log(obj, buildObjAttrs(obj))
+      return buildObjAttrs(obj).trim()
     },
     test(v) {
       console.log('call app test')

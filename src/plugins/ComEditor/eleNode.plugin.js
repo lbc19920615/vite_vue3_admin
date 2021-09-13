@@ -28,7 +28,8 @@ export let EditorConfig = function (defaultVal = {}) {
                         label: 'text',
                         widgetConfig: {
                             type: 'textarea',
-                            readonly: true,
+                            rows: 1,
+                            disabled: true,
                         }
                     },
                     computedProp: 'computedEditText'
@@ -42,6 +43,28 @@ export let EditorConfig = function (defaultVal = {}) {
                         }
                     },
                     computedProp: 'text'
+                },
+                prop1: {
+                    type: 'string',
+                    computedProp: 'computedProp1',
+                    ui: {
+                        widgetConfig: {
+                            type: 'textarea',
+                            rows: 1,
+                            disabled: true,
+                        }
+                    },
+                    // reflect: 'inputEdit',
+                    // reflectTpl: 'A.getInputEdit($M, $VAL, $R)'
+                },
+                inputEdit: {
+                    type: 'string',
+                    ui: {
+                        label: 'INPUT',
+                        widget: 'CusFormAttr',
+                        widgetConfig: {
+                        }
+                    },
                 },
                 attrs: {
                     type: 'array',
@@ -66,7 +89,8 @@ export let EditorConfig = function (defaultVal = {}) {
                 },
             }
         }, {
-          computedEditText: "MODEL('editText', '')"
+          computedEditText: "MODEL('editText', '')",
+          computedProp1: "A.getInputEdit(MODEL('inputEdit', ''))"
         },
         {
             defaultVal: defaultVal

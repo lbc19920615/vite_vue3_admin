@@ -47,9 +47,17 @@
                       <h3>{{ scope.key }}</h3>
                       <template v-if="scope.key !== 'items'">
                         <el-button type="primary" size="small"
-                                   @click="page.callEvent('add:arr:common', scope)">添加{{ scope.key }}</el-button>
+                                   @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加{{ scope.key }}</el-button>
                       </template>
                     </el-space>
+                  </template>
+                  <template #array_item_after="scope">
+                    <template v-if="scope.key !== 'items'">
+                      <el-col>
+                        <el-button type="danger" size="small"
+                                   @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除{{ scope.key }}</el-button>
+                      </el-col>
+                    </template>
                   </template>
                 </HttpComponent>
               </template>
@@ -70,6 +78,7 @@ import RenderLayout from "@/views/about/components/render-layout.vue";
 import PlumbLayout from "@/views/about/components/PlumbLayout.vue";
 import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
 import {
+  extendCommonArrEventHandler,
   extendControl2Page,
   useControl,
   // PageControlMixin,
@@ -210,7 +219,7 @@ let plumbLayoutMixin = {
         currentLayoutMap,
         currentLinks,
       }
-      
+
       await this.onSaveLayout({
         origin: { deps, links},
         currentData
@@ -272,6 +281,7 @@ export default defineComponent({
     })
     page = extendControl2Page(page)
     // page = useAppPageControl(page)
+    let { EVENT_NAMES } = extendCommonArrEventHandler(page)
 
     let cachedPageLayout;
 
@@ -407,6 +417,7 @@ export default defineComponent({
     }
 
     return {
+      EVENT_NAMES,
       getXML,
       onFires,
       importToolsData,

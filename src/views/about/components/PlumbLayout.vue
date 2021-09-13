@@ -305,8 +305,8 @@ let UIMixin = {
       panelOpend: true,
       list1: [
         {
-          name: '输入框',
-          value: 'sdsds1',
+          name: '单行文本',
+          value: '',
           id: ZY.rid(),
           data: {
             tagName: 'el-input'
@@ -314,7 +314,7 @@ let UIMixin = {
         },
         {
           name: '按钮',
-          value: 'sdsds2',
+          value: '',
           id: ZY.rid(),
           data: {
             tagName: 'el-button'
@@ -322,7 +322,7 @@ let UIMixin = {
         },
         {
           name: '下拉',
-          value: 'sdsds2',
+          value: '',
           id: ZY.rid(),
           data: {
             tagName: 'el-select'

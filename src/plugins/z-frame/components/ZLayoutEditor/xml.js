@@ -1,10 +1,29 @@
 import {toRaw} from "vue";
 
-function buildAttrs(arr = []) {
+export function buildAttr(key, value) {
+  return ` ${key}='${value ?? ''}'`
+}
+
+export function buildObjAttrs(obj = {}) {
+  let str = ''
+  // arr.forEach((item) => {
+  //   if (item.name) {
+  //     str = str + `${item.name}='${item.value ?? ''}'`
+  //   }
+  // })
+  ZY.lodash.each(obj, (item, key) => {
+    if (key) {
+      str = str + buildAttr(key, item)
+    }
+  })
+  return str
+}
+
+export function buildAttrs(arr = []) {
   let str = ''
   arr.forEach((item) => {
     if (item.name) {
-      str = str + `${item.name}='${item.value ?? ''}'`
+      str = str + buildAttr(item.name, item.value)
     }
   })
   return str

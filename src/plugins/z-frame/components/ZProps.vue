@@ -67,7 +67,7 @@ export default {
       let { parts, partName, selfpath, process } = e
       let model = parts[partName].getModel()
       let newVal = toRaw(model)
-      console.log(type, e, toRaw(model))
+      // console.log(type, e, toRaw(model))
       ctx.emit('update:value', newVal)
       ctx.emit('change', newVal)
     })
