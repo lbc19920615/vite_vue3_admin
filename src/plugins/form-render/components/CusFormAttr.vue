@@ -3,7 +3,9 @@
     <!--    {{widgetConfig.enums}}-->
 <!--    {{state.value}}-->
    <el-form-item label="占位提示">
-      <el-input v-model="state.value.placeholder" @change="onChange"></el-input>
+      <el-input v-model="state.value.placeholder"
+                clearable
+                @change="onChange"></el-input>
    </el-form-item>
     <el-form-item label="状态">
       <el-radio-group v-model="state.value.statusType" @change="onChange">
