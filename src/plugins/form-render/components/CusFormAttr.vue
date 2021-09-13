@@ -1,7 +1,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-<!--    {{state.value}}-->
+    {{state.value}}
    <el-form-item label="占位提示">
       <el-input v-model="state.value.placeholder"
                 clearable
@@ -14,6 +14,30 @@
         <el-radio-button label="readonly">只读</el-radio-button>
         <el-radio-button label="hidden">隐藏</el-radio-button>
       </el-radio-group>
+    </el-form-item>
+    <el-form-item label="清除按钮">
+      <el-switch v-model="state.value.clearable" @change="onChange"
+                 active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+    </el-form-item>
+    <el-form-item label="字数统计">
+      <el-switch v-model="state.value.showWordLimit" @change="onChange"
+                 active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+    </el-form-item>
+    <el-form-item label="最大长度">
+      <el-input-number
+          v-model="state.value.maxlength"
+          @change="onChange"
+          :min="1"
+          :max="1000"
+      ></el-input-number>
+    </el-form-item>
+    <el-form-item label="最小长度">
+      <el-input-number
+          v-model="state.value.minlength"
+          @change="onChange"
+          :min="1"
+          :max="1000"
+      ></el-input-number>
     </el-form-item>
   </template>
 

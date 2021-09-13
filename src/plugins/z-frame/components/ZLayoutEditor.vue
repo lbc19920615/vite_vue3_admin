@@ -1,6 +1,12 @@
-
+<style lang="scss">
+.z-layout-editor {
+  .el-drawer__body {
+    overflow: auto;
+  }
+}
+</style>
 <template>
-  <div class="page-search" v-if="page.inited">
+  <div class="z-layout-editor" v-if="page.inited">
 
     <template v-if="page.inited">
       <el-row class="a-space-mb-10"
