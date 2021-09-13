@@ -3,7 +3,9 @@ import {toRaw} from "vue";
 function buildAttrs(arr = []) {
   let str = ''
   arr.forEach((item) => {
-    str = str + `${item.name}='${item.value}'`
+    if (item.name) {
+      str = str + `${item.name}='${item.value ?? ''}'`
+    }
   })
   return str
 }

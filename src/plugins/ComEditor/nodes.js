@@ -197,3 +197,18 @@ export function createFromJSON5(type, jsonlikeobj) {
     }
   }
 }
+
+let editorConfig = new Map()
+
+export function registerEditorConfig(name, value) {
+  editorConfig.set(name, value)
+}
+
+export function getEditorConfig(name) {
+  if (editorConfig.has(name)) {
+    return editorConfig.get(name)
+  }
+  return null
+}
+
+globalThis.NODE_editorConfig = editorConfig

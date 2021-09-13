@@ -1,4 +1,5 @@
 import {baseConfig} from "@/plugins/ComEditor/editorConfig";
+import {registerEditorConfig} from "@/plugins/ComEditor/nodes";
 
 export let EditorConfig = function (defaultVal = {}) {
     return baseConfig( {
@@ -49,6 +50,11 @@ export let EditorConfig = function (defaultVal = {}) {
                         "properties": {
                             name: {
                                 type: 'string',
+                                ui: {
+                                    widget: 'CusSuggest',
+                                    widgetConfig: {
+                                    }
+                                },
                             },
                             value: {
                                 type: 'string',
@@ -68,6 +74,20 @@ export let EditorConfig = function (defaultVal = {}) {
     )
 }
 
+// globalThis.editorConfig = function () {
+//     return EditorConfig({
+//         form2: {
+//         }
+//     })
+// }
+
+registerEditorConfig('ele',  function () {
+    return EditorConfig({
+        form2: {
+        }
+    })
+})
+
 export function install({
     V1Node,
                             LayoutNode,
@@ -79,10 +99,8 @@ export function install({
         constructor(id, items, obj) {
             super(id, items);
             this.type = 'ele';
-            this.editor = EditorConfig({
-                form2: {
-                }
-            })
+            this.editor = '';
+            this.editorTpl = ['ele']
             if ( ZY.lodash.isEmpty(obj.items)) {
                 this.items = [
                     {

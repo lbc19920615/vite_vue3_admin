@@ -95,6 +95,12 @@ let depManagerMixin = {
       if (dep.editor) {
         await this.loadStepByContent(dep.editor, 'editor_step')
       }
+      if (Array.isArray(dep.editorTpl)) {
+        let [name] = dep.editorTpl
+        let editor = NodeDefMap.getEditorConfig(name)()
+        // console.log('sdsdsdsdsds', name, editor)
+        await this.loadStepByContent(editor, 'editor_step')
+      }
       // console.log(currentHtc)
       await this.$nextTick();
       await ZY.sleep(30)
