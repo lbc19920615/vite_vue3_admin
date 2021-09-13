@@ -1,7 +1,6 @@
 import {defineConfig, loadEnv} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { md } from './plugins/md'
-import fileloader from './plugins/fileloader'
 // import path from 'path'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import htmlPlugin from './plugins/html'
