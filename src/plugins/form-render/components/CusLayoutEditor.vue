@@ -36,6 +36,16 @@ import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
 import {onBeforeUnmount} from "vue";
 import {clearPlumbLayoutStorage} from "@/plugins/PlumbLayout/mixin";
 
+async function cachedArrOperate(key = '', fun = () => {} ) {
+  let cachedKeys = await ZY_EXT.store.getItem(key)
+  if (!Array.isArray(cachedKeys)) {
+    cachedKeys = []
+  }
+  // cachedKeys.push(v)
+  cachedKeys = await fun(cachedKeys);
+  await ZY_EXT.store.setItem(key, cachedKeys)
+}
+
 export default {
   name: 'CusLayoutEditor',
   components: {ZLayoutEditor},
@@ -49,12 +59,27 @@ export default {
     let storePrefix = ZY.rid(6);
 
     (async function () {
-      let cachedKeys = await ZY_EXT.store.getItem('layout-store-prefix')
-      if (cachedKeys) {
-        clearPlumbLayoutStorage(cachedKeys)
-      }
+      // let cachedKeys = await ZY_EXT.store.getItem('layout-store-prefix')
+      // if (!Array.isArray(cachedKeys)) {
+      //   cachedKeys = []
+      // }
+      //
+      //
+      // cachedKeys.forEach(cachedKey => {
+      //   clearPlumbLayoutStorage(cachedKey)
+      // })
+      //
+      //
+      // await ZY_EXT.store.setItem('layout-store-prefix', [])
 
-      await ZY_EXT.store.setItem('layout-store-prefix', '')
+      await cachedArrOperate('layout-store-prefix', (arr) => {
+
+        arr.forEach(cachedKey => {
+          clearPlumbLayoutStorage(cachedKey)
+        })
+
+        return []
+      })
     })();
 
     let locks = true
@@ -78,7 +103,9 @@ export default {
     async function openDialog() {
       state.dialogVisible =true
 
-      await ZY_EXT.store.setItem('layout-store-prefix', storePrefix)
+      await cachedArrOperate('layout-store-prefix', (arr) => {
+        return arr.concat([storePrefix])
+      })
     }
 
 
