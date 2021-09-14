@@ -45,6 +45,25 @@ export let EditorConfig = function ( { properties = {}, computed = {} } = {}, de
                     computedProp: 'text'
                 },
                 ...properties,
+                events: {
+                    type: 'array',
+                    ui: {
+                        label: '校验'
+                    },
+                    items: {
+                        type: "object",
+                        properties: {
+                            value: {
+                                type: 'string',
+                                ui: {
+                                    widget: 'CusComEvents',
+                                    widgetConfig: {
+                                    }
+                                },
+                            },
+                        }
+                    }
+                },
                 attrs: {
                     type: 'array',
                     "items": {
