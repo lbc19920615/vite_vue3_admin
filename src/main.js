@@ -1,5 +1,7 @@
 // import { moduleConfig } from '__remote/public/vue-bs-loader.js'
 
+import {fetchVueComponent} from "@/hooks/remote";
+
 const getGlobal = function() {
   if (typeof self !== 'undefined') { return self; }
   if (typeof window !== 'undefined') { return window; }
@@ -161,6 +163,122 @@ window.startApp = function () {
   initStoreApp(storeApp)
 
   app.mount('#app')
+
+
+  let option = {
+    "def": {
+      "constants": {},
+      "parts": [
+        {
+          "type": "form2",
+          "name": "form2",
+          "serviceTpl": {
+            "def": {},
+            "args": {
+              "src": "bservice.twig"
+            }
+          },
+          "def": {
+            "type": "object",
+            "ui": {
+              "attrs": [
+                [
+                  "label-width",
+                  "150px"
+                ]
+              ]
+            },
+            "properties": {
+              "name": {
+                "type": "string",
+                "ui": {
+                  "attrs": [
+                    [
+                      "scroll-control",
+                      "page_name"
+                    ]
+                  ],
+                  "class": [
+                    "a-space-pt-20"
+                  ],
+                  "widget": "van-field",
+                  "widgetConfig": {
+                    "enums": "ROOT_STATE('tools.constVars_pageNames', [])"
+                  }
+                }
+              },
+              "layoutSlotArr": {
+                "type": "array",
+                "ui": {
+                  "label": "Slot",
+                  "attrs": [
+                    [
+                      "scroll-control",
+                      "page_slotArr"
+                    ]
+                  ],
+                  "conAttrs": [
+                    {
+                      "prefixValue": "\"slot\"+",
+                      "handler": [
+                        "c",
+                        "return [\":name\", c.indexKey]"
+                      ]
+                    }
+                  ],
+                  "conClass": [
+                    "a-space-mb-20"
+                  ]
+                },
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "ui": {
+                        "widget": "van-field",
+                        "widgetConfig": {
+                          "suggest": [
+                            {
+                              "label": "Form After",
+                              "value": "form_after"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "prop1": {
+                      "type": "string",
+                      "reflect": 'name',
+                      "reflectTpl": '$VAL'
+                    },
+                  }
+                }
+              },
+
+            }
+          },
+          "computed": {
+            "pagePropertiesComp": "A.getBeforeScript(MODEL('props'))",
+            "doubled": "MODEL('events[0].name', '')",
+            "layoutSlotArrComputed": "A.slotArrToStr(MODEL('layoutSlotArr'))",
+            "processes": "map(MODEL('events', []), v => v.name)"
+          },
+          "service": "ServiceJ5CnFHgdga57QhYD1s3a2"
+        }
+      ],
+      "process": "o582V2U4si5QEqzewnyVA",
+      "servicePartLink": {
+        "form2": "ServiceJ5CnFHgdga57QhYD1s3a2"
+      }
+    },
+    "args": {
+      "src": "comformscr2.twig"
+    }
+  }
+  let data = new FormData()
+  data.append('source', JSON.stringify(option.def))
+  ZY.fetchContentV3(data, option.args)
 
   return app
 }

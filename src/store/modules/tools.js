@@ -16,7 +16,11 @@ const store = {
       {
         label: 'table',
         value: 'table',
-      }
+      },
+      {
+        label: 'form2',
+        value: 'form2',
+      },
     ],
     propTypes: [
       {
