@@ -107,7 +107,7 @@ export function buildXml(data) {
     linkFromPIDS
   }
   if (linkToPIDS.length === 0 && linkFromPIDS.length === 0) {
-    if (eleDeps.length === 1) {
+    if (eleDeps.length > 0) {
       multiRoots.push(eleDeps[0])
       let eleDep = eleDeps[0]
       let id = eleDep.id
