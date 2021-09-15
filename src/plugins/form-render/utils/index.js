@@ -52,7 +52,7 @@ export let CustomRenderControlMixin = {
             let v =  ZY.lodash.get(this, 'ui.widgetConfig.' + name, defaultVal)
 
             let hasDom = document.querySelector(v)
-            console.log(hasDom)
+            // console.log(hasDom)
             if (hasDom) {
                 return v
             }

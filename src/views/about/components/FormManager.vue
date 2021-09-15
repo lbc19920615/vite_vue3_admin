@@ -24,7 +24,7 @@
           <template v-if="scope.key === 'forms'">
             <el-space align="middle">
               <h3>{{ scope.selfpath }}</h3>
-<!--              <el-button size="small" @click="page.callEvent('add:forms', scope)">添加{{ scope.key }}</el-button>-->
+              <el-button size="small" @click="page.callEvent('add:forms', scope)">添加{{ scope.key }}</el-button>
               <el-button size="small" @click="page.callEvent(`open:forms`, scope)">打开{{ scope.key }}管理</el-button>
             </el-space>
           </template>
@@ -32,12 +32,7 @@
         <template #array_before="scope">
         </template>
         <template #array_item_after="scope">
-          <el-space wrap>
-<!--            <el-button type="danger" size="small" @click="page.callEvent('remove:events', scope)">删除{{ scope.key }}</el-button>-->
-<!--            <template v-if="scope.key === 'forms'">-->
-<!--              <el-button size="small" @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>-->
-<!--            </template>-->
-          </el-space>
+          <slot name="array_item_after" v-bind="scope"></slot>
         </template>
       </HttpComponent>
 
@@ -47,18 +42,19 @@
 
 <script>
 import HttpComponent from "@/components/HttpComponent.vue";
-import {getCurrentInstance, onMounted} from "vue";
+import {getCurrentInstance, onMounted, toRaw} from "vue";
 import {extendControl2Page, useAppPageControl, useControl} from "@/mixins/framework";
 import CustomElement from "@/components/CustomElement.vue";
 import FormsManaSelect from "@/plugins/z-frame/components/FormsManaSelect.vue";
 export default {
   name: 'FormManager',
   components: {FormsManaSelect, CustomElement, HttpComponent},
-  setup() {
-    let self = getCurrentInstance().ctx
+  props: {
+    getConfig: Function
+  },
+  setup(props) {
 
     function onInited({storeControl}) {
-      // console.log('page inited')
     }
     let properties =  {
       form_step: {
@@ -76,30 +72,69 @@ export default {
     page = extendControl2Page(page)
     page = useAppPageControl(page)
 
+    let storeName = 'haha-events-model'
+    let cachedPageControlModel = null
     let currentFromDialog = null
     page.setEventHandler({
+      ['add:forms'](e) {
+        let { parts, partName, selfpath, process } = e
+        // console.log('add:events', e, model)
+        parts[partName].arrAppend(selfpath)
+      },
       ['open:forms'](e) {
         currentFromDialog = e
         page.refsManager.runCom('form-mana-select', 'load')
         page.webComponentRef.toggleDialog('form-mana-dialog');
       },
+      ['model:update:all'](e) {
+        let { model, key, newVal, config } = e
+        if (config.process === page.store.model.form_step) {
+          console.log('form_step update', newVal)
+          cachedPageControlModel = model
+        }
+      },
     })
+
+    async function save() {
+      if (cachedPageControlModel) {
+        await page.dispatchRoot('SetStore', {
+          storeName,
+          model: cachedPageControlModel
+        })
+      }
+    }
+
+    async function getModel() {
+      return toRaw(cachedPageControlModel)
+    }
+
+    async function _loadConfig() {
+      let _oldConfig = await import('./FormManagerEditorConfig')
+      if (props.getConfig) {
+        _oldConfig = await props.getConfig(_oldConfig)
+      }
+      return _oldConfig
+    }
 
     onMounted(() => {
       page.commonLoadStep(
-          import('./FormManagerEditorConfig'),
+          _loadConfig(),
           'form_step',
           {
             async onMounted(config) {
-              let eventModel = await page.dispatchRoot('GetStoreEvents')
+              let eventModel = await page.dispatchRoot('GetStoreEvents', {
+                storeName
+              })
               page.setPartModel(config.name, 'form2', eventModel ?? {})
-              console.log('eventModel', config, eventModel)
+              // console.log('eventModel', config, eventModel)
             }
           }
       )
     })
 
     return {
+      save,
+      getModel,
       store: page.store,
       page,
       allDef: page.defMap,

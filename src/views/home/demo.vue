@@ -6,7 +6,8 @@
 
 <template>
   <div class="page-demo" v-if="page.inited">
-    <iframe :ref="iframeRef"  src="http://192.168.1.67:8080/#/main" style="width: 100%; height: 600px;" frameborder="0"></iframe>
+    <iframe :ref="iframeRef"  src="http://192.168.1.67:8080/#/main"
+            style="width: 100%; height: 600px;" frameborder="0" @load="onIframeLoad"></iframe>
 
     <NativeDialog title="你好" :open="store.model.openDialog"
     @closed="closeDialog"
@@ -36,8 +37,6 @@ export default {
     CustomElement,
   },
   setup() {
-    let ctx = getCurrentInstance().ctx
-    // console.log('ctx', ctx)
     function onInited({storeControl}) {
       // console.log('page inited')
     }
@@ -62,12 +61,14 @@ export default {
     let Lib = null
     let sendMessage = null
 
+    let _ssdsds = null
+
     onMounted(() => {
       import('__remote/public/message.js').then(res => {
         Lib = res
         let ifr = page.getRef('iframe')
         let ifrWindow = ifr.contentWindow;
-        console.log(ifrWindow)
+        // console.log(ifrWindow)
 
         function handleMessage(e) {
           // console.log(e)
@@ -87,14 +88,16 @@ export default {
             const {port1, port2} = new MessageChannel();
             port1.onmessage = handleMessage;
             ifrWindow.postMessage(obj, '*', [port2]);
+            console.log('ifrWindow', ifrWindow)
           }
           sendMessage(new Lib.CommandMessage('ping', [1,2,3]));
-
+          console.log('onIframeLoaded')
           // openDialog()
         }
 
-        ifr.addEventListener("load", onIframeLoaded, false);
+        // ifr.addEventListener("load", onIframeLoaded, false);
 
+        _ssdsds = onIframeLoaded
       })
 
     })
@@ -112,8 +115,14 @@ export default {
       })
     }
 
+    function onIframeLoad() {
+      console.log('_ssdsds onIframeLoad', )
+      _ssdsds()
+    }
+
     return {
       iframeRef,
+      onIframeLoad,
       closeDialog,
       store: page.store,
       page,

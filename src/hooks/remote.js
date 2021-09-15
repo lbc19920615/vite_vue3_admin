@@ -67,10 +67,17 @@ function handleStyle(styles = []) {
     })
 }
 
-export async function fetchVueComponent({def, args}) {
+export async function fetchVueTpl({def, args}) {
     let data = new FormData()
     data.append('source', JSON.stringify(def))
-    let tpl = await fetchContentV3(data, args)
+    return await fetchContentV3(data, args)
+}
+
+export async function fetchVueComponent({def, args}) {
+    // let data = new FormData()
+    // data.append('source', JSON.stringify(def))
+    // let tpl = await fetchContentV3(data, args)
+    let tpl = await fetchVueTpl({def, args})
     return parseComponent(tpl)
 }
 
