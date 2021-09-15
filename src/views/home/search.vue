@@ -140,7 +140,7 @@ async function onInited({storeControl}) {
           } else if (prop.type === 'object') {
           //
           } else {
-            console.log(propKey,  prop)
+            // console.log(propKey,  prop)
             let item = NodeDefMap.createItem(id, propKey)
             items.push(item)
           }
@@ -150,13 +150,13 @@ async function onInited({storeControl}) {
           id,
           items
         })
-        console.log(dep)
+        // console.log(dep)
         deps.push(dep)
       }
     }
 
     lodash.each(defLevel0.properties, function (property, propertyKey) {
-      // console.log(property, propertyKey)
+      console.log(property, propertyKey)
       deepResolve(property)
     })
 
