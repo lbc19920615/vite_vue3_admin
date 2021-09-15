@@ -207,6 +207,10 @@ window.startApp = function () {
                   }
                 }
               },
+              "name1": {
+                "type": "string",
+                "computedProp": "layoutSlotArrComputed"
+              },
               "layoutSlotArr": {
                 "type": "array",
                 "ui": {
@@ -259,10 +263,10 @@ window.startApp = function () {
             }
           },
           "computed": {
-            "pagePropertiesComp": "A.getBeforeScript(MODEL('props'))",
-            "doubled": "MODEL('events[0].name', '')",
-            "layoutSlotArrComputed": "A.slotArrToStr(MODEL('layoutSlotArr'))",
-            "processes": "map(MODEL('events', []), v => v.name)"
+            // "pagePropertiesComp": "A.getBeforeScript(MODEL('props'))",
+            // "doubled": "MODEL('name', '')",
+            "layoutSlotArrComputed": "A.slotArrToStr(MODEL('name'))",
+            // "processes": "map(MODEL('events', []), v => v.name)"
           },
           "service": "ServiceJ5CnFHgdga57QhYD1s3a2"
         }
