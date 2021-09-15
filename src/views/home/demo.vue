@@ -6,7 +6,7 @@
 
 <template>
   <div class="page-demo" v-if="page.inited">
-    <iframe :ref="iframeRef"  src="http://192.168.1.67:8080/#/main"
+    <iframe id="iframe" :ref="iframeRef"  src="http://192.168.1.67:8080/#/main"
             style="width: 100%; height: 600px;" frameborder="0" @load="onIframeLoad"></iframe>
 
     <NativeDialog title="你好" :open="store.model.openDialog"
@@ -63,6 +63,17 @@ export default {
 
     let _ssdsds = null
 
+    window.addEventListener('message', function (e) {
+
+      if (e.origin === 'http://192.168.1.67:8080') {
+
+        // console.log('sdsdsdsdsdsdssssdsdsd message', e)
+        ___handleMessage(e)
+      }
+
+    })
+
+
     onMounted(() => {
       import('__remote/public/message.js').then(res => {
         Lib = res
@@ -76,25 +87,32 @@ export default {
           let isCustom = Lib.detectIsCustomMessage(data)
           if (isCustom) {
             let {name, value} = data.msg
-            console.log('sdsdsdsdsd', name, value)
+            // console.log('sdsdsdsdsd', name, value)
             if (name === 'open:form:dialog') {
               openDialog()
             }
           }
         }
+        window.___handleMessage = handleMessage
 
         function onIframeLoaded() {
-          sendMessage = function (obj) {
-            const {port1, port2} = new MessageChannel();
-            port1.onmessage = handleMessage;
-            ifrWindow.postMessage(obj, '*', [port2]);
-            console.log('ifrWindow', ifrWindow)
-          }
-          sendMessage(new Lib.CommandMessage('ping', [1,2,3]));
+          // sendMessage = function (obj) {
+          //   const {port1, port2} = new MessageChannel();
+          //   port1.onmessage = handleMessage;
+          //   document.getElementById('iframe')
+          //       .contentWindow.postMessage(obj, '*',);
+          //   // console.log('ifrWindow', ifrWindow)
+          // }
+          window.sendMessage(new Lib.CommandMessage('ping', [1,2,3]));
           console.log('onIframeLoaded')
           // openDialog()
         }
 
+
+        window.sendMessage = function (obj) {
+          document.getElementById('iframe')
+              .contentWindow.postMessage(obj, '*',);
+        }
         // ifr.addEventListener("load", onIframeLoaded, false);
 
         _ssdsds = onIframeLoaded
@@ -103,7 +121,7 @@ export default {
     })
 
     function closeDialog() {
-      sendMessage(new Lib.CommandMessage('update:prop:form', ['form-112121212121']));
+      window.sendMessage(new Lib.CommandMessage('update:prop:form', ['form-' + ZY.rid()]));
       page.setData({
         openDialog: false
       })
@@ -116,7 +134,6 @@ export default {
     }
 
     function onIframeLoad() {
-      console.log('_ssdsds onIframeLoad', )
       _ssdsds()
     }
 
