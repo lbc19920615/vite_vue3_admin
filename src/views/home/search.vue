@@ -117,26 +117,26 @@ async function onInited({storeControl}) {
     console.log(defLevel0)
 
     function deepResolve(property, parentId = '') {
-
-
       if (property.type === 'array') {
-        let id = 'i' + ZY.rid(6)
-        let dep = NodeDefMap.create('array', {
-          id
-        })
-        deps.push(dep)
-        if (property.items.$ref){
-          let childDef = getDefintion(property.items.$ref, cached)
-          // console.log(property.items.$ref, childDef)
-          deepResolve(childDef)
-        }
+        let items = property.items
+        console.log(items)
+        // let id = 'i' + ZY.rid(6)
+        // let dep = NodeDefMap.create('array', {
+        //   id
+        // })
+        // deps.push(dep)
+        // if (property.items.$ref){
+        //   let childDef = getDefintion(property.items.$ref, cached)
+        //   // console.log(property.items.$ref, childDef)
+        //   deepResolve(childDef)
+        // }
       }
       if (property.type === 'object') {
         let id = 'i' + ZY.rid(6)
         let items = []
         lodash.each(property.properties, function (prop, propKey) {
           if (prop.type === 'array') {
-          //
+            deepResolve(prop)
           } else if (prop.type === 'object') {
           //
           } else {
@@ -156,7 +156,7 @@ async function onInited({storeControl}) {
     }
 
     lodash.each(defLevel0.properties, function (property, propertyKey) {
-      console.log(property, propertyKey)
+      // console.log(property, propertyKey)
       deepResolve(property)
     })
 
