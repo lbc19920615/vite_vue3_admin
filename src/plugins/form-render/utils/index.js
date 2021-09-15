@@ -48,7 +48,14 @@ export let CustomRenderControlMixin = {
     },
     methods: {
         getWidgetConfig(name, defaultVal) {
-            return ZY.lodash.get(this, 'ui.widgetConfig.' + name, defaultVal)
+
+            let v =  ZY.lodash.get(this, 'ui.widgetConfig.' + name, defaultVal)
+
+            let hasDom = document.querySelector(v)
+            console.log(hasDom)
+            if (hasDom) {
+                return v
+            }
         },
         dxValueTemplate(v) {
             // console.log('context', this.context, v)
