@@ -62,15 +62,15 @@ export const constantRouterMap = [
         },
         component: () => import('@/views/about/index.vue'),
       },
-      // {
-      //   path: "form",
-      //   name: "Form",
-      //   meta: {
-      //     title: '接口获取',
-      //     // icon: 'shangdian'
-      //   },
-      //   component: () => import('@/views/home/search.vue'),
-      // },
+      {
+        path: "form",
+        name: "Form",
+        meta: {
+          title: '接口获取',
+          // icon: 'shangdian'
+        },
+        component: () => import('@/views/home/search.vue'),
+      },
       {
         path: "demo",
         name: "Demo",
@@ -112,16 +112,16 @@ export const asyncRouterMap = [
   //   component: () => loadPage('Show'),
   //   uuid: 'sdsdsdsdsdsd'
   // },
-  {
-    z_parent: 'main',
-    path: "form",
-    name: "Form",
-    meta: {
-      title: '接口获取',
-      // icon: 'shangdian'
-    },
-    component: () => import('@/views/home/search.vue'),
-  },
+  // {
+  //   z_parent: 'main',
+  //   path: "form",
+  //   name: "Form",
+  //   meta: {
+  //     title: '接口获取',
+  //     // icon: 'shangdian'
+  //   },
+  //   component: () => import('@/views/home/search.vue'),
+  // },
 ]
 
 

@@ -212,3 +212,11 @@ export function getEditorConfig(name) {
 }
 
 globalThis.NODE_editorConfig = editorConfig
+
+export function createItem(id, key, name = key) {
+  return    {
+    id: id + '-' + ZY.rid(6),
+    name,
+    key,
+  }
+}

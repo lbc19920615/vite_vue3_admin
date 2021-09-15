@@ -2,6 +2,7 @@
 <!--  <div>{{page}}</div>-->
   <div v-if="page.inited">
 <!--    <div>{{store.model}}</div>-->
+    <el-button @click="page.callEvent('call:save:file')">保存currentSwagger</el-button>
     <div>{{store.computedModel}}</div>
 
     <el-row type="flex" align="middle">
@@ -16,7 +17,20 @@
       <EwSelect v-model="store.model.selectedValue" :options="store.model.options"></EwSelect>
     </div>
 
+
     <el-row type="flex" align="start" v-if="page.val('currentSwagger')">
+      <el-col>
+
+        <el-tabs>
+          <el-tab-pane v-for="(path, pathName) in store.model.currentSwagger.paths"
+          :label="pathName"
+          >
+            <json-viewer :value="path" copyable boxed sort />
+            <json-viewer :value="getDefintion('#/definitions/RecordsAddVO', store.model.currentSwagger)" copyable boxed sort />
+            <el-button @click="">获取</el-button>
+          </el-tab-pane>
+        </el-tabs>
+      </el-col>
       <el-col :span="12">
         <h3>JSON</h3>
         <json-viewer :value="store.model.currentSwagger" copyable boxed sort />
@@ -49,6 +63,7 @@ import {
   useConstObj,
   useControl
 } from "@/mixins/framework";
+import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
 
 
 
@@ -77,7 +92,7 @@ let properties = {
 let computed = {
   selectedOption: `find(MODEL('options', []), ['value', MODEL('selectedValue', '')])`
 }
-function onInited({storeControl}) {
+async function onInited({storeControl}) {
   storeControl.set({
     haha: 111,
     swaggerOrigin: 'http://192.168.1.60:7888',
@@ -88,7 +103,68 @@ function onInited({storeControl}) {
     type: 'object',
     properties
   })
-  console.log(s)
+  let cached = await ZY_EXT.store.getItem('currentSwagger')
+  if (cached) {
+    // console.log('currentSwagger', cached)
+    storeControl.set({
+      currentSwagger: cached
+    })
+
+    let deps = []
+    let links = []
+    let lodash = ZY.lodash;
+    let defLevel0 = getDefintion('#/definitions/RecordsAddVO', cached)
+    console.log(defLevel0)
+
+    function deepResolve(property, parentId = '') {
+
+
+      if (property.type === 'array') {
+        let id = 'i' + ZY.rid(6)
+        let dep = NodeDefMap.create('array', {
+          id
+        })
+        deps.push(dep)
+        if (property.items.$ref){
+          let childDef = getDefintion(property.items.$ref, cached)
+          // console.log(property.items.$ref, childDef)
+          deepResolve(childDef)
+        }
+      }
+      if (property.type === 'object') {
+        let id = 'i' + ZY.rid(6)
+        let items = []
+        lodash.each(property.properties, function (prop, propKey) {
+          if (prop.type === 'array') {
+          //
+          } else if (prop.type === 'object') {
+          //
+          } else {
+            console.log(propKey,  prop)
+            let item = NodeDefMap.createItem(id, propKey)
+            items.push(item)
+          }
+        })
+
+        let dep = NodeDefMap.create('object', {
+          id,
+          items
+        })
+        console.log(dep)
+        deps.push(dep)
+      }
+    }
+
+    lodash.each(defLevel0.properties, function (property, propertyKey) {
+      // console.log(property, propertyKey)
+      deepResolve(property)
+    })
+
+
+  }
+
+
+  // console.log(s)
   // console.log('sdsdsds', storeControl.store)
 }
 let page = useControl({properties, computed}, {
@@ -113,7 +189,9 @@ let computedChange = {
       if (res.data) {
         page.setByPath('currentSwagger', res.data)
 
-        // console.log(JSON.stringify(data, null, 2))
+        ZY_EXT.store.setItem('currentSwagger', res.data)
+
+        console.log(res.data)
         // http://192.168.1.67:7001/?url=http://192.168.1.60:7888/api-system/v2/api-docs&folder=folder3
         let folder = 'folder-' + newVal.label
         let [err,{data: data2}] = await ZY.awaitTo(
@@ -133,7 +211,13 @@ let computedChange = {
 extendControlComputedWatch(page, computedChange)
 useAppPageControl(page)
 
-console.log(page)
+page.setEventHandler({
+  async ['call:save:file'](e) {
+
+
+    ZY_EXT.saveDesignFile({fileName: 'currentSwagger', data: page.store.model.currentSwagger})
+  },
+})
 
 async function onSubmit() {
   let {data: responseData1} = await ZY.U.awaitAxios(
@@ -142,5 +226,12 @@ async function onSubmit() {
   let optionsM = ZY.U.objArr2OptionsManager(responseData1, 'name', 'location')
   // console.log(optionsM)
   page.setByPath('options', optionsM.options)
+}
+
+function getDefintion(path = '', defObj = {}) {
+  let pathArr = path.split('/').slice(1)
+  let objPath = pathArr.join('.')
+  // console.log(ZY.lodash.get(defObj, objPath))
+  return ZY.lodash.get(defObj, objPath)
 }
 </script>
