@@ -44,7 +44,7 @@ export default {
     let cached = null
     let { methods, init, data } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
-        console.log('handleValueInit', newVal, typeof newVal)
+        // console.log('handleValueInit', newVal, typeof newVal)
         if (typeof newVal !== 'undefined') {
           try {
             cached = ZY.JSON5.parse(newVal)

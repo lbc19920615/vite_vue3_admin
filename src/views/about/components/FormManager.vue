@@ -15,7 +15,8 @@
 
     <template v-if="store.model.form_step">
       <!--      {{store.computedModel}}-->
-      {{store.model.form_step}}
+<!--      {{store.model.form_step}}-->
+      <slot name="form_before" v-bind="{}"></slot>
       <HttpComponent
           :defs="allDef"
           :is="store.model.form_step"

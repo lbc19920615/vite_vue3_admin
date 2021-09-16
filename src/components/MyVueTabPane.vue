@@ -24,6 +24,11 @@ export default {
       this.$parent.registerTab(this)
     }
   },
+  beforeUnmount() {
+    if (this.$parent && this.$parent.unRegisterTab) {
+      this.$parent.unRegisterTab(this)
+    }
+  },
   methods: {
     toggle(booleanV) {
       this.load = booleanV

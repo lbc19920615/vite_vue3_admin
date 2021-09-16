@@ -65,7 +65,7 @@ let depManagerMixin = {
       this.renderFormDesigner = false
       this.currentEditDep = dep
       this.currentEditItem = item
-      console.log('onEditDep', dep, item)
+      // console.log('onEditDep', dep, item)
       await this.loadStepByContent('editor_step', item)
       // console.log(currentHtc)
       this.$nextTick(() => {

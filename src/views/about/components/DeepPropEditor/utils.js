@@ -138,6 +138,27 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
 export function buildDeepConfigData(merge = {}) {
   let obj = {type: 'string', ui: {type: '', label: '', widget: '', widgetConfig: '{}'}, rules: '{}'}
   let ret = ZY.lodash.merge(obj, merge)
-  console.log('ret', ret)
+  // console.log('ret', ret)
   return ret
+}
+
+class depPlugins {
+  static integer(obj) {
+    obj.rules = ZY.JSON5.stringify({
+      type: 'number'
+    }, null ,2)
+  }
+}
+
+export function buildDepItemConfig(prop = {}, type = '') {
+  let obj = {}
+  obj.ui = {
+    widgetConfig: ZY.JSON5.stringify({
+      ...prop
+    }, null ,2)
+  }
+  if (depPlugins[type]) {
+    depPlugins[type](obj)
+  }
+  return obj
 }

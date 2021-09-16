@@ -35,6 +35,7 @@ export default {
                               name: {
                                   type: 'string',
                                   ui: {
+                                      label: '文件名',
                                       attrs: [
                                           ['scroll-control', 'page_name'],
                                       ],
@@ -48,28 +49,29 @@ export default {
                                       }
                                   }
                               },
-                              template: {
-                                  type: 'string',
-                                  ui: {
-                                      attrs: [
-                                          ['scroll-control', 'page_name'],
-                                      ],
-                                      class: [
-                                          'a-space-pt-20'
-                                      ],
-                                      widget: 'CusSuggest',
-                                      widgetConfig: {
-                                          teleportTo: "#dialog_popover",
-                                          enums: "ROOT_STATE('tools.constVars_pageNames', [])",
-                                      }
-                                  }
-                              },
+                              // template: {
+                              //     type: 'string',
+                              //     ui: {
+                              //         attrs: [
+                              //             ['scroll-control', 'page_name'],
+                              //         ],
+                              //         class: [
+                              //             'a-space-pt-20'
+                              //         ],
+                              //         widget: 'CusSuggest',
+                              //         widgetConfig: {
+                              //             teleportTo: "#dialog_popover",
+                              //             enums: "ROOT_STATE('tools.constVars_pageNames', [])",
+                              //         }
+                              //     }
+                              // },
                           }
                         },
                         form: {
                             type: 'string',
                             tag: 'div',
                             ui: {
+                                label: '表单',
                                 widget: 'CusForm',
                                 widgetConfig: {
                                     enums: "ROOT_STATE('tools.propTypes', [])",

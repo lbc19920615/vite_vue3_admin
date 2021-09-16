@@ -35,6 +35,7 @@ export class FormsMana {
 
     let obj = await ZY_EXT.fileOpenJSON5()
     let {data } = obj
+    console.log(data)
     if (Array.isArray(data)) {
       await self.setStorage(data)
       return data;

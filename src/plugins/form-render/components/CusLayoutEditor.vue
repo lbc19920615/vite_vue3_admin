@@ -1,7 +1,7 @@
 <style>
-.plumb-layout__tools {
-  display: none;
-}
+/*.plumb-layout__tools {*/
+/*  display: none;*/
+/*}*/
 </style>
 
 <template>

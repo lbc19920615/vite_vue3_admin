@@ -47,13 +47,17 @@
 
       <el-col>
         <template v-if="page.val('currentDeepProp')">
-<!--          <DeepPropEditor :deps="store.model.currentDeepProp.deps"-->
-<!--                          :links="store.model.currentDeepProp.links"-->
-<!--                          :root-id="store.model.currentDeepProp.rootId"-->
-<!--          ></DeepPropEditor>-->
           <FormManager :getConfig="getConfig" :ref="setFormRef"
           @ready="onComReady"
-          ></FormManager>
+          >
+            <template v-slot:form_before="scope">
+              <el-space align="middle">
+                <el-button size="small"
+                         @click="page.callEvent('save:form:file', scope)">保存表单</el-button>
+              </el-space>
+            </template>
+
+          </FormManager>
         </template>
       </el-col>
 
@@ -83,8 +87,8 @@ import {
 } from "@/mixins/framework";
 import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
 import FormManager from "@/views/about/components/FormManager.vue";
-import {buildDeepConfigData} from "@/views/about/components/DeepPropEditor/utils";
-
+import {buildDeepConfigData, buildDepItemConfig} from "@/views/about/components/DeepPropEditor/utils";
+import {FormsMana} from "@/plugins/z-frame/formsMana";
 
 
 let SEVER_ORIGIN = `http://192.168.1.67:7001/`
@@ -118,7 +122,7 @@ let computed = {
 async function onInited({storeControl}) {
   storeControl.set({
     haha: 111,
-    swaggerOrigin: 'http://192.168.1.60:7888',
+    swaggerOrigin: '',
     selectedValue: '',
     files: [],
   })
@@ -213,14 +217,10 @@ async function onInited({storeControl}) {
             deepResolve(prop, toPID)
           }
           else {
-            console.log(propKey,  prop)
+            // console.log(propKey,  prop)
             let objData = buildDeepConfigData({
               type: prop.type,
-              ui: {
-                widgetConfig: ZY.JSON5.stringify({
-                  ...prop
-                }, null ,2)
-              }
+              ...buildDepItemConfig(prop, prop.type)
             })
             item.data = ZY.JSON5.stringify(objData)
 
@@ -299,10 +299,7 @@ async function onInited({storeControl}) {
       rootId
     })
 
-    await nextTick();
   }
-  // console.log(s)
-  // console.log('sdsdsds', storeControl.store)
 }
 
 function onComReady() {
@@ -315,10 +312,11 @@ function onComReady() {
             name: 'test-' + ZY.rid(6),
           },
           form: JSON5.stringify({
-            name: 'form-' + ZY.rid(6),
+            name: 'form_' + ZY.rid(6),
             parts: [
               {
                 type: 'form',
+                name: 'form_' + ZY.rid(6),
                 props: JSON5.stringify(page.store.model.currentDeepProp),
                 ui: '{}',
                 defaultVal: '{}'
@@ -376,10 +374,21 @@ useAppPageControl(page)
 
 page.setEventHandler({
   async ['call:save:file'](e) {
-
-
     ZY_EXT.saveDesignFile({fileName: 'currentSwagger', data: page.store.model.currentSwagger})
   },
+  async ['save:form:file'](e) {
+    let formManager = page.getRef('formRef')
+    if (formManager) {
+      let model = await formManager.getModel()
+      let {args, form} = model
+      // console.log('model', form, typeof form)
+
+      let cached = ZY.JSON5.parse(form)
+
+      // ZY_EXT.saveDesignFile({fileName: args.name, data: form })
+      await FormsMana.saveCache2File([{name: cached.name, value: form}], {fileName: args.name})
+    }
+  }
 })
 
 async function onSubmit() {

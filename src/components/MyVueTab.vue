@@ -46,9 +46,17 @@
 <div class="my-vue-tab">
   <div class="my-vue-tab__tabs">
     <div class="my-vue-tab__active-bar" :style="activeBarStyle"></div>
-    <div class="my-vue-tab__tab" :my-vue-tab-name="tab.name" :class="classObj(tab)"
-         @click="selectTab(tab.name)"
-         v-for="tab in tabs">{{tab.name}}</div>
+<!--    <div class="my-vue-tab__tab" -->
+<!--         :my-vue-tab-name="tab.name" -->
+<!--         :class="classObj(tab)"-->
+<!--         @click="selectTab(tab.name)"-->
+<!--         v-for="tab in tabs">{{tab.name}}</div>-->
+
+    <div class="my-vue-tab__tab"
+         :my-vue-tab-name="tab[1].name"
+         :class="classObj(tab[1])"
+         @click="selectTab(tab[1].name)"
+         v-for="tab in tabs">{{tab[1].name}}</div>
   </div>
   <div class="my-vue-tab__content">
     <slot></slot>
@@ -64,7 +72,7 @@ export default {
   },
   data() {
     return {
-      tabs: {},
+      tabs: new Map(),
       activeBarStyle: {width: 0, transform: ''},
       lastTab: null,
       locks: false
@@ -77,32 +85,58 @@ export default {
       }
     },
     async selectTab(name) {
-      if (name && this.tabs[name]) {
+      if (name && this.tabs.has(name)) {
         if (this.lastTab) {
           this.lastTab.toggle(false)
         }
         await this.$nextTick()
         // console.log('selectTab', name, this.lastTab)
-        this.tabs[name].toggle(true)
-        this.lastTab = this.tabs[name]
+        this.tabs.get(name).toggle(true)
+        this.lastTab = this.tabs.get(name)
 
         // 设置active bar
         let tabEl = document.querySelector(`[my-vue-tab-name=${name}]`)
-        let computedStyle = getComputedStyle(tabEl)
-        // console.log(tabEl, computedStyle.width)
-        this.activeBarStyle.width = computedStyle.width
-        this.activeBarStyle.transform = `translateX(${tabEl.offsetLeft}px)`
+        if (tabEl) {
+          let computedStyle = getComputedStyle(tabEl)
+          // console.log(tabEl, computedStyle.width)
+          this.activeBarStyle.width = computedStyle.width
+          this.activeBarStyle.transform = `translateX(${tabEl.offsetLeft}px)`
+        }
       }
     },
     registerTab(ctx) {
       if (ctx && ctx.name) {
-        this.tabs[ctx.name] = ctx
+        // this.tabs[ctx.name] = ctx
+        this.tabs.set(ctx.name, ctx)
 
         if (!this.locks) {
           this.locks = true
           this.selectTab(ctx.name)
         }
         // this.styleObj['--show-' + ctx.name] = true
+      }
+    },
+    unRegisterTab(ctx) {
+      if (ctx && ctx.name) {
+        // console.log(this.tabs, ctx.name)
+        let keys = Array.of(...this.tabs.keys())
+        keys.forEach((key, index) => {
+          if (key === ctx.name) {
+            console.log('key', key, index)
+
+            let last = keys[index - 1]
+            if (last) {
+
+              this.selectTab(last)
+            }
+            this.tabs.delete(key)
+          }
+        })
+        // let finded = this.tabs.has(ctx.name)
+        // if (finded) {
+        //   // Reflect.deleteProperty(this.tabs, ctx.name)
+        //   this.tabs.delete(ctx.name)
+        // }
       }
     }
   }
