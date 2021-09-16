@@ -20,7 +20,6 @@
 
     <el-row type="flex" align="start" v-if="page.val('currentSwagger')">
       <el-col>
-
         <el-tabs>
           <el-tab-pane v-for="(path, pathName) in store.model.currentSwagger.paths"
           :label="pathName"
@@ -31,10 +30,12 @@
           </el-tab-pane>
         </el-tabs>
       </el-col>
+
+
       <el-col :span="12">
         <h3>JSON</h3>
         <json-viewer :value="store.model.currentSwagger" copyable boxed sort />
-<!--        <textarea style="width: 100%; height: 30vh" v-model="store.model.currentSwagger"></textarea>-->
+        <!--        <textarea style="width: 100%; height: 30vh" v-model="store.model.currentSwagger"></textarea>-->
       </el-col>
 
       <el-col :span="12">
@@ -43,6 +44,21 @@
           <a class="el-link" :href="file" target="_blank" download>{{file}}</a>
         </div>
       </el-col>
+
+      <el-col>
+        <template v-if="page.val('currentDeepProp')">
+<!--          <DeepPropEditor :deps="store.model.currentDeepProp.deps"-->
+<!--                          :links="store.model.currentDeepProp.links"-->
+<!--                          :root-id="store.model.currentDeepProp.rootId"-->
+<!--          ></DeepPropEditor>-->
+          <FormManager :getConfig="getConfig" :ref="setFormRef"
+          @ready="onComReady"
+          ></FormManager>
+        </template>
+      </el-col>
+
+
+
     </el-row>
   </div>
 </template>
@@ -52,6 +68,8 @@ export default {
 }
 </script>
 <script setup>
+import '@/plugins/form-render/ext.js';
+import "@/register";
 import SubmitButton from "@/components/SubmitButton.vue"
 import EwSelect from "@/components/Ew/EwSelect.vue"
 import {getCurrentInstance, nextTick, onMounted, reactive, ref} from "vue";
@@ -64,6 +82,8 @@ import {
   useControl
 } from "@/mixins/framework";
 import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
+import FormManager from "@/views/about/components/FormManager.vue";
+import {buildDeepConfigData} from "@/views/about/components/DeepPropEditor/utils";
 
 
 
@@ -84,6 +104,9 @@ let properties = {
   },
   currentSwagger: {
     type: null,
+  },
+  currentDeepProp: {
+    type: null
   },
   files: {
     type: Array,
@@ -114,36 +137,95 @@ async function onInited({storeControl}) {
     let links = []
     let lodash = ZY.lodash;
     let defLevel0 = getDefintion('#/definitions/RecordsAddVO', cached)
-    console.log(defLevel0)
+    // console.log(defLevel0)
+
+    function createDepId() {
+      return 'i' + ZY.rid(6)
+    }
+
+    function insertArrayItemToChildDepLink(fromPID, toPID) {
+      let link = {
+        fromPID,
+        from: fromPID + '-0',
+        toPID,
+        to: toPID + '-top'
+      }
+      links.push(link)
+    }
+
+    function insertObjectItemToChildDepLink(fromPID, from, toPID) {
+      let link = {
+        fromPID,
+        from,
+        toPID,
+        to: toPID + '-top'
+      }
+      links.push(link)
+    }
+
+    function useDepID(v) {
+      if (v) {
+        return v
+      }
+      return createDepId()
+    }
 
     function deepResolve(property, parentId = '') {
       if (property.type === 'array') {
         let items = property.items
-        console.log(items)
-        // let id = 'i' + ZY.rid(6)
-        // let dep = NodeDefMap.create('array', {
-        //   id
-        // })
-        // deps.push(dep)
-        // if (property.items.$ref){
-        //   let childDef = getDefintion(property.items.$ref, cached)
-        //   // console.log(property.items.$ref, childDef)
-        //   deepResolve(childDef)
-        // }
+        // console.log(items)
+        let id =  useDepID(parentId)
+        let dep = NodeDefMap.create('array', {
+          id
+        })
+        deps.push(dep)
+        if (items.$ref){
+          let childDef = getDefintion(items.$ref, cached)
+          // console.log(property.items.$ref, childDef)
+          let toPID = createDepId()
+          insertArrayItemToChildDepLink(id, toPID)
+          deepResolve(childDef, toPID)
+        }
       }
-      if (property.type === 'object') {
-        let id = 'i' + ZY.rid(6)
+      else if (property.type === 'object') {
+        // let id = createDepId()
+        let id = useDepID(parentId)
         let items = []
         lodash.each(property.properties, function (prop, propKey) {
+
+          let item = NodeDefMap.createItem(id, propKey)
+
+
+          // console.log(item)
           if (prop.type === 'array') {
-            deepResolve(prop)
-          } else if (prop.type === 'object') {
-          //
-          } else {
-            // console.log(propKey,  prop)
-            let item = NodeDefMap.createItem(id, propKey)
-            items.push(item)
+
+            let toPID = createDepId()
+            insertObjectItemToChildDepLink(id, item.id, toPID)
+            deepResolve(prop, toPID)
           }
+          else if (prop.type === 'object') {
+            //
+           console.log('这是一个（づ￣3￣）づ╭❤～', prop)
+          }
+          else if (prop.$ref) {
+            let toPID = createDepId()
+            insertObjectItemToChildDepLink(id, item.id, toPID)
+            deepResolve(prop, toPID)
+          }
+          else {
+            console.log(propKey,  prop)
+            let objData = buildDeepConfigData({
+              type: prop.type,
+              ui: {
+                widgetConfig: ZY.JSON5.stringify({
+                  ...prop
+                }, null ,2)
+              }
+            })
+            item.data = ZY.JSON5.stringify(objData)
+
+          }
+          items.push(item)
         })
 
         let dep = NodeDefMap.create('object', {
@@ -153,20 +235,101 @@ async function onInited({storeControl}) {
         // console.log(dep)
         deps.push(dep)
       }
+      else if (property.$ref) {
+        let id = useDepID(parentId)
+        let childDef = getDefintion(property.$ref, cached)
+        // console.log(property, childDef, id)
+        deepResolve(childDef, id)
+      }
     }
 
-    lodash.each(defLevel0.properties, function (property, propertyKey) {
-      // console.log(property, propertyKey)
-      deepResolve(property)
+
+    let rootId = createDepId()
+    Reflect.deleteProperty(defLevel0.properties, 'records')
+    // console.log(defLevel0)
+    deepResolve(defLevel0, rootId)
+
+
+    let levelCount = new Map()
+
+    function deepSetLevel(fromPIDS = [], level) {
+
+      // links.forEach(function (link) {
+      //   if (fromPIDS.includes(link.fromPID)) {
+      //     link.level = level
+      //     let dep = deps.find(v => v.id === link.fromPID)
+      //     console.log(dep)
+      //   }
+      // })
+      if (!levelCount.has(level)) {
+        levelCount.set(level, 0)
+      }
+      let filterDeps = deps.filter(v => fromPIDS.includes(v.id))
+      if (filterDeps.length>0) {
+        let fromCountLength = levelCount.get(level)
+        filterDeps.forEach((filterDep, index) => {
+          let nextFromPIDS = []
+          filterDep.A_LEVEL = level
+          filterDep.A_LEVEL_INDEX = level + '_' + index
+          let items = filterDep.items
+          items.forEach(item => {
+            let id = item.id
+            let link = links.find(link => link.from === id)
+            if (link) {
+              nextFromPIDS.push(link.toPID)
+            }
+            if (nextFromPIDS.length > 0) {
+              deepSetLevel(nextFromPIDS, level + 1)
+            }
+          })
+        })
+
+        fromCountLength = fromCountLength + filterDeps.length
+        levelCount.set(level, fromCountLength)
+        // console.log(fromPIDS, level)
+      }
+    }
+
+    deepSetLevel([rootId], 0)
+
+    console.log(links, deps, rootId)
+    page.setByPath('currentDeepProp', {
+      links,
+      deps,
+      rootId
     })
 
-
+    await nextTick();
   }
-
-
   // console.log(s)
   // console.log('sdsdsds', storeControl.store)
 }
+
+function onComReady() {
+  let JSON5 = ZY.JSON5
+  let formManager = page.getRef('formRef')
+  if (formManager) {
+    formManager.setModel(
+        {
+          args: {
+            name: 'test-' + ZY.rid(6),
+          },
+          form: JSON5.stringify({
+            name: 'form-' + ZY.rid(6),
+            parts: [
+              {
+                type: 'form',
+                props: JSON5.stringify(page.store.model.currentDeepProp),
+                ui: '{}',
+                defaultVal: '{}'
+              }
+            ],
+          })
+        }
+    )
+  }
+}
+
 let page = useControl({properties, computed}, {
   onInited,
   servicePrefix: 'PageFormIndexService'
@@ -234,4 +397,10 @@ function getDefintion(path = '', defObj = {}) {
   // console.log(ZY.lodash.get(defObj, objPath))
   return ZY.lodash.get(defObj, objPath)
 }
+
+function getConfig() {
+  return import('./FormManagerEditorConfig')
+}
+let setFormRef = page.setRef('formRef')
+
 </script>

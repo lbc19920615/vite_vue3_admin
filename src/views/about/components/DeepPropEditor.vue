@@ -2,9 +2,10 @@
 <div class="deep-editor">
   <div style="opacity: 0; font-size: 0; line-height: 0;">{{store.model}}</div>
 <!--  {{deps}}-->
+<!--  {{rootId}}-->
   <el-row type="flex">
     <el-button @click="dialogVisible = true">编辑</el-button>
-    <el-dialog   v-model="dialogVisible" title="" width="80vw"
+    <el-dialog   v-model="dialogVisible" title="" width="96vw"
     :before-close="onBeforeClose"
     >
       <AsyncPlumbLayout
@@ -21,7 +22,7 @@
 
     <el-drawer
         title="属性"
-        size="600px"
+        size="700px"
         v-model="renderFormDesigner"
         :lock-scroll="false"
         destroy-on-close>
@@ -183,7 +184,11 @@ export default {
     serviceName: String,
     height: {
       type: [Number, String],
-      default: '600px'
+      default: '900px'
+    },
+    rootId: {
+      type: String,
+      default: 'i0'
     }
   },
   mixins: [
@@ -192,7 +197,6 @@ export default {
   ],
   data() {
     return {
-      rootId: 'i111',
     }
   },
   setup(props) {

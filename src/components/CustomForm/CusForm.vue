@@ -1,8 +1,8 @@
 <template>
   <template v-if="page.inited">
     <div hidden>{{store.model}}</div>
-    <el-button @click="openDialog">打开编辑</el-button>
-    <CustomElement is="my-vue-dialog" :name="dialogName"
+    <el-button v-if="useDrag" @click="openDialog">打开编辑</el-button>
+    <CustomElement :is="useDrag ? 'my-vue-dialog' : 'div'" :name="dialogName"
                    :params="{sstyle: 'width: 80vw; min-width: 720px;'}"
     @closed="onClosed"
     >
@@ -10,7 +10,7 @@
         <HttpComponent
             :defs="page.defMap"
             :is="store.model.editor_step"
-            v-if="store.model.dialog_open"
+            v-if="!useDrag || store.model.dialog_open"
         >
           <template #array_item_before="scope">
             <h3>{{ scope.key }}</h3>
@@ -37,12 +37,14 @@ export default {
   mixins: [
     CustomRenderControlMixin
   ],
+  props: {
+  },
   setup(props, ctx) {
     let locks = true
     let cached = null
     let { methods, init, data } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
-        // console.log('handleValueInit', newVal, typeof newVal)
+        console.log('handleValueInit', newVal, typeof newVal)
         if (typeof newVal !== 'undefined') {
           try {
             cached = ZY.JSON5.parse(newVal)
@@ -111,7 +113,7 @@ export default {
           {
             async onMounted(config, {setPartModel}) {
               init(props)
-              // console.log('formEditorConfig', cached)
+              console.log('formEditorConfig', cached)
               if (cached) {
                 setPartModel(config.name, 'form2', cached)
               }
@@ -134,10 +136,17 @@ export default {
       console.log('onClosed')
     }
 
+    let useDrag = true
+    if ( props.ui.widgetConfig.hasOwnProperty('useDrag')) {
+      useDrag = props.ui.widgetConfig.useDrag
+    }
+
     return {
       dialogName,
+      widgetConfig: props.ui.widgetConfig,
       page,
       openDialog,
+      useDrag,
       onClosed,
       store: page.store
     }

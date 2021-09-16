@@ -15,10 +15,11 @@
 
     <template v-if="store.model.form_step">
       <!--      {{store.computedModel}}-->
+      {{store.model.form_step}}
       <HttpComponent
           :defs="allDef"
           :is="store.model.form_step"
-          :debug="false"
+          :debug="true"
       >
         <template #array_prev="scope">
           <template v-if="scope.key === 'forms'">
@@ -30,6 +31,7 @@
           </template>
         </template>
         <template #array_before="scope">
+          <slot name="array_before" v-bind="scope"></slot>
         </template>
         <template #array_item_after="scope">
           <slot name="array_item_after" v-bind="scope"></slot>
@@ -42,7 +44,7 @@
 
 <script>
 import HttpComponent from "@/components/HttpComponent.vue";
-import {getCurrentInstance, onMounted, toRaw} from "vue";
+import {onMounted, toRaw} from "vue";
 import {extendControl2Page, useAppPageControl, useControl} from "@/mixins/framework";
 import CustomElement from "@/components/CustomElement.vue";
 import FormsManaSelect from "@/plugins/z-frame/components/FormsManaSelect.vue";
@@ -52,7 +54,7 @@ export default {
   props: {
     getConfig: Function
   },
-  setup(props) {
+  setup(props, ctx) {
 
     function onInited({storeControl}) {
     }
@@ -86,10 +88,15 @@ export default {
         page.refsManager.runCom('form-mana-select', 'load')
         page.webComponentRef.toggleDialog('form-mana-dialog');
       },
+      ['HTTP:COM:MOUNTED'](e) {
+        let stepName = page.store.model.form_step
+        let context = page.httpComContext[stepName]
+        ctx.emit('ready', e)
+      },
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e
         if (config.process === page.store.model.form_step) {
-          console.log('form_step update', newVal)
+          // console.log('form_step update', newVal)
           cachedPageControlModel = model
         }
       },
@@ -116,6 +123,12 @@ export default {
       return _oldConfig
     }
 
+    async function setModel(model = {}) {
+      let stepName = page.store.model.form_step
+      // let context = page.httpComContext[stepName]
+      page.setPartModel(stepName, 'form2', model)
+    }
+
     onMounted(() => {
       page.commonLoadStep(
           _loadConfig(),
@@ -135,6 +148,7 @@ export default {
     return {
       save,
       getModel,
+      setModel,
       store: page.store,
       page,
       allDef: page.defMap,

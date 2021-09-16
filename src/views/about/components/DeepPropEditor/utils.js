@@ -16,7 +16,7 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
   let cur;
 
   let setObj = ZY.lodash.set
-  let JSON5 =  ZY.JSON5
+  let JSON5 = ZY.JSON5
 
   function deepTransform(target, obj, path) {
 
@@ -69,8 +69,7 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
       // console.log('array')
       setObj(deepObj, path, {
         type: 'array',
-        items: {
-        }
+        items: {}
       })
 
       let newPath = `${path}['items']`
@@ -82,13 +81,11 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
       if (dep) {
         handleDeep(dep, newPath)
       }
-    }
-    else if (curDep.type === 'object') {
+    } else if (curDep.type === 'object') {
       setObj(deepObj, path,
         {
           type: 'object',
-          properties: {
-          },
+          properties: {},
         }
       )
 
@@ -113,8 +110,7 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
           handleDeep(dep, newPath)
         }
       }
-    }
-    else {
+    } else {
       console.log('not array and object', curDep)
     }
   }
@@ -137,4 +133,11 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
     return deepObj.root
   }
   return {}
+}
+
+export function buildDeepConfigData(merge = {}) {
+  let obj = {type: 'string', ui: {type: '', label: '', widget: '', widgetConfig: '{}'}, rules: '{}'}
+  let ret = ZY.lodash.merge(obj, merge)
+  console.log('ret', ret)
+  return ret
 }

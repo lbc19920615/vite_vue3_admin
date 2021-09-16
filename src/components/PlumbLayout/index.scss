@@ -47,17 +47,20 @@
   //$leftTotal: 0;
   //$topTotal: 0;
   &.auto-init-layout {
-    $len: 10;
+    $len: 20;
     //$half: 5;
     @for $i from 1  through $len {
       $index: $i - 1;
-      .section:nth-child(#{$i}) {
+      .section[dep-level='#{$index}'] {
         left: calc(var(--plumb-con-width) * #{$index});
-      }
-      .section:nth-child(#{$i}) {
-        //  $lbase: math.max(100, math.random(150)) + 0px;
-        //$tbase: math.max(50, math.random(80)) + 0px;
-        //top: $tbase * $index;
+        @for $m from 0  through $len {
+          &[dep-level-index='#{$index}_#{$m}'] {
+            top: 30px * $m * $index;
+          }
+          //&:nth-of-type($m) {
+          //  top: 30px * $column
+          //}
+        }
       }
     }
   }

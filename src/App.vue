@@ -80,6 +80,9 @@ ${item.value}
       }
       return {}
     },
+    getPropsObjFROMLinksAndDeps(o = {links: [], deps: []}) {
+      return  getDeepConfigFromLinksAndDeps(o.links, o.deps)
+    },
     getBeforeScript(s) {
       let tpl = function (v) {
         let p = ZY.JSON5.stringify(v, null, 2)
@@ -126,6 +129,7 @@ ${item.value}
       // console.log(obj, buildObjAttrs(obj))
       return buildObjAttrs(obj).trim()
     },
+
     test(v) {
       console.log('call app test')
       return v

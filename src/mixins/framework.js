@@ -390,6 +390,8 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
   control.defMap = allDef
   control.allDef = allDef
 
+  control.httpComContext = httpComContext
+
   let refsManager = provideRefManager({
     async eventHandler({type, e}) {
       // console.log('page eventHandler', type, e)
@@ -404,6 +406,9 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
               events.delete(name)
             }
           })
+        }
+        if (control.eventHandleMap['HTTP:COM:MOUNTED']) {
+          control.eventHandleMap['HTTP:COM:MOUNTED'](e)
         }
       } else {
         // console.log(control.eventHandleMap, type)

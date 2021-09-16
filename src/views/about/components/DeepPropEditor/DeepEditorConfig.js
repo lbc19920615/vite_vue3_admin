@@ -31,7 +31,8 @@ export default {
                             type: 'string',
                             ui: {
                                 label: '类型',
-                                widget: 'CusSelect',
+                                // widget: 'CusSelect',
+                                widget: 'CusSuggest',
                                 widgetConfig: {
                                     enums: "ROOT_STATE('tools.propTypes', [])",
                                 },

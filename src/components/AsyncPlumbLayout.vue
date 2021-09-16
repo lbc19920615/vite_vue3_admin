@@ -19,7 +19,10 @@ $sel: "." + $tag;
     <div ref="container" class="container">
       <div :id="dep.id" class="abs section"
            v-for="(dep,depIndex) in deps"
-           :key="dep.id">
+           :key="dep.id"
+          :dep-level="dep.A_LEVEL"
+         :dep-level-index="dep.A_LEVEL_INDEX"
+      >
         <el-popconfirm
             title="这是一段内容确定删除吗？"
             @confirm="deleteDep(dep)"
