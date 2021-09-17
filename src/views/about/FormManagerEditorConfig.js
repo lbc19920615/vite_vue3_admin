@@ -8,9 +8,9 @@ export default {
             //     ]
             // },
             // slots: 'sdsds',
-            events: [
-                // {}
-            ]
+          args: {
+
+          },
         }
     },
     init: {
@@ -26,37 +26,42 @@ export default {
                         attrs: [['label-width', '150px']]
                     },
                     properties: {
-                        name: {
-                            type: 'string',
-                            ui: {
+                        args: {
+                          type: 'object',
+                          properties: {
+                            name: {
+                              type: 'string',
+                              ui: {
                                 attrs: [
-                                    ['scroll-control', 'page_name'],
+                                  ['scroll-control', 'page_name'],
                                 ],
                                 class: [
                                   'a-space-pt-20'
                                 ],
                                 widget: 'CusSuggest',
                                 widgetConfig: {
-                                    teleportTo: "#dialog_popover",
-                                    enums: "ROOT_STATE('tools.constVars_pageNames', [])",
+                                  teleportTo: "#dialog_popover",
+                                  enums: "ROOT_STATE('tools.constVars_pageNames', [])",
                                 }
-                            }
-                        },
-                        template: {
-                            type: 'string',
-                            ui: {
+                              }
+                            },
+                            template: {
+                              type: 'string',
+                              ui: {
                                 attrs: [
-                                    ['scroll-control', 'page_name'],
+                                  ['scroll-control', 'page_name'],
                                 ],
                                 class: [
-                                    'a-space-pt-20'
+                                  'a-space-pt-20'
                                 ],
                                 widget: 'CusSuggest',
                                 widgetConfig: {
-                                    teleportTo: "#dialog_popover",
-                                    enums: "ROOT_STATE('tools.constVars_pageNames', [])",
+                                  teleportTo: "#dialog_popover",
+                                  enums: "ROOT_STATE('tools.constVars_pageNames', [])",
                                 }
-                            }
+                              }
+                            },
+                          }
                         },
                         forms: {
                             type: 'array',
