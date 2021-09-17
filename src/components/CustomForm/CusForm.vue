@@ -101,7 +101,7 @@ export default {
       },
       async ['model:update:all'](e) {
         let { model, key, newVal, config } = e
-        // console.log('model:update:all', model)
+        console.log('model:update:all', model)
         if (!locks) {
           let val = ZY.JSON5.stringify(model)
           page.setData({

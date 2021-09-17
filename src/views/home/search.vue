@@ -193,6 +193,7 @@ async function onInited({storeControl}) {
       }
       else if (property.type === 'object') {
         // let id = createDepId()
+        console.log('property (๑′ᴗ‵๑)Ｉ Lᵒᵛᵉᵧₒᵤ❤ ', property)
         let id = useDepID(parentId)
         let items = []
         lodash.each(property.properties, function (prop, propKey) {
@@ -245,7 +246,7 @@ async function onInited({storeControl}) {
 
 
     let rootId = createDepId()
-    Reflect.deleteProperty(defLevel0.properties, 'records')
+    // Reflect.deleteProperty(defLevel0.properties, 'records')
     // console.log(defLevel0)
     deepResolve(defLevel0, rootId)
 
@@ -314,6 +315,9 @@ function onComReady() {
               // console.log(dep)
               if (dep.type === 'array') {
                 defaultVal[item.name] = [{}]
+              }
+              if (dep.type === 'object') {
+                defaultVal[item.name] = {}
               }
             }
           } else {
