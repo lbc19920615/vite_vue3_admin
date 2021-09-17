@@ -30,6 +30,7 @@ export function baseConfig({defaultVal = {}, def = {}, computed = {}} = {}) {
 
 export function formsToDef(model = {}) {
     let ret = model
+    console.log(model)
     let tureParts  = model.parts.map(v => {
         return {
             type: v.type,
@@ -41,7 +42,8 @@ export function formsToDef(model = {}) {
                 }
             },
             def: ZY.JSON5.parse( v.properties),
-            computed: {}
+            computed: {},
+            defaultVal: ZY.JSON5.parse( v.defaultVal),
         }
     });
     // console.log(tureParts)
