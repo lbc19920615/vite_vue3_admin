@@ -4,6 +4,7 @@
     <el-row>
       <el-button @click="page.callEvent('call:save')">保存</el-button>
       <el-button @click="page.callEvent('call:save:file')">保存成文件</el-button>
+      <el-button @click="page.callEvent('gen:uniapp:file')">生成uniapp文件</el-button>
     </el-row>
     <FormManager :getConfig="getConfig" :ref="formRef">
       <template #array_item_after="scope">
@@ -24,6 +25,9 @@ import FormManager from "@/views/about/components/FormManager.vue";
 import {extendControl2Page, useAppPageControl, useControl} from "@/mixins/framework";
 import {toRaw} from "vue";
 import {FormsMana} from "@/plugins/z-frame/formsMana";
+import {formsToDef} from "@/plugins/z-frame/hooks/form";
+import {fetchVueTpl} from "@/hooks/remote";
+
 export default {
   components: {FormManager},
   setup() {
@@ -56,7 +60,7 @@ export default {
       async ['call:save:file'](e) {
         let obj = {}
         obj = await page.runRefMethod('formRef', 'getModel')
-        console.log('getModel', obj)
+        // console.log('getModel', obj)
 
         ZY_EXT.saveDesignFile({fileName: obj.name, data: obj})
       },
@@ -79,6 +83,32 @@ export default {
         } catch (e) {
           //
         }
+      },
+      async ['gen:uniapp:file'](e) {
+        let obj = await page.runRefMethod('formRef', 'getModel')
+
+        let def = formsToDef(
+            ZY.JSON5.parse(obj.forms[0].value)
+        );
+
+        let res = await fetchVueTpl({
+          def,
+          args: {
+            src: 'uniapp_form.twig'
+          }
+        })
+
+
+        await ZY_EXT.saveStrUseFS(res, {
+          fileName: obj.args.name + '.vue',
+          extensions: ['.vue'],
+          type: 'text/plain',
+          options: {
+            mimeTypes: ['text/*'],
+          }
+        })
+
+        // console.log('rer', res)
       }
     })
 
