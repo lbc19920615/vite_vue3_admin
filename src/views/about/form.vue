@@ -7,9 +7,12 @@
     </el-row>
     <FormManager :getConfig="getConfig" :ref="formRef">
       <template #array_item_after="scope">
-        <el-button
+        <el-button size="small"
                    @click="page.callEvent(`save:form:file`, scope)"
         >保存</el-button>
+        <el-button size="small"
+                   @click="page.callEvent(`load:single:file`, scope)">
+          导入{{ scope.key }}</el-button>
       </template>
     </FormManager>
   </div>
@@ -20,6 +23,7 @@ import "@/register";
 import FormManager from "@/views/about/components/FormManager.vue";
 import {extendControl2Page, useAppPageControl, useControl} from "@/mixins/framework";
 import {toRaw} from "vue";
+import {FormsMana} from "@/plugins/z-frame/formsMana";
 export default {
   components: {FormManager},
   setup() {
@@ -64,6 +68,17 @@ export default {
         )
         let currentFormData = ZY.lodash.get(obj, selfpath)
         console.log('save:form:file', obj, currentFormData)
+      },
+      async ['load:single:file'](e) {
+        let {parts, partName, selfpath} = e
+        try {
+          let data = await FormsMana.readFile()
+          let appendData = data[0].value
+          let updatedPath = `${selfpath}.value`
+          parts[partName].setModelByPath(updatedPath, appendData)
+        } catch (e) {
+          //
+        }
       }
     })
 

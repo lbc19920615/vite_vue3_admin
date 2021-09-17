@@ -261,7 +261,7 @@ export default defineComponent({
         let time = ZY.Time.formatDateTime(d, 'YYYY-MM-DD__HH')
 
         console.log('call:save:file', saved)
-        ZY_EXT.saveObjAsJson5File(saved, `forms_${fileName}_${time}_${d.getTime()}`)
+        ZY_EXT.saveObjAsJson5File(saved, `page_${fileName}_${time}_${d.getTime()}`)
       },
       ['add:part'](e) {
         let { parts, partName, selfpath, process } = e
@@ -292,9 +292,9 @@ export default defineComponent({
           let data = await FormsMana.readFile()
           let appendData = data[0].value
           let updatedPath = `${selfpath}.value`
-          console.log('sdsdsds', updatedPath,
-          ZY.JSON5.parse(appendData)
-          )
+          // console.log('sdsdsds', updatedPath,
+          // ZY.JSON5.parse(appendData)
+          // )
           parts[partName].setModelByPath(updatedPath, appendData)
         } catch (e) {
         //
