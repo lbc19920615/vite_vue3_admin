@@ -92,7 +92,11 @@
         </template>
         <template #array_item_after="scope">
           <el-space wrap>
-            <el-button type="danger" size="small" @click="page.callEvent('remove:events', scope)">删除{{ scope.key }}</el-button>
+            <el-popconfirm title="确定删除吗？" @confirm="page.callEvent('remove:events', scope)">
+              <template #reference>
+                <el-button type="danger" size="small">删除{{ scope.key }}</el-button>
+              </template>
+            </el-popconfirm>
             <template v-if="scope.key === 'forms'">
               <el-button size="small" @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
               <el-button size="small" @click="page.callEvent(`load:single:${scope.key}`, scope)">导入{{ scope.key }}</el-button>
