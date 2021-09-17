@@ -148,27 +148,45 @@ function getDefaultJSONlikeObj(obj, path) {
   )
 }
 
+function setDefaultJSONlikeObj(obj = {}, path, v) {
+  ZY.lodash.set(obj, path, ZY.JSON5.stringify(v, null, 2))
+}
+
 class depPlugins {
   static integer(obj) {
-    obj.type = 'number'
+    // obj.type = 'number'
+    obj.ui.format = 'integer';
     let oldWidgetConfig = getDefaultJSONlikeObj(obj, 'ui.widgetConfig')
-    console.log(oldWidgetConfig)
+    // console.log(oldWidgetConfig)
 
     obj.rules = ZY.JSON5.stringify({
       type: 'number'
     }, null ,2)
   }
+  static ['date-time'](obj, prop, propKey) {
+
+    obj.ui.widgetFormat = 'datetime';
+    let oldWidgetConfig = getDefaultJSONlikeObj(obj, 'ui.widgetConfig')
+    oldWidgetConfig['value-format'] = 'YYYY-MM-DD HH:mm:ss'
+    Reflect.deleteProperty(oldWidgetConfig, 'format')
+    setDefaultJSONlikeObj(obj,  'ui.widgetConfig', oldWidgetConfig)
+
+    // console.log('prop.format date-time', obj.ui.widgetConfig)
+  }
 }
 
-export function buildDepItemConfig(prop = {}, type = '') {
+export function buildDepItemConfig(prop = {}, type = '', propKey = '') {
   let obj = {}
   obj.ui = {
     widgetConfig: ZY.JSON5.stringify({
-      ...prop
+      // ...prop
     }, null ,2)
   }
   if (depPlugins[type]) {
-    depPlugins[type](obj)
+    depPlugins[type](obj, prop, propKey)
+  }
+  if (prop.format && depPlugins[prop.format]) {
+    depPlugins[prop.format](obj, prop, propKey)
   }
   return obj
 }

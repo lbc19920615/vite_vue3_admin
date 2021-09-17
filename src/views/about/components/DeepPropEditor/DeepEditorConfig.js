@@ -43,12 +43,12 @@ export default {
                         ui: {
                             type: 'object',
                             properties: {
-                                // type: {
-                                //     type: 'string',
-                                //     ui: {
-                                //         label: 'ui.type'
-                                //     }
-                                // },
+                                widgetFormat: {
+                                    type: 'string',
+                                    ui: {
+                                        label: 'ui.widgetFormat'
+                                    }
+                                },
                                 label: {
                                     type: 'string',
                                     ui: {

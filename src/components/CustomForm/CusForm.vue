@@ -1,7 +1,10 @@
 <template>
   <template v-if="page.inited">
     <div hidden>{{store.model}}</div>
-    <el-button v-if="useDrag" @click="openDialog">打开编辑</el-button>
+    <el-button v-if="useDrag"
+
+
+               @click="openDialog">打开编辑</el-button>
     <CustomElement :is="useDrag ? 'my-vue-dialog' : 'div'" :name="dialogName"
                    :params="{sstyle: 'width: 80vw; min-width: 720px;'}"
     @closed="onClosed"
@@ -48,7 +51,7 @@ export default {
         if (typeof newVal !== 'undefined') {
           try {
             cached = ZY.JSON5.parse(newVal)
-            console.log('cached', cached)
+            // console.log('cached', cached)
           } catch (e) {
             console.error(new Error('json parse err', {
               cause: e
@@ -59,7 +62,8 @@ export default {
         // page.setPartModel('form-editor', 'form2', obj)
       }
     })
-    data()
+    data({
+    })
     let properties =  {
       editor_step: {
         type: String,
@@ -68,6 +72,9 @@ export default {
         type: String,
       },
       dialog_open: {
+        type: Boolean
+      },
+      loaded: {
         type: Boolean
       }
     }
@@ -106,6 +113,7 @@ export default {
       },
     })
 
+    let setStepModel = null
 
     onMounted(function () {
       page.commonLoadStep(
@@ -114,12 +122,19 @@ export default {
           {
             async onMounted(config, {setPartModel}) {
               init(props)
-              console.log('formEditorConfig', cached)
-              if (cached) {
-                setPartModel(config.name, 'form2', cached)
+              setStepModel = function () {
+                if (cached) {
+                  setPartModel(config.name, 'form2', cached)
+                }
               }
-              locks = false
-              // console.log('eventModel', config, page.defMap)
+              if (locks) {
+
+                locks = false
+                setStepModel()
+              }
+
+              // page.setByPath('loaded', true)
+              // console.log('sdsdsdsdsdsds')
             }
           }
       )
@@ -129,6 +144,10 @@ export default {
       let currentPageWebComponentRef =  globalThis.getCurrentPage('page.webComponentRef')
       if (currentPageWebComponentRef && currentPageWebComponentRef.toggleDialog) {
         currentPageWebComponentRef.toggleDialog(dialogName);
+      }
+      console.log('formEditorConfig', cached)
+      if (!locks) {
+        setStepModel()
       }
       page.setByPath('dialog_open', true)
     }

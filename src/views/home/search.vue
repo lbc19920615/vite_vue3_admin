@@ -220,7 +220,7 @@ async function onInited({storeControl}) {
             // console.log(propKey,  prop)
             let objData = buildDeepConfigData({
               type: prop.type,
-              ...buildDepItemConfig(prop, prop.type)
+              ...buildDepItemConfig(prop, prop.type, propKey)
             })
             item.data = ZY.JSON5.stringify(objData)
 
