@@ -92,7 +92,8 @@ export default {
       ['HTTP:COM:MOUNTED'](e) {
         let stepName = page.store.model.form_step
         let context = page.httpComContext[stepName]
-        ctx.emit('ready', e)
+        console.log('stepName', stepName)
+        ctx.emit('com-ready', e)
       },
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e

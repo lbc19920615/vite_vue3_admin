@@ -48,7 +48,7 @@
       <el-col>
         <template v-if="page.val('currentDeepProp')">
           <FormManager :getConfig="getConfig" :ref="setFormRef"
-          @ready="onComReady"
+          @com-ready="onComReady"
           >
             <template v-slot:form_before="scope">
               <el-space align="middle">
@@ -253,14 +253,6 @@ async function onInited({storeControl}) {
     let levelCount = new Map()
 
     function deepSetLevel(fromPIDS = [], level) {
-
-      // links.forEach(function (link) {
-      //   if (fromPIDS.includes(link.fromPID)) {
-      //     link.level = level
-      //     let dep = deps.find(v => v.id === link.fromPID)
-      //     console.log(dep)
-      //   }
-      // })
       if (!levelCount.has(level)) {
         levelCount.set(level, 0)
       }
@@ -306,6 +298,38 @@ function onComReady() {
   let JSON5 = ZY.JSON5
   let formManager = page.getRef('formRef')
   if (formManager) {
+    let defaultVal = {};
+    {
+      let deps = page.store.model.currentDeepProp.deps;
+      let links = page.store.model.currentDeepProp.links;
+      let rootDep = deps.find(v => v.id === page.store.model.currentDeepProp.rootId);
+      // let formIDS = links.map(v => v.from);
+      if (Array.isArray(rootDep.items)) {
+        // console.log('rootDep', rootDep.items)
+        rootDep.items.forEach(item => {
+          let link = links.find(v => v.from === item.id)
+          if (link) {
+            let dep = deps.find(v => v.id === link.toPID)
+            if (dep) {
+              // console.log(dep)
+              if (dep.type === 'array') {
+                defaultVal[item.name] = [{}]
+              }
+            }
+          } else {
+
+          }
+        })
+      }
+    }
+    // console.log(defaultVal, links)
+
+    let defaultUI = {
+      attrs: [
+        [ 'label-width', '150px']
+      ]
+    }
+
     formManager.setModel(
         {
           args: {
@@ -318,8 +342,8 @@ function onComReady() {
                 type: 'form',
                 name: 'form_' + ZY.rid(6),
                 props: JSON5.stringify(page.store.model.currentDeepProp),
-                ui: '{}',
-                defaultVal: '{}'
+                ui: JSON5.stringify(defaultUI, null,2 ),
+                defaultVal: JSON5.stringify(defaultVal, null, 2)
               }
             ],
           })

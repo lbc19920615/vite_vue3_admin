@@ -142,8 +142,18 @@ export function buildDeepConfigData(merge = {}) {
   return ret
 }
 
+function getDefaultJSONlikeObj(obj, path) {
+  return ZY.JSON5.parse(
+    ZY.lodash.get(obj, path, '{}')
+  )
+}
+
 class depPlugins {
   static integer(obj) {
+    obj.type = 'number'
+    let oldWidgetConfig = getDefaultJSONlikeObj(obj, 'ui.widgetConfig')
+    console.log(oldWidgetConfig)
+
     obj.rules = ZY.JSON5.stringify({
       type: 'number'
     }, null ,2)

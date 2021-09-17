@@ -48,6 +48,7 @@ export default {
         if (typeof newVal !== 'undefined') {
           try {
             cached = ZY.JSON5.parse(newVal)
+            console.log('cached', cached)
           } catch (e) {
             console.error(new Error('json parse err', {
               cause: e

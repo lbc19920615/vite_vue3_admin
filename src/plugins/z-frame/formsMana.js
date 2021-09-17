@@ -30,12 +30,19 @@ export class FormsMana {
       version: "v1",
     }, self.STORAGE_KEY + '_' + fileName)
   }
+  static async readFile() {
+    let self = this
+
+    let obj = await ZY_EXT.fileOpenJSON5()
+    let {data} = obj
+    return data
+  }
   static async loadFile() {
     let self = this
 
     let obj = await ZY_EXT.fileOpenJSON5()
     let {data } = obj
-    console.log(data)
+    // console.log(data)
     if (Array.isArray(data)) {
       await self.setStorage(data)
       return data;

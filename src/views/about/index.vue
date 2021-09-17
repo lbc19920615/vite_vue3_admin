@@ -95,6 +95,7 @@
             <el-button type="danger" size="small" @click="page.callEvent('remove:events', scope)">删除{{ scope.key }}</el-button>
             <template v-if="scope.key === 'forms'">
               <el-button size="small" @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
+              <el-button size="small" @click="page.callEvent(`load:single:${scope.key}`, scope)">导入{{ scope.key }}</el-button>
             </template>
             <template v-if="scope.key === 'events'">
               <el-button size="small" @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
@@ -279,6 +280,22 @@ export default defineComponent({
         parts[partName].arrAppend(selfpath, appendData)
         await ZY.sleep(300)
         page.webComponentRef.toggleDialog('form-mana-dialog');
+      },
+      async ['load:single:forms'](e) {
+        let { parts, partName, selfpath } = e
+        // console.log(parts[partName], selfpath)
+        try {
+          let data = await FormsMana.readFile()
+          let appendData = data[0].value
+          let updatedPath = `${selfpath}.value`
+          console.log('sdsdsds', updatedPath,
+          ZY.JSON5.parse(appendData)
+          )
+          parts[partName].setModelByPath(updatedPath, appendData)
+        } catch (e) {
+        //
+        }
+
       },
       async ['save:single:forms'](e) {
         let { parts, partName, selfpath } = e
