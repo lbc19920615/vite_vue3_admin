@@ -25,7 +25,9 @@
         size="700px"
         v-model="renderFormDesigner"
         :lock-scroll="false"
-        destroy-on-close>
+        destroy-on-close
+        @closed="onDrawerClose(currentEditItem, currentEditDep)"
+    >
       <template #default>
         <div  v-if="renderFormDesigner && currentEditDep">
           <template v-if="currentEditDep.type === 'object'">
@@ -233,6 +235,7 @@ export default {
     })
     page = extendControl2Page(page)
 
+    let cachedDeepEditorModel = null
     page.setEventHandler({
       ['model:update'](e) {
         let { model, key, newVal, config } = e
@@ -241,8 +244,14 @@ export default {
           self.currentEditItem.data = ZY.JSON5.stringify(model)
         }
         // console.log( self.currentEditItem.data)
+      },
+      ['model:update:all'](e) {
+        let { model, key, newVal, config } = e
+        cachedDeepEditorModel = model
       }
     })
+
+    let getPartForm2ModelContext = null
 
     async function loadStepByContent( varName = '', item) {
       let [,res] = await ZY.awaitTo(
@@ -254,6 +263,7 @@ export default {
       page.setDef(config, function ({done}) {
         let cached = null
         if (item.data) {
+          // console.log('sdsdsdsd', item, item.data)
           cached = ZY.JSON5.parse(item.data)
         }
 
@@ -263,6 +273,11 @@ export default {
                cached ? cached : defaultObj
            )
         }
+
+        getPartForm2ModelContext = function (partName, obj) {
+          return page.getPartModel( config.name, 'form2')
+        }
+
         done()
       })
       await nextTick();
@@ -278,9 +293,18 @@ export default {
       done()
     }
 
+    function onDrawerClose(currentEditItem) {
+      console.log('onDrawerClose', cachedDeepEditorModel, currentEditItem)
+      if (cachedDeepEditorModel) {
+
+        currentEditItem.data = ZY.JSON5.stringify(cachedDeepEditorModel)
+      }
+    }
+
     return {
       loadStepByContent,
       onBeforeClose,
+      onDrawerClose,
       store: page.store,
       filter: page.filter,
       allDef: page.defMap,

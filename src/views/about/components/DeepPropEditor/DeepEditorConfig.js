@@ -23,10 +23,10 @@ export default {
                     type: 'object',
                     ui: {attrs: [['label-width', '150px']]},
                     properties: {
-                        test: {
-                          type: 'string',
-                          hidden: true
-                        },
+                        // test: {
+                        //   type: 'string',
+                        //   hidden: true
+                        // },
                         type: {
                             type: 'string',
                             ui: {

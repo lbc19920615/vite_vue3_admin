@@ -1,5 +1,11 @@
+<style>
+.cus-form {
+  /*--my-dialog-z-index: 10;*/
+}
+</style>
+
 <template>
-  <template v-if="page.inited">
+  <div class="cus-form" v-if="page.inited">
     <div hidden>{{store.model}}</div>
     <el-button v-if="useDrag"
 
@@ -24,7 +30,7 @@
         </HttpComponent>
       </template>
     </CustomElement>
-  </template>
+  </div>
 
 </template>
 <script>

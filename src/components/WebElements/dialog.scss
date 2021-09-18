@@ -92,7 +92,7 @@ $com: ".dialog";
 
 .dialog--opened {
   //display: block;
-  z-index: 1111;
+  z-index: var(--my-dialog-z-index, 1111);
   opacity: 1;
   //&:after {
   //  opacity: 1;
