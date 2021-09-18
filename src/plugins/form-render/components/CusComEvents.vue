@@ -1,7 +1,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-<!--    {{state.value}}-->
+    {{state.value}}
     <el-form-item label="type">
       <ew-suggest v-model="state.value.type" :suggest="typeSuggest"></ew-suggest>
     </el-form-item>

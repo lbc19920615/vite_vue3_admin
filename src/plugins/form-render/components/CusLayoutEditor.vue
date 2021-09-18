@@ -17,15 +17,20 @@
         :close-on-click-modal="false"
         @closed="onClosed"
     >
-      <ZLayoutEditor
-          :ref="setLayoutRef"
-          :controls="false"
-          @ele-drag-change="onEleDragChange"
-          :store-prefix="storePrefix"
-          :auto-load="false"
-          @plumb-inited="onPlumbInited"
-          @save-layout="onSaveLayout"
-      ></ZLayoutEditor>
+      <div>
+        <el-row class="a-space-mb-10">
+          <el-button type="primary" @click="save">保存</el-button>
+        </el-row>
+        <ZLayoutEditor
+            :ref="setLayoutRef"
+            :controls="false"
+            @ele-drag-change="onEleDragChange"
+            :store-prefix="storePrefix"
+            :auto-load="false"
+            @plumb-inited="onPlumbInited"
+            @save-layout="onSaveLayout"
+        ></ZLayoutEditor>
+      </div>
     </el-dialog>
   </template>
 </template>
@@ -135,12 +140,15 @@ export default {
       // console.log('onEleDragChange')
     }
 
-
-    async function onClosed() {
+    async function save() {
       let v = layoutRef.getToolsData()
       // console.log('getToolsData', v)
       await layoutRef.saveCache2Storage(v)
       methods.on_change(JSON5.stringify(v))
+    }
+
+    async function onClosed() {
+      await save();
     }
 
 
@@ -161,6 +169,7 @@ export default {
       onClosed,
       onSaveLayout,
       storePrefix,
+      save,
       setLayoutRef,
       widgetConfig: props.ui.widgetConfig,
       methods,

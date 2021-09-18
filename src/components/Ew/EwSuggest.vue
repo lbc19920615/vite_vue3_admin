@@ -7,8 +7,8 @@
 
 <template>
   <div class="ew-suggest">
-
-    <el-input v-model="state.value" @input="onChange">
+{{state.value}}
+    <el-input v-model="state.value" @input="onInput">
       <template #append>
         <e-popover
             class="cus-suggest__popover"
@@ -70,15 +70,25 @@ export default  {
     }
 
     function selectSuggest(e) {
+      console.log('cus-ui__class-props', e)
       state.value = e
       setTimeout(() => {
         onChange()
+        ctx.emit('value:change', state.value)
       }, 30)
     }
+    function onInput() {
+      setTimeout(() => {
+        onChange()
+        ctx.emit('value:change', state.value)
+      }, 30)
+    }
+
     return {
       state,
       setRefMan,
       getSuggest,
+      onInput,
       selectSuggest,
       refMan,
     }
