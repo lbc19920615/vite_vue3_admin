@@ -31,10 +31,12 @@ _global.initTemplate = async function initTemplate(id, global, { html = '' } = {
 
 class CustomVueComponent {
   static defMap = new Map()
+  static components = {}
   static app = null
   static component(name, ctx) {
     this.app.component(name, ctx)
     this.defMap.set(name, ctx)
+    this.components[name] = ctx
   }
   static register(ctx, name = ctx.name) {
     this.component(name, ctx)
@@ -125,6 +127,10 @@ window.startApp = function () {
 
   const storeApp = Vue.createApp(StoreApp)
   const app = Vue.createApp(App)
+
+  globalThis.getAppContext = function () {
+    return app._context
+  }
 
   app.config.compilerOptions.isCustomElement = tag => {
     return tag === 'app-loading'

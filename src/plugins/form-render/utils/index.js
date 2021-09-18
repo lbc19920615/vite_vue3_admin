@@ -34,15 +34,20 @@ export let CustomRenderControlMixin = {
     emits: [
         'valuechange'
     ],
+    inject: ['curFormCon'],
     data() {
       return {
-          curFormCon: null,
+          // curFormCon: null,
           inited: false
       }
     },
     mounted() {
-        this.curFormCon = inject('curFormCon')
+        // this.curFormCon = inject('curFormCon')
+        // console.log(this.curFormCon)
         this.inited = true
+        if (this.lifeTimes && this.lifeTimes.onReady) {
+            this.lifeTimes.onReady()
+        }
         // console.log(this.comManager)
         // console.log('this.props', this.rules)
     },
@@ -168,10 +173,16 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
         initValue(props.modelValue, FROM_TYPES.init)
     }
 
+    function onJSONChange(v = model.value) {
+        let str = ZY.JSON5.stringify(v)
+        methods.on_change(str)
+    }
+
     return {
         data,
+        onJSONChange,
         init,
         listeners,
-        methods
+        methods,
     }
 }

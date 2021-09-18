@@ -7,8 +7,8 @@
 
 <template>
   <div class="ew-suggest">
-{{state.value}}
-    <el-input v-model="state.value" @input="onInput">
+<!--{{state.value}}-->
+    <el-input v-model="state.value" @blur="onBlur" @input="onInput">
       <template #append>
         <e-popover
             class="cus-suggest__popover"
@@ -35,7 +35,7 @@
 <script>
 
 import SimpleList from "@/plugins/z-frame/components/SimpleList.vue";
-import {reactive} from "vue";
+import {reactive, watch} from "vue";
 import {useReloadMan} from "@/views/home/hooks";
 import EPopover from "@/components/EPopover/index";
 
@@ -70,7 +70,7 @@ export default  {
     }
 
     function selectSuggest(e) {
-      console.log('cus-ui__class-props', e)
+      // console.log('cus-ui__class-props', e)
       state.value = e
       setTimeout(() => {
         onChange()
@@ -83,10 +83,18 @@ export default  {
         ctx.emit('value:change', state.value)
       }, 30)
     }
+    function onBlur() {
+      ctx.emit('blur')
+    }
+
+    watch(() => props.modelValue, (newVal) => {
+      state.value = newVal
+    })
 
     return {
       state,
       setRefMan,
+      onBlur,
       getSuggest,
       onInput,
       selectSuggest,

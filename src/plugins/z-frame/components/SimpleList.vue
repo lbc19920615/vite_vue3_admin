@@ -2,7 +2,7 @@
   <div>
 <!--    {{state}}-->
     <el-form-item>
-      <el-input v-model="state.search"></el-input>
+      <el-input v-model="state.search" @input="handleSearch"></el-input>
     </el-form-item>
 <!--    <el-table :data="dataTable">-->
 <!--      <el-table-column  prop="label" label="LABEL"></el-table-column>-->
@@ -13,10 +13,13 @@
 <!--        </template>-->
 <!--      </el-table-column>-->
 <!--    </el-table>-->
+<!--    {{dataTable}}-->
     <div class="simple-list-con" :class="conClass">
-      <z-table border stripe :actions="state.actions"
+      <z-table border stripe
+               :actions="state.actions"
                :actionProps="actionProps"
-               :column="state.column" :data="dataTable"></z-table>
+               :column="state.column"
+               :data="state.dataTable"></z-table>
     </div>
   </div>
 </template>
@@ -84,6 +87,7 @@ export default {
       search: '',
       actions,
       column: customColumn,
+      dataTable: []
     })
 
     let handler = useArrHandler(state,'suggest')
@@ -92,16 +96,25 @@ export default {
       return handler.search(
           function (o) {
             // console.log(o)
-            return true
+            // return true
+            let keys = Object.keys(o)
+            // console.log(keys)
+            let flag = false
+            keys.forEach(key => {
+              if (o[key].includes(v)) {
+                flag = true
+              }
+            })
+            return flag
             // return o.value.includes(v) || o.label.includes(v)
           }
       ) ?? []
     }
 
-    let  dataTable = computed(() => {
-      // console.log(state.suggest)
-      return search(state.suggest, state.search) ?? []
-    })
+    // let  dataTable = computed(() => {
+    //   // console.log(state.suggest, state.search)
+    //   return search(toRaw(state.suggest), state.search) ?? []
+    // })
 
     function select(scope) {
       state.value = scope.row.value
@@ -112,14 +125,21 @@ export default {
     watch(() => props.suggest, (newval) => {
       // console.log('sdsdsdsdsdsds', toRaw(newval))
       state.suggest = toRaw(newval)
+      handleSearch()
     }, {
       immediate: true
     })
 
+    function handleSearch() {
+      console.log('sdsds')
+      state.dataTable = search(toRaw(state.suggest), state.search) ?? []
+    }
+
 
     return {
-      dataTable,
+      // dataTable,
       search,
+      handleSearch,
       state,
       select
     }

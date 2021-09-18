@@ -47,6 +47,7 @@ export default {
             attrsObj: {},
             data: {}
           }
+          return newVal
         }
         if (newVal) {
           // console.log('newVal', newVal, typeof  newVal)

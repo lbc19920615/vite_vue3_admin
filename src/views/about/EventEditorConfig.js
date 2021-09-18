@@ -26,6 +26,15 @@ export default {
                         attrs: [['label-width', '150px']]
                     },
                     properties: {
+                        prop12sds: {
+                            type: 'string',
+                            ui: {
+                                widget: 'CusWidgetEditor',
+                                widgetConfig: {
+                                    enums: "ROOT_STATE('tools.constVars_pageNames', [])",
+                                }
+                            }
+                        },
                         sdsds: {
                             type: 'string',
                             ui: {

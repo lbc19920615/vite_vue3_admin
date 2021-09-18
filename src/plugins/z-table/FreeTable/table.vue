@@ -3,11 +3,10 @@
 </style>
 <template>
   <div class="z-table">
-    <el-table ref="elTable" :data="data" v-bind="$attrs" v-on="$listeners">
+    <el-table ref="elTable" :data="data" v-bind="$attrs" >
       <template v-for="item in tbColumns"   :key="item.prop">
         <el-table-column
           v-bind="item"
-          v-on="$listeners"
         >
           <template #default="scope">
 <!--            <slot :name="item.prop" v-bind="scope"></slot>-->
