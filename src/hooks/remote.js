@@ -1,4 +1,4 @@
-import {fetchContentV3,} from '@expose/main.js'
+import {fetchContentV3} from '@expose/main.js'
 import {parseComponent} from "vue-sfc-parser";
 
 let templateSfc = function (sfc) {

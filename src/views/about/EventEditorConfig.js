@@ -26,6 +26,12 @@ export default {
                         attrs: [['label-width', '150px']]
                     },
                     properties: {
+                        sdsds: {
+                            type: 'string',
+                            ui: {
+                                widget: 'CusUI',
+                            }
+                        },
                         name: {
                             type: 'string',
                             ui: {

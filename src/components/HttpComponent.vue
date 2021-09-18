@@ -1,7 +1,7 @@
 <template><custom-render v-if="ui.widget" :debug="debug" :render="render" :ui="ui"></custom-render></template>
 
 <script lang="jsx">
-import {defineComponent, watch, reactive, provide, ref, getCurrentInstance, inject} from "vue";
+import {defineComponent, watch, reactive, provide, ref, inject} from "vue";
 import {fetchComponent} from "@/hooks/remote.js";
 import CustomRender from "./CustomRender.vue";
 import {log} from "@/utils/logger";

@@ -21,6 +21,10 @@ const store = {
         label: 'form2',
         value: 'form2',
       },
+      {
+        label: 'aform',
+        value: 'aform',
+      },
     ],
     propTypes: [
       {

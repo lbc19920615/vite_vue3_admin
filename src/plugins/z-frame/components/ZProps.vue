@@ -16,13 +16,13 @@
        <el-col>
 <!--         <h3>{{ scope.key }}</h3>-->
          <el-button type="primary" size="small"
-             @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加{{ scope.key }}</el-button>
+             @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加</el-button>
        </el-col>
       </template>
       <template #array_item_after="scope">
         <el-col>
           <el-button type="danger" size="small"
-              @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除{{ scope.key }}</el-button>
+              @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除</el-button>
         </el-col>
       </template>
     </HttpComponent>
@@ -36,9 +36,14 @@ import {onBeforeUnmount, onMounted, toRaw} from "vue";
 export default {
   name: 'ZProps',
   components: {HttpComponent},
+  emits: [
+    'props-change',
+      'form:input:blur'
+  ],
   props: {
     value: null,
-    valueConfig: Object
+    valueConfig: Object,
+    nameConfig: Object
   },
   data() {
     return {
@@ -72,9 +77,20 @@ export default {
       ctx.emit('change', newVal)
     })
 
-
+    page.setEventHandler({
+      ['model:update:all'](e) {
+        if (!locks) {
+          ctx.emit('props-change', e.model)
+        }
+      },
+      ['form:input:blur'](e) {
+        // console.log('sdsdsdsdsdsds', e)
+        ctx.emit('form:input:blur', e)
+      }
+    })
 
     onMounted(function () {
+
       let loaded =  async function () {
         let res = await import('./ZProps/edtorConfig.js')
         let config = ZY.JSON5.parse(ZY.JSON5.stringify(res.default))
@@ -83,6 +99,10 @@ export default {
         let _valueConfig = defObj.items.properties.value
         if (props.valueConfig) {
           _valueConfig = Object.assign(_valueConfig, props.valueConfig)
+        }
+        let _nameConfig = defObj.items.properties.name
+        if (props.nameConfig) {
+          _nameConfig = Object.assign(_nameConfig, props.nameConfig)
         }
 
         return {

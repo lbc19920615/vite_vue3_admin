@@ -406,6 +406,7 @@ export default defineComponent({
       },
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e
+        console.log('page about model:update:all', e)
         if (config.process === page.store.model.textarea_step) {
           cachedPageControlModel = model
         }

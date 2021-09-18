@@ -15,9 +15,15 @@ let formDef = {
                 properties: {
                     name: {
                         type: 'string',
+                        ui: {
+                            class: ['z-props__name']
+                        }
                     },
                     value: {
                         type: 'string',
+                        ui: {
+                            class: ['z-props__value']
+                        }
                     },
                 }
             }

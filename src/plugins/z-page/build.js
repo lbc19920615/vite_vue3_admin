@@ -2,9 +2,10 @@
  *
  * @param model
  * @param name
+ * @param args
  * @returns {string}
  */
-export let buildFormDep = function (model = {parts: []}, name = model.name) {
+export let buildFormDep = function (model = {parts: []}, name = model.name, args = {}) {
   let JSON5 = ZY.JSON5;
   let parsedParts = []
   let defaultVals = {}
@@ -47,9 +48,7 @@ export let buildFormDep = function (model = {parts: []}, name = model.name) {
         constants: {},
         parts: parsedParts
       },
-      args: {
-        src: 'comformscr2.twig'
-      }
+      args
     }
   }
   // console.log(obj)

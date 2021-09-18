@@ -1,7 +1,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-    {{state.value}}
+<!--    {{state.value}}-->
    <el-form-item label="占位提示">
       <el-input v-model="state.value.placeholder"
                 clearable
