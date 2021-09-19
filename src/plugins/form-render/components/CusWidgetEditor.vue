@@ -11,9 +11,12 @@
                   @value:change="onWidgetChange"></ew-suggest>
     </div>
 
-    <div v-if="state.currentComponent">
+    <div v-if="state.currentComponent && refMan.showed">
       {{state.currentComponent}}
+      <z-http-com :resolve-config="resolveConfig" @http:model:change="onModelChange"></z-http-com>
     </div>
+
+
   </div>
 
   </template>
@@ -23,12 +26,14 @@
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
-import {getCurrentInstance, onMounted} from "vue";
-
+import {getCurrentInstance, onMounted, toRaw} from "vue";
+import ZHttpCom from "@/plugins/z-frame/components/ZHttpCom.vue";
+import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusWidgetEditor/createConfig";
+import {useReloadMan} from "@/views/home/hooks";
 
 export default {
   name: 'CusWidgetEditor',
-  components: {EwSuggest},
+  components: {ZHttpCom, EwSuggest},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -39,6 +44,7 @@ export default {
     let JSON5 = ZY.JSON5;
     let AppComponents = []
     let BASE_SUGGEST = []
+    let properties = {}
     let { data, methods, listeners, init, onJSONChange } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
         if (!newVal) {
@@ -87,16 +93,18 @@ export default {
       methods.on_change(str)
     }
 
-
     function initCurrentComponent(v) {
       state.currentComponent = AppComponents[v]
+      setRefMan()
+      // console.log('initCurrentComponent', AppComponents[v])
     }
 
     function onWidgetChange() {
       state.value.data.widget =  state.value.control.widget
-      initCurrentComponent(state.value.control.widget)
+      console.log('onWidgetChange')
       // console.log(AppComponents)
       setTimeout(() => {
+        initCurrentComponent(state.value.control.widget)
         onChange()
       }, 30)
     }
@@ -108,7 +116,6 @@ export default {
     function onBlur() {
       onChange()
     }
-
 
 
     const lifeTimes ={
@@ -140,18 +147,67 @@ export default {
         }
         // console.log('sdsdsdsds')
 
-
-
         state.inited = true
       }
+
     }
+
+    async function resolveConfig(props) {
+      // console.log(state.currentComponent.props)
+      let comProps = toRaw(
+          state.currentComponent.props
+      )
+      // console.log(comProps)
+      for (let [key, value] of Object.entries(comProps)) {
+        if (value.type === Number) {
+          properties[key] = {
+            type: 'number'
+          }
+        }
+        if (value.type === String) {
+          properties[key] = {
+            type: 'string'
+          }
+        }
+      }
+      // properties = {
+      //   name1: {
+      //     type: 'string'
+      //   },
+      //   name2: {
+      //     type: 'string'
+      //   },
+      // }
+      // return import('./CusWidgetEditor/editorConfig')
+      let formDef = {
+        type: 'object',
+        ui: {
+          attrs: [
+            ['label-width', '100px']
+          ],
+        },
+        properties
+      }
+      return {
+        default: createCusWidgetEditorConfig(formDef)
+      }
+    }
+
+    function onModelChange(e) {
+      console.log('onModelChange', e.model, e)
+    }
+
+    let [refMan, setRefMan] = useReloadMan({timeout: 500})
 
     return {
       state,
       widgetConfig: props.ui.widgetConfig,
       lifeTimes,
       methods,
+      resolveConfig,
+      onModelChange,
       onWidgetChange,
+      refMan,
       onBlur,
       save,
       listeners,

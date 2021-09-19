@@ -60,7 +60,7 @@ export function useReloadMan({timeout} = {}) {
   let state = reactive({
     showed: false
   })
-  function setShowed(v) {
+  function setShowed() {
     state.showed = false
     setTimeout(() => {
       state.showed = true
