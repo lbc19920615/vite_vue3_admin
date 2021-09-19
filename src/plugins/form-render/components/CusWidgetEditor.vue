@@ -96,12 +96,12 @@ export default {
     function initCurrentComponent(v) {
       state.currentComponent = AppComponents[v]
       setRefMan()
-      // console.log('initCurrentComponent', AppComponents[v])
+      console.log('initCurrentComponent', AppComponents[v])
     }
 
     function onWidgetChange() {
       state.value.data.widget =  state.value.control.widget
-      console.log('onWidgetChange')
+      // console.log('onWidgetChange')
       // console.log(AppComponents)
       setTimeout(() => {
         initCurrentComponent(state.value.control.widget)
@@ -154,6 +154,7 @@ export default {
 
     async function resolveConfig(props) {
       // console.log(state.currentComponent.props)
+      properties = {}
       let comProps = toRaw(
           state.currentComponent.props
       )
