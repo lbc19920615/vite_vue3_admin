@@ -44,6 +44,21 @@
               scope,
               value: $event
             })"></FormsManaSelect>
+        <FormsLayoutSelect></FormsLayoutSelect>
+      </template>
+    </CustomElement>
+
+
+    <CustomElement is="my-vue-dialog" name="form-layout-dialog"
+                   :params="{sstyle: 'width: 60vw; min-width: 720px;'}">
+      <template #default="scope">
+<!--                {{scope}}-->
+        <FormsLayoutSelect
+            com-name="form-layout-select"
+            @select-form="page.callEvent('forms:select-layout', {
+              scope,
+              value: $event
+            })"></FormsLayoutSelect>
       </template>
     </CustomElement>
 
@@ -70,6 +85,7 @@
             <el-space   align="middle">
               <h3>片段</h3>
               <el-button size="small" @click="page.callEvent('add:arr:common', scope)">添加{{ scope.key }}</el-button>
+              <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}管理</el-button>
             </el-space>
           </template>
           <template v-else-if="scope.key === 'forms'">
@@ -98,11 +114,18 @@
               </template>
             </el-popconfirm>
             <template v-if="scope.key === 'forms'">
-              <el-button size="small" @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
-              <el-button size="small" @click="page.callEvent(`load:single:${scope.key}`, scope)">导入{{ scope.key }}</el-button>
+              <el-button size="small"
+                         @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
+              <el-button size="small"
+                         @click="page.callEvent(`load:single:${scope.key}`, scope)">导入{{ scope.key }}</el-button>
             </template>
             <template v-if="scope.key === 'events'">
-              <el-button size="small" @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
+              <el-button size="small"
+                         @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
+            </template>
+            <template v-if="scope.key === 'layoutSlotArr'">
+              <el-button size="small"
+                         @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
             </template>
           </el-space>
         </template>
@@ -158,6 +181,8 @@ import {FormsEvent} from "@/plugins/z-frame/formsEvent";
 import FormsManaSelect from "@/plugins/z-frame/components/FormsManaSelect.vue";
 import FormManager from "@/views/about/components/FormManager.vue";
 import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
+import FormsLayoutSelect from "@/plugins/z-frame/components/FormsLayoutSelect.vue";
+import {FormsLayout} from "@/plugins/z-frame/formsLayout";
 
 
 
@@ -170,6 +195,7 @@ export default defineComponent({
     }
   },
   components: {
+    FormsLayoutSelect,
     ZLayoutEditor,
     FormManager,
     FormsManaSelect,
@@ -343,6 +369,43 @@ export default defineComponent({
         page.refsManager.runCom('form-mana-select', 'load')
         page.webComponentRef.toggleDialog('form-mana-dialog');
       },
+      async ['forms:select-layout'](e) {
+        let {value, scope} = e
+        let { parts, partName, selfpath, process } = currentFromDialog
+        // console.log('forms:select-form', e, currentFromDialog)
+        // let obj = ZY.JSON5.parse(value.value)
+        let appendData = ZY.JSON5.parse(ZY.JSON5.stringify(value))
+        // let appendData = {
+        //   name: value.label,
+        //   value: value.value
+        // }
+        // // console.log(appendData)
+        parts[partName].arrAppend(selfpath, appendData)
+        await ZY.sleep(300)
+        page.webComponentRef.toggleDialog('form-layout-dialog');
+      },
+      ['open:layoutSlotArr'](e) {
+        currentFromDialog = e
+        page.refsManager.runCom('form-layout-select', 'load')
+        page.webComponentRef.toggleDialog('form-layout-dialog');
+      },
+      async ['save:single:layoutSlotArr'](e) {
+        let {parts, partName, selfpath} = e
+        let current = toRaw(
+            parts[partName].getModelByPath(selfpath)
+        )
+        await FormsLayout.saveCache2File(
+            [
+              {
+                name: current.name,
+                value: current
+              }
+            ],
+            {
+              fileName: current.name
+            }
+        )
+      },
       ['add:events'](e) {
         let { parts, partName, selfpath, process } = e
         // console.log('add:events', e, model)
@@ -357,7 +420,7 @@ export default defineComponent({
         let { parts, partName, selfpath } = e
         let model = parts[partName].getModel()
         let current = toRaw(ZY.lodash.get(model, selfpath))
-        console.log('save:single:events', e, current)
+        // console.log('save:single:events', e, current)
         await FormsEvent.saveCache2File(
             [
               {

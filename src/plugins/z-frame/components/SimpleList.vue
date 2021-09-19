@@ -91,7 +91,7 @@ export default {
             // console.log(keys)
             let flag = false
             keys.forEach(key => {
-              if (o[key].includes(v)) {
+              if (o[key] && o[key].includes && o[key].includes(v)) {
                 flag = true
               }
             })

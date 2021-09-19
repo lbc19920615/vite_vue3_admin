@@ -67,7 +67,7 @@ export function createStaticFormCls() {
         // formsMap = cached
         // console.log(data)
         data.forEach((item, key) => {
-          console.log(item, key)
+          // console.log(item, key)
           self.formsMap.set(key, item)
         })
       }
