@@ -162,13 +162,27 @@ export default {
       for (let [key, value] of Object.entries(comProps)) {
         if (value.type === Number) {
           properties[key] = {
-            type: 'number'
+            type: 'number',
+            rules: {
+              type: 'number'
+            }
           }
         }
-        if (value.type === String) {
+        else if (value.type === String) {
           properties[key] = {
             type: 'string'
           }
+        }
+        else if (value.type === Boolean) {
+          properties[key] = {
+            type: 'boolean',
+            rules: {
+              type: 'boolean'
+            }
+          }
+        }
+        else {
+        //
         }
       }
       // properties = {
