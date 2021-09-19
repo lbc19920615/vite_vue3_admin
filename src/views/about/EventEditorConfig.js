@@ -26,7 +26,7 @@ export default {
                         attrs: [['label-width', '150px']]
                     },
                     properties: {
-                        prop12sds: {
+                        prop16sds: {
                             type: 'string',
                             ui: {
                                 widget: 'CusWidgetEditor',

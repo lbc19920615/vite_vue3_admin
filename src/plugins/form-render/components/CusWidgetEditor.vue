@@ -2,7 +2,7 @@
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
     {{state.value}}
-  <div v-if="state.inited">
+  <div v-if="state.inited && state.value && state.value.control">
 <!--    <el-input v-model="state.value.control.widget"></el-input>-->
     <div>
       <ew-suggest v-model="state.value.control.widget"
@@ -52,6 +52,15 @@ export default {
           // console.log('newVal', newVal, typeof  newVal)
           try {
             obj = JSON5.parse(newVal)
+
+            if (!obj.control) {
+              obj.control = {}
+            }
+
+            if (obj.data.widget) {
+              obj.control.widget = obj.data.widget
+            }
+
             return obj
           } catch (e) {
             console.error(e)
@@ -68,29 +77,34 @@ export default {
     })
     init(props)
 
-    // function onChange() {
-    //   let str =JSON5.stringify(state.value)
-    //   methods.on_change(str)
-    //   // console.log('sdsdsds')
-    // }
+    function onChange() {
+      let clonedValue = JSON5.parse(JSON5.stringify(state.value))
+      // console.log(clonedValue)
+      Reflect.deleteProperty(clonedValue, 'control')
+      let str =JSON5.stringify(clonedValue)
+      methods.on_change(str)
+    }
 
 
+    function initCurrentComponent() {
+      state.currentComponent = AppComponents[state.value.control.widget]
+    }
 
     function onWidgetChange() {
       state.value.data.widget =  state.value.control.widget
-      state.currentComponent = AppComponents[state.value.control.widget]
-      console.log(AppComponents)
+      initCurrentComponent()
+      // console.log(AppComponents)
       setTimeout(() => {
-        onJSONChange()
+        onChange()
       }, 30)
     }
 
     function save() {
-      onJSONChange()
+      onChange()
     }
 
     function onBlur() {
-      onJSONChange()
+      onChange()
     }
 
 
@@ -123,6 +137,9 @@ export default {
           )
         }
         // console.log('sdsdsdsds')
+
+        initCurrentComponent()
+
         state.inited = true
       }
     }
