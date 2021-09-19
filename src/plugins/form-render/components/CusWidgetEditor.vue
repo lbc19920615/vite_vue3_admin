@@ -61,6 +61,8 @@ export default {
               obj.control.widget = obj.data.widget
             }
 
+            initCurrentComponent(obj.data.widget)
+
             return obj
           } catch (e) {
             console.error(e)
@@ -86,13 +88,13 @@ export default {
     }
 
 
-    function initCurrentComponent() {
-      state.currentComponent = AppComponents[state.value.control.widget]
+    function initCurrentComponent(v) {
+      state.currentComponent = AppComponents[v]
     }
 
     function onWidgetChange() {
       state.value.data.widget =  state.value.control.widget
-      initCurrentComponent()
+      initCurrentComponent(state.value.control.widget)
       // console.log(AppComponents)
       setTimeout(() => {
         onChange()
@@ -138,7 +140,7 @@ export default {
         }
         // console.log('sdsdsdsds')
 
-        initCurrentComponent()
+
 
         state.inited = true
       }
