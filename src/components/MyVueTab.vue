@@ -122,7 +122,7 @@ export default {
         let keys = Array.of(...this.tabs.keys())
         keys.forEach((key, index) => {
           if (key === ctx.name) {
-            console.log('key', key, index)
+            // console.log('key', key, index)
 
             let last = keys[index - 1]
             if (last) {
