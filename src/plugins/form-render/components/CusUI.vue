@@ -14,10 +14,10 @@
 <!--      <el-button @click="save">保存</el-button>-->
 <!--    </el-row>-->
     <h3>class</h3>
-    <ZProps class="cus-ui__class-props" v-model:value="state.value.classObj" @form:input:blur="onBlur" @props-change="onClassChange"></ZProps>
+    <ZProps class="cus-ui__class-props" v-model:value="state.value.control.classObj" @form:input:blur="onBlur" @props-change="onClassChange"></ZProps>
 
     <h3>attrs</h3>
-    <ZProps v-model:value="state.value.attrsObj" @form:input:blur="onBlur" @props-change="onAttrsChange"></ZProps>
+    <ZProps v-model:value="state.value.control.attrsObj" @form:input:blur="onBlur" @props-change="onAttrsChange"></ZProps>
 
   </template>
 
@@ -43,8 +43,9 @@ export default {
       handleValueInit(newVal) {
         if (!newVal) {
           newVal = {
-            classObj: {},
-            attrsObj: {},
+            // classObj: {},
+            // attrsObj: {},
+            control: {},
             data: {}
           }
           return newVal
@@ -56,6 +57,36 @@ export default {
             if (!obj.data) {
               obj.data = {}
             }
+            if (!obj.control) {
+              obj.control = {}
+            }
+            // delete obj.data.classObj;
+            if (obj.data.attrs) {
+              let props = []
+              for (let [key, value] of obj.data.attrs) {
+                props.push({
+                  name: key,
+                  value: value,
+                })
+              }
+              obj.control.attrsObj = {
+                props
+              }
+            }
+
+            if (obj.data.class) {
+              let props = []
+              for (let value of obj.data.class) {
+                props.push({
+                  name: value,
+                  value: value,
+                })
+              }
+              obj.control.classObj  = {
+                props
+              }
+            }
+
             return obj
           } catch (e) {
             // console.log(e)
@@ -70,7 +101,10 @@ export default {
     init(props)
 
     function onChange() {
-      let str =JSON5.stringify(state.value)
+      let clonedValue = JSON5.parse(JSON5.stringify(state.value))
+      // console.log(clonedValue)
+      Reflect.deleteProperty(clonedValue, 'control')
+      let str =JSON5.stringify(clonedValue)
       methods.on_change(str)
     }
 

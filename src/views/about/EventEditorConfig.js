@@ -35,7 +35,7 @@ export default {
                                 }
                             }
                         },
-                        sdsds: {
+                        prop15s: {
                             type: 'string',
                             ui: {
                                 widget: 'CusUI',
