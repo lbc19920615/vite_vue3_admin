@@ -4,16 +4,6 @@
     <el-form-item>
       <el-input v-model="state.search" @input="handleSearch"></el-input>
     </el-form-item>
-<!--    <el-table :data="dataTable">-->
-<!--      <el-table-column  prop="label" label="LABEL"></el-table-column>-->
-<!--      <el-table-column  prop="value" label="VALUE"></el-table-column>-->
-<!--      <el-table-column  label="ACTION">-->
-<!--        <template v-slot:default="scope">-->
-<!--          <el-button size="small" @click="select(scope)">选中</el-button>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--    </el-table>-->
-<!--    {{dataTable}}-->
     <div class="simple-list-con" :class="conClass">
       <z-table border stripe
                :actions="state.actions"
@@ -131,7 +121,6 @@ export default {
     })
 
     function handleSearch() {
-      console.log('sdsds')
       state.dataTable = search(toRaw(state.suggest), state.search) ?? []
     }
 
