@@ -78,7 +78,7 @@ export default {
 
     page.setEventHandler({
       ['model:update:all'](e) {
-        console.log('sdsdsds', locks)
+        // console.log('sdsdsds', locks)
         if (!locks) {
           ctx.emit('http:model:change', e)
         }

@@ -4,7 +4,7 @@
     {{state.value}}
   <div v-if="state.inited && state.value && state.value.control">
 <!--    <el-input v-model="state.value.control.widget"></el-input>-->
-    <div>
+    <div class="a-space-mb-20">
       <ew-suggest v-model="state.value.control.widget"
                   placement="bottom"
                   :suggest="state.suggest"
@@ -12,7 +12,7 @@
     </div>
 
     <div v-if="state.currentComponent && refMan.showed">
-      {{state.currentComponent}}
+<!--      {{state.currentComponent}}-->
       <z-http-com :resolve-config="resolveConfig" @http:model:change="onModelChange"></z-http-com>
     </div>
 
