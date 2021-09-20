@@ -27,7 +27,7 @@ import {useRouter} from "vue-router";
 import {fetchTwigComponent} from "@/hooks/remote.js";
 import {getDeepConfigFromLinksAndDeps} from "@/views/about/components/DeepPropEditor/utils";
 import {buildObjAttrs, buildXml} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
-import {parseFormAttrToObj, parseRulesArrToStr} from "@/plugins/form-render/utils/CusFormAttr";
+import {parseFormAttrToObj, parseRulesArrToStr, parseEventsToStr} from "@/plugins/form-render/utils/CusFormAttr";
 
 export default defineComponent({
   mounted() {
@@ -124,16 +124,18 @@ ${item.value}
       }
       return ''
     },
-    calcBeforeAttrs(commonFormAttr, rules = []) {
+    calcBeforeAttrs(commonFormAttr, rules = [], events = []) {
       // console.log('calcBeforeAttrs', rules)
       let obj = parseFormAttrToObj(commonFormAttr)
       // console.log(obj, buildObjAttrs(obj))
       let formAttr = buildObjAttrs(obj).trim()
 
       let ruleStr = parseRulesArrToStr(rules)
-
       let rulesAttr = `:rules='${ruleStr}'`
-      return formAttr + ' ' + rulesAttr
+
+      let eventStr = parseEventsToStr(events)
+
+      return formAttr + ' ' + rulesAttr + ' ' + eventStr
     },
 
     test(v) {

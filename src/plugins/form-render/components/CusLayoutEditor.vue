@@ -21,17 +21,17 @@
         <el-row class="a-space-mb-10">
           <el-button type="primary" @click="save">保存</el-button>
         </el-row>
+        <ZLayoutEditor
+            :ref="setLayoutRef"
+            :controls="false"
+            @ele-drag-change="onEleDragChange"
+            :store-prefix="storePrefix"
+            :auto-load="false"
+            @plumb-inited="onPlumbInited"
+            @save-layout="onSaveLayout"
+        ></ZLayoutEditor>
       </div>
     </el-dialog>
-    <ZLayoutEditor
-        :ref="setLayoutRef"
-        :controls="false"
-        @ele-drag-change="onEleDragChange"
-        :store-prefix="storePrefix"
-        :auto-load="false"
-        @plumb-inited="onPlumbInited"
-        @save-layout="onSaveLayout"
-    ></ZLayoutEditor>
   </template>
 </template>
 

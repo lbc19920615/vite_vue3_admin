@@ -33,7 +33,7 @@ export function parseFormAttrToObj(str) {
  * @param rules
  * @returns {string}
  */
-export function parseRulesArrToStr(rules = [{message: ''}]) {
+export function parseRulesArrToStr(rules = [{value: ''}]) {
 // console.log(rules)
   let _ = ZY.lodash
   let JSON5 = ZY.JSON5
@@ -49,7 +49,27 @@ export function parseRulesArrToStr(rules = [{message: ''}]) {
     })
   })
 
-  console.log('parseRulesArrToStr', rules, filtedArr)
+  // console.log('parseRulesArrToStr', rules, filtedArr)
 
   return JSON5.stringify(filtedArr)
+}
+
+/**
+ * 将array events转换为attr string
+ * @param events
+ * @returns {string}
+ */
+export function parseEventsToStr(events = []) {
+  let _ = ZY.lodash
+  let JSON5 = ZY.JSON5
+  let arr = JSON5.parse(JSON5.stringify(events))
+
+  let filtedArr = arr.map(v => {
+    let obj = JSON5.parse(v.value)
+    return `@${obj.type}="callEvent('${obj.eventName}', scope)"`
+  })
+
+  console.log('parseEventsToStr', events, filtedArr)
+
+  return filtedArr.join(' ')
 }
