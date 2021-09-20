@@ -122,7 +122,8 @@ export default {
                                         ui: {
                                             widget: 'CusLayoutEditor',
                                             widgetConfig: {
-                                                suffix: 'slayout'
+                                                suffix: 'slayout',
+                                                mode: 'xml'
                                             }
                                         }
                                     },

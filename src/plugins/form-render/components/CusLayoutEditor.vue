@@ -1,13 +1,15 @@
- <style>
-/*.plumb-layout__tools {*/
-/*  display: none;*/
-/*}*/
+ <style lang="scss">
+[mode='xml'] {
+  .plumb-layout__tools {
+    display: none;
+  }
+}
 </style>
 
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-    <el-row type="flex">
+    <el-row type="flex" >
       <el-button size="small" @click="openDialog">打开编辑</el-button>
 <!--      <el-button @click="getXML">获取xml</el-button>-->
     </el-row>
@@ -17,7 +19,7 @@
         :close-on-click-modal="false"
         @closed="onClosed"
     >
-      <div>
+      <div :mode="widgetConfig.mode">
         <el-row class="a-space-mb-10">
           <el-button type="primary" @click="save">保存</el-button>
         </el-row>
