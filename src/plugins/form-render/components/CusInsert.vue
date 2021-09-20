@@ -135,7 +135,8 @@ export default {
       }
     })
     let state = data({
-      value: {}
+      value: {},
+      control: {}
     })
     init(props)
 
@@ -241,8 +242,8 @@ export default {
     }
 
     function onClick(e) {
-      if  (e.target.localName === 'xy-text') {
-        // console.log(e.target.getAttribute('level'))
+      // console.log(e.target.hasAttribute('text-item'))
+      if  (e.target.hasAttribute('text-item')) {
         setCursor(
             e.target.getAttribute('level'),
             'index'
@@ -262,7 +263,7 @@ export default {
 
     watch(state.value.control, (newVal) => {
       let length = newVal.funcs.length
-
+      console.log('sdsds', length)
       setTimeout(() => {
         setCursor(length - 1, 'add');
         onChange()
