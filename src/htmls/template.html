@@ -10,6 +10,7 @@
         <div style="font-size: 60px;">Loading...</div>
     </div>
 </template>
+
 <script>
     class AppLoading extends HTMLElement {
         constructor() {
@@ -20,4 +21,18 @@
         }
     }
     window.customElements.define('app-loading', AppLoading);
+
+    class ZMath extends HTMLElement {
+        get name() {
+            return this.getAttribute('name');
+        }
+
+        constructor() {
+            super();
+            let shadowRoot = this.attachShadow({mode: 'open'});
+            shadowRoot.innerHTML = `<xy-text mark>${this.name}</xy-text><slot></slot><xy-text mark>)</xy-text>`
+        }
+    }
+
+    window.customElements.define('z-math', ZMath);
 </script>
