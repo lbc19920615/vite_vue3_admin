@@ -28,6 +28,7 @@ export default {
                     properties: {
                         prop16sds: {
                             type: 'string',
+                            hidden: true,
                             ui: {
                                 widget: 'CusWidgetEditor',
                                 widgetConfig: {
@@ -37,6 +38,7 @@ export default {
                         },
                         prop15s: {
                             type: 'string',
+                            hidden: true,
                             ui: {
                                 widget: 'CusUI',
                             }

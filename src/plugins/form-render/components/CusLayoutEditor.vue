@@ -1,4 +1,4 @@
-<style>
+ <style>
 /*.plumb-layout__tools {*/
 /*  display: none;*/
 /*}*/
@@ -21,17 +21,17 @@
         <el-row class="a-space-mb-10">
           <el-button type="primary" @click="save">保存</el-button>
         </el-row>
-        <ZLayoutEditor
-            :ref="setLayoutRef"
-            :controls="false"
-            @ele-drag-change="onEleDragChange"
-            :store-prefix="storePrefix"
-            :auto-load="false"
-            @plumb-inited="onPlumbInited"
-            @save-layout="onSaveLayout"
-        ></ZLayoutEditor>
       </div>
     </el-dialog>
+    <ZLayoutEditor
+        :ref="setLayoutRef"
+        :controls="false"
+        @ele-drag-change="onEleDragChange"
+        :store-prefix="storePrefix"
+        :auto-load="false"
+        @plumb-inited="onPlumbInited"
+        @save-layout="onSaveLayout"
+    ></ZLayoutEditor>
   </template>
 </template>
 
@@ -64,19 +64,6 @@ export default {
     let storePrefix = ZY.rid(6);
 
     (async function () {
-      // let cachedKeys = await ZY_EXT.store.getItem('layout-store-prefix')
-      // if (!Array.isArray(cachedKeys)) {
-      //   cachedKeys = []
-      // }
-      //
-      //
-      // cachedKeys.forEach(cachedKey => {
-      //   clearPlumbLayoutStorage(cachedKey)
-      // })
-      //
-      //
-      // await ZY_EXT.store.setItem('layout-store-prefix', [])
-
       await cachedArrOperate('layout-store-prefix', (arr) => {
 
         arr.forEach(cachedKey => {

@@ -23,11 +23,11 @@
 <script>
 import {defineComponent, inject, provide} from "vue";
 import {createRefManager} from "@/hooks/ref";
-import {useRoute, useRouter} from "vue-router";
+import {useRouter} from "vue-router";
 import {fetchTwigComponent} from "@/hooks/remote.js";
 import {getDeepConfigFromLinksAndDeps} from "@/views/about/components/DeepPropEditor/utils";
 import {buildObjAttrs, buildXml} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
-import {parseFormAttrToObj} from "@/plugins/form-render/utils/CusFormAttr";
+import {parseFormAttrToObj, parseRulesArrToStr} from "@/plugins/form-render/utils/CusFormAttr";
 
 export default defineComponent({
   mounted() {
@@ -124,10 +124,16 @@ ${item.value}
       }
       return ''
     },
-    getInputEdit(editInputStr) {
-      let obj = parseFormAttrToObj(editInputStr)
+    calcBeforeAttrs(commonFormAttr, rules = []) {
+      // console.log('calcBeforeAttrs', rules)
+      let obj = parseFormAttrToObj(commonFormAttr)
       // console.log(obj, buildObjAttrs(obj))
-      return buildObjAttrs(obj).trim()
+      let formAttr = buildObjAttrs(obj).trim()
+
+      let ruleStr = parseRulesArrToStr(rules)
+
+      let rulesAttr = `:rules='${ruleStr}'`
+      return formAttr + ' ' + rulesAttr
     },
 
     test(v) {

@@ -149,7 +149,7 @@ registerEditorConfig('ele',  function (dep) {
             }
         },
         computed: {
-            computedProp1: "A.getInputEdit(MODEL('inputEdit', ''))"
+            computedProp1: "A.calcBeforeAttrs(MODEL('inputEdit', ''), MODEL('rules', []))"
         },
     },{
         form2: {
