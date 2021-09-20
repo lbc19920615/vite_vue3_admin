@@ -3,7 +3,9 @@
     <!--    {{widgetConfig.enums}}-->
 <!--    {{state.value}}-->
     <el-form-item label="type">
-      <ew-suggest v-model="state.value.type" :suggest="typeSuggest"></ew-suggest>
+      <ew-suggest v-model="state.value.type"
+                  @value:change="onChange"
+                  :suggest="typeSuggest"></ew-suggest>
     </el-form-item>
     <el-form-item label="eventName">
       <el-input v-model="state.value.eventName"
