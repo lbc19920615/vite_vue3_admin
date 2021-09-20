@@ -236,13 +236,13 @@ export default {
       if (last) {
         last.removeAttribute('selected')
       }
-      console.log(lastIndex)
+      // console.log(lastIndex)
       if (type === 'add') {
         lastIndex = lastIndex + 1
       } else {
         lastIndex = INDEX
       }
-      console.log(lastIndex)
+      // console.log(lastIndex)
       let current = document.querySelector(`#${hid} [level="${lastIndex}"]`)
       if (current) {
         current.setAttribute('selected', 1)
