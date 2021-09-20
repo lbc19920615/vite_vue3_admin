@@ -49,7 +49,7 @@
 <!--    {{state.value}}-->
 <!--    <el-row>-->
 <!--      <el-button @click="save">保存</el-button>-->
-    <div id="htm" class="cus-insert-html" v-html="runFuncs(state.value.control.funcs)"></div>
+    <div :id="hid" class="cus-insert-html" v-html="runFuncs(state.control.funcs)"></div>
 
     <div>
       <el-button @click="backStep">退格</el-button>
@@ -68,7 +68,7 @@
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
 import 'xy-ui/components/xy-text';
-import {onBeforeUnmount, onMounted, watch, watchEffect} from "vue";
+import {nextTick, onBeforeUnmount, onMounted, toRaw, watch, watchEffect} from "vue";
 
 export default {
   name: 'CusInsert',
@@ -82,20 +82,18 @@ export default {
     let obj;
     let JSON5 = ZY.JSON5;
     let lastIndex = -1
+    let hid = 'htm' + ZY.rid(6).toLowerCase()
 
     let insertedText = [
         '+', '-', '*', '/', '1', '2', '3', '4', '5', '6', '7', '8', '9'
     ]
 
-    let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
-      handleValueInit(newVal) {
+    let inited = false
+
+    let { data, methods, listeners, init, FROM_TYPES } = defineCustomRender(props, ctx, {
+      handleValueInit(newVal, from) {
         if (!newVal) {
           newVal = {
-            // classObj: {},
-            // attrsObj: {},
-            control: {
-            },
-            data: {}
           }
           return newVal
         }
@@ -103,32 +101,30 @@ export default {
           // console.log('newVal', newVal, typeof  newVal)
           try {
             obj = JSON5.parse(newVal)
-            if (!obj.data) {
-              obj.data = {}
+
+            // console.log(from)
+
+            if (!inited) {
+              inited = true
+              lastIndex = toRaw( obj.funcs).length - 1
+              // console.log(lastIndex)
+              nextTick(() => {
+                if (state.value.funcs) {
+                  state.control.funcs =  toRaw( state.value.funcs)
+                }
+                setTimeout(() => {
+                  setCursor(
+                      lastIndex,
+                      'init'
+                  )
+                }, 100)
+              })
             }
-            if (!obj.control) {
-              obj.control = {}
-            }
 
-            if (obj.data.funcs) {
-              obj.control.funcs = obj.data.funcs
 
-              lastIndex = obj.control.funcs.length - 1
-
-              setTimeout(() => {
-                setCursor(
-                    lastIndex,
-                    'init'
-                )
-              }, 30)
-            }
-
-            // if (!obj.control.funcs) {
-            //   obj.control.funcs = []
-            // }
             return obj
           } catch (e) {
-            // console.log(e)
+            console.log(e)
           }
         }
         return {}
@@ -141,11 +137,10 @@ export default {
     init(props)
 
     function onChange() {
-      // state.value.data = state.value.control
-      let clonedValue = JSON5.parse(JSON5.stringify(state.value))
+      let clonedValue = JSON5.parse(JSON5.stringify(state.control))
       // console.log(clonedValue)
-      clonedValue.data = clonedValue.control
-      Reflect.deleteProperty(clonedValue, 'control')
+      // clonedValue = toRaw(state.control)
+      // Reflect.deleteProperty(clonedValue, 'control')
       let str =JSON5.stringify(clonedValue)
       methods.on_change(str)
     }
@@ -159,31 +154,44 @@ export default {
     }
 
     function resetFuncs() {
-      if (! state.value.control.funcs) {
-        state.value.control.funcs = []
+      if (! state.control.funcs) {
+        state.control.funcs = []
       }
     }
 
     function getIndex() {
       if (lastIndex < 0) {
-        return state.value.control.funcs.length
+        return state.control.funcs.length
       }
       return lastIndex + 1
+    }
+
+    function insertChange() {
+      // console.log('sdsds', length)
+      setTimeout(() => {
+        let length = state.control.funcs.length
+        setCursor(length - 1, 'add');
+        onChange()
+      }, 30)
     }
 
     function insertFun(name) {
       resetFuncs()
       let index  = getIndex()
       // console.log(index)
-      // state.value.control.funcs.push([ 'return \`<xy-text level="${INDEX}" mark>'+name+'(</xy-text>${VAL}<xy-text level="${INDEX}" mark>)</xy-text>\`'])
-      state.value.control.funcs.splice(index, 0, [ 'return \`<z-math text-item name="'+name+'(" level="${INDEX}">${VAL}</z-math>\`'])
+      // state.control.funcs.push([ 'return \`<xy-text level="${INDEX}" mark>'+name+'(</xy-text>${VAL}<xy-text level="${INDEX}" mark>)</xy-text>\`'])
+      state.control.funcs.splice(index, 0, [ 'return \`<z-math text-item name="'+name+'(" level="${INDEX}">${VAL}</z-math>\`'])
+
+      insertChange()
     }
 
     function insertText(v) {
       resetFuncs()
       let index  = getIndex()
       // console.log(index)
-      state.value.control.funcs.splice(index, 0, [ 'return \`${VAL}<xy-text text-item level="${INDEX}">'+v+'</xy-text>\`'])
+      state.control.funcs.splice(index, 0, [ 'return \`${VAL}<xy-text text-item level="${INDEX}">'+v+'</xy-text>\`'])
+
+      insertChange()
     }
 
     function runFuncs(funcs) {
@@ -205,17 +213,18 @@ export default {
     }
 
     function backStep() {
-      state.value.control.funcs.splice(lastIndex, 1)
-      // console.log(state.value.control.funcs)
+      state.control.funcs.splice(lastIndex, 1)
+      // console.log(state.control.funcs)
       let Index = lastIndex - 1
       if (Index < 0) {
-        Index = state.value.control.funcs.length - 1
+        Index = state.control.funcs.length - 1
       }
       setTimeout(() => {
         setCursor(
             Index,
             'remove'
         )
+        onChange()
       }, 30)
     }
 
@@ -223,18 +232,18 @@ export default {
 
       let INDEX = parseInt(index)
 
-
-      // console.log(lastIndex, INDEX)
-      let last = document.querySelector(`#htm [level="${lastIndex}"]`)
+      let last = document.querySelector(`#${hid} [level="${lastIndex}"]`)
       if (last) {
         last.removeAttribute('selected')
       }
+      console.log(lastIndex)
       if (type === 'add') {
         lastIndex = lastIndex + 1
       } else {
         lastIndex = INDEX
       }
-      let current = document.querySelector(`#htm [level="${lastIndex}"]`)
+      console.log(lastIndex)
+      let current = document.querySelector(`#${hid} [level="${lastIndex}"]`)
       if (current) {
         current.setAttribute('selected', 1)
       }
@@ -251,30 +260,34 @@ export default {
       }
     }
 
-    onMounted(() =>{
-      setTimeout(() => {
-        document.getElementById('htm').addEventListener('click', onClick)
-      }, 30)
-    })
-
     onBeforeUnmount(() => {
-      document.getElementById('htm').removeEventListener('click', onClick)
+      document.getElementById(hid).removeEventListener('click', onClick)
     })
 
-    watch(state.value.control, (newVal) => {
-      let length = newVal.funcs.length
-      // console.log('sdsds', length)
-      setTimeout(() => {
-        setCursor(length - 1, 'add');
-        onChange()
-      }, 0)
-      // document.getElementById('htm').children[length - 1].setAttribute('selected', 1)
-    })
+
+    // watch(state.control, (newVal) => {
+    //
+    // })
 
     globalThis.testCalc = function () {
-      let evalStr = document.getElementById('htm').textContent;
+      let evalStr = document.getElementById(hid).textContent;
       return ZY_EXT.eval5(evalStr)
     }
+
+    let lifeTimes = {
+      onReady() {
+        setTimeout(() => {
+          document.getElementById(hid).addEventListener('click', onClick)
+        }, 30)
+      }
+    }
+
+    function onValueChanged() {
+      // console.log('  onValueInited', state)
+
+    }
+
+
 
     return {
       state,
@@ -283,7 +296,10 @@ export default {
       insertFun,
       insertText,
       backStep,
+      hid,
+      lifeTimes,
       insertedText,
+      onValueChanged,
       methods,
       onBlur,
       runFuncs,

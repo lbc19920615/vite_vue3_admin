@@ -1,4 +1,4 @@
-import {reactive, watch, inject} from "vue";
+import {reactive, watch, inject, getCurrentInstance, nextTick} from "vue";
 
 export let CustomRenderControlMixin = {
     props: {
@@ -83,6 +83,7 @@ export let provideDxValueTemplateMixin = {
 }
 
 export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
+    let instanse = getCurrentInstance()
     let lock = new ZY.Lock(/* optional lock name, should be unique */)
     let model = null;
     let data = function (opt) {
@@ -101,7 +102,7 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
 
     async function initValue(newVal, from) {
         if (handleValueInit) {
-            model.value = handleValueInit(newVal)
+            model.value = handleValueInit(newVal, from)
         } else {
             model.value = newVal
         }
@@ -111,6 +112,11 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
         if (!lock.isLocked) {
             // model.value = newVal
             initValue(newVal, FROM_TYPES.watch)
+            nextTick(() => {
+                if (instanse.ctx.onValueChanged) {
+                    instanse.ctx.onValueChanged()
+                }
+            })
         }
     }, {
     })
@@ -171,6 +177,9 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     function init(props) {
         // model.value = props.modelValue
         initValue(props.modelValue, FROM_TYPES.init)
+        if (instanse.ctx.onValueInited) {
+            instanse.ctx.onValueInited()
+        }
     }
 
     function onJSONChange(v = model.value) {
@@ -180,6 +189,7 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
 
     return {
         data,
+        FROM_TYPES,
         onJSONChange,
         init,
         listeners,
