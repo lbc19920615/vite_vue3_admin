@@ -46,7 +46,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-    {{state.value}}
+<!--    {{state.value}}-->
 <!--    <el-row>-->
 <!--      <el-button @click="save">保存</el-button>-->
     <div id="htm" class="cus-insert-html" v-html="runFuncs(state.value.control.funcs)"></div>
@@ -263,7 +263,7 @@ export default {
 
     watch(state.value.control, (newVal) => {
       let length = newVal.funcs.length
-      console.log('sdsds', length)
+      // console.log('sdsds', length)
       setTimeout(() => {
         setCursor(length - 1, 'add');
         onChange()
