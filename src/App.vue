@@ -131,7 +131,10 @@ ${item.value}
       let formAttr = buildObjAttrs(obj).trim()
 
       let ruleStr = parseRulesArrToStr(rules)
-      let rulesAttr = `:rules='${ruleStr}'`
+      let rulesAttr = ''
+      if (ruleStr) {
+        rulesAttr = `:rules='${ruleStr}'`
+      }
 
       let eventStr = parseEventsToStr(events)
 

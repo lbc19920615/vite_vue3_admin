@@ -282,6 +282,7 @@ import {plumbActionMixins, plumbLayoutMixn} from "@/plugins/PlumbLayout/mixin";
 import {createPlumbConfig} from "@/plugins/PlumbLayout/utils";
 import draggable from 'vuedraggable'
 import {toRaw} from "vue";
+import {getXmlData} from "@/views/about/components/PlumbLayout/xmlData";
 
 let UIMixin = {
   components: {
@@ -304,35 +305,7 @@ let UIMixin = {
   data() {
     return {
       panelOpend: true,
-      list1: [
-        {
-          name: '单行文本',
-          value: '',
-          id: ZY.rid(),
-          data: {
-            tagName: 'el-input',
-          },
-          lib: 'input'
-        },
-        {
-          name: '按钮',
-          value: '',
-          id: ZY.rid(),
-          data: {
-            tagName: 'el-button'
-          },
-          lib: 'input'
-        },
-        {
-          name: '下拉',
-          value: '',
-          id: ZY.rid(),
-          data: {
-            tagName: 'el-select'
-          },
-          lib: 'input'
-        },
-      ],
+      list1: getXmlData(),
       list2: [
         // {
         //   name: 'sdsds3',
@@ -613,7 +586,7 @@ export default {
       let eleGroup = this.buildedGroups.find(v => v.type === 'ele')
       if (eleGroup) {
         let dep = this.buildDepFromGroup(eleGroup)
-        console.log(eleGroup, dep)
+        // console.log(eleGroup, dep)
         dep.data = defaultData ?? {
           tagName: 'div'
         }

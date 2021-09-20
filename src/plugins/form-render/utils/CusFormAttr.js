@@ -37,21 +37,29 @@ export function parseRulesArrToStr(rules = [{value: ''}]) {
 // console.log(rules)
   let _ = ZY.lodash
   let JSON5 = ZY.JSON5
-  let arr = JSON5.parse(JSON5.stringify(rules))
+  try {
+    let arr = JSON5.parse(JSON5.stringify(rules))
 
-  let filtedArr = arr.map(v => {
-    let obj = JSON5.parse(v.value)
-    return _.pickBy(obj, function (item) {
-      if (typeof item === 'string') {
-        return item
-      }
-      return true
+    if (arr.length < 1) {
+      return ''
+    }
+
+    let filtedArr = arr.map(v => {
+      let obj = JSON5.parse(v.value)
+      return _.pickBy(obj, function (item) {
+        if (typeof item === 'string') {
+          return item
+        }
+        return true
+      })
     })
-  })
 
-  // console.log('parseRulesArrToStr', rules, filtedArr)
+    // console.log('parseRulesArrToStr', rules, filtedArr)
 
-  return JSON5.stringify(filtedArr)
+    return JSON5.stringify(filtedArr)
+  } catch (e) {
+    return ''
+  }
 }
 
 /**
@@ -62,14 +70,18 @@ export function parseRulesArrToStr(rules = [{value: ''}]) {
 export function parseEventsToStr(events = []) {
   let _ = ZY.lodash
   let JSON5 = ZY.JSON5
-  let arr = JSON5.parse(JSON5.stringify(events))
+  try {
+    let arr = JSON5.parse(JSON5.stringify(events))
 
-  let filtedArr = arr.map(v => {
-    let obj = JSON5.parse(v.value)
-    return `@${obj.type}="callEvent('${obj.eventName}', scope)"`
-  })
+    let filtedArr = arr.map(v => {
+      let obj = JSON5.parse(v.value)
+      return `@${obj.type}="callEvent('${obj.eventName}', scope)"`
+    })
 
-  console.log('parseEventsToStr', events, filtedArr)
+    // console.log('parseEventsToStr', events, filtedArr)
 
-  return filtedArr.join(' ')
+    return filtedArr.join(' ')
+  } catch (e) {
+    return ''
+  }
 }
