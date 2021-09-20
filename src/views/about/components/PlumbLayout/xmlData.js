@@ -1,6 +1,16 @@
 function generateHtmlTags() {
 //    h1 - h6
-    let tags = []
+    let tags = [
+        {
+            name: '自定义',
+            value: '',
+            id: ZY.rid(),
+            data: {
+                tagName: 'div'
+            },
+            lib: ''
+        },
+    ]
     for (let i = 1; i < 6; i++) {
         tags.push(
             {
@@ -52,15 +62,6 @@ export function getXmlData() {
             id: ZY.rid(),
             data: {
                 tagName: 'el-space'
-            },
-            lib: ''
-        },
-        {
-            name: '自定义',
-            value: '',
-            id: ZY.rid(),
-            data: {
-                tagName: 'div'
             },
             lib: ''
         },
