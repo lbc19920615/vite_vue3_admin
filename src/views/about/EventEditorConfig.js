@@ -95,21 +95,22 @@ export default {
                                             }
                                         }
                                     },
+                                    // value2: {
+                                    //     type: 'string',
+                                    //     tag: 'div',
+                                    //     ui: {
+                                    //         widget: 'CodeJsEditor',
+                                    //         widgetConfig: {
+                                    //             mode: 'text/html'
+                                    //         }
+                                    //     }
+                                    // },
                                     value: {
-                                        type: 'string',
-                                        tag: 'div',
-                                        ui: {
-                                            widget: 'CodeJsEditor',
-                                            widgetConfig: {
-                                                mode: 'text/html'
-                                            }
-                                        }
-                                    },
-                                    value2: {
                                         type: 'string',
                                         reflect: 'layouts',
                                         reflectTpl: `A.buildXML($VAL)`,
                                         ui: {
+                                            widget: 'CusXmlShower',
                                             widgetConfig: {
                                                 type: 'textarea',
                                                 disabled: true,
