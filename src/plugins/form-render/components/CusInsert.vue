@@ -106,6 +106,22 @@ export default {
             if (!obj.data) {
               obj.data = {}
             }
+            if (!obj.control) {
+              obj.control = {}
+            }
+
+            if (obj.data.funcs) {
+              obj.control.funcs = obj.data.funcs
+
+              lastIndex = obj.control.funcs.length - 1
+
+              setTimeout(() => {
+                setCursor(
+                    lastIndex,
+                    'init'
+                )
+              }, 30)
+            }
 
             // if (!obj.control.funcs) {
             //   obj.control.funcs = []
@@ -124,8 +140,10 @@ export default {
     init(props)
 
     function onChange() {
+      // state.value.data = state.value.control
       let clonedValue = JSON5.parse(JSON5.stringify(state.value))
       // console.log(clonedValue)
+      clonedValue.data = clonedValue.control
       Reflect.deleteProperty(clonedValue, 'control')
       let str =JSON5.stringify(clonedValue)
       methods.on_change(str)
@@ -155,7 +173,7 @@ export default {
     function insertFun(name) {
       resetFuncs()
       let index  = getIndex()
-      console.log(index)
+      // console.log(index)
       // state.value.control.funcs.push([ 'return \`<xy-text level="${INDEX}" mark>'+name+'(</xy-text>${VAL}<xy-text level="${INDEX}" mark>)</xy-text>\`'])
       state.value.control.funcs.splice(index, 0, [ 'return \`<z-math text-item name="'+name+'(" level="${INDEX}">${VAL}</z-math>\`'])
     }
@@ -163,7 +181,7 @@ export default {
     function insertText(v) {
       resetFuncs()
       let index  = getIndex()
-      console.log(index)
+      // console.log(index)
       state.value.control.funcs.splice(index, 0, [ 'return \`${VAL}<xy-text text-item level="${INDEX}">'+v+'</xy-text>\`'])
     }
 
@@ -246,7 +264,8 @@ export default {
       let length = newVal.funcs.length
 
       setTimeout(() => {
-        setCursor(length - 1, 'add')
+        setCursor(length - 1, 'add');
+        onChange()
       }, 0)
       // document.getElementById('htm').children[length - 1].setAttribute('selected', 1)
     })
