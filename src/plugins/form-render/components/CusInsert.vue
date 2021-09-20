@@ -186,8 +186,18 @@ export default {
     }
 
     function backStep() {
-      state.value.control.funcs.pop()
+      state.value.control.funcs.splice(lastIndex, 1)
       // console.log(state.value.control.funcs)
+      let Index = lastIndex - 1
+      if (Index < 0) {
+        Index = state.value.control.funcs.length - 1
+      }
+      setTimeout(() => {
+        setCursor(
+            Index,
+            'remove'
+        )
+      }, 30)
     }
 
     function setCursor(index, type) {
