@@ -44,7 +44,6 @@
               scope,
               value: $event
             })"></FormsManaSelect>
-        <FormsLayoutSelect></FormsLayoutSelect>
       </template>
     </CustomElement>
 
