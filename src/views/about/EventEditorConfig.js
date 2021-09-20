@@ -26,21 +26,27 @@ export default {
                         attrs: [['label-width', '150px']]
                     },
                     properties: {
-                        prop16sds: {
+                        // prop16sds: {
+                        //     type: 'string',
+                        //     hidden: true,
+                        //     ui: {
+                        //         widget: 'CusWidgetEditor',
+                        //         widgetConfig: {
+                        //             enums: "ROOT_STATE('tools.constVars_pageNames', [])",
+                        //         }
+                        //     }
+                        // },
+                        // prop15s: {
+                        //     type: 'string',
+                        //     hidden: true,
+                        //     ui: {
+                        //         widget: 'CusUI',
+                        //     }
+                        // },
+                        prop17s: {
                             type: 'string',
-                            hidden: true,
                             ui: {
-                                widget: 'CusWidgetEditor',
-                                widgetConfig: {
-                                    enums: "ROOT_STATE('tools.constVars_pageNames', [])",
-                                }
-                            }
-                        },
-                        prop15s: {
-                            type: 'string',
-                            hidden: true,
-                            ui: {
-                                widget: 'CusUI',
+                                widget: 'CusInsert',
                             }
                         },
                         name: {
