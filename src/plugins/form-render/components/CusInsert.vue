@@ -217,7 +217,7 @@ export default {
       // console.log(state.control.funcs)
       let Index = lastIndex - 1
       if (Index < 0) {
-        Index = state.control.funcs.length - 1
+        Index = 0
       }
       setTimeout(() => {
         setCursor(
