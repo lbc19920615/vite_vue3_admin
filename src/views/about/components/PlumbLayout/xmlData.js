@@ -4,7 +4,7 @@ function generateHtmlTags() {
     for (let i = 1; i < 6; i++) {
         tags.push(
             {
-                name: '自定义',
+                name: 'h' + i,
                 value: '',
                 id: ZY.rid(),
                 data: {

@@ -10,8 +10,28 @@
     .a-space-mb-#{$i} {
       margin-bottom: var(--z-size-#{$i});
     }
+    .a-space-ml-#{$i} {
+      margin-left: var(--z-size-#{$i});
+    }
+    .a-space-mr-#{$i} {
+      margin-right: var(--z-size-#{$i});
+    }
+    .a-space-mh-#{$i} {
+      margin-left: var(--z-size-#{$i});
+      margin-right: var(--z-size-#{$i});
+    }
     .a-space-pt-#{$i} {
       padding-top: var(--z-size-#{$i});
+    }
+    .a-space-pl-#{$i} {
+      padding-left: var(--z-size-#{$i});
+    }
+    .a-space-pr-#{$i} {
+      padding-right: var(--z-size-#{$i});
+    }
+    .a-space-ph-#{$i} {
+      padding-left: var(--z-size-#{$i});
+      padding-right: var(--z-size-#{$i});
     }
   }
 }

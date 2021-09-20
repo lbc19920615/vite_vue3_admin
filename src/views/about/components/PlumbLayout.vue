@@ -104,6 +104,10 @@ $sel: "." + $tag;
           margin-left: $element-list-item-x - $first-last-with;
         }
       }
+
+      &--hidden {
+        display: none;
+      }
     }
 
   }
@@ -147,22 +151,29 @@ $sel: "." + $tag;
         </el-row>
         <div class="element-panel">
 <!--          {{list1}}-->
-          <draggable
-              class="dragArea list-group"
-              v-model="list1"
-              @start="onDropStart"
-              @end="onDropEnd"
-              :group="{ name: 'people', pull: 'clone', put: false }"
-              :sort="false"
-              :disabled="disableDrag"
-              item-key="id"
-              tag="el-row"
-              style="align-items: flex-start; flex-wrap: wrap;"
-          >
-            <template #item="{element}">
-              <el-col class="list-group-item" :span="12"><div class="element-list-item">{{element.name}}</div></el-col>
-            </template>
-          </draggable>
+          <div class="a-space-mb-20 a-space-ph-10">
+            <el-input v-model="filterList1" placeholder="搜索"></el-input>
+          </div>
+          <div>
+            <draggable
+                class="dragArea list-group"
+                v-model="list1"
+                @start="onDropStart"
+                @end="onDropEnd"
+                :group="{ name: 'people', pull: 'clone', put: false }"
+                :sort="false"
+                :disabled="disableDrag"
+                item-key="id"
+                tag="el-row"
+                style="align-items: flex-start; flex-wrap: wrap;"
+            >
+              <template #item="{element}">
+                <el-col class="list-group-item"
+                        :class="list1ItemCls(element)"
+                        :span="12"><div class="element-list-item">{{element.name}}</div></el-col>
+              </template>
+            </draggable>
+          </div>
 
         </div>
       </div>
@@ -314,7 +325,8 @@ let UIMixin = {
         // },
       ],
       isDragging: false,
-      disableDrag: false
+      disableDrag: false,
+      filterList1: ''
     }
   },
   methods: {
@@ -340,6 +352,12 @@ let UIMixin = {
       }, added.element)
       this.disableDrag = false
       this.$emit('ele-drag-change')
+    },
+    list1ItemCls(element) {
+      let filted = !element.name.includes(this.filterList1)
+      return {
+        ['list-group-item--hidden']: filted
+      }
     }
   },
 }
