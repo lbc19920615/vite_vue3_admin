@@ -37,6 +37,11 @@ export default defineComponent({
     }
   },
   methods: {
+    getElementComponentTags() {
+      let appContext = getAppContext()
+      return Object.keys(appContext.components)
+          .filter(v => v.startsWith('El')).map(v => ZY.lodash.kebabCase(v))
+    },
     getDeeps(v1, v2) {
       // console.log('v1', v1, v2)
       return getDeepConfigFromLinksAndDeps(v1, v2)

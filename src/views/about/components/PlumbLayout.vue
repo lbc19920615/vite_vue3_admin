@@ -154,7 +154,7 @@ $sel: "." + $tag;
           <div class="a-space-mb-20 a-space-ph-10">
             <el-input v-model="filterList1" placeholder="搜索"></el-input>
           </div>
-          <div>
+          <div style="height: 450px; overflow: auto">
             <draggable
                 class="dragArea list-group"
                 v-model="list1"
@@ -302,8 +302,8 @@ let UIMixin = {
   computed: {
     styleObj() {
       return {
-        ['--ele-panel-width']: '320px',
-        ['--com-panel-width']: this.panelOpend ? '320px' : '70px',
+        ['--ele-panel-width']: '350px',
+        ['--com-panel-width']: this.panelOpend ? '350px' : '70px',
         ['--plumb-height']: '600px',
       }
     },
