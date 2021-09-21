@@ -34,14 +34,20 @@ let formDef = {
           name: {
             type: 'string',
           },
+          ui2: {
+              type: 'string',
+              ui: {
+                  widget: 'CusUI',
+              }
+          },
           ui: {
             type: 'string',
             ui: {
               label: 'UI',
-              widget: 'JsonCodeEditor',
+              // widget: 'JsonCodeEditor',
               widgetConfig: {
                 style: {
-                  height: "100px",
+                  // height: "100px",
                 }
               }
             }
