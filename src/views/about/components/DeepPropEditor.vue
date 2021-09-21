@@ -1,3 +1,9 @@
+<style>
+.deep-editor .el-drawer__body {
+  overflow: auto;
+}
+</style>
+
 <template>
 <div class="deep-editor">
   <div style="opacity: 0; font-size: 0; line-height: 0;">{{store.model}}</div>
@@ -38,6 +44,19 @@
               <template #form_array_before="scope">
                 <h3>{{scope.index}}</h3>
               </template>
+              <template #array_before="scope">
+                <el-col>
+                  <!--         <h3>{{ scope.key }}</h3>-->
+                  <el-button type="primary" size="small"
+                             @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加</el-button>
+                </el-col>
+              </template>
+              <template #array_item_after="scope">
+                <el-col>
+                  <el-button type="danger" size="small"
+                             @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除</el-button>
+                </el-col>
+              </template>
             </HttpComponent>
           </template>
         </div>
@@ -50,7 +69,7 @@
 <script>
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
 import {getCurrentInstance, nextTick, toRaw} from "vue";
-import {extendControl2Page, useControl, useAppPageControl} from "@/mixins/framework";
+import {extendControl2Page, useControl, useAppPageControl, extendCommonArrEventHandler} from "@/mixins/framework";
 
 let depManagerMixin = {
   data() {
@@ -234,6 +253,7 @@ export default {
       }
     })
     page = extendControl2Page(page)
+    let { EVENT_NAMES, onChange } = extendCommonArrEventHandler(page)
 
     let cachedDeepEditorModel = null
     page.setEventHandler({
@@ -307,7 +327,9 @@ export default {
       onDrawerClose,
       store: page.store,
       filter: page.filter,
+      EVENT_NAMES,
       allDef: page.defMap,
+      page,
     }
   }
 }

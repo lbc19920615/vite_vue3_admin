@@ -46,7 +46,7 @@ export default {
                                 widgetFormat: {
                                     type: 'string',
                                     ui: {
-                                        label: 'ui.widgetFormat'
+                                        label: 'UI widget格式化'
                                     }
                                 },
                                 label: {
@@ -65,7 +65,7 @@ export default {
                                     type: 'string',
                                     ui: {
                                         label: 'UI widgetConfig',
-                                        widget: 'JsonCodeEditor',
+                                        // widget: 'JsonCodeEditor',
                                         widgetConfig: {
                                             style: {}
                                         }
@@ -77,10 +77,29 @@ export default {
                             type: 'string',
                             ui: {
                                 label: 'RULES',
-                                widget: 'JsonCodeEditor',
+                                // widget: 'JsonCodeEditor',
                                 // widget: 'CodeJsEditor',
                                 widgetConfig: {
-                                    style: {height: '200px'}
+                                    // style: {height: '200px'}
+                                }
+                            }
+                        },
+                        rulesArr: {
+                            type: 'array',
+                            ui: {
+                                label: '校验'
+                            },
+                            items: {
+                                type: "object",
+                                properties: {
+                                    value: {
+                                        type: 'string',
+                                        ui: {
+                                            widget: 'CusFormRules',
+                                            widgetConfig: {
+                                            }
+                                        },
+                                    },
                                 }
                             }
                         }
