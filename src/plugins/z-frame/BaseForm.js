@@ -35,6 +35,14 @@ export function createStaticFormCls() {
       }, self.STORAGE_KEY + '_' + fileName)
     }
 
+    static async readFile() {
+      let self = this
+
+      let obj = await ZY_EXT.fileOpenJSON5()
+      let {data} = obj
+      return data
+    }
+
     static async loadFile() {
       let self = this
 

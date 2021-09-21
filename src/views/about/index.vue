@@ -125,6 +125,8 @@
             <template v-if="scope.key === 'layoutSlotArr'">
               <el-button size="small"
                          @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
+              <el-button size="small"
+                         @click="page.callEvent(`load:single:${scope.key}`, scope)">导入{{ scope.key }}</el-button>
             </template>
           </el-space>
         </template>
@@ -324,7 +326,20 @@ export default defineComponent({
         } catch (e) {
         //
         }
-
+      },
+      async ['load:single:layoutSlotArr'](e) {
+        let { parts, partName, selfpath } = e
+        // console.log(parts[partName], selfpath)
+        try {
+          let data = await FormsLayout.readFile()
+          let appendData = data[0].value
+          let updatedPath = `${selfpath}`
+          console.log('sdsdsds', updatedPath,appendData)
+          parts[partName].setModelByPath(updatedPath, appendData)
+        } catch (e) {
+          //
+          console.log(e)
+        }
       },
       async ['save:single:forms'](e) {
         let { parts, partName, selfpath } = e
