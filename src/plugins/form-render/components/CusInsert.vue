@@ -54,8 +54,7 @@
     <div>
       <el-button @click="backStep">退格</el-button>
       <template v-for="item in insertedText">
-
-        <el-button @click="insertText(`${item}`)">{{item}}</el-button>
+        <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
       </template>
       <el-button @click="insertFun('Math')">插入函数</el-button>
       <el-button @click="insertFun('')">插入括号</el-button>
@@ -85,7 +84,7 @@ export default {
     let hid = 'htm' + ZY.rid(6).toLowerCase()
 
     let insertedText = [
-        '+', '-', '*', '/', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+        '+', '-', '*', '/', '1', '2', '3', '4', '5', '6', '7', '8', '9', '&#8986;'
     ]
 
     let inited = false
