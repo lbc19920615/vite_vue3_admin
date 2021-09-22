@@ -23,6 +23,11 @@
         <el-row class="a-space-mb-10">
           <el-button type="primary" @click="save">保存</el-button>
         </el-row>
+        <div>
+          <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>
+<!--          <el-input type="textarea" readonly-->
+<!--                    :value="getXMLDisplay(state.value)"></el-input>-->
+        </div>
         <ZLayoutEditor
             :ref="setLayoutRef"
             :controls="false"
@@ -42,6 +47,7 @@ import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-rende
 import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
 import {onBeforeUnmount} from "vue";
 import {clearPlumbLayoutStorage} from "@/plugins/PlumbLayout/mixin";
+import EwXmlShower from "@/components/Ew/EwXmlShower.vue";
 
 async function cachedArrOperate(key = '', fun = () => {} ) {
   let cachedKeys = await ZY_EXT.store.getItem(key)
@@ -55,7 +61,7 @@ async function cachedArrOperate(key = '', fun = () => {} ) {
 
 export default {
   name: 'CusLayoutEditor',
-  components: {ZLayoutEditor},
+  components: {EwXmlShower, ZLayoutEditor},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -140,7 +146,9 @@ export default {
       await save();
     }
 
-
+    function getXMLDisplay(v) {
+      return getApp().buildXML(v)
+    }
 
     onBeforeUnmount(() => {
       if (layoutRef) {
@@ -160,6 +168,7 @@ export default {
       storePrefix,
       save,
       setLayoutRef,
+      getXMLDisplay,
       widgetConfig: props.ui.widgetConfig,
       methods,
       listeners,
