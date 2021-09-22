@@ -79,40 +79,40 @@
           :is="store.model.textarea_step"
           :debug="false"
       >
-        <template #array_prev="scope">
+        <template #array_beforebegin="scope">
           <template v-if="scope.key === 'events'">
             <el-space   align="middle">
               <h3>事件</h3>
-              <el-button size="small" @click="page.callEvent('add:events', scope)">添加{{ scope.key }}</el-button>
-              <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}管理</el-button>
+              <el-button size="small" @click="page.callEvent('add:events', scope)">添加{{ scope.label }}</el-button>
+              <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.label }}管理</el-button>
             </el-space>
           </template>
           <template v-else-if="scope.key === 'layoutSlotArr'">
             <el-space   align="middle">
               <h3>片段</h3>
-              <el-button size="small" @click="page.callEvent('add:arr:common', scope)">添加{{ scope.key }}</el-button>
-              <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.key }}管理</el-button>
+              <el-button size="small" @click="page.callEvent('add:arr:common', scope)">添加{{ scope.label }}</el-button>
+              <el-button size="small" @click="page.callEvent(`open:${scope.key}`, scope)">打开{{ scope.label }}管理</el-button>
             </el-space>
           </template>
           <template v-else-if="scope.key === 'forms'">
             <el-space   align="middle">
               <h3>表单</h3>
-              <el-button size="small" @click="page.callEvent('add:forms', scope)">添加{{ scope.key }}</el-button>
-              <el-button size="small" @click="page.callEvent(`open:forms`, scope)">打开{{ scope.key }}管理</el-button>
+              <el-button size="small" @click="page.callEvent('add:forms', scope)">添加{{ scope.label }}</el-button>
+              <el-button size="small" @click="page.callEvent(`open:forms`, scope)">打开{{ scope.label }}管理</el-button>
             </el-space>
           </template>
           <template v-else>
             <!-- -->
           </template>
         </template>
-        <template #array_before="scope">
+        <template #array_afterbegin="scope">
           <el-col v-if="scope.key !== 'events' && scope.key !== 'layoutSlotArr' && scope.key !== 'forms'" >
             <el-space align="middle">
               <h3>{{ scope.selfpath }}</h3>
             </el-space>
           </el-col>
         </template>
-        <template #array_item_after="scope">
+        <template #array_con_beforeend="scope">
           <el-space wrap>
             <el-popconfirm title="确定删除吗？" @confirm="page.callEvent('remove:events', scope)">
               <template #reference>
@@ -137,7 +137,7 @@
             </template>
           </el-space>
         </template>
-        <template #form_before="scope">
+        <template #form_beforebegin="scope">
           <div class="mao-bo-li" style="position: sticky; top: 0; z-index: 121212121; padding: var(--z-size-10) var(--z-size-10)">
             <el-space>
               <el-button type="primary" @click="page.callEvent('call:save', scope)">保存</el-button>
@@ -148,7 +148,7 @@
             </el-space>
           </div>
         </template>
-        <template #prop_before="scope">
+        <template #prop_beforebegin="scope">
           <!--          {{scope}}-->
           <template v-if="scope.selfpath === 'props'">
             <h3>页面变量</h3>

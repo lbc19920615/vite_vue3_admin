@@ -229,6 +229,7 @@ export default {
                             tag: 'my-vue-tab',
                             con_tag: 'my-vue-tab-pane',
                             ui: {
+                                label: '表单',
                                 attrs: [
                                     ['scroll-control', 'page_forms'],
                                 ],
@@ -275,6 +276,7 @@ export default {
                             tag: 'my-vue-tab',
                             con_tag: 'my-vue-tab-pane',
                             ui: {
+                              label: '事件',
                               attrs:
                                 [
                                   ['scroll-control', 'page_events'],
