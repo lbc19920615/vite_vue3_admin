@@ -52,6 +52,7 @@ export default {
                         name: {
                             type: 'string',
                             ui: {
+                                label: '页面名称',
                                 attrs: [
                                     ['scroll-control', 'page_name'],
                                 ],
@@ -252,6 +253,7 @@ export default {
                                         type: 'string',
                                         tag: 'div',
                                         ui: {
+                                            label: '表单名',
                                             widget: 'CusSuggest',
                                             widgetConfig: {
                                                 enums: "ROOT_STATE('tools.constVars_processSteps', [])",
@@ -262,6 +264,7 @@ export default {
                                         type: 'string',
                                         tag: 'div',
                                         ui: {
+                                            label: '表单值',
                                             widget: 'CusForm',
                                             widgetConfig: {
                                                 enums: "ROOT_STATE('tools.propTypes', [])",
@@ -302,6 +305,7 @@ export default {
                                         type: 'string',
                                         tag: 'div',
                                         ui: {
+                                            label: '事件名',
                                             widget: 'CusSuggest',
                                             widgetConfig: {
                                                 enums: "ROOT_STATE('tools.constVars_eventSuggests', [])",
@@ -312,6 +316,7 @@ export default {
                                         type: 'string',
                                         tag: 'div',
                                         ui: {
+                                            label: '事件处理代码',
                                             widget: 'CodeJsEditor',
                                             widgetConfig: {
 
