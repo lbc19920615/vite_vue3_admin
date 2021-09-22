@@ -23,7 +23,31 @@ let objArr = pos_arr.map((v, index) => {
   }
 })
 
-console.log(objArr)
+let arrArr = pos_arr.map((v, index) => {
+  return {
+    label: 'Array ' + v,
+    value: 'array_' + v,
+    labelTip: pos_notice[index].replace('$VAL', '数组外层')
+  }
+})
+
+let arrConArr = pos_arr.map((v, index) => {
+  return {
+    label: 'Array 内部' + v,
+    value: 'array_con_' + v,
+    labelTip: pos_notice[index].replace('$VAL', '数组内层')
+  }
+})
+
+let propArr = pos_arr.map((v, index) => {
+  return {
+    label: 'Prop 内部' + v,
+    value: 'prop_' + v,
+    labelTip: pos_notice[index].replace('$VAL', '属性')
+  }
+})
+
+// console.log(objArr)
 
 const slotTypes = [
   {
@@ -36,7 +60,10 @@ const slotTypes = [
     value: 'object_beforebegin',
     labelTip: '对象前面',
   },
-  ...objArr
+  ...objArr,
+  ...arrArr,
+  ...arrConArr,
+  ...propArr
 ]
 
 const store = {
