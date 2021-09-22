@@ -89,6 +89,7 @@ export default {
                                         label: '组件配置',
                                         widget: 'CusWidgetEditor',
                                         widgetConfig: {
+                                            enums: "[]",
                                         }
                                     }
                                 },
