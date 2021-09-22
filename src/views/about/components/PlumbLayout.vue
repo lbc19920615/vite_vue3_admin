@@ -313,9 +313,15 @@ let UIMixin = {
       }
     }
   },
+  props: {
+    openPanel: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
-      panelOpend: true,
+      panelOpend: this.openPanel,
       list1: getXmlData(),
       list2: [
         // {

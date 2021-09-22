@@ -1,3 +1,10 @@
+<style lang="scss">
+.page-layout-editor {
+  .element-panel {
+    display: none;
+  }
+}
+</style>
 
 <template>
   <div class="page-search" v-if="page.inited">
@@ -160,6 +167,8 @@
     <ZLayoutEditor
         :ref="layoutRef"
         :controls="false"
+        :open-panel="false"
+        class="page-layout-editor"
         @save-layout="demo.onSaveLayout"></ZLayoutEditor>
 
   </div>

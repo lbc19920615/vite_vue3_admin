@@ -25,6 +25,7 @@
             :root-id="rootId"
             :handleAppend="handleAppend"
             :handle-dep="handleDep"
+            :open-panel="openPanel"
             :handle-group="handleGroup"
             @delete-dep="onDeleteDep"
             @save-data="onSaveData"
@@ -249,6 +250,10 @@ export default defineComponent({
       default: 'play'
     },
     controls: {
+      type: Boolean,
+      default: true
+    },
+    openPanel: {
       type: Boolean,
       default: true
     }
