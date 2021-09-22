@@ -283,7 +283,7 @@ export default {
                               conAttrs: [
                                   // ['class', 'my-tab'],
                                   {
-                                      prefixValue: '"event"+',
+                                      prefixValue: '"事件"+',
                                       // prefixValue: 'valTpl("A.test("+',
                                       // suffixValue: ' +")" )',
                                       handler: ['c', 'return [":name", c.indexKey]']
