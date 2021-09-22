@@ -34,18 +34,19 @@ $sel: "." + $tag;
 
         <div class="item header" :data-pid="dep.id"
              :id="dep.id + '-top'">
-          <el-space>
-            <div>type: {{dep.type}}</div>
-            <div>id: {{dep.id}}</div>
-          </el-space>
+          <div style="line-height: 1.4">
+            <div>类型: {{dep.type}}</div>
+            <div>ID: {{dep.id}}</div>
+          </div>
         </div>
 
         <template v-if="!dep.config.closure">
 <!--          <p style="margin: 10px 0;">items</p>-->
           <template v-for="(item, index) in dep.items" :key="item.id">
             <div :id="item.id" :data-pid="dep.id" class="item content-item">
-              <div>
-                <el-input v-if="dep.type !== 'array'" v-model="item.key" placeholder="请填写key"></el-input>
+              <div class="a-space-mr-10">
+                <el-input v-if="dep.type !== 'array'"
+                          v-model="item.key" placeholder="请填写key"></el-input>
                 <div v-else>{{item.key}}</div>
               </div>
               <template v-if="dep.type === 'array'">
