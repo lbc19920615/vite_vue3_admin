@@ -93,12 +93,9 @@ export default {
                                             label: '片段名',
                                             widget: 'CusSuggest',
                                             widgetConfig: {
-                                                suggest: [
-                                                    {
-                                                        label: 'Form After',
-                                                        value: 'form_after',
-                                                    }
-                                                ]
+                                                useLabelTip: 'labelTip',
+                                                enums: "ROOT_STATE('tools.slotTypes', [])",
+                                                listStyle: 'height: 300px; overflow: auto;'
                                             }
                                         }
                                     },

@@ -2,6 +2,9 @@
 .cus-suggest__button {
   //margin: initial;
 }
+.cus-sugges__con {
+  min-height: 200px
+}
 </style>
 
 <template>
@@ -13,7 +16,7 @@
         <e-popover
             class="cus-suggest__popover"
             :placement="widgetConfig.placement"
-            :width="400"
+            :width="widgetConfig.poperWidth ? widgetConfig.poperWidth : 450"
             trigger="click"
             :append-to-body="true"
             :teleportTo="getWidgetConfig('teleportTo')"
@@ -21,8 +24,13 @@
           <template #reference>
             <el-button class="cus-suggest__button" @click="setRefMan(true)">选择</el-button>
           </template>
-          <div  style="min-height: 200px">
-            <SimpleList v-if="refMan.showed" :suggest="getSuggest()" @select-item="selectSuggest"></SimpleList>
+          <div class="cus-sugges__con">
+            <SimpleList v-if="refMan.showed"
+                        :suggest="getSuggest()"
+                        :column="extendColumn"
+                        :class="widgetConfig.listCls ? widgetConfig.listCls : ''"
+                        :con-style="widgetConfig.listStyle ? widgetConfig.listStyle : ''"
+                        @select-item="selectSuggest"></SimpleList>
           </div>
         </e-popover>
       </template>
@@ -32,7 +40,7 @@
 </template>
 
 <script>
-import {getCurrentInstance} from 'vue'
+import {getCurrentInstance, resolveComponent} from 'vue'
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
 import {useArrHandler, useReloadMan} from "@/views/home/hooks";
@@ -59,6 +67,24 @@ export default {
       search: ''
     })
     init(props)
+
+    let extendColumn = [
+      {
+        prop: 'label',
+        width: '150px',
+        render(h, props) {
+          const scope = props.scope
+          let tooltip = resolveComponent('el-tooltip')
+          let text = h('span', {}, scope.row.label)
+          let icon = h('i', {class: 'el-icon-info a-space-ml-10'})
+          let tip =  h(tooltip, {
+            content: scope.row.labelTip,
+            placement: 'right'
+          }, [icon])
+          return h('div', {}, [text, tip])
+        }
+      }
+    ]
 
     let [refMan, setRefMan] = useReloadMan({timeout: 500})
 
@@ -113,9 +139,11 @@ export default {
       }
     }
 
+
     return {
       state,
       initSearch,
+      extendColumn,
       searchSuggest,
       getSuggest,
       selectSuggest,

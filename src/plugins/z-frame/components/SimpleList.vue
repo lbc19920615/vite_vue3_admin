@@ -1,10 +1,12 @@
 <template>
-  <div>
+  <div class="simple-list">
 <!--    {{state}}-->
     <el-form-item>
       <el-input v-model="state.search" @input="handleSearch"></el-input>
     </el-form-item>
-    <div class="simple-list-con" :class="conClass">
+    <div class="simple-list-con"
+         :style="conStyle"
+         :class="conClass">
       <z-table border stripe
                :actions="state.actions"
                :actionProps="actionProps"
@@ -30,7 +32,8 @@ export default {
         return {width: '100px'}
       }
     },
-    conClass: String
+    conClass: String,
+    conStyle: String
   },
   components: {
     ZTable
@@ -44,6 +47,7 @@ export default {
 
     let customColumn = []
     if (Array.isArray(props.column)) {
+      // customColumn = [].concat(column)
       props.column.forEach(item => {
         let _item = item
         if (_item.prop) {
@@ -53,6 +57,12 @@ export default {
           }
         }
         customColumn.push(toRaw(_item))
+      })
+      column.forEach(item => {
+        let finded = customColumn.find(v => v.prop === item.prop)
+        if (!finded) {
+          customColumn.push(toRaw(item))
+        }
       })
     } else {
       customColumn = column
