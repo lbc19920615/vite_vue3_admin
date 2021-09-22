@@ -17,4 +17,6 @@ export function install (app) {
       CustomVueComponent.register(com)
     }
   })
+
+  app.config.globalProperties.$lodash = ZY.lodash
 }

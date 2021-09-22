@@ -9,7 +9,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-    {{state.value}}
+<!--    {{state.value}}-->
 <!--    <el-row>-->
 <!--      <el-button @click="save">保存</el-button>-->
 <!--    </el-row>-->
@@ -110,7 +110,7 @@ export default {
 
 
     function onAttrsChange(e) {
-      console.log('onAttrsChange', e.props)
+      // console.log('onAttrsChange', e.props)
       // state.value.attrsObj = e
 
       state.value.data.attrs = e.props.filter(v => {

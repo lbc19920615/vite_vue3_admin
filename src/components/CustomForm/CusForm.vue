@@ -22,7 +22,7 @@
             v-if="!useDrag || store.model.dialog_open"
         >
           <template #array_item_before="scope">
-            <h3>{{ scope.key }}</h3>
+            <h3>{{getArrItemBeforeKey(scope)}}</h3>
           </template>
           <template #array_before="scope">
             <!--        <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>-->
@@ -37,7 +37,7 @@
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import HttpComponent from "@/components/HttpComponent.vue";
 import {extendControl2Page, useControl} from "@/mixins/framework";
-import {nextTick, onMounted} from 'vue';
+import {getCurrentInstance, inject, nextTick, onMounted, onBeforeMount} from 'vue';
 import CustomElement from "@/components/CustomElement.vue";
 
 export default {
@@ -49,6 +49,7 @@ export default {
   props: {
   },
   setup(props, ctx) {
+    let instanse = getCurrentInstance()
     let locks = true
     let cached = null
     let { methods, init, data } = defineCustomRender(props, ctx, {
@@ -121,12 +122,16 @@ export default {
 
     let setStepModel = null
 
+    let self_config = {}
+
     onMounted(function () {
       page.commonLoadStep(
           import('@/plugins/CusForm/formEditorConfig.js'),
           'editor_step',
           {
             async onMounted(config, {setPartModel}) {
+              self_config = config
+
               init(props)
               setStepModel = function () {
                 if (cached) {
@@ -167,11 +172,32 @@ export default {
       useDrag = props.ui.widgetConfig.useDrag
     }
 
+    // let CurCmField = inject('CurCmField')
+
+    //context.get_SELF_CONFIG('properties.parts.ui.label')
+    function getArrItemBeforeKey(scope) {
+      // let fieldContext = globalThis.cmFieldContext.get(props.field_uuid)
+      // console.log(scope, self_config)
+
+      let c = {
+        config: self_config.init.def
+      }
+
+      let partCONFIG =  ZY.lodash.get(c, scope.configPath)
+
+      // console.log(partCONFIG)
+
+      let label = ZY.getStrFromObj(partCONFIG, 'ui.label', scope.key)
+
+      return label
+    }
+
     return {
       dialogName,
       widgetConfig: props.ui.widgetConfig,
       page,
       openDialog,
+      getArrItemBeforeKey,
       useDrag,
       onClosed,
       store: page.store

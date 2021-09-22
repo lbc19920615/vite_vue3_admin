@@ -16,6 +16,9 @@ let formDef = {
     },
     parts: {
       type: 'array',
+      ui: {
+        label: "部分"
+      },
       items: {
         type: "object",
         properties: {
@@ -37,18 +40,23 @@ let formDef = {
           ui2: {
               type: 'string',
               ui: {
-                  widget: 'CusUI',
+                widget: 'CusUI',
+                label: '样式',
               }
           },
           ui: {
             type: 'string',
+            reflect: 'ui2',
+            reflectTpl: 'A.parseUIObj($VAL)',
             ui: {
               label: 'UI',
               // widget: 'JsonCodeEditor',
               widgetConfig: {
-                style: {
-                  // height: "100px",
-                }
+                type: 'textarea',
+                disabled: true,
+              //   style: {
+              //     // height: "100px",
+              //   }
               }
             }
           },
@@ -67,14 +75,14 @@ let formDef = {
             ui: {
               widgetConfig: {
                 type: 'textarea',
-                readonly: true,
+                disabled: true,
               }
             }
           },
           defaultVal: {
             type: 'string',
             ui: {
-              label: 'DEFAULT',
+              label: '默认值',
               widget: 'JsonCodeEditor',
               widgetConfig: {
                 style: {

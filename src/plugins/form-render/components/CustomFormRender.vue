@@ -19,7 +19,8 @@ export default defineComponent({
     part_key: String,
     context: null,
     rules: null,
-    modelValue: null
+    modelValue: null,
+    field_uuid: String
   },
   emits: [
     'fchange',
@@ -31,7 +32,7 @@ export default defineComponent({
     const widgetInstance = ref()
     const widgetDef = resolveComponent(widget)
 
-    // console.log('context', props.context)
+    // console.log('context', props.field_uuid)
 
     const obj = reactive({
       value: props.modelValue
@@ -71,7 +72,7 @@ export default defineComponent({
       emit('change', e)
     }
 
-    return () => (<widgetDef ui={props.ui} props={props} defs={props} part_key={props.part_key} context={props.context} rules={props.rules} ref={widgetInstance} onFchange={onFchange} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
+    return () => (<widgetDef ui={props.ui} field_uuid={props.field_uuid} props={props} defs={props} part_key={props.part_key} context={props.context} rules={props.rules} ref={widgetInstance} onFchange={onFchange} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
   }
 })
 </script>

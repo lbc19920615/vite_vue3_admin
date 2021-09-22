@@ -43,12 +43,12 @@ export default {
                         //         widget: 'CusUI',
                         //     }
                         // },
-                        prop17s: {
-                            type: 'string',
-                            ui: {
-                                widget: 'CusInsert',
-                            }
-                        },
+                        // prop17s: {
+                        //     type: 'string',
+                        //     ui: {
+                        //         widget: 'CusInsert',
+                        //     }
+                        // },
                         name: {
                             type: 'string',
                             ui: {

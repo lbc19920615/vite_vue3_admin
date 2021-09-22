@@ -146,6 +146,24 @@ ${item.value}
       return formAttr + ' ' + rulesAttr + ' ' + eventStr
     },
 
+    parseUIObj(uiJSON5 = '') {
+
+      try {
+        let ret = {}
+        let obj = ZY.JSON5.parse(uiJSON5)
+        let classes = obj.data.class ?? []
+        let attrs = obj.data.attrs ?? []
+        // console.log(classes, attrs)
+        ret.attrs = attrs
+        ret.class = classes
+        return ZY.JSON5.stringify(ret, null, 2)
+      } catch (e) {
+        console.error(e)
+      }
+
+      return '{}'
+    },
+
     test(v) {
       console.log('call app test')
       return v

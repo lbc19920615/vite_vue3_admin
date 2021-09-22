@@ -29,7 +29,8 @@ export let CustomRenderControlMixin = {
             default() {
                 return {}
             }
-        }
+        },
+        field_uuid: String
     },
     emits: [
         'valuechange'
