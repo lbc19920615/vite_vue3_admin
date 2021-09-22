@@ -42,32 +42,54 @@ export default {
                         },
                         ui: {
                             type: 'object',
+                            ui: {
+                              label: "UI"
+                            },
                             properties: {
                                 widgetFormat: {
                                     type: 'string',
                                     ui: {
-                                        label: 'UI widget格式化'
+                                        label: 'widget格式化'
                                     }
                                 },
                                 label: {
                                     type: 'string',
                                     ui: {
-                                        label: 'UI label'
+                                        label: 'LABEL'
                                     }
                                 },
                                 widget: {
                                     type: 'string',
                                     ui: {
-                                        label: 'UI widget'
-                                    }
+                                        label: 'widget',
+                                        widgetConfig: {
+                                            disabled: true,
+                                        }
+                                    },
+                                    computedProp: 'swidget',
+                                    // reflect: 'widget2',
+                                    // reflectTpl: 'A.getWidgetEditor($VAL, "widget")'
                                 },
                                 widgetConfig: {
                                     type: 'string',
                                     ui: {
-                                        label: 'UI widgetConfig',
+                                        label: 'widgetConfig',
                                         // widget: 'JsonCodeEditor',
                                         widgetConfig: {
+                                            type: 'textarea',
+                                            disabled: true,
                                             style: {}
+                                        }
+                                    },
+                                    computedProp: 'swidget_config',
+                                },
+                                widget2: {
+                                    type: 'string',
+                                    ui: {
+                                        label: '组件配置',
+                                        widget: 'CusWidgetEditor',
+                                        widgetConfig: {
+                                            enums: "ROOT_STATE('tools.constVars_pageNames', [])",
                                         }
                                     }
                                 },
@@ -80,6 +102,8 @@ export default {
                                 // widget: 'JsonCodeEditor',
                                 // widget: 'CodeJsEditor',
                                 widgetConfig: {
+                                    type: 'textarea',
+                                    disabled: true
                                     // style: {height: '200px'}
                                 }
                             }
@@ -87,7 +111,7 @@ export default {
                         rulesArr: {
                             type: 'array',
                             ui: {
-                                label: '校验'
+                                label: '校验规则'
                             },
                             items: {
                                 type: "object",
@@ -105,7 +129,11 @@ export default {
                         }
                     }
                 },
-                computed: {doubled: "MODEL('name', '') + ',s'"}
+                computed: {
+                    // doubled: "MODEL('name', '') + ',s'",
+                    swidget: `A.getWidgetEditor(MODEL('ui.widget2'), 'widget')`,
+                    swidget_config: `A.JSON5_stringify(A.getWidgetEditor(MODEL('ui.widget2'), 'widgetConfig'))`
+                }
             }]
         }, args: {src: 'comformscr2.twig'}
     }

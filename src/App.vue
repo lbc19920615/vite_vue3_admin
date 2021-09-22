@@ -163,6 +163,36 @@ ${item.value}
 
       return '{}'
     },
+    JSON5_stringify(v, tab = 2) {
+      return ZY.JSON5.stringify(v, null, tab)
+    },
+
+    getWidgetEditor(uiJSON5, path) {
+      try {
+        // let ret = {}
+        // let obj = uiJSON5
+        // let classes = obj.data.class ?? []
+        // let attrs = obj.data.attrs ?? []
+        // // console.log(classes, attrs)
+        // ret.attrs = attrs
+        // ret.class = classes
+        // return ZY.JSON5.stringify(ret, null, 2)
+        if (uiJSON5) {
+          let obj = ZY.JSON5.parse(uiJSON5)
+          // console.log('obj', obj, path)
+          if (obj.data) {
+            let ret =  ZY.lodash.get(obj.data, path)
+            // console.log('sdsdsds', ret)
+            return ret
+          }
+        }
+        return ''
+      } catch (e) {
+        console.error(e)
+      }
+
+      return ''
+    },
 
     test(v) {
       console.log('call app test')

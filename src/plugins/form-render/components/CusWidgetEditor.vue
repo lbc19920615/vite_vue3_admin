@@ -45,6 +45,11 @@ export default {
     let AppComponents = []
     let BASE_SUGGEST = []
     let properties = {}
+    let widgetFormLocks = true
+
+    let [refMan, setRefMan] = useReloadMan({timeout: 500})
+
+
     let { data, methods, listeners, init, onJSONChange } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
         if (!newVal) {
@@ -67,7 +72,6 @@ export default {
               obj.control.widget = obj.data.widget
             }
 
-            initCurrentComponent(obj.data.widget)
 
             return obj
           } catch (e) {
@@ -94,9 +98,12 @@ export default {
     }
 
     function initCurrentComponent(v) {
-      state.currentComponent = AppComponents[v]
-      setRefMan()
-      console.log('initCurrentComponent', AppComponents[v])
+      // console.log('AppComponents', AppComponents, v)
+      if (AppComponents[v]) {
+        widgetFormLocks = true
+        state.currentComponent = AppComponents[v]
+        setRefMan()
+      }
     }
 
     function onWidgetChange() {
@@ -148,6 +155,10 @@ export default {
         // console.log('sdsdsdsds')
 
         state.inited = true
+
+        setTimeout(() => {
+          initCurrentComponent(state.value.data.widget)
+        }, 100)
       }
 
     }
@@ -209,11 +220,22 @@ export default {
     }
 
     function onModelChange(e) {
-      console.log('onModelChange', e.model, e)
+      if (widgetFormLocks) {
+        widgetFormLocks = false
+        if (state.value.data.widgetConfig) {
+          // console.log(
+          //     state.value.data.widgetConfig
+          // )
+          for (let key in  state.value.data.widgetConfig) {
+            e.model[key] = state.value.data.widgetConfig[key]
+          }
+        }
+      } else {
+        // console.log('onModelChange', e.model, e)
+        state.value.data.widgetConfig = toRaw(e.model)
+        onChange()
+      }
     }
-
-    let [refMan, setRefMan] = useReloadMan({timeout: 500})
-
     return {
       state,
       widgetConfig: props.ui.widgetConfig,

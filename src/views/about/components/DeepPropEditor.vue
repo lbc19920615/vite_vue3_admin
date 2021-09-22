@@ -11,7 +11,8 @@
 <!--  {{rootId}}-->
   <el-row type="flex">
     <el-button @click="dialogVisible = true">编辑</el-button>
-    <el-dialog   v-model="dialogVisible" title="" width="96vw"
+    <el-dialog
+        v-model="dialogVisible" title="" width="96vw"
     :before-close="onBeforeClose"
     >
       <AsyncPlumbLayout
@@ -44,9 +45,12 @@
               <template #form_array_before="scope">
                 <h3>{{scope.index}}</h3>
               </template>
+              <template #object_prev="scope">
+                <h3>{{getArrItemBeforeKey(scope)}}</h3>
+              </template>
               <template #array_before="scope">
                 <el-col>
-                  <!--         <h3>{{ scope.key }}</h3>-->
+                   <h3>{{ getArrItemBeforeKey(scope) }}</h3>
                   <el-button type="primary" size="small"
                              @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加</el-button>
                 </el-col>
@@ -105,7 +109,8 @@ let plumbLayoutMixin = {
       showCurrent: true,
       currentLinks: [],
       jsonObj: {},
-      dialogVisible: false,
+      // dialogVisible: false,
+      dialogVisible: true,
       layoutContext: null,
       currentLayoutMap: {},
     }
@@ -272,6 +277,7 @@ export default {
     })
 
     let getPartForm2ModelContext = null
+    let self_config = {}
 
     async function loadStepByContent( varName = '', item) {
       let [,res] = await ZY.awaitTo(
@@ -279,6 +285,9 @@ export default {
       )
       const config = res.default
       config.name = ZY.rid()
+
+      self_config = config
+      // console.log(self_config)
 
       page.setDef(config, function ({done}) {
         let cached = null
@@ -321,6 +330,23 @@ export default {
       }
     }
 
+    function getArrItemBeforeKey(scope) {
+      // let fieldContext = globalThis.cmFieldContext.get(props.field_uuid)
+      // console.log(scope, self_config)
+
+      let c = {
+        config: self_config.init.def
+      }
+
+      let partCONFIG =  ZY.lodash.get(c, scope.configPath)
+
+      // console.log(partCONFIG)
+
+      let label = ZY.getStrFromObj(partCONFIG, 'ui.label', scope.key)
+
+      return label
+    }
+
     return {
       loadStepByContent,
       onBeforeClose,
@@ -329,6 +355,7 @@ export default {
       filter: page.filter,
       EVENT_NAMES,
       allDef: page.defMap,
+      getArrItemBeforeKey,
       page,
     }
   }
