@@ -142,7 +142,13 @@ $sel: "." + $tag;
     <div class="playground">
       <div class="com-panel">
         <div class="a-space-mb-10">
-          <el-button size="small" @click="togglePanel">toggle</el-button>
+          <el-button size="small" @click="togglePanel"
+                   >
+            <el-icon>
+              <Fold></Fold>
+            </el-icon>
+
+          </el-button>
         </div>
         <el-row align="middle" class="tools plumb-layout__tools">
           <el-button size="small" class="add-group-btn"
@@ -294,10 +300,12 @@ import {createPlumbConfig} from "@/plugins/PlumbLayout/utils";
 import draggable from 'vuedraggable'
 import {toRaw} from "vue";
 import {getXmlData} from "@/views/about/components/PlumbLayout/xmlData";
+import {Fold} from '@element-plus/icons'
 
 let UIMixin = {
   components: {
-    draggable
+    draggable,
+    Fold
   },
   computed: {
     styleObj() {

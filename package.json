@@ -13,6 +13,7 @@
     "stop": "npm run stop:ser && npm run rm"
   },
   "dependencies": {
+    "@element-plus/icons": "0.0.11",
     "@emmetio/codemirror-plugin": "^1.2.4",
     "async-validator": "^4.0.3",
     "axios": "^0.21.1",
