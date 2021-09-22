@@ -75,7 +75,7 @@ export default {
                                 ],
                                 conAttrs: [
                                     {
-                                        prefixValue: '"slot"+',
+                                        prefixValue: '"片段"+',
                                         handler: ['c', 'return [":name", c.indexKey]']
                                     }
                                 ],
@@ -90,6 +90,7 @@ export default {
                                         type: 'string',
                                         tag: 'div',
                                         ui: {
+                                            label: '片段名',
                                             widget: 'CusSuggest',
                                             widgetConfig: {
                                                 suggest: [
@@ -111,6 +112,18 @@ export default {
                                     //         }
                                     //     }
                                     // },
+                                    layouts: {
+                                        type: 'string',
+                                        tag: 'div',
+                                        ui: {
+                                            label: 'xml编辑',
+                                            widget: 'CusLayoutEditor',
+                                            widgetConfig: {
+                                                suffix: 'slayout',
+                                                mode: 'xml'
+                                            }
+                                        }
+                                    },
                                     value: {
                                         type: 'string',
                                         reflect: 'layouts',
@@ -120,17 +133,6 @@ export default {
                                             widgetConfig: {
                                                 type: 'textarea',
                                                 disabled: true,
-                                            }
-                                        }
-                                    },
-                                    layouts: {
-                                        type: 'string',
-                                        tag: 'div',
-                                        ui: {
-                                            widget: 'CusLayoutEditor',
-                                            widgetConfig: {
-                                                suffix: 'slayout',
-                                                mode: 'xml'
                                             }
                                         }
                                     },
