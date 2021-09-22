@@ -12,8 +12,8 @@ for (let [key, value] of Object.entries(constVars)) {
 //   <!-- beforeend -->
 // </p>
 // <!-- afterend -->
-let pos_arr = ['beforebegin', 'afterbegin', 'beforeend', 'afterend']
-let pos_notice = ['在$VAL元素前', '在$VAL元素后', '在$VAL元素内部前', '在$VAL元素内部后']
+let pos_arr = ['beforebegin', 'afterbegin', 'beforeend', 'afterend', 'prev', 'after', 'before', 'next']
+let pos_notice = ['在$VAL元素前', '在$VAL元素后', '在$VAL元素内部前', '在$VAL元素内部后', '在$VAL元素前', '在$VAL元素后', '在$VAL元素内部前', '在$VAL元素内部后']
 
 let objArr = pos_arr.map((v, index) => {
   return {
