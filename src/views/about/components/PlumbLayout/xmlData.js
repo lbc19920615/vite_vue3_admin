@@ -10,6 +10,15 @@ function generateHtmlTags() {
             },
             lib: ''
         },
+        {
+            name: 'template',
+            value: '',
+            id: ZY.rid(),
+            data: {
+                tagName: 'template'
+            },
+            lib: ''
+        },
     ]
     for (let i = 1; i < 6; i++) {
         tags.push(
