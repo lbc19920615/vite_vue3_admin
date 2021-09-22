@@ -9,10 +9,13 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-<!--    {{state.value}}-->
+    {{state.value}}
 <!--    <el-row>-->
 <!--      <el-button @click="save">保存</el-button>-->
 <!--    </el-row>-->
+    <h3>label</h3>
+    <el-input v-model="state.value.data.label" @blur="onBlur"></el-input>
+
     <h3>class</h3>
     <ZProps class="cus-ui__class-props" v-model:value="state.value.control.classObj" @form:input:blur="onBlur" @props-change="onClassChange"></ZProps>
 
@@ -51,7 +54,7 @@ export default {
           return newVal
         }
         if (newVal) {
-          // console.log('newVal', newVal, typeof  newVal)
+          console.log('newVal', newVal, typeof  newVal)
           try {
             obj = JSON5.parse(newVal)
             if (!obj.data) {
@@ -61,6 +64,7 @@ export default {
               obj.control = {}
             }
             // delete obj.data.classObj;
+
             if (obj.data.attrs) {
               let props = []
               for (let [key, value] of obj.data.attrs) {
