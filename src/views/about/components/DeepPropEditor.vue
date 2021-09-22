@@ -109,8 +109,8 @@ let plumbLayoutMixin = {
       showCurrent: true,
       currentLinks: [],
       jsonObj: {},
-      // dialogVisible: false,
-      dialogVisible: true,
+      dialogVisible: false,
+      // dialogVisible: true,
       layoutContext: null,
       currentLayoutMap: {},
     }
