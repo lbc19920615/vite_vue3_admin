@@ -167,9 +167,12 @@ class depPlugins {
 
     obj.ui.widgetFormat = 'datetime';
     let oldWidgetConfig = getDefaultJSONlikeObj(obj, 'ui.widgetConfig')
-    oldWidgetConfig['value-format'] = 'YYYY-MM-DD HH:mm:ss'
+    // oldWidgetConfig['value-format'] = 'YYYY-MM-DD HH:mm:ss'
     Reflect.deleteProperty(oldWidgetConfig, 'format')
     setDefaultJSONlikeObj(obj,  'ui.widgetConfig', oldWidgetConfig)
+    obj.ui.widgetExt = ZY.JSON5.stringify({
+      ['value-format']: 'YYYY-MM-DD HH:mm:ss'
+    },null,2)
 
     // console.log('prop.format date-time', obj.ui.widgetConfig)
   }

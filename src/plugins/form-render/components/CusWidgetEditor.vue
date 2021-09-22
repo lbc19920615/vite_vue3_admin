@@ -13,7 +13,8 @@
 
     <div v-if="state.currentComponent && refMan.showed">
 <!--      {{state.currentComponent}}-->
-      <z-http-com :resolve-config="resolveConfig" @http:model:change="onModelChange"></z-http-com>
+      <z-http-com :resolve-config="resolveConfig"
+                  @http:model:change="onModelChange"></z-http-com>
     </div>
 
 
@@ -73,6 +74,7 @@ export default {
             }
 
 
+
             return obj
           } catch (e) {
             console.error(e)
@@ -93,6 +95,7 @@ export default {
       let clonedValue = JSON5.parse(JSON5.stringify(state.value))
       // console.log(clonedValue)
       Reflect.deleteProperty(clonedValue, 'control')
+      // console.log(clonedValue)
       let str =JSON5.stringify(clonedValue)
       methods.on_change(str)
     }
@@ -103,9 +106,6 @@ export default {
         widgetFormLocks = true
         state.currentComponent = AppComponents[v]
         setRefMan()
-        for (let key in state.value.data.widgetConfig) {
-          Reflect.deleteProperty( state.value.data.widgetConfig, key)
-        }
       }
     }
 
@@ -114,7 +114,10 @@ export default {
       // console.log('onWidgetChange')
       // console.log(AppComponents)
       setTimeout(() => {
-        initCurrentComponent(state.value.control.widget)
+        initCurrentComponent(state.value.control.widget, 'change')
+        for (let key in state.value.data.widgetConfig) {
+          Reflect.deleteProperty( state.value.data.widgetConfig, key)
+        }
         onChange()
       }, 30)
     }
@@ -226,6 +229,7 @@ export default {
       if (widgetFormLocks) {
         widgetFormLocks = false
         // e.model = {}
+        // console.log(state.value.data)
         if (state.value.data.widgetConfig) {
           for (let key in  state.value.data.widgetConfig) {
             e.model[key] = state.value.data.widgetConfig[key]

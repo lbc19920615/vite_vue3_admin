@@ -58,6 +58,28 @@ export default {
                                         label: 'LABEL'
                                     }
                                 },
+                                widget2: {
+                                    type: 'string',
+                                    ui: {
+                                        label: '组件配置',
+                                        widget: 'CusWidgetEditor',
+                                        widgetConfig: {
+                                            enums: "[]",
+                                        }
+                                    }
+                                },
+                                widgetExt: {
+                                    type: 'string',
+                                    ui: {
+                                        label: 'EXT配置',
+                                        widget: 'CodeJsEditor',
+                                        // widget: 'JsonCodeEditor',
+                                        widgetConfig: {
+                                            // disabled: true,
+                                            style: {}
+                                        }
+                                    },
+                                },
                                 widget: {
                                     type: 'string',
                                     ui: {
@@ -74,6 +96,7 @@ export default {
                                     type: 'string',
                                     ui: {
                                         label: 'widgetConfig',
+                                        // widget: 'CodeJsEditor',
                                         // widget: 'JsonCodeEditor',
                                         widgetConfig: {
                                             type: 'textarea',
@@ -83,20 +106,11 @@ export default {
                                     },
                                     computedProp: 'swidget_config',
                                 },
-                                widget2: {
-                                    type: 'string',
-                                    ui: {
-                                        label: '组件配置',
-                                        widget: 'CusWidgetEditor',
-                                        widgetConfig: {
-                                            enums: "[]",
-                                        }
-                                    }
-                                },
                             }
                         },
                         rules: {
                             type: 'string',
+                            hidden: true,
                             ui: {
                                 label: 'RULES',
                                 // widget: 'JsonCodeEditor',
@@ -132,7 +146,7 @@ export default {
                 computed: {
                     // doubled: "MODEL('name', '') + ',s'",
                     swidget: `A.getWidgetEditor(MODEL('ui.widget2'), 'widget')`,
-                    swidget_config: `A.JSON5_stringify(A.getWidgetEditor(MODEL('ui.widget2'), 'widgetConfig'))`
+                    swidget_config: `A.getWidgetExt(A.getWidgetEditor(MODEL('ui.widget2'), 'widgetConfig'), MODEL('ui.widgetExt'))`
                 }
             }]
         }, args: {src: 'comformscr2.twig'}

@@ -158,7 +158,8 @@ ${item.value}
         ret.class = classes
         return ZY.JSON5.stringify(ret, null, 2)
       } catch (e) {
-        console.error(e)
+        console.error(e);
+        console.log(uiJSON5)
       }
 
       return '{}'
@@ -166,7 +167,16 @@ ${item.value}
     JSON5_stringify(v, tab = 2) {
       return ZY.JSON5.stringify(v, null, tab)
     },
-
+    getWidgetExt(v1,v2) {
+      let ext = {}
+      try {
+        ext = ZY.JSON5.parse(v2)
+      } catch (e) {
+      //
+      }
+      let o = Object.assign({}, v1, ext)
+      return ZY.JSON5.stringify(o, null, 2)
+    },
     getWidgetEditor(uiJSON5, path) {
       try {
         // let ret = {}
@@ -186,12 +196,12 @@ ${item.value}
             return ret
           }
         }
-        return ''
+        return undefined
       } catch (e) {
         console.error(e)
       }
 
-      return ''
+      return undefined
     },
 
     test(v) {
