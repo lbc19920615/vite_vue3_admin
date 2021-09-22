@@ -235,7 +235,7 @@ export default {
                                 ],
                                 conAttrs: [
                                     {
-                                        prefixValue: '"form"+',
+                                        prefixValue: '"表单"+',
                                         handler: ['c', 'return [":name", c.indexKey]']
                                     }
                                 ],

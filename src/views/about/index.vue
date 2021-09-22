@@ -116,24 +116,24 @@
           <el-space wrap>
             <el-popconfirm title="确定删除吗？" @confirm="page.callEvent('remove:events', scope)">
               <template #reference>
-                <el-button type="danger" size="small">删除{{ scope.key }}</el-button>
+                <el-button type="danger" size="small">删除{{ scope.label }}</el-button>
               </template>
             </el-popconfirm>
             <template v-if="scope.key === 'forms'">
               <el-button size="small"
-                         @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
+                         @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.label }}文件</el-button>
               <el-button size="small"
-                         @click="page.callEvent(`load:single:${scope.key}`, scope)">导入{{ scope.key }}</el-button>
+                         @click="page.callEvent(`load:single:${scope.key}`, scope)">导入{{ scope.label }}文件</el-button>
             </template>
             <template v-if="scope.key === 'events'">
               <el-button size="small"
-                         @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
+                         @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.label }}文件</el-button>
             </template>
             <template v-if="scope.key === 'layoutSlotArr'">
               <el-button size="small"
-                         @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.key }}</el-button>
+                         @click="page.callEvent(`save:single:${scope.key}`, scope)">保存{{ scope.label }}文件</el-button>
               <el-button size="small"
-                         @click="page.callEvent(`load:single:${scope.key}`, scope)">导入{{ scope.key }}</el-button>
+                         @click="page.callEvent(`load:single:${scope.key}`, scope)">导入{{ scope.label }}文件</el-button>
             </template>
           </el-space>
         </template>
