@@ -40,6 +40,18 @@ export default {
                                 }
                             },
                         },
+                        reflect: {
+                            type: 'string',
+                            ui: {
+                                label: '反射'
+                            }
+                        },
+                        reflectTpl: {
+                            type: 'string',
+                            ui: {
+                                label: '反射模板'
+                            }
+                        },
                         ui: {
                             type: 'object',
                             ui: {

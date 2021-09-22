@@ -41,6 +41,7 @@
             <HttpComponent
                 :defs="allDef"
                 :is="store.model.editor_step"
+                :debug="true"
             >
               <template #form_array_before="scope">
                 <h3>{{scope.index}}</h3>
