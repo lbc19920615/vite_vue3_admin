@@ -103,6 +103,9 @@ export default {
         widgetFormLocks = true
         state.currentComponent = AppComponents[v]
         setRefMan()
+        for (let key in state.value.data.widgetConfig) {
+          Reflect.deleteProperty( state.value.data.widgetConfig, key)
+        }
       }
     }
 
@@ -222,17 +225,20 @@ export default {
     function onModelChange(e) {
       if (widgetFormLocks) {
         widgetFormLocks = false
+        // e.model = {}
         if (state.value.data.widgetConfig) {
-          // console.log(
-          //     state.value.data.widgetConfig
-          // )
           for (let key in  state.value.data.widgetConfig) {
             e.model[key] = state.value.data.widgetConfig[key]
           }
         }
       } else {
         // console.log('onModelChange', e.model, e)
-        state.value.data.widgetConfig = toRaw(e.model)
+        let model = ZY.JSON5.parse(ZY.JSON5.stringify(e.model))
+        if (Array.isArray(model.props) && model.props.length < 1) {
+          Reflect.deleteProperty(model, 'props')
+        }
+
+        state.value.data.widgetConfig = model
         onChange()
       }
     }
