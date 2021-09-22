@@ -317,16 +317,16 @@ export default {
                                             }
                                         }
                                     },
-                                    prop1: {
-                                        type: 'string',
-                                        tag: 'div',
-                                        reflect: 'name',
-                                        reflectTpl: `L.defaultTo($VAL, '') + 's'`,
-                                        widgetConfig: {
-                                            readonly: true
-                                        }
-                                        // reflect: `CUR('code')`
-                                    }
+                                    // prop1: {
+                                    //     type: 'string',
+                                    //     tag: 'div',
+                                    //     reflect: 'name',
+                                    //     reflectTpl: `L.defaultTo($VAL, '') + 's'`,
+                                    //     widgetConfig: {
+                                    //         readonly: true
+                                    //     }
+                                    //     // reflect: `CUR('code')`
+                                    // }
                                 }
                             }
                         }
