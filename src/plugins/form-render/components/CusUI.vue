@@ -4,23 +4,39 @@
     display: none;
   }
 }
+.cus-ui__label {
+  width: 80px;
+  font-weight: bold;
+  font-size: 18px;
+}
 </style>
 
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-    {{state.value}}
+<!--    {{state.value}}-->
 <!--    <el-row>-->
 <!--      <el-button @click="save">保存</el-button>-->
 <!--    </el-row>-->
-    <h3>label</h3>
-    <el-input v-model="state.value.data.label" @blur="onBlur"></el-input>
+    <el-row class="a-space-mb-10">
+      <div class="cus-ui__label">label</div>
+      <el-input  style="width: auto; flex: 1"
+                v-model="state.value.data.label" @blur="onBlur"></el-input>
+    </el-row>
+    <el-row  class="a-space-mb-10">
+      <div class="cus-ui__label">class</div>
+      <ZProps
+          style="flex: 1"
+          class="cus-ui__class-props" v-model:value="state.value.control.classObj" @form:input:blur="onBlur" @props-change="onClassChange"></ZProps>
+    </el-row>
 
-    <h3>class</h3>
-    <ZProps class="cus-ui__class-props" v-model:value="state.value.control.classObj" @form:input:blur="onBlur" @props-change="onClassChange"></ZProps>
+    <el-row  class="a-space-mb-10">
+      <div class="cus-ui__label">attrs</div>
+      <ZProps
+          style="flex: 1"
+          v-model:value="state.value.control.attrsObj" @form:input:blur="onBlur" @props-change="onAttrsChange"></ZProps>
 
-    <h3>attrs</h3>
-    <ZProps v-model:value="state.value.control.attrsObj" @form:input:blur="onBlur" @props-change="onAttrsChange"></ZProps>
+    </el-row>
 
   </template>
 

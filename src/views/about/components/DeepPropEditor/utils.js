@@ -172,7 +172,7 @@ class depPlugins {
     setDefaultJSONlikeObj(obj,  'ui.widgetConfig', oldWidgetConfig)
     obj.ui.widgetExt = ZY.JSON5.stringify({
       ['value-format']: 'YYYY-MM-DD HH:mm:ss'
-    },null,2)
+    })
 
     // console.log('prop.format date-time', obj.ui.widgetConfig)
   }

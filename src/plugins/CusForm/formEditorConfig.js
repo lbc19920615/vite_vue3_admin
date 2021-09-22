@@ -36,13 +36,37 @@ let formDef = {
           },
           name: {
             type: 'string',
+            ui: {
+              label: 'PART NAME',
+            },
+          },
+          props: {
+            type: 'string',
+            ui: {
+              label: '属性',
+              widget: 'CusProps',
+              widgetConfig: {
+              }
+            }
           },
           ui2: {
               type: 'string',
               ui: {
                 widget: 'CusUI',
-                label: '样式',
+                label: 'UI编辑',
               }
+          },
+          defaultVal: {
+            type: 'string',
+            ui: {
+              label: '默认值',
+              widget: 'JsonCodeEditor',
+              widgetConfig: {
+                style: {
+                  height: "200px",
+                }
+              }
+            }
           },
           ui: {
             type: 'string',
@@ -54,17 +78,9 @@ let formDef = {
               widgetConfig: {
                 type: 'textarea',
                 disabled: true,
-              //   style: {
-              //     // height: "100px",
-              //   }
-              }
-            }
-          },
-          props: {
-            type: 'string',
-            ui: {
-              widget: 'CusProps',
-              widgetConfig: {
+                //   style: {
+                //     // height: "100px",
+                //   }
               }
             }
           },
@@ -76,18 +92,6 @@ let formDef = {
               widgetConfig: {
                 type: 'textarea',
                 disabled: true,
-              }
-            }
-          },
-          defaultVal: {
-            type: 'string',
-            ui: {
-              label: '默认值',
-              widget: 'JsonCodeEditor',
-              widgetConfig: {
-                style: {
-                  height: "200px",
-                }
               }
             }
           },

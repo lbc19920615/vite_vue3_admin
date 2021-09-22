@@ -149,14 +149,16 @@ ${item.value}
     parseUIObj(uiJSON5 = '') {
 
       try {
-        let ret = {}
-        let obj = ZY.JSON5.parse(uiJSON5)
-        let classes = obj.data.class ?? []
-        let attrs = obj.data.attrs ?? []
-        // console.log(classes, attrs)
-        ret.attrs = attrs
-        ret.class = classes
-        return ZY.JSON5.stringify(ret, null, 2)
+        if (uiJSON5) {
+          let ret = {}
+          let obj = ZY.JSON5.parse(uiJSON5)
+          let classes = obj.data.class ?? []
+          let attrs = obj.data.attrs ?? []
+          // console.log(classes, attrs)
+          ret.attrs = attrs
+          ret.class = classes
+          return ZY.JSON5.stringify(ret, null, 2)
+        }
       } catch (e) {
         console.error(e);
         console.log(uiJSON5)
