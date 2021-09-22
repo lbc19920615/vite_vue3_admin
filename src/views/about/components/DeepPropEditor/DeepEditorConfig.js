@@ -89,7 +89,6 @@ export default {
                                         label: '组件配置',
                                         widget: 'CusWidgetEditor',
                                         widgetConfig: {
-                                            enums: "ROOT_STATE('tools.constVars_pageNames', [])",
                                         }
                                     }
                                 },
