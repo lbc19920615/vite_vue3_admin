@@ -57,6 +57,16 @@ export default defineComponent({
       }
       return '{}'
     },
+    getRulesFromRulesArr(arr) {
+
+      if (Array.isArray(arr)) {
+        let o = ZY.JSON5.parse(ZY.JSON5.stringify(arr))
+        let newArr = o.map(v => ZY.JSON5.parse(v.value))
+        return ZY.JSON5.stringify(newArr)
+      }
+
+      return '{}'
+    },
     OBJ2JSON5(v = {}) {
       return ZY.JSON5.stringify(v)
     },
