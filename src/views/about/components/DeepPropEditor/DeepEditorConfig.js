@@ -40,6 +40,12 @@ export default {
                                 }
                             },
                         },
+                        computedProp: {
+                            type: 'string',
+                            ui: {
+                                label: 'COMPUTED',
+                            }
+                        },
                         reflect: {
                             type: 'string',
                             ui: {

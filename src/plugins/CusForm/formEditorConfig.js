@@ -49,6 +49,17 @@ let formDef = {
               }
             }
           },
+          properties: {
+            type: 'string',
+            reflect: 'props',
+            reflectTpl: `A.getProps($VAL)`,
+            ui: {
+              widgetConfig: {
+                type: 'textarea',
+                disabled: true,
+              }
+            }
+          },
           ui2: {
               type: 'string',
               ui: {
@@ -90,20 +101,6 @@ let formDef = {
               widgetConfig: {
                 type: 'textarea',
                 disabled: true,
-                //   style: {
-                //     // height: "100px",
-                //   }
-              }
-            }
-          },
-          properties: {
-            type: 'string',
-            reflect: 'props',
-            reflectTpl: `A.getProps($VAL)`,
-            ui: {
-              widgetConfig: {
-                type: 'textarea',
-                disabled: true,
               }
             }
           },
@@ -125,7 +122,7 @@ let _config = baseConfig({
           type: 'form',
           name: 'form_' + ZY.rid(6),
           ui: '{}',
-          props: '{links: [], deps: []}',
+          props: '{links: [], deps: [], posMap: []}',
           properties: '{}',
           defaultVal: '{}',
         }
