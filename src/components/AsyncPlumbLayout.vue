@@ -10,14 +10,15 @@ $sel: "." + $tag;
 </style>
 
 <template>
-  <div  class="async-plumb-layout auto-init-layout">
+  <div :id="comId"   class="async-plumb-layout auto-init-layout">
 <!--    {{deps}}-->
     <el-button @click="save">保存</el-button>
     <el-button @click="addDep('array')">添加Array</el-button>
     <el-button @click="addDep('object')">添加Object</el-button>
 
-    <div ref="container" class="container">
+    <div :id="containerId" ref="container" class="container">
       <div :id="dep.id" class="abs section"
+           :dep-name="dep.id"
            v-for="(dep,depIndex) in deps"
            :key="dep.id"
           :dep-level="dep.A_LEVEL"
@@ -71,42 +72,6 @@ import {jsPlumb} from 'jsplumb'
 import * as NodeDefMap from "@/plugins/ComEditor/nodes";
 import {createPlumbConfig} from "@/plugins/PlumbLayout/utils";
 import {plumbActionMixins, plumbLayoutMixn} from "@/plugins/PlumbLayout/mixin";
-
-// let actionMixins = {
-//   methods: {
-//     /**
-//      * getVisibleConnections
-//      */
-//     getVisibleConnections() {
-//       let allConnections = this.instance.getConnections({
-//
-//       });
-//       let ret = []
-//       ret = allConnections.filter(v => {
-//         return v.target && v.source
-//       })
-//       return ret
-//     },
-//     /**
-//      * getLinkRealtions
-//      */
-//     getLinkRealtions() {
-//       let allVisibleConnections = this.getVisibleConnections()
-//       let ret = []
-//       ret = allVisibleConnections.map(v => {
-//         return {
-//           toPID: v.target.dataset.pid,
-//           fromPID: v.source.dataset.pid,
-//           from: v.sourceId,
-//           to: v.targetId
-//         }
-//       })
-//       // console.log(ret)
-//       return ret
-//     }
-//   }
-// }
-
 export default {
   name: "AsyncPlumbLayout",
   mixins: [
@@ -166,6 +131,10 @@ export default {
       deps.forEach(dep => {
         self.insDep(dep.id, instance, dep.items)
       })
+    },
+    insPosMap(posMap) {
+      console.log('insPosMap', posMap)
+      this.loadPosMap(posMap)
     },
     insEventLinks(links = []) {
       let instance = this.instance
@@ -333,6 +302,7 @@ export default {
         eventLinks: eventLinks,
         links: comLinks,
       }
+      ret.posMap = this.posMap
       return ret
     },
 
@@ -342,7 +312,7 @@ export default {
     save() {
       let ret = this.doSaveAction()
 
-      console.log('links', ret)
+      // console.log('links', ret)
 
       this.$emit('save-data', ret)
     }

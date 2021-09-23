@@ -122,6 +122,9 @@ let plumbLayoutMixin = {
     },
     links: {
       type: Array
+    },
+    posMap: {
+      type: Object
     }
   },
   watch: {
@@ -134,22 +137,29 @@ let plumbLayoutMixin = {
     }
   },
   methods: {
-    initLayout(layoutContext, deps) {
+    async initLayout(layoutContext, deps) {
       let comc = this
       let self = layoutContext
       let links = this.links ?? []
-      // console.log('initLayout', self)
+      let posMap = this.posMap ?? {}
+      // console.log('initLayout', posMap)
       if (self) {
         // self.deps = deps
-        self.init({deps})
-        self.$nextTick(() => {
-          self.insDeps(deps)
-          setTimeout(() => {
-            self.insComLinks(
-                comc.links
-            )
-          }, 300)
-        })
+        self.insPosMap(posMap)
+        await ZY.sleep(300);
+
+        self.init({deps});
+        await self.$nextTick();
+        self.insDeps(deps);
+        // setTimeout(() => {
+        //   self.insComLinks(
+        //       comc.links
+        //   )
+        // }, 300)
+        await ZY.sleep(300);
+        self.insComLinks(
+            comc.links
+        );
       }
     },
     onPlumbLayoutInit(self) {
@@ -176,7 +186,7 @@ let plumbLayoutMixin = {
         newItem.h = 50
       }
     },
-    onSaveDep({deps, links = []}) {
+    onSaveDep({deps, links = [], posMap = {}}) {
       let map = {
         [this.rootId]: deps.find(v => v.id === this.rootId)
       }
@@ -191,14 +201,10 @@ let plumbLayoutMixin = {
       })
       this.currentLayoutMap = JSON.parse(JSON.stringify(map))
       this.currentLinks = JSON.parse(JSON.stringify(links))
-      // this.jsonObj = deepObj.root.properties
-      // console.log(deepObj)
-      // this.showCurrent = false
-      // setTimeout(() => {
-      //   this.showCurrent = true
-      // }, 500)
+
       this.$emit('update:deps', toRaw(deps))
       this.$emit('update:links', toRaw(links))
+      this.$emit('update:posMap', toRaw(posMap))
       this.$emit('change')
     }
   }
@@ -269,10 +275,12 @@ export default {
         if (oldVal !== newVal) {
           self.currentEditItem.data = ZY.JSON5.stringify(model)
         }
+        // console.log('deep editor model:update', model)
         // console.log( self.currentEditItem.data)
       },
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e
+        // console.log('deep editor update', model)
         cachedDeepEditorModel = model
       }
     })

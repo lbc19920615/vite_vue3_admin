@@ -114,7 +114,7 @@ export default {
                                             disabled: true,
                                         }
                                     },
-                                    // computedProp: 'swidget',
+                                    computedProp: 'swidget',
                                     // reflect: 'widget2',
                                     // reflectTpl: 'A.getWidgetEditor($VAL, "widget")'
                                 },
@@ -130,7 +130,7 @@ export default {
                                             style: {}
                                         }
                                     },
-                                    // computedProp: 'swidget_config',
+                                    computedProp: 'swidget_config',
                                 },
                             }
                         },

@@ -199,7 +199,7 @@ export let plumbLayoutMixn = {
         let style = {
           ['#' + this.comId] : styleObj
         }
-        // console.log(style)
+        console.log(style)
         this.posCssObj = ZY_EXT.cssObj(style)
       }
       this.posMap = posMap
