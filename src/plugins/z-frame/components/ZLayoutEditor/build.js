@@ -33,6 +33,8 @@ export let buildFormDepContent = function (parts = [], model) {
             try {
                 let ui = JSON5.parse(part.ui)
                 let properties = JSON5.parse(part.properties)
+                let computed = JSON5.parse(part.computed)
+
                 let obj = {
                     type: part.type,
                     name: part.name,

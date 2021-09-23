@@ -10,11 +10,22 @@ export let buildFormDep = function (model = {parts: []}, name = model.name, args
   let parsedParts = []
   let defaultVals = {}
   let parts = model.parts
+  // console.log(model)
   parts.forEach(part => {
     if (part.name && part.type) {
       try {
         let ui = JSON5.parse(part.ui)
-        let properties = JSON5.parse(part.properties).properties
+        let partProps = JSON5.parse(part.properties)
+        // let computed = JSON5.parse(part.computed)
+        let computed = {}
+        if (part.computed) {
+         try {
+           computed = JSON5.parse(part.computed)
+         } catch (e) {}
+        }
+        console.log('computed', computed)
+        let properties = partProps.properties
+
         let obj = {
           type: part.type,
           name: part.name,
@@ -29,8 +40,7 @@ export let buildFormDep = function (model = {parts: []}, name = model.name, args
             ui,
             properties,
           },
-          computed: {
-          },
+          computed: computed,
         }
         defaultVals[obj.name] = JSON5.parse(part.defaultVal)
         parsedParts.push(obj)
@@ -46,7 +56,7 @@ export let buildFormDep = function (model = {parts: []}, name = model.name, args
     init: {
       def: {
         constants: {},
-        parts: parsedParts
+        parts: parsedParts,
       },
       args
     }

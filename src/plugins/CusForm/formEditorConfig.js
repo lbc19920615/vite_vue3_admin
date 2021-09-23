@@ -56,6 +56,18 @@ let formDef = {
                 label: 'UI编辑',
               }
           },
+          computed: {
+            type: 'string',
+            ui: {
+              label: 'computed',
+              widget: 'JsonCodeEditor',
+              widgetConfig: {
+                style: {
+                  height: "350px",
+                }
+              }
+            }
+          },
           defaultVal: {
             type: 'string',
             ui: {
@@ -107,6 +119,7 @@ let _config = baseConfig({
   defaultVal: {
     form2: {
       name: ZY.nid(),
+      computed: '{}',
       parts: [
         {
           type: 'form',
