@@ -23,7 +23,7 @@ export let buildFormDep = function (model = {parts: []}, name = model.name, args
            computed = JSON5.parse(part.computed)
          } catch (e) {}
         }
-        console.log('computed', computed)
+        // console.log('computed', computed)
         let properties = partProps.properties
 
         let obj = {
