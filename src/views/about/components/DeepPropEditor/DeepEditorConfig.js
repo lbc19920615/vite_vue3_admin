@@ -45,14 +45,14 @@ export default {
                             ui: {
                                 label: '反射',
                                 widgetConfig: {
-                                    disabled: true
+                                    // disabled: true
                                 }
                             },
                             // rules: {
                             //     type: 'boolean'
                             // }
-                            reflect: 'reflectTpl',
-                            reflectTpl: "$VAL ? 'true': 'false'"
+                            // reflect: 'reflectTpl',
+                            // reflectTpl: "$VAL ? 'true': 'false'"
                         },
                         reflectTpl: {
                             type: 'string',
