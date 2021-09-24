@@ -63,6 +63,12 @@
     display: block;
   }
 }
+
+.cus-insert-keyboard {
+  .el-button {
+    margin-bottom: var(--cus-insert-keyboard-mb, 10px);
+  }
+}
 </style>
 
 <template>
@@ -73,7 +79,7 @@
 <!--      <el-button @click="save">保存</el-button>-->
     <div
         :id="hid"
-        class="a-space-mb-10 cus-insert-input"
+        class="cus-insert-input"
         :class="{'focus': state.drawer}"
         tabindex="-1"
         @keyup="onkeyup"
@@ -96,7 +102,7 @@
         modal-class="cus-insert-modal"
         @closed="onModalClosed"
     >
-      <div  >
+      <div  class="cus-insert-keyboard">
         <el-button @click="backStep">退格</el-button>
         <template v-for="item in insertedText">
           <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
@@ -137,7 +143,7 @@ export default {
     let widgetConfig =  props.ui.widgetConfig
 
     let insertedText = [
-        '+', '-', '*', '/', '1', '2', '3', '4', '5', '6', '7', '8', '9', '&#8986;'
+        '+', '-', '*', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '&#8986;'
     ]
 
     if (Array.isArray(widgetConfig.insText)) {
