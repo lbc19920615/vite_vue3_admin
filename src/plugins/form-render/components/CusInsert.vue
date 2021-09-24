@@ -1,11 +1,16 @@
 <style lang="scss">
 .cus-insert-input {
   user-select: none;
+  display: flex;
+  align-items: flex-start;
   [text-item] {
     display: inline-block;
     position: relative;
     padding-left: 2px;
     padding-right: 2px;
+  }
+  &__append {
+    border: none;
   }
 }
 
@@ -14,8 +19,12 @@
 }
 
 .cus-insert-input {
+
   border: var(--el-border-base); min-height: 36px; position: relative;
-  &:focus {
+}
+
+.cus-insert-input {
+  &:focus, &.focus {
     border-color: var(--el-color-primary-light-1);
 
     [text-item][selected]::after {
@@ -62,15 +71,21 @@
 <!--    {{state.value}}-->
 <!--    <el-row>-->
 <!--      <el-button @click="save">保存</el-button>-->
-    <div class="a-space-mb-10 cus-insert-input"
-         tabindex="-1"
-         @keyup="onkeyup"
-         @focus="onInputFocus"
-         @blur="onInputBlur"
-         :id="hid"
+    <div
+        :id="hid"
+        class="a-space-mb-10 cus-insert-input"
+        :class="{'focus': state.drawer}"
+        tabindex="-1"
+        @keyup="onkeyup"
+        @blur="onInputBlur"
     >
-      <xy-text text-item level="-1">&nbsp;</xy-text><div style="display: inline-block"
-                                                         class="cus-insert-html" v-html="runFuncs(state.control.funcs)"></div>
+      <div
+           style="flex: 1"
+      >
+        <xy-text text-item level="-1">&nbsp;</xy-text><div style="display: inline-block"
+                                                           class="cus-insert-html" v-html="runFuncs(state.control.funcs)"></div>
+      </div>
+      <el-button  class="cus-insert-input__append"  @click="onInputFocus"><i class="fas fa-keyboard"></i></el-button>
     </div>
 
     <el-drawer
@@ -103,10 +118,11 @@ import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-rende
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
 import 'xy-ui/components/xy-text';
 import {nextTick, onBeforeUnmount, onMounted, toRaw, watch, watchEffect} from "vue";
+import {Edit} from "@element-plus/icons";
 
 export default {
   name: 'CusInsert',
-  components: {EwSuggest},
+  components: {EwSuggest, Edit},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -233,7 +249,14 @@ export default {
       let index  = getIndex()
       // console.log(index)
       // state.control.funcs.push([ 'return \`<xy-text level="${INDEX}" mark>'+name+'(</xy-text>${VAL}<xy-text level="${INDEX}" mark>)</xy-text>\`'])
-      state.control.funcs.splice(index, 0, [ 'return \`<z-math text-item name="'+name+'(" level="${INDEX}">${VAL}</z-math>\`'])
+      // state.control.funcs.splice(index, 0, [ 'return \`<z-math text-item name="'+name+'(" level="${INDEX}">${VAL}</z-math>\`'])
+      state.control.funcs.splice(index, 0, [
+          'return \`${VAL}<xy-text text-item level="${INDEX}">'+name+'(</xy-text>\`',
+      ])
+
+      state.control.funcs.splice(index + 1, 0, [
+        'return \`${VAL}<xy-text text-item level="${INDEX}">)</xy-text>\`',
+      ])
 
       insertChange()
     }

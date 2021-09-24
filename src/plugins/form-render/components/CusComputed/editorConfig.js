@@ -67,12 +67,11 @@ let formDef = {
                   ',',
                   '\'',
                   ...codes,
-                  'MODEL',
                   '(',
                   ')'
                 ],
                 insFun: [
-                  // 'MODEL'
+                  'MODEL'
                 ]
               }
             },
