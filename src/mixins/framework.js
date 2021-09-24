@@ -467,9 +467,10 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
   async function commonLoadStep( loadPromise, varName = '', {
     onMounted
   }) {
-    let [,res] = await ZY.awaitTo(
+    let [e,res] = await ZY.awaitTo(
       loadPromise
     )
+    // console.log(e)
     const config = ZY.JSON5.parse(ZY.JSON5.stringify(res.default))
     // console.log('commonLoadStep', config)
     config.name = ZY.nid()

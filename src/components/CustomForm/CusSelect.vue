@@ -14,13 +14,18 @@
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
+import {CustomRenderControlMixin, defineCustomRender, PROPS_DEF} from "@/plugins/form-render/utils/index";
 
 export default {
   name: 'CusSelect',
   mixins: [
       CustomRenderControlMixin
   ],
+  CUS_EDITOR: function () {
+    return {
+      props: PROPS_DEF()
+    }
+  },
   setup(props, ctx) {
     let { data, methods, listeners, init } = defineCustomRender(props, ctx)
     let state = data()

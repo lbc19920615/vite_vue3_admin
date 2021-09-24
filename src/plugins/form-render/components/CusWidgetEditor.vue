@@ -1,7 +1,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-    {{state.value}}
+<!--    {{state}}-->
   <div v-if="state.inited && state.value && state.value.control">
 <!--    <el-input v-model="state.value.control.widget"></el-input>-->
     <div class="a-space-mb-20">
@@ -135,14 +135,16 @@ export default {
       onReady() {
         let app = globalThis.getAppContext()
         let Prefix = ['El']
-        AppComponents = app.components
-        let arr = Object.entries(AppComponents).filter(v => {
-          return Prefix.some(p => v[0].startsWith(p))
-        })
+        // AppComponents = app.components
+        // let arr = Object.entries(AppComponents).filter(v => {
+        //   return Prefix.some(p => v[0].startsWith(p))
+        // })
 
+        AppComponents = CustomVueComponent.components
+        let arr = []
         arr = arr.concat(
-            Object.entries(CustomVueComponent.components).filter(v => {
-              return true
+            Object.entries(AppComponents).filter(([comName, comDef]) => {
+              return comDef.CUS_EDITOR
             })
         )
         BASE_SUGGEST = arr.map(v => {
@@ -169,48 +171,44 @@ export default {
 
     }
 
-    async function resolveConfig(props) {
-      // console.log(state.currentComponent.props)
+    async function resolveConfig() {
+      // console.log(state.currentComponent)
+      let CUS_EDITOR = state.currentComponent.CUS_EDITOR()
       properties = {}
       let comProps = toRaw(
-          state.currentComponent.props
+          CUS_EDITOR.props
       )
-      // console.log(comProps)
       for (let [key, value] of Object.entries(comProps)) {
-        if (value.type === Number) {
-          properties[key] = {
-            type: 'number',
-            rules: {
-              type: 'number'
+        if (value) {
+          if (value.type === Number || value === Number) {
+            properties[key] = {
+              type: 'number',
+              rules: {
+                type: 'number'
+              }
             }
           }
-        }
-        else if (value.type === String) {
-          properties[key] = {
-            type: 'string'
-          }
-        }
-        else if (value.type === Boolean) {
-          properties[key] = {
-            type: 'boolean',
-            rules: {
-              type: 'boolean'
+          else if (value.type === String || value === String) {
+            properties[key] = {
+              type: 'string'
             }
           }
-        }
-        else {
-        //
+          else if (value.type === Boolean || value === Boolean) {
+            properties[key] = {
+              type: 'boolean',
+              rules: {
+                type: 'boolean'
+              }
+            }
+          }
+          else {
+            //
+          }
         }
       }
-      // properties = {
-      //   name1: {
-      //     type: 'string'
-      //   },
-      //   name2: {
-      //     type: 'string'
-      //   },
-      // }
-      // return import('./CusWidgetEditor/editorConfig')
+
+      // console.log(comProps, properties)
+
       let formDef = {
         type: 'object',
         ui: {

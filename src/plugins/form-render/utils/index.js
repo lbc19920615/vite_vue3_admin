@@ -1,7 +1,7 @@
 import {reactive, watch, inject, getCurrentInstance, nextTick} from "vue";
 
-export let CustomRenderControlMixin = {
-    props: {
+export let PROPS_DEF =function () {
+    return  {
         modelValue: null,
         ui: {
             type: Object,
@@ -31,7 +31,12 @@ export let CustomRenderControlMixin = {
             }
         },
         field_uuid: String
-    },
+    }
+}
+
+export let CustomRenderControlMixin = {
+    props: PROPS_DEF(),
+
     emits: [
         'valuechange'
     ],
