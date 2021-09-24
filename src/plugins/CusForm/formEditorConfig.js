@@ -22,6 +22,18 @@ let formDef = {
       items: {
         type: "object",
         properties: {
+          computed2: {
+            type: 'string',
+            ui: {
+              label: '计算属性',
+              widget: 'CusComputed',
+              widgetConfig: {
+                style: {
+                  height: "350px",
+                }
+              }
+            }
+          },
           type: {
             type: 'string',
             ui: {
@@ -70,7 +82,7 @@ let formDef = {
           computed: {
             type: 'string',
             ui: {
-              label: 'computed',
+              label: '计算属性',
               widget: 'JsonCodeEditor',
               widgetConfig: {
                 style: {

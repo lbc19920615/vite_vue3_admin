@@ -36,7 +36,6 @@ const plugin = {
         CustomVueComponent.register(CusForm)
         CustomVueComponent.register(CusSuggest)
 
-
         CustomVueComponent.register(MyVueTab)
         CustomVueComponent.register(MyVueTabPane)
         CustomVueComponent.register(ZPagination)

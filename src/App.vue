@@ -47,7 +47,7 @@ export default defineComponent({
       return getDeepConfigFromLinksAndDeps(v1, v2)
     },
     getProps(v) {
-      console.log('getProps', v)
+      // console.log('getProps', v)
       try {
         let o = ZY.JSON5.parse(v)
         let r =  getDeepConfigFromLinksAndDeps(o.links, o.deps)

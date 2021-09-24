@@ -1,5 +1,5 @@
 <style lang="scss">
-.cus-insert-html {
+.cus-insert-input {
   user-select: none;
   [text-item] {
     display: inline-block;
@@ -9,7 +9,20 @@
   }
 }
 
+.cus-insert-input {
+  border: var(--el-border-base); min-height: 36px; position: relative;
+  &:focus {
+    border-color: var(--el-color-primary-light-1);
 
+    [text-item][selected]::after {
+
+      background-color: var(--el-color-primary-light-1);
+    }
+
+
+  }
+  border-radius: 4px;
+}
 
 [text-item]::after {
   position: absolute;
@@ -22,10 +35,6 @@
   animation: cursor-blinks 1.5s infinite steps(1, start);
 }
 
-[text-item][selected]::after {
-
-  background-color: var(--el-color-primary-light-1);
-}
 
 @keyframes cursor-blinks {
   0% {
@@ -49,15 +58,24 @@
 <!--    {{state.value}}-->
 <!--    <el-row>-->
 <!--      <el-button @click="save">保存</el-button>-->
-    <div :id="hid" class="cus-insert-html" v-html="runFuncs(state.control.funcs)"></div>
+    <div class="a-space-mb-10 cus-insert-input"
+         tabindex="-1"
+         @keyup="onkeyup"
+         :id="hid"
+    >
+      <xy-text text-item level="-1">&nbsp;</xy-text><div style="display: inline-block"
+                                                         class="cus-insert-html" v-html="runFuncs(state.control.funcs)"></div>
+    </div>
 
-    <div>
+    <div  >
       <el-button @click="backStep">退格</el-button>
       <template v-for="item in insertedText">
         <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
       </template>
-      <el-button @click="insertFun('Math')">插入函数</el-button>
       <el-button @click="insertFun('')">插入括号</el-button>
+      <template v-for="item in insertedFun">
+        <el-button @click="insertFun(item)"><span v-html="item"></span></el-button>
+      </template>
     </div>
   </template>
 
@@ -83,9 +101,24 @@ export default {
     let lastIndex = -1
     let hid = 'htm' + ZY.rid(6).toLowerCase()
 
+    let widgetConfig =  props.ui.widgetConfig
+
     let insertedText = [
         '+', '-', '*', '/', '1', '2', '3', '4', '5', '6', '7', '8', '9', '&#8986;'
     ]
+
+    if (Array.isArray(widgetConfig.insText)) {
+      insertedText = insertedText.concat(widgetConfig.insText)
+    }
+
+    let insertedFun = [
+        'Math'
+    ]
+
+    if (Array.isArray(widgetConfig.insFun)) {
+      insertedFun = insertedFun.concat(widgetConfig.insFun)
+    }
+
 
     let inited = false
 
@@ -136,11 +169,11 @@ export default {
     init(props)
 
     function onChange() {
-      let clonedValue = JSON5.parse(JSON5.stringify(state.control))
+      // let clonedValue = JSON5.parse(JSON5.stringify(state.control))
       // console.log(clonedValue)
       // clonedValue = toRaw(state.control)
       // Reflect.deleteProperty(clonedValue, 'control')
-      let str =JSON5.stringify(clonedValue)
+      let str =JSON5.stringify(state.control)
       methods.on_change(str)
     }
 
@@ -159,7 +192,10 @@ export default {
     }
 
     function getIndex() {
-      if (lastIndex < 0) {
+      if (lastIndex === -1) {
+        return 0
+      }
+      if (lastIndex < -1) {
         return state.control.funcs.length
       }
       return lastIndex + 1
@@ -215,8 +251,8 @@ export default {
       state.control.funcs.splice(lastIndex, 1)
       // console.log(state.control.funcs)
       let Index = lastIndex - 1
-      if (Index < 0) {
-        Index = 0
+      if (Index < -1) {
+        Index = -1
       }
       setTimeout(() => {
         setCursor(
@@ -287,10 +323,19 @@ export default {
     }
 
 
+    function onkeyup(e) {
+      // console.log('onkeyup', e)
+      if (e.key === 'Backspace') {
+        backStep()
+      } else  if (insertedText.includes(e.key)) {
+        insertText(e.key)
+      }
+    }
+
 
     return {
       state,
-      widgetConfig: props.ui.widgetConfig,
+      widgetConfig,
       onChange,
       insertFun,
       insertText,
@@ -298,9 +343,11 @@ export default {
       hid,
       lifeTimes,
       insertedText,
+      insertedFun,
       onValueChanged,
       methods,
       onBlur,
+      onkeyup,
       runFuncs,
       save,
       listeners,
