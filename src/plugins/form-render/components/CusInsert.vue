@@ -9,6 +9,10 @@
   }
 }
 
+.cus-insert-modal {
+  background-color: transparent;
+}
+
 .cus-insert-input {
   border: var(--el-border-base); min-height: 36px; position: relative;
   &:focus {
@@ -73,8 +77,8 @@
         v-model="state.drawer"
         title="自定义键盘"
         direction="btt"
-        :close-on-press-escape="false"
-        :modal="false"
+        :modal="true"
+        modal-class="cus-insert-modal"
         @closed="onModalClosed"
     >
       <div  >
@@ -357,7 +361,7 @@ export default {
     }
 
     function onModalClosed() {
-      document.getElementById(hid).blur()
+      document.getElementById(hid)?.blur()
       // console.log(document.getElementById(hid))
     }
 
