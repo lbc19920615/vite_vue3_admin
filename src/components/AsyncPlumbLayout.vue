@@ -133,7 +133,7 @@ export default {
       })
     },
     insPosMap(posMap) {
-      console.log('insPosMap', posMap)
+      // console.log('insPosMap', posMap)
       this.loadPosMap(posMap)
     },
     insEventLinks(links = []) {

@@ -332,7 +332,7 @@ export default {
     }
 
     function onDrawerClose(currentEditItem) {
-      console.log('onDrawerClose', cachedDeepEditorModel, currentEditItem)
+      // console.log('onDrawerClose', cachedDeepEditorModel, currentEditItem)
       if (cachedDeepEditorModel) {
 
         currentEditItem.data = ZY.JSON5.stringify(cachedDeepEditorModel)

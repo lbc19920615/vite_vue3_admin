@@ -213,13 +213,12 @@ export default defineComponent({
   },
   setup() {
     function onInited({storeControl}) {
-      console.log('page inited')
       page.commonLoadStep(
           import('./EventEditorConfig'),
           'textarea_step',
           {
             async onMounted(config) {
-              console.log('commonLoadStep onMounted')
+              // console.log('commonLoadStep onMounted')
               let eventModel = await page.dispatchRoot('GetStoreEvents')
               page.setPartModel(config.name, 'form2', eventModel ?? {})
               // console.log('eventModel', config, eventModel)
@@ -540,7 +539,7 @@ export default defineComponent({
     let layoutRef = page.setRef('layout')
 
     onMounted(() => {
-      console.log('onMounted')
+      // console.log('onMounted')
     })
 
     return {
