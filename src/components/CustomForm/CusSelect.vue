@@ -23,7 +23,11 @@ export default {
   ],
   CUS_EDITOR: function () {
     return {
-      props: PROPS_DEF()
+      props: {
+        enums: {
+          type: String,
+        }
+      }
     }
   },
   setup(props, ctx) {
