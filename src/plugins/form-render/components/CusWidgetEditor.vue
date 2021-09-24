@@ -174,14 +174,18 @@ export default {
     async function resolveConfig() {
       // console.log(state.currentComponent)
       let CUS_EDITOR = state.currentComponent.CUS_EDITOR()
-      properties = {}
       let comProps = toRaw(
           CUS_EDITOR.props
       )
+      properties = {
+
+      }
+
       for (let [key, value] of Object.entries(comProps)) {
         if (value) {
           if (value.type === Number || value === Number) {
             properties[key] = {
+              ...value,
               type: 'number',
               rules: {
                 type: 'number'
@@ -190,11 +194,13 @@ export default {
           }
           else if (value.type === String || value === String) {
             properties[key] = {
+              ...value,
               type: 'string'
             }
           }
           else if (value.type === Boolean || value === Boolean) {
             properties[key] = {
+              ...value,
               type: 'boolean',
               rules: {
                 type: 'boolean'
@@ -202,7 +208,9 @@ export default {
             }
           }
           else {
-            //
+            properties[key] = {
+              ...value
+            }
           }
         }
       }
