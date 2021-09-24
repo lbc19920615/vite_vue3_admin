@@ -92,17 +92,9 @@ export default {
     let { EVENT_NAMES } = extendCommonArrEventHandler(page)
 
     page.setEventHandler({
-      ['model:update'](e) {
-        let {model, key, newVal, config} = e
-      },
-      ['add:part'](e) {
-        let { parts, partName, selfpath, process } = e
-        // console.log('add:event', e, model)
-        parts[partName].arrAppend(selfpath)
-      },
       async ['model:update:all'](e) {
         let { model, key, newVal, config } = e
-        // console.log('cus:form model:update:all', model)
+        console.log('cus:form model:update:all', model)
         if (!locks) {
           let val = ZY.JSON5.stringify(model)
           page.setData({
