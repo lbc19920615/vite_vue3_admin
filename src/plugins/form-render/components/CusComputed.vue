@@ -12,12 +12,15 @@
         :is="store.model.editor_step"
         v-if="!useDrag || store.model.dialog_open"
     >
-      <template #array_item_before="scope">
-<!--        <h3>{{getArrItemBeforeKey(scope)}}</h3>-->
+      <template #array_con_afterbegin="scope">
       </template>
-      <template #array_before="scope">
+      <template #array_afterbegin="scope">
         <el-button type="primary" size="small"
-                   @click="page.callEvent('add:part', scope)">添加</el-button>
+                   @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加</el-button>
+      </template>
+      <template #array_con_beforeend="scope">
+        <el-button type="danger" size="small"
+                   @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除</el-button>
       </template>
     </HttpComponent>
   </div>
@@ -26,7 +29,7 @@
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils";
 import HttpComponent from "@/components/HttpComponent.vue";
-import {extendControl2Page, useControl} from "@/mixins/framework";
+import {extendCommonArrEventHandler, extendControl2Page, useControl} from "@/mixins/framework";
 import {getCurrentInstance, inject, nextTick, onMounted, onBeforeMount} from 'vue';
 import CustomElement from "@/components/CustomElement.vue";
 
@@ -86,7 +89,7 @@ export default {
       }
     })
     page = extendControl2Page(page)
-
+    let { EVENT_NAMES } = extendCommonArrEventHandler(page)
 
     page.setEventHandler({
       ['model:update'](e) {
@@ -187,6 +190,7 @@ export default {
       dialogName,
       widgetConfig: props.ui.widgetConfig,
       page,
+      EVENT_NAMES,
       openDialog,
       getArrItemBeforeKey,
       useDrag,
