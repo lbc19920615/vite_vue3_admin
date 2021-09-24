@@ -61,22 +61,35 @@
     <div class="a-space-mb-10 cus-insert-input"
          tabindex="-1"
          @keyup="onkeyup"
+         @focus="onInputFocus"
+         @blur="onInputBlur"
          :id="hid"
     >
       <xy-text text-item level="-1">&nbsp;</xy-text><div style="display: inline-block"
                                                          class="cus-insert-html" v-html="runFuncs(state.control.funcs)"></div>
     </div>
 
-    <div  >
-      <el-button @click="backStep">退格</el-button>
-      <template v-for="item in insertedText">
-        <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
-      </template>
-      <el-button @click="insertFun('')">插入括号</el-button>
-      <template v-for="item in insertedFun">
-        <el-button @click="insertFun(item)"><span v-html="item"></span></el-button>
-      </template>
-    </div>
+    <el-drawer
+        v-model="state.drawer"
+        title="自定义键盘"
+        direction="btt"
+        :close-on-press-escape="false"
+        :modal="false"
+        @closed="onModalClosed"
+    >
+      <div  >
+        <el-button @click="backStep">退格</el-button>
+        <template v-for="item in insertedText">
+          <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
+        </template>
+        <el-button @click="insertFun('')">插入括号</el-button>
+        <template v-for="item in insertedFun">
+          <el-button @click="insertFun(item)"><span v-html="item"></span></el-button>
+        </template>
+      </div>
+    </el-drawer>
+
+
   </template>
 
 </template>
@@ -164,7 +177,8 @@ export default {
     })
     let state = data({
       value: {},
-      control: {}
+      control: {},
+      drawer: false
     })
     init(props)
 
@@ -332,6 +346,21 @@ export default {
       }
     }
 
+    function onInputFocus(e) {
+      // console.log('onFocus', e)
+      state.drawer = true
+    }
+
+    function onInputBlur(e) {
+      // console.log('onBlur', e)
+      state.drawer = false
+    }
+
+    function onModalClosed() {
+      document.getElementById(hid).blur()
+      // console.log(document.getElementById(hid))
+    }
+
 
     return {
       state,
@@ -346,6 +375,9 @@ export default {
       insertedFun,
       onValueChanged,
       methods,
+      onModalClosed,
+      onInputFocus,
+      onInputBlur,
       onBlur,
       onkeyup,
       runFuncs,
