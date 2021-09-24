@@ -88,7 +88,7 @@
       <div
            style="flex: 1"
       >
-        <xy-text text-item level="-1">&nbsp;</xy-text><div style="display: inline-block"
+        <xy-text text-item level="-1">&nbsp;</xy-text><div content style="display: inline-block"
                                                            class="cus-insert-html" v-html="runFuncs(state.control.funcs)"></div>
       </div>
       <el-button  class="cus-insert-input__append"  @click="onInputFocus"><i class="fas fa-keyboard"></i></el-button>
@@ -209,11 +209,12 @@ export default {
     init(props)
 
     function onChange() {
-      // let clonedValue = JSON5.parse(JSON5.stringify(state.control))
+      let clonedValue = JSON5.parse(JSON5.stringify(state.control))
       // console.log(clonedValue)
       // clonedValue = toRaw(state.control)
       // Reflect.deleteProperty(clonedValue, 'control')
-      let str =JSON5.stringify(state.control)
+      clonedValue.textContent = document.querySelector(`#${hid} [content]`).textContent
+      let str =JSON5.stringify(clonedValue)
       methods.on_change(str)
     }
 
@@ -352,7 +353,7 @@ export default {
     // })
 
     globalThis.testCalc = function () {
-      let evalStr = document.getElementById(hid).textContent;
+      let evalStr =  document.querySelector(`#${hid} [content]`).textContent
       return ZY_EXT.eval5(evalStr)
     }
 
