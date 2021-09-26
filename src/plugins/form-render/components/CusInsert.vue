@@ -19,7 +19,7 @@
   pointer-events: none;
   > * {
     pointer-events: all;
-    height: max-content;
+    height: max-content !important;
   }
 }
 
@@ -116,10 +116,11 @@
        </div>
         <div>
           <el-button @click="backStep">退格</el-button>
+          <el-button @click="insertFun('')">插入括号</el-button>
+          <el-button @click="insertQute('')">插入引号</el-button>
           <template v-for="item in insertedText">
             <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
           </template>
-          <el-button @click="insertFun('')">插入括号</el-button>
           <template v-for="item in insertedFun">
             <el-button @click="insertFun(item)"><span v-html="item"></span></el-button>
           </template>
@@ -276,9 +277,6 @@ export default {
     function insertFun(name) {
       resetFuncs()
       let index  = getIndex()
-      // console.log(index)
-      // state.control.funcs.push([ 'return \`<xy-text level="${INDEX}" mark>'+name+'(</xy-text>${VAL}<xy-text level="${INDEX}" mark>)</xy-text>\`'])
-      // state.control.funcs.splice(index, 0, [ 'return \`<z-math text-item name="'+name+'(" level="${INDEX}">${VAL}</z-math>\`'])
       state.control.funcs.splice(index, 0, [
           'return \`${VAL}<xy-text text-item level="${INDEX}">'+name+'(</xy-text>\`',
       ])
@@ -286,7 +284,19 @@ export default {
       state.control.funcs.splice(index + 1, 0, [
         'return \`${VAL}<xy-text text-item level="${INDEX}">)</xy-text>\`',
       ])
+      insertChange()
+    }
 
+    function insertQute(name) {
+      resetFuncs()
+      let index  = getIndex()
+      state.control.funcs.splice(index, 0, [
+        'return \`${VAL}<xy-text text-item level="${INDEX}">\'</xy-text>\`',
+      ])
+
+      state.control.funcs.splice(index + 1, 0, [
+        'return \`${VAL}<xy-text text-item level="${INDEX}">\'</xy-text>\`',
+      ])
       insertChange()
     }
 
@@ -431,6 +441,7 @@ export default {
       onChange,
       insertFun,
       insertText,
+      insertQute,
       backStep,
       hid,
       lifeTimes,
