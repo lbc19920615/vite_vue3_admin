@@ -30,8 +30,9 @@
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils";
 import HttpComponent from "@/components/HttpComponent.vue";
 import {extendCommonArrEventHandler, extendControl2Page, useControl} from "@/mixins/framework";
-import {getCurrentInstance, inject, nextTick, onMounted, onBeforeMount} from 'vue';
+import {getCurrentInstance, inject, nextTick, onMounted, onBeforeMount, toRaw} from 'vue';
 import CustomElement from "@/components/CustomElement.vue";
+import buildEditorConfig from './CusComputed/editorConfig'
 
 export default {
   name: 'CusComputed',
@@ -43,6 +44,12 @@ export default {
   },
   setup(props, ctx) {
     let instanse = getCurrentInstance()
+
+    let parentModelArr = props.path_arr.slice(0, props.path_arr.length - 1)
+    let parentModelPath =
+        ZY.getObjPathFromPathArr(parentModelArr)
+
+    let widgetConfig = props.ui.widgetConfig
     let locks = true
     let cached = null
     let { methods, init, data } = defineCustomRender(props, ctx, {
@@ -94,7 +101,7 @@ export default {
     page.setEventHandler({
       async ['model:update:all'](e) {
         let { model, key, newVal, config } = e
-        console.log('cus:form model:update:all', model)
+        // console.log('cus:form model:update:all', model)
         if (!locks) {
           let val = ZY.JSON5.stringify(model)
           page.setData({
@@ -111,8 +118,30 @@ export default {
     let self_config = {}
 
     onMounted(function () {
+      let parentModel = instanse.ctx.dxValueTemplate(`MODEL('${parentModelPath}')`)
+      let properties = {}
+      try {
+        properties = ZY.JSON5.parse(parentModel.properties)
+      } catch (e) {
+        console.error(e)
+      }
+
+      let asyncPromise =  async function () {
+        let insertText = Object.keys(properties.properties)
+        let ___buildEditorConfig = buildEditorConfig({
+          insFun: ['HaHa'],
+          insVars: insertText
+        })
+        console.log('___buildEditorConfig', ___buildEditorConfig)
+        return {
+          default: ___buildEditorConfig
+        }
+      }
+
+      console.log(asyncPromise())
+
       page.commonLoadStep(
-          import('./CusComputed/editorConfig'),
+          asyncPromise(),
           'editor_step',
           {
             async onMounted(config, {setPartModel}) {
@@ -142,7 +171,7 @@ export default {
       if (currentPageWebComponentRef && currentPageWebComponentRef.toggleDialog) {
         currentPageWebComponentRef.toggleDialog(dialogName);
       }
-      console.log('formEditorConfig', cached)
+      // console.log('formEditorConfig', cached)
       if (!locks) {
         setStepModel()
       }
@@ -180,7 +209,7 @@ export default {
 
     return {
       dialogName,
-      widgetConfig: props.ui.widgetConfig,
+      widgetConfig,
       page,
       EVENT_NAMES,
       openDialog,

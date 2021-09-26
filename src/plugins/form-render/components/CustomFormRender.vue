@@ -19,6 +19,14 @@ export default defineComponent({
     part_key: String,
     context: null,
     rules: null,
+    selfpath: String,
+    formpath: String,
+    pathArr: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
     modelValue: null,
     field_uuid: String
   },
@@ -72,7 +80,7 @@ export default defineComponent({
       emit('change', e)
     }
 
-    return () => (<widgetDef ui={props.ui} field_uuid={props.field_uuid} props={props} defs={props} part_key={props.part_key} context={props.context} rules={props.rules} ref={widgetInstance} onFchange={onFchange} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
+    return () => (<widgetDef ui={props.ui} path_arr={props.pathArr} selfpath={props.selfpath} formpath={props.formpath} field_uuid={props.field_uuid} props={props} defs={props} part_key={props.part_key} context={props.context} rules={props.rules} ref={widgetInstance} onFchange={onFchange} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
   }
 })
 </script>

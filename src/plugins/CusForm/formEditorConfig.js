@@ -30,7 +30,8 @@ let formDef = {
               widgetConfig: {
                 style: {
                   height: "350px",
-                }
+                },
+                // enums: 'MODEL("name")'
               }
             }
           },

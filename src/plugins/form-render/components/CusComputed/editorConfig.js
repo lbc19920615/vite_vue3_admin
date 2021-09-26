@@ -35,69 +35,76 @@ codes = codes.concat(
   })
 )
 
-let formDef = {
-  type: 'object',
-  ui: {
-    attrs: [
-      ['label-width', '100px']
-    ],
-  },
-  properties: {
-    parts: {
-      type: 'array',
-      ui: {
-        label: "部分"
-      },
-      items: {
-        type: "object",
-        properties: {
-          name: {
-            type: 'string',
-            ui: {
-              label: 'NAME',
+
+export default function ({insText =  [], insFun = [], insVars = [] } = {}) {
+  let formDef = {
+    type: 'object',
+    ui: {
+      attrs: [
+        ['label-width', '100px']
+      ],
+    },
+    properties: {
+      parts: {
+        type: 'array',
+        ui: {
+          label: "部分"
+        },
+        items: {
+          type: "object",
+          properties: {
+            name: {
+              type: 'string',
+              ui: {
+                label: 'NAME',
+              },
             },
-          },
-          value: {
-            type: 'string',
-            ui: {
-              label: '值',
-              widget: 'CusInsert',
-              widgetConfig: {
-                insText: [
-                  ',',
-                  '\'',
-                  ...codes,
-                  '(',
-                  ')'
-                ],
-                insFun: [
-                  'MODEL'
-                ]
-              }
+            value: {
+              type: 'string',
+              ui: {
+                label: '值',
+                widget: 'CusInsert',
+                widgetConfig: {
+                  insText: [
+                    ...insText,
+                    ',',
+                    '\'',
+                    ...codes,
+                    '(',
+                    ')'
+                  ],
+                  insFun: [
+                    'MODEL',
+                    ...insFun
+                  ],
+                  insVars: [
+                    ...insVars
+                  ]
+                }
+              },
             },
-          },
+          }
         }
+      },
+    }
+  }
+
+  let computed = {}
+
+  let _config = baseConfig({
+    defaultVal: {
+      form2: {
+        name: ZY.nid(),
+        computed: '{}',
+        parts: [
+          {
+            name: 'form_' + ZY.rid(6),
+          }
+        ]
       }
     },
-  }
+    computed,
+    def: formDef,
+  });
+  return _config
 }
-
-let computed = {}
-
-let _config = baseConfig({
-  defaultVal: {
-    form2: {
-      name: ZY.nid(),
-      computed: '{}',
-      parts: [
-        {
-          name: 'form_' + ZY.rid(6),
-        }
-      ]
-    }
-  },
-  computed,
-  def: formDef,
-});
-
-export default _config

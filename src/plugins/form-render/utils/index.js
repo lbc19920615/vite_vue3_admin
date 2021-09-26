@@ -15,6 +15,12 @@ export let PROPS_DEF =function () {
                 return {}
             }
         },
+        path_arr: {
+          type: Array,
+            default() {
+                return []
+            }
+        },
         defs: {
             type: Object,
             default() {
@@ -44,7 +50,8 @@ export let CustomRenderControlMixin = {
     data() {
       return {
           // curFormCon: null,
-          inited: false
+          inited: false,
+          // parentModelPath: '',
       }
     },
     mounted() {
@@ -139,14 +146,12 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
         onChange(v) {
             lock.lock(async () => {
                 // console.log('sdsdsds', v)
-                // ZY.PubSub.publish('value-change', v)
                 ctx.emit('valuechange', v)
             }, 1000)
         },
         on_change(v) {
             lock.lock(async () => {
                 // console.log('sdsdsds', v)
-                // ZY.PubSub.publish('value-change', v)
                 ctx.emit('valuechange', v)
             }, 1000)
         }

@@ -19,6 +19,7 @@
   pointer-events: none;
   > * {
     pointer-events: all;
+    height: max-content;
   }
 }
 
@@ -108,14 +109,21 @@
         :close-on-click-modal="false"
     >
       <div  class="cus-insert-keyboard">
-        <el-button @click="backStep">退格</el-button>
-        <template v-for="item in insertedText">
-          <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
-        </template>
-        <el-button @click="insertFun('')">插入括号</el-button>
-        <template v-for="item in insertedFun">
-          <el-button @click="insertFun(item)"><span v-html="item"></span></el-button>
-        </template>
+       <div>
+         <template v-for="item in insertedVars">
+           <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
+         </template>
+       </div>
+        <div>
+          <el-button @click="backStep">退格</el-button>
+          <template v-for="item in insertedText">
+            <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
+          </template>
+          <el-button @click="insertFun('')">插入括号</el-button>
+          <template v-for="item in insertedFun">
+            <el-button @click="insertFun(item)"><span v-html="item"></span></el-button>
+          </template>
+        </div>
       </div>
     </el-drawer>
 
@@ -161,6 +169,15 @@ export default {
 
     if (Array.isArray(widgetConfig.insFun)) {
       insertedFun = insertedFun.concat(widgetConfig.insFun)
+    }
+
+
+    let insertedVars = [
+
+    ]
+
+    if (Array.isArray(widgetConfig.insVars)) {
+      insertedVars = insertedVars.concat(widgetConfig.insVars)
     }
 
 
@@ -412,6 +429,7 @@ export default {
       lifeTimes,
       insertedText,
       insertedFun,
+      insertedVars,
       onValueChanged,
       methods,
       onModalClosed,
