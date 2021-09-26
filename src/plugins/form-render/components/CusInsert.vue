@@ -8,6 +8,7 @@
     position: relative;
     padding-left: 2px;
     padding-right: 2px;
+    cursor: text;
   }
   &__append {
     border: none;
@@ -43,14 +44,33 @@
 }
 
 [text-item]::after {
+  //position: absolute;
+  //float: right;
+  //content: " ";
+  //background-color: transparent;
+  //letter-spacing: 0.88px;
+  //width: 2px;
+  //height: 100%;
+  //animation: cursor-blinks 1.5s infinite steps(1, start);
+
   position: absolute;
   float: right;
   content: " ";
   background-color: transparent;
   letter-spacing: 0.88px;
-  width: 2px;
+  width: 1px;
   height: 100%;
   animation: cursor-blinks 1.5s infinite steps(1, start);
+  /* height: 1em; */
+  /* transform: translateY(-50%); */
+  /* top: calc(50% + .1em); */
+  line-height: 1;
+  /* padding-left: 4px; */
+  /* left: 2px; */
+  margin-left: 0;
+  box-sizing: border-box;
+  padding: 3px 0;
+  background-clip: content-box
 }
 
 
