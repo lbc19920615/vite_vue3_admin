@@ -396,7 +396,7 @@ export default {
     }
 
     function onModalClosed() {
-      // document.getElementById(hid)?.blur()
+      document.getElementById(hid)?.focus()
       // console.log(document.getElementById(hid))
     }
 
