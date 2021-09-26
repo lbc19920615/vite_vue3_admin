@@ -109,6 +109,7 @@
         tabindex="-1"
         @keyup="onInsertkeyup"
         @blur="onInputBlur"
+        @focus="onFocus"
     >
       <div
            style="flex: 1"
@@ -441,7 +442,9 @@ export default {
 
     function onInputFocus(e) {
       // console.log('onFocus', e)
-      state.drawer = true
+      if (!document.querySelector('.cus-insert-input.focus')) {
+        state.drawer = true
+      }
     }
 
     function onInputBlur(e) {
@@ -452,6 +455,14 @@ export default {
     function onModalClosed() {
       document.getElementById(hid)?.focus()
       // console.log(document.getElementById(hid))
+    }
+
+    function onFocus(e) {
+      if (document.querySelector('.cus-insert-input.focus')) {
+        Array.of(...document.querySelectorAll('.cus-insert-input:not(.focus)')).forEach(item => {
+          item.blur()
+        })
+      }
     }
 
 
@@ -467,6 +478,7 @@ export default {
       lifeTimes,
       insertedText,
       insertedFun,
+      onFocus,
       insertedVars,
       onValueChanged,
       methods,
