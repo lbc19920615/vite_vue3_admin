@@ -66,7 +66,7 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
 
   function handleDeep(curDep = {}, path, {parsedData=null}={}) {
     if (parsedData) {
-      console.log('sdsdsd', parsedData)
+      // console.log('sdsdsd', parsedData)
     }
     if (curDep.type === 'array') {
       // console.log('array')
