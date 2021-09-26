@@ -1,14 +1,17 @@
 <style lang="scss">
 .cus-insert-input {
+  --input-size: 14px;
   user-select: none;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   [text-item] {
-    display: inline-block;
+
     position: relative;
-    padding-left: 2px;
-    padding-right: 2px;
+    display: inline-block;
+    //padding-left: 2px;
+    //padding-right: 2px;
     cursor: text;
+    vertical-align: middle;
   }
   &__append {
     border: none;
@@ -54,17 +57,18 @@
   //animation: cursor-blinks 1.5s infinite steps(1, start);
 
   position: absolute;
-  float: right;
+  //float: right;
+  right: 0;
   content: " ";
   background-color: transparent;
   letter-spacing: 0.88px;
   width: 1px;
-  height: 100%;
+  height: calc(var(--input-size) * 2);
   animation: cursor-blinks 1.5s infinite steps(1, start);
   /* height: 1em; */
-  /* transform: translateY(-50%); */
-  /* top: calc(50% + .1em); */
-  line-height: 1;
+  transform: translateY(-50%);
+  top: calc(50% + .1em);
+  //line-height: calc(100%);
   /* padding-left: 4px; */
   /* left: 2px; */
   margin-left: 0;
@@ -114,7 +118,8 @@
       <div
            style="flex: 1"
       >
-        <xy-text text-item level="-1">&nbsp;</xy-text><div content style="display: inline-block"
+        <xy-text text-item level="-1">&nbsp;</xy-text>
+        <div content style="display: inline-block"
                                                            class="cus-insert-html" v-html="runFuncs(state.control.funcs)"></div>
       </div>
       <el-button  class="cus-insert-input__append"  @click="onInputFocus"><i class="fas fa-keyboard"></i></el-button>
@@ -139,6 +144,7 @@
           <el-button @click="backStep">退格</el-button>
           <el-button @click="insertFun('')">插入括号</el-button>
           <el-button @click="insertQute('')">插入引号</el-button>
+          <el-button @click="insertEmoji('fuck')">插入<z-emoji  face="fuck"></z-emoji></el-button>
           <template v-for="item in insertedText">
             <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
           </template>
@@ -321,13 +327,18 @@ export default {
       insertChange()
     }
 
-    function insertText(v) {
+    function insertText(v, tag = 'xy-text', attr = '') {
       resetFuncs()
       let index  = getIndex()
       // console.log(index)
-      state.control.funcs.splice(index, 0, [ 'return \`${VAL}<xy-text text-item level="${INDEX}">'+v+'</xy-text>\`'])
+      state.control.funcs.splice(index, 0, [ 'return \`${VAL}<'+tag+' text-item level="${INDEX}" '+attr+' >'+v+'</'+tag+'>\`'])
 
       insertChange()
+    }
+
+    function insertEmoji() {
+      // <z-emoji zoom=".7" face="fuck">&nbsp;</z-emoji>
+      insertText('', 'z-emoji', 'zoom=".7" face="fuck"')
     }
 
     function runFuncs(funcs) {
@@ -473,6 +484,7 @@ export default {
       insertFun,
       insertText,
       insertQute,
+      insertEmoji,
       backStep,
       hid,
       lifeTimes,

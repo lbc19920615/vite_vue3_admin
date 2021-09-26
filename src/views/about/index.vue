@@ -4,6 +4,9 @@
     display: none;
   }
 }
+.page-search {
+  //--z-emoji-zoom: 0.9;
+}
 </style>
 
 <template>
@@ -68,9 +71,9 @@
       </template>
     </CustomElement>
 
-<!--    <ZLayoutEditor-->
-<!--        store-prefix="zlayout"-->
-<!--        :controls="true"></ZLayoutEditor>-->
+    <z-emoji face="fuck"></z-emoji>
+
+    <z-emoji zoom="0.7" face="fuck"></z-emoji>
 
     <template v-if="store.model.textarea_step">
       <!--      {{store.computedModel}}-->

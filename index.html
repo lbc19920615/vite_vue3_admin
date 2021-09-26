@@ -12,11 +12,96 @@
 <!--      rel="stylesheet"-->
 <!--      href="https://cdn.jsdelivr.net/npm/vant@next/lib/index.css"-->
 <!--    />-->
+<!--    <link rel="stylesheet" href="./fFace.css">-->
       <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+      :root {
+          --z-emoji-zoom: 0.7;
+      }
+    </style>
   </head>
   <body>
 {% include './src/htmls/template.html' %}
+<script>
+  class ZEmoji extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({mode: 'open'});
+    }
+
+    static get observedAttributes() {
+      return ['face', 'zoom'];
+    }
+
+    render() {
+
+      let style = `<style>
+
+
+:host {
+  --emoji-width: 30px;
+  --emoji-height: 30px;
+  --emoji-zoom: var(--z-emoji-zoom, 1);
+  position: relative;
+  display: inline-block;
+  width: calc(var(--emoji-width) * var(--emoji-zoom));
+  height: calc(var(--emoji-height) * var(--emoji-zoom));
+}
+
+.s_face {
+    width: 30px;
+    height: 30px;
+    background: transparent url(./fFace.png) no-repeat scroll left top;
+    position: absolute;
+    zoom: var(--emoji-zoom, 1);
+}
+
+.s_face[face="fuck"] {
+    display: inline-block;
+    color: #000;
+    font-size: 14px;
+    text-decoration: none;
+    background-position: left -300px;
+    background-size: 100%;
+}
+
+</style>`
+
+      function getZOOM(s) {
+        let v =  parseFloat(s )
+        if (Number.isNaN(v)) {
+          return undefined
+        }
+        return v
+      }
+
+
+      let face = this.getAttribute('face')
+      let zoom = getZOOM(this.getAttribute('zoom'))
+      if (typeof zoom !== 'undefined') {
+        let size = [30 * zoom, 30 * zoom]
+        this.style.width = size[0] + 'px'
+        this.style.height = size[1] + 'px'
+        this.shadowRoot.innerHTML = `${style}<a face="${face}"
+style="zoom: ${zoom}" class="s_face">&nbsp;</a>`
+      } else {
+        this.shadowRoot.innerHTML = `${style}<a face="${face}"
+ class="s_face">&nbsp;</a>`
+      }
+
+
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+      // console.log(name, oldValue, newValue)
+      this.render()
+    }
+  }
+
+  window.customElements.define('z-emoji', ZEmoji);
+</script>
     <div id="app"></div>
+
     <div id="storeApp"></div>
     <div id="endofbody" style="position: fixed; left: 150px; bottom: 0; z-index: 111;"></div>
     <script type="module" src="/src/main.js"></script>
