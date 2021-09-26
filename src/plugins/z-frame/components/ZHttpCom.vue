@@ -9,17 +9,20 @@
         :defs="page.defMap"
         :is="store.model.editor_step"
     >
-      <template #array_item_before="scope">
+      <template #prop_label_beforeend="scope">
+        <z-tooltip :tooltip="scope.config.ui ? scope.config.ui.notice : ''"></z-tooltip>
+      </template>
+      <template #array_con_afterbegin="scope">
         <el-divider></el-divider>
       </template>
-      <template #array_before="scope">
+      <template #array_afterbegin="scope">
        <el-col>
 <!--         <h3>{{ scope.key }}</h3>-->
          <el-button type="primary" size="small"
              @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加</el-button>
        </el-col>
       </template>
-      <template #array_item_after="scope">
+      <template #array_con_beforeend="scope">
         <el-col>
           <el-button type="danger" size="small"
               @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除</el-button>
@@ -33,9 +36,10 @@
 import HttpComponent from "@/components/HttpComponent.vue";
 import {extendControl2Page, useControl, extendCommonArrEventHandler} from "@/mixins/framework";
 import {onBeforeUnmount, onMounted, toRaw} from "vue";
+import ZTooltip from "@/plugins/z-frame/components/ZTooltip.vue";
 export default {
   name: 'ZHttpCom',
-  components: {HttpComponent},
+  components: {ZTooltip, HttpComponent},
   emits: [
     'http:model:change',
     'form:input:blur'

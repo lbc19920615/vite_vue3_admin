@@ -28,10 +28,7 @@ export default {
           type: String,
           ui: {
             label: '枚举',
-            notice: `
-            枚举可以使用的方法
-            [sdsd](sdsds)
-            `
+            notice: '枚举可以使用的方法 [sdsd](sdsds)'
           }
         }
       }
