@@ -46,7 +46,7 @@
               <template #form_array_before="scope">
                 <h3>{{scope.index}}</h3>
               </template>
-              <template #object_prev="scope">
+              <template #object_beforebegin="scope">
                 <h3>{{getArrItemBeforeKey(scope)}}</h3>
               </template>
               <template #array_before="scope">

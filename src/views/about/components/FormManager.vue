@@ -37,7 +37,7 @@
         <template #array_item_after="scope">
           <slot name="array_item_after" v-bind="scope"></slot>
         </template>
-        <template #object_prev="scope">
+        <template #object_beforebegin="scope">
           <h3>{{scope.selfpath}}</h3>
         </template>
       </HttpComponent>
