@@ -87,7 +87,7 @@
         class="cus-insert-input"
         :class="{'focus': state.drawer}"
         tabindex="-1"
-        @keyup="onkeyup"
+        @keyup="onInsertkeyup"
         @blur="onInputBlur"
     >
       <div
@@ -108,7 +108,7 @@
         @closed="onModalClosed"
         :close-on-click-modal="false"
     >
-      <div  class="cus-insert-keyboard">
+      <div  class="cus-insert-keyboard" tabindex="-1"   @keyup="onPopupkeyup">
        <div>
          <template v-for="item in insertedVars">
            <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
@@ -393,13 +393,20 @@ export default {
     }
 
 
-    function onkeyup(e) {
-      // console.log('onkeyup', e)
+    function handleKeyUP(e) {
       if (e.key === 'Backspace') {
         backStep()
       } else  if (insertedText.includes(e.key)) {
         insertText(e.key)
       }
+    }
+
+    function onInsertkeyup(e) {
+      handleKeyUP(e)
+    }
+
+    function onPopupkeyup(e) {
+      handleKeyUP(e)
     }
 
     function onInputFocus(e) {
@@ -436,7 +443,8 @@ export default {
       onInputFocus,
       onInputBlur,
       onBlur,
-      onkeyup,
+      onInsertkeyup,
+      onPopupkeyup,
       runFuncs,
       save,
       listeners,
