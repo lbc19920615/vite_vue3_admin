@@ -132,7 +132,7 @@ export default {
           insFun: ['HaHa'],
           insVars: insertText
         })
-        console.log('___buildEditorConfig', ___buildEditorConfig)
+        // console.log('___buildEditorConfig', ___buildEditorConfig)
         return {
           default: ___buildEditorConfig
         }

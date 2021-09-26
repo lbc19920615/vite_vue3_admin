@@ -106,32 +106,32 @@ export default {
                                         }
                                     },
                                 },
-                                widget: {
-                                    type: 'string',
-                                    ui: {
-                                        label: 'widget',
-                                        widgetConfig: {
-                                            disabled: true,
-                                        }
-                                    },
-                                    computedProp: 'swidget',
-                                    // reflect: 'widget2',
-                                    // reflectTpl: 'A.getWidgetEditor($VAL, "widget")'
-                                },
-                                widgetConfig: {
-                                    type: 'string',
-                                    ui: {
-                                        label: 'widgetConfig',
-                                        // widget: 'CodeJsEditor',
-                                        // widget: 'JsonCodeEditor',
-                                        widgetConfig: {
-                                            type: 'textarea',
-                                            disabled: true,
-                                            style: {}
-                                        }
-                                    },
-                                    computedProp: 'swidget_config',
-                                },
+                                // widget: {
+                                //     type: 'string',
+                                //     ui: {
+                                //         label: 'widget',
+                                //         widgetConfig: {
+                                //             disabled: true,
+                                //         }
+                                //     },
+                                //     computedProp: 'swidget',
+                                //     // reflect: 'widget2',
+                                //     // reflectTpl: 'A.getWidgetEditor($VAL, "widget")'
+                                // },
+                                // widgetConfig: {
+                                //     type: 'string',
+                                //     ui: {
+                                //         label: 'widgetConfig',
+                                //         // widget: 'CodeJsEditor',
+                                //         // widget: 'JsonCodeEditor',
+                                //         widgetConfig: {
+                                //             type: 'textarea',
+                                //             disabled: true,
+                                //             style: {}
+                                //         }
+                                //     },
+                                //     computedProp: 'swidget_config',
+                                // },
                             }
                         },
                         rules: {

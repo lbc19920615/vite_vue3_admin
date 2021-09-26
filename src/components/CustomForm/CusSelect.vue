@@ -4,6 +4,7 @@
     <el-select v-model="state.value"
                v-bind="widgetConfig"
                v-on="listeners"
+               clearable
     >
       <el-option v-for="(option, key) in dxValueTemplate(widgetConfig.enums)"
                  :label="option.label" :value="option.value"

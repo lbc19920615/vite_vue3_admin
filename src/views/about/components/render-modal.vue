@@ -1,13 +1,4 @@
-<style lang="scss" scoped>
-
-</style>
-
 <template>
-<!--  <el-tabs class="render-tab" v-model="current">-->
-<!--    <el-tab-pane :label="item.label" :name="item.name"  v-for="(item, index) in rowv2">-->
-<!--      <slot v-bind="{item, index}"></slot>-->
-<!--    </el-tab-pane>-->
-<!--  </el-tabs>-->
   <el-dialog
       title="提示"
       v-model="dialogVisible"
@@ -23,7 +14,7 @@
 </template>
 
 <script>
-import {inject, defineComponent} from 'vue';
+import { defineComponent} from 'vue';
 export default defineComponent({
   name: "render-modal",
   mixins: [
@@ -70,7 +61,7 @@ export default defineComponent({
         this.rowv2.forEach(v => {
         })
       }
-      console.log('render modal', this.obj)
+      // console.log('render modal', this.obj)
       let ref = ZY.lodash.get(this.obj, 'data.pageRef')
       this.page.modalManRef.register(this, ref)
       return Promise.resolve()

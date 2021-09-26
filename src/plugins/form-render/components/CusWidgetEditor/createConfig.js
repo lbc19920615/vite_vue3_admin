@@ -6,10 +6,6 @@ export function createCusWidgetEditorConfig(formDef = {}, computed = {}) {
         defaultVal: {
             form2: {
                 props: [
-                    // {
-                    //     name: 'form_' + ZY.rid(6),
-                    //     value: ''
-                    // }
                 ]
             }
         },

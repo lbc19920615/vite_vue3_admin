@@ -43,7 +43,7 @@ export let buildFormDep = function (model = {parts: []}, name = model.name, args
             computed = Object.assign(computed, ret)
           } catch (e) {}
         }
-        console.log('computed', computed)
+        // console.log('computed', computed)
         let properties = partProps.properties
 
         let obj = {
