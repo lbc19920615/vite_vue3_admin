@@ -127,7 +127,10 @@ export default {
       }
 
       let asyncPromise =  async function () {
-        let insertText = Object.keys(properties.properties)
+        let insertText = []
+        if (properties.properties) {
+          insertText = Object.keys(properties.properties)
+        }
         let ___buildEditorConfig = buildEditorConfig({
           insFun: ['HaHa'],
           insVars: insertText
@@ -138,7 +141,7 @@ export default {
         }
       }
 
-      console.log(asyncPromise())
+      // console.log(asyncPromise())
 
       page.commonLoadStep(
           asyncPromise(),

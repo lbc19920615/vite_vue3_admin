@@ -64,7 +64,10 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
     }
   }
 
-  function handleDeep(curDep = {}, path) {
+  function handleDeep(curDep = {}, path, {parsedData=null}={}) {
+    if (parsedData) {
+      console.log('sdsdsd', parsedData)
+    }
     if (curDep.type === 'array') {
       // console.log('array')
       setObj(deepObj, path, {
@@ -82,11 +85,17 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
         handleDeep(dep, newPath)
       }
     } else if (curDep.type === 'object') {
+     let ___def = {
+       type: 'object',
+       properties: {},
+     }
+
+     if (parsedData) {
+       ___def.ui = parsedData.ui ?? {}
+     }
+
       setObj(deepObj, path,
-        {
-          type: 'object',
-          properties: {},
-        }
+        ___def
       )
 
       for (let item of curDep.items) {
@@ -107,7 +116,7 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
 
         // console.log(item, dep, deepObj, newPath)
         if (dep) {
-          handleDeep(dep, newPath)
+          handleDeep(dep, newPath, {parsedData})
         }
       }
     } else {
