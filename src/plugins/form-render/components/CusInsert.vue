@@ -16,6 +16,10 @@
 
 .cus-insert-modal {
   background-color: transparent;
+  pointer-events: none;
+  > * {
+    pointer-events: all;
+  }
 }
 
 .cus-insert-input {
@@ -98,9 +102,10 @@
         v-model="state.drawer"
         title="自定义键盘"
         direction="btt"
-        :modal="true"
+        modal="false"
         modal-class="cus-insert-modal"
         @closed="onModalClosed"
+        :close-on-click-modal="false"
     >
       <div  class="cus-insert-keyboard">
         <el-button @click="backStep">退格</el-button>
@@ -387,11 +392,11 @@ export default {
 
     function onInputBlur(e) {
       // console.log('onBlur', e)
-      state.drawer = false
+      // state.drawer = false
     }
 
     function onModalClosed() {
-      document.getElementById(hid)?.blur()
+      // document.getElementById(hid)?.blur()
       // console.log(document.getElementById(hid))
     }
 
