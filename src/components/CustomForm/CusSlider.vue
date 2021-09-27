@@ -13,7 +13,6 @@
 
 <script>
 import {CustomRenderControlMixin, defineCustomRender, PROPS_DEF} from "@/plugins/form-render/utils/index";
-import {ref} from "vue";
 
 export default {
   name: 'CusSlider',
