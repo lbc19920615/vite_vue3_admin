@@ -123,6 +123,9 @@ import CustomFormRenderPlugin from "@/plugins/form-render";
 import {initStoreApp} from "@/storeApp";
 
 
+import {initMathJax} from "@/components/Ew/EwMathJax/utils";
+initMathJax()
+
 window.startApp = function () {
 
   const storeApp = Vue.createApp(StoreApp)
@@ -172,7 +175,7 @@ window.startApp = function () {
   initStoreApp(storeApp)
 
   app.mount('#app')
-  
+
   return app
 }
 

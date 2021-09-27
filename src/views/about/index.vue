@@ -71,10 +71,6 @@
       </template>
     </CustomElement>
 
-    <z-emoji face="fuck"></z-emoji>
-
-    <z-emoji zoom="0.7" face="fuck"></z-emoji>
-
     <template v-if="store.model.textarea_step">
       <!--      {{store.computedModel}}-->
       <HttpComponent
@@ -91,6 +87,12 @@
             </el-space>
           </template>
           <template v-else-if="scope.key === 'layoutSlotArr'">
+
+            <z-emoji face="fuck" ></z-emoji>
+            <div>
+              <img id="previewImg" src="" alt="">
+              <ew-math-jax  :latex="formula" :block="true"></ew-math-jax>
+            </div>
             <el-space   align="middle">
               <h3>片段</h3>
               <el-button size="small" @click="page.callEvent('add:arr:common', scope)">添加{{ scope.label }}</el-button>
@@ -98,6 +100,7 @@
             </el-space>
           </template>
           <template v-else-if="scope.key === 'forms'">
+
             <el-space   align="middle">
               <h3>表单</h3>
               <el-button size="small" @click="page.callEvent('add:forms', scope)">添加{{ scope.label }}</el-button>
@@ -201,6 +204,7 @@ import PinyinMatch from 'pinyin-match';
 globalThis.PinyinMatch = PinyinMatch
 
 import 'ipinyinjs'
+import EwMathJax from "@/components/Ew/EwMathjax.vue";
 
 function initDict()
 {
@@ -312,6 +316,7 @@ export default defineComponent({
     }
   },
   components: {
+    EwMathJax,
     FormsLayoutSelect,
     ZLayoutEditor,
     FormManager,
@@ -649,10 +654,13 @@ export default defineComponent({
       // console.log('onMounted')
     })
 
+    let formula = `x^{y^z}=(1+{\\rm e}^x)^{-2xy^w}`
+
     return {
       layoutRef,
       store: page.store,
       demo,
+      formula,
       jumpTo,
       page,
       allDef: page.defMap,

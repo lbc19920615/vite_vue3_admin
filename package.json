@@ -30,6 +30,7 @@
     "json5": "^2.2.0",
     "jsplumb": "^2.15.6",
     "lodash": "^4.17.21",
+    "mathjax": "^3.2.0",
     "monaco-editor": "^0.26.1",
     "normalize.css": "^8.0.1",
     "path-to-regexp": "^6.2.0",
