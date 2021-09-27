@@ -50,12 +50,10 @@ $sel: "." + $tag;
                           v-model="item.key" placeholder="请填写key"></el-input>
                 <div v-else>{{item.key}}</div>
               </div>
-              <template v-if="dep.type === 'array'">
-<!--                <button @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>-->
-              </template>
-              <template v-else>
-                <el-button size="small" @click="editDep(dep, item)"><i class="el-icon-edit" ></i></el-button>
-              </template>
+<!--              <template v-if="dep.type === 'array' || dep.type === 'object'">-->
+<!--              </template>-->
+              <button @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>
+              <el-button size="small" @click="editDep(dep, item)"><i class="el-icon-edit" ></i></el-button>
             </div>
           </template>
           <el-button size="small" v-if="dep.type === 'object'"
