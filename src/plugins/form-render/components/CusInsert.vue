@@ -111,7 +111,7 @@
         class="cus-insert-input"
         :class="{'focus': state.drawer}"
         tabindex="-1"
-        @keyup="onInsertkeyup"
+        @keydown="onInsertkeyup"
         @blur="onInputBlur"
         @focus="onFocus"
     >
@@ -359,9 +359,7 @@ export default {
       return ''
     }
 
-    function backStep() {
-      state.control.funcs.splice(lastIndex, 1)
-      // console.log(state.control.funcs)
+    function backCursor(cb) {
       let Index = lastIndex - 1
       if (Index < -1) {
         Index = -1
@@ -371,8 +369,48 @@ export default {
             Index,
             'remove'
         )
-        onChange()
+        if (cb) {
+          cb()
+        }
       }, 30)
+    }
+
+    function nextCursor(cb) {
+      let Index = lastIndex + 1
+      // if (Index >    state.control.funcs.length - 1) {
+      //   Index =    state.control.funcs.length - 1
+      // }
+
+      if (Index <  state.control.funcs.length) {
+        setTimeout(() => {
+          setCursor(
+              Index,
+              'next'
+          )
+          if (cb) {
+            cb()
+          }
+        }, 30)
+      }
+    }
+
+    function backStep() {
+      state.control.funcs.splice(lastIndex, 1)
+      // console.log(state.control.funcs)
+      // let Index = lastIndex - 1
+      // if (Index < -1) {
+      //   Index = -1
+      // }
+      // setTimeout(() => {
+      //   setCursor(
+      //       Index,
+      //       'remove'
+      //   )
+      //   onChange()
+      // }, 30)
+      backCursor(function () {
+        onChange()
+      })
     }
 
     function setCursor(index, type) {
@@ -395,6 +433,20 @@ export default {
         current.setAttribute('selected', 1)
       }
 
+    }
+
+    function setFirstCursor() {
+      setCursor(
+          -1,
+          'index'
+      )
+    }
+
+    function setLastCursor() {
+      setCursor(
+          state.control.funcs.length - 1,
+          'index'
+      )
     }
 
     function onClick(e) {
@@ -431,15 +483,27 @@ export default {
 
     function onValueChanged() {
       // console.log('  onValueInited', state)
-
     }
 
 
     function handleKeyUP(e) {
+      e.preventDefault()
+      e.stopPropagation()
       if (e.key === 'Backspace') {
         backStep()
       } else  if (insertedText.includes(e.key)) {
         insertText(e.key)
+      } else if (e.key === 'ArrowLeft') {
+        // console.log('ArrowLeft')
+        backCursor()
+      } else if (e.key === 'ArrowRight') {
+        // console.log('ArrowRight')
+        nextCursor()
+      } else if (e.key === 'ArrowUp') {
+        // console.log('ArrowUp')
+        setFirstCursor()
+      } else if (e.key === 'ArrowDown') {
+        setLastCursor()
       }
     }
 
