@@ -134,7 +134,7 @@
         @closed="onModalClosed"
         :close-on-click-modal="false"
     >
-      <div  class="cus-insert-keyboard" tabindex="-1"   @keyup="onPopupkeyup">
+      <div  class="cus-insert-keyboard" tabindex="-1"   @keydown="onPopupkeyup">
        <div>
          <template v-for="item in insertedVars">
            <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
