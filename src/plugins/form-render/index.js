@@ -2,6 +2,8 @@ import CustomFormRender from './components/CustomFormRender.vue'
 import UnitInput from "@/components/UnitInput.vue";
 import CusDateTimePicker from "@/components/CustomForm/CusDateTimePicker.vue";
 import CusSelect from "@/components/CustomForm/CusSelect.vue";
+import CusRadio from "@/components/CustomForm/CusRadio.vue";
+import CusCheckbox from "@/components/CustomForm/CusCheckbox.vue";
 import CusProps from "@/components/CustomForm/CusProps.vue";
 import CusForm from "@/components/CustomForm/CusForm.vue";
 import CusSuggest from "@/components/CustomForm/CusSuggest.vue";
@@ -35,12 +37,13 @@ const plugin = {
         CustomVueComponent.register(CusProps)
         CustomVueComponent.register(CusForm)
         CustomVueComponent.register(CusSuggest)
+        CustomVueComponent.register(CusRadio)
+        CustomVueComponent.register(CusCheckbox)
 
         CustomVueComponent.register(MyVueTab)
         CustomVueComponent.register(MyVueTabPane)
         CustomVueComponent.register(ZPagination)
-        // CustomVueComponent.register(VantDateTimePicker.name, VantDateTimePicker)
-        // CustomVueComponent.register(AceJsEditor.name, AceJsEditor)
+
 
         CustomVueComponent.register(CusSubmitButton)
         CustomVueComponent.register(jsxCom)

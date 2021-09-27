@@ -1,16 +1,15 @@
 <template>
   <template v-if="inited">
 <!--    {{widgetConfig.enums}}-->
-    <el-select
+    <el-radio-group
         v-model="state.value"
-    v-bind="widgetConfig"
-               v-on="listeners"
-               clearable
+        v-bind="widgetConfig"
+        v-on="listeners"
     >
-      <el-option v-for="(option, key) in dxValueTemplate(widgetConfig.enums)"
-                 :label="option.label" :value="option.value"
-      ></el-option>
-    </el-select>
+      <el-radio v-for="(option, key) in dxValueTemplate(widgetConfig.enums)"
+                :label="option.value"
+      ><span v-html="option.label"></span></el-radio>
+    </el-radio-group>
   </template>
 
 </template>
@@ -19,7 +18,7 @@
 import {CustomRenderControlMixin, defineCustomRender, PROPS_DEF} from "@/plugins/form-render/utils/index";
 
 export default {
-  name: 'CusSelect',
+  name: 'CusRadio',
   mixins: [
       CustomRenderControlMixin
   ],
