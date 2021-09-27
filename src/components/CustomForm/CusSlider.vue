@@ -1,12 +1,12 @@
 <template>
   <template v-if="inited">
-<!--    {{widgetConfig.enums}}-->
-<!--{{state}}-->
-    <el-rate
+    <!--    {{widgetConfig.enums}}-->
+    <!--{{state}}-->
+    <el-slider
         v-model="state.value"
         v-bind="widgetConfig"
         v-on="listeners"
-    ></el-rate>
+    ></el-slider>
   </template>
 
 </template>
@@ -16,9 +16,9 @@ import {CustomRenderControlMixin, defineCustomRender, PROPS_DEF} from "@/plugins
 import {ref} from "vue";
 
 export default {
-  name: 'CusRate',
+  name: 'CusSlider',
   mixins: [
-      CustomRenderControlMixin
+    CustomRenderControlMixin
   ],
   CUS_EDITOR: function () {
     return {
