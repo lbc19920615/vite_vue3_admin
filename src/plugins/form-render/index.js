@@ -6,6 +6,7 @@ import CusRadio from "@/components/CustomForm/CusRadio.vue";
 import CusCheckbox from "@/components/CustomForm/CusCheckbox.vue"
 import CusRate from "@/components/CustomForm/CusRate.vue";
 import CusSlider from "@/components/CustomForm/CusSlider.vue";
+import CusSwitch from "@/components/CustomForm/CusSwitch.vue";
 import CusProps from "@/components/CustomForm/CusProps.vue";
 import CusForm from "@/components/CustomForm/CusForm.vue";
 import CusSuggest from "@/components/CustomForm/CusSuggest.vue";
@@ -43,6 +44,7 @@ const plugin = {
         CustomVueComponent.register(CusCheckbox)
         CustomVueComponent.register(CusRate)
         CustomVueComponent.register(CusSlider)
+        CustomVueComponent.register(CusSwitch)
 
         CustomVueComponent.register(MyVueTab)
         CustomVueComponent.register(MyVueTabPane)
