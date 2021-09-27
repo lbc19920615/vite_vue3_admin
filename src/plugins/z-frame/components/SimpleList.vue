@@ -101,8 +101,14 @@ export default {
             // console.log(keys)
             let flag = false
             keys.forEach(key => {
-              if (o[key] && o[key].includes && o[key].includes(v)) {
-                flag = true
+              if (o[key] && o[key].includes) {
+
+                let lowerKey = o[key].toLowerCase()
+                if (lowerKey.includes(v.toLowerCase())) {
+                  flag = true
+                }
+
+
               }
             })
             return flag
