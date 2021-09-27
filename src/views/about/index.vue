@@ -196,6 +196,10 @@ import FormManager from "@/views/about/components/FormManager.vue";
 import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
 import FormsLayoutSelect from "@/plugins/z-frame/components/FormsLayoutSelect.vue";
 import {FormsLayout} from "@/plugins/z-frame/formsLayout";
+
+import PinyinMatch from 'pinyin-match';
+globalThis.PinyinMatch = PinyinMatch
+
 import 'ipinyinjs'
 
 function initDict()
@@ -237,30 +241,66 @@ window.getSingleHanzi = function(pinyin) {
  */
 window.getHanzi =  function(pinyin)
 {
-  let result = window.getSingleHanzi(pinyin);
-  if(result) return [result.split(''), pinyin];
+  //因为最长可能是5个字母，如 zhuang
+  let MAGIC_LENGTH = 5
+  let result = getSingleHanzi(pinyin);
+  if(result) {
+    // console.log(pinyin)
+    return [result.split(''), pinyin];
+  }
   let temp = '';
   for(let i=0, len = pinyin.length; i<len; i++)
   {
     temp += pinyin[i];
-    result = window.getSingleHanzi(temp);
+    result = getSingleHanzi(temp);
     if(!result) continue;
     // flag表示如果当前能匹配到结果、并且往后5个字母不能匹配结果，因为最长可能是5个字母，如 zhuang
     let flag = false;
     if((i+1) < pinyin.length)
     {
-      for(let j=1, len = pinyin.length; j<=5 && (i+j)<len; j++)
+      for(let j=1, len = pinyin.length; j <= MAGIC_LENGTH && (i+j)<len; j++)
       {
-        if(window.getSingleHanzi(pinyin.substr(0, i+j+1)))
+        if(
+            getSingleHanzi(
+               pinyin.substr(0, i+j+1)
+            )
+        )
         {
           flag = true;
           break;
         }
       }
     }
-    if(!flag) return [result.split(''), pinyin.substr(0, i+1) + "'" + pinyin.substr(i+1)];
+    if(!flag) {
+      return [
+        result.split(''),
+        pinyin.substr(0, i+1) ,
+        pinyin.substr(i+1)
+
+      ];
+    }
   }
   return [[], '']; // 理论上一般不会出现这种情况
+}
+
+
+window.parsePingYing = function (pinyin = '', res = []) {
+  let ret = getHanzi(pinyin)
+  if (Array.isArray(ret)) {
+    if (ret.length === 2 ) {
+      res.push(ret)
+    }
+    if (ret.length === 3 ) {
+      res.push([ret[0], ret[1]])
+      parsePingYing(ret[2], res)
+    }
+  }
+}
+
+window.testPingYin = function (pingyin = '') {
+  let ret = []
+  window.parsePingYing(pingyin, ret)
+  return ret
 }
 
 export default defineComponent({
