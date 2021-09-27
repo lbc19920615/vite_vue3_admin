@@ -6,7 +6,7 @@
 <!--    <el-input v-model="state.value.control.widget"></el-input>-->
     <div class="a-space-mb-20">
       <ew-suggest v-model="state.value.control.widget"
-                  placement="bottom"
+                  placement="top"
                   :suggest="state.suggest"
                   @value:change="onWidgetChange"></ew-suggest>
     </div>
