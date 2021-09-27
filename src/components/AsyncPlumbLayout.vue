@@ -29,7 +29,7 @@ $sel: "." + $tag;
             @confirm="deleteDep(dep)"
         >
           <template #reference>
-            <el-button  size="small"  type="danger"><i class="el-icon-remove" ></i></el-button>
+            <el-button  size="mini"  type="danger"><el-icon><Remove></Remove></el-icon></el-button>
           </template>
         </el-popconfirm>
 
@@ -52,8 +52,14 @@ $sel: "." + $tag;
               </div>
 <!--              <template v-if="dep.type === 'array' || dep.type === 'object'">-->
 <!--              </template>-->
-              <button @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></button>
-              <el-button size="small" @click="editDep(dep, item)"><i class="el-icon-edit" ></i></el-button>
+              <el-button size="mini"
+                         style="padding: 6px 10px"
+                         type="danger"
+                         @click="deleteItem(dep, item, index)"><el-icon><Remove></Remove></el-icon></el-button>
+              <el-button size="mini"
+                         style="padding: 6px  10px"
+                         type="primary"
+                         @click="editDep(dep, item)"><el-icon><Edit></Edit></el-icon></el-button>
             </div>
           </template>
           <el-button size="small" v-if="dep.type === 'object'"
@@ -70,12 +76,18 @@ import {jsPlumb} from 'jsplumb'
 import * as NodeDefMap from "@/plugins/ComEditor/nodes";
 import {createPlumbConfig} from "@/plugins/PlumbLayout/utils";
 import {plumbActionMixins, plumbLayoutMixn} from "@/plugins/PlumbLayout/mixin";
+import {Remove, Edit} from "@element-plus/icons";
+
 export default {
   name: "AsyncPlumbLayout",
   mixins: [
     plumbLayoutMixn,
     plumbActionMixins,
   ],
+  components: {
+    Remove,
+    Edit,
+  },
   props: {
     rootId: String,
     handleAppend: {
