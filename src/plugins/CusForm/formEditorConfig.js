@@ -22,19 +22,6 @@ let formDef = {
       items: {
         type: "object",
         properties: {
-          computed2: {
-            type: 'string',
-            ui: {
-              label: '计算属性',
-              widget: 'CusComputed',
-              widgetConfig: {
-                style: {
-                  height: "350px",
-                },
-                // enums: 'MODEL("name")'
-              }
-            }
-          },
           type: {
             type: 'string',
             ui: {
@@ -59,6 +46,19 @@ let formDef = {
               label: '属性',
               widget: 'CusProps',
               widgetConfig: {
+              }
+            }
+          },
+          computed2: {
+            type: 'string',
+            ui: {
+              label: '计算属性',
+              widget: 'CusComputed',
+              widgetConfig: {
+                style: {
+                  height: "350px",
+                },
+                // enums: 'MODEL("name")'
               }
             }
           },
