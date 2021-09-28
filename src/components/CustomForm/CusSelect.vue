@@ -36,6 +36,9 @@ export default {
         clearable: {
           type: Boolean,
           ui: {
+            widgetConfig:  {
+              ext: 'booleanWithClearable'
+            },
             notice: '是否可以清除'
           }
         }
