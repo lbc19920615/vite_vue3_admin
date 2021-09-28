@@ -148,11 +148,16 @@
             </div>
           </div>
         </div>
-       <div>
+       <div> 同级变量：
          <template v-for="item in insertedVars">
            <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
          </template>
        </div>
+        <div> 函数：
+          <template v-for="item in insertedFun">
+            <el-button @click="insertFun(item)"><span v-html="item"></span></el-button>
+          </template>
+        </div>
 <!--        <div contenteditable="true" tabindex="-1" ></div>-->
         <div>
           <el-button @click="backStep">退格</el-button>
@@ -161,9 +166,6 @@
           <el-button @click="insertEmoji('fuck')">插入<z-emoji  face="fuck"></z-emoji></el-button>
           <template v-for="item in insertedText">
             <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
-          </template>
-          <template v-for="item in insertedFun">
-            <el-button @click="insertFun(item)"><span v-html="item"></span></el-button>
           </template>
         </div>
       </div>

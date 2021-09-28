@@ -132,7 +132,7 @@ export default {
           insertText = Object.keys(properties.properties)
         }
         let ___buildEditorConfig = buildEditorConfig({
-          insFun: ['HaHa'],
+          insFun: ['ROUTE_STATE'],
           insVars: insertText
         })
         // console.log('___buildEditorConfig', ___buildEditorConfig)
