@@ -69,7 +69,7 @@
 <!--          )"-->
 
           <template  v-if="getShow(getObj(curObj, 'data.partName', 'UNDEFINED'))">
-{{getDef(getObj(curObj, 'data.partName', 'UNDEFINED'))}}
+<!--{{getDef(getObj(curObj, 'data.partName', 'UNDEFINED'))}}-->
             <AutoHttpCom
                 :slotContent="innerSlots"
                 :page="page"
