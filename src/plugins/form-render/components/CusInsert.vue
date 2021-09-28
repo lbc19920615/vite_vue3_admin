@@ -200,7 +200,7 @@ export default {
     let widgetConfig =  props.ui.widgetConfig
 
     let insertedText = [
-        '+', '-', '*', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '&#8986;'
+        '+', '-', '*', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '[', ']', '.'
     ]
 
     if (Array.isArray(widgetConfig.insText)) {
