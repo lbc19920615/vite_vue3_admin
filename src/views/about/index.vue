@@ -200,12 +200,39 @@ import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
 import FormsLayoutSelect from "@/plugins/z-frame/components/FormsLayoutSelect.vue";
 import {FormsLayout} from "@/plugins/z-frame/formsLayout";
 
-// import PinyinMatch from 'pinyin-match';
-// globalThis.PinyinMatch = PinyinMatch
-
 import 'ipinyinjs'
 import EwMathJax from "@/components/Ew/EwMathjax.vue";
 
+import CnChar from 'cnchar'
+import 'cnchar-poly'
+import 'cnchar-order'
+globalThis.CnChar = CnChar
+
+globalThis.sortCnCharStroke = function (chars = []) {
+  return chars.sort(function (a, b) {
+    let ret =  CnChar.compareStroke(a, b)
+    if (ret === 'more') {
+      return 1
+    }
+    else if (ret === 'less') {
+      return -1
+    }
+    return 0
+  })
+}
+
+globalThis.sortCnCharSpell = function (chars = []) {
+  return chars.sort(function (a, b) {
+    let ret =  CnChar.compareSpell(a, b)
+    if (ret === 'more') {
+      return 1
+    }
+    else if (ret === 'less') {
+      return -1
+    }
+    return 0
+  })
+}
 
 
 export default defineComponent({

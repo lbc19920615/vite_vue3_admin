@@ -144,7 +144,7 @@
           <div style="width: 100%; overflow: auto" >
             <div style="display: flex; align-items: center; flex-wrap: nowrap">
         <span @click="selectCnText(item)" class="a-space-ph-10"
-             v-for="item in state.parsedList[0]">{{item}}</span>
+             v-for="item in sortSuggest(state.parsedList[0])">{{item}}</span>
             </div>
           </div>
         </div>
@@ -554,7 +554,13 @@ export default {
         state.parsedList = ZY.PinYin._getHanzi(state.parsedList[2])
       } else {
         state.pingyin = ''
+        state.parsedList = [[], '']
       }
+    }
+
+    function sortSuggest(arr = []) {
+      // console.log('sortSuggest', arr)
+       globalThis.sortCnCharStoke(arr)
     }
 
     function onInsertkeyup(e) {
@@ -606,6 +612,7 @@ export default {
       backStep,
       hid,
       lifeTimes,
+      sortSuggest,
       insertedText,
       insertedFun,
       onFocus,
