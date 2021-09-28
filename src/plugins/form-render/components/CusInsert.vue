@@ -560,7 +560,7 @@ export default {
 
     function sortSuggest(arr = []) {
       // console.log('sortSuggest', arr)
-       globalThis.sortCnCharStoke(arr)
+       globalThis.sortCnCharStroke(arr)
     }
 
     function onInsertkeyup(e) {
