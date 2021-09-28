@@ -29,7 +29,7 @@
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
-import {getCurrentInstance, toRaw} from "vue";
+import {getCurrentInstance, resolveComponent, toRaw} from "vue";
 import ZHttpCom from "@/plugins/z-frame/components/ZHttpCom.vue";
 import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusWidgetEditor/createConfig";
 import {useReloadMan} from "@/views/home/hooks";
@@ -168,9 +168,11 @@ export default {
             })
         )
         BASE_SUGGEST = arr.map(v => {
+
           return {
             label: v[0],
-            value: v[0]
+            value: v[0],
+            labelTip: 'CUS_EDITOR'
           }
         })
         // console.log(BASE_SUGGEST)
@@ -271,7 +273,29 @@ export default {
     }
 
     let column = [
-
+      {
+        prop: 'label',
+        width: '250px',
+        render(h, props) {
+          const scope = props.scope
+          const cusName = scope.row.label.replace('Cus', '').toLowerCase()
+          let tooltip = resolveComponent('el-tooltip')
+          let elLink = resolveComponent('el-link')
+          let text = h('span', {}, scope.row.label)
+          let icon = h('i', {class: 'el-icon-info a-space-ml-10'})
+          let link = h(elLink, {
+            href: `https://element-plus.gitee.io/zh-CN/component/${cusName}.html`,
+            type: 'primary',
+            class: 'a-space-ml-10',
+            target: '_blank'
+          }, '文档')
+          let tip =  h(tooltip, {
+            content: cusName,
+            placement: 'right'
+          }, [link, icon])
+          return h('div', {}, [text, tip])
+        }
+      },
     ]
 
     return {
@@ -284,6 +308,7 @@ export default {
       onWidgetChange,
       refMan,
       onBlur,
+      column,
       save,
       listeners,
     }
