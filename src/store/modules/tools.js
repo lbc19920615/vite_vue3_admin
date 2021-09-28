@@ -66,9 +66,17 @@ const slotTypes = [
   ...propArr
 ]
 
+globalThis.ToolsDocs =  [
+  {
+    label: 'MODEL',
+    value: `## MODEL`
+  }
+]
+
 const store = {
   // namespaced: true,
   state: () => ({
+    docs: ToolsDocs,
     partOptions: [
       {
         label: 'form',
