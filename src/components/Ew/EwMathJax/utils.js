@@ -3,7 +3,7 @@ export function injectMathJax() {
   if (!window.MathJax) {
     const script = document.createElement('script')
     script.src =
-      'mathjax/tex-svg.js'
+      '/mathjax/tex-svg.js'
     script.async = true
     document.head.appendChild(script)
   }
