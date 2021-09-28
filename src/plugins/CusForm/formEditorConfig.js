@@ -12,6 +12,10 @@ let formDef = {
       type: 'string',
       ui: {
         label: '名称',
+        // widgetConfig: {
+        //   disabled: true
+        // }
+        hidden: true,
       },
     },
     parts: {
