@@ -1,11 +1,11 @@
 <template>
   <template v-if="inited">
-<!--    {{widgetConfig.enums}}-->
+<!--    {{widgetConfig}}-->
     <el-select
+        clearable
         v-model="state.value"
-    v-bind="widgetConfig"
-               v-on="listeners"
-               clearable
+        v-on="listeners"
+        v-bind="widgetConfig"
     >
       <el-option v-for="(option, key) in dxValueTemplate(widgetConfig.enums)"
                  :label="option.label" :value="option.value"
@@ -31,6 +31,12 @@ export default {
           ui: {
             label: '枚举',
             notice: '枚举可以使用的方法 [sdsd](sdsds)'
+          }
+        },
+        clearable: {
+          type: Boolean,
+          ui: {
+            notice: '是否可以清除'
           }
         }
       }
