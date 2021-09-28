@@ -135,11 +135,18 @@
         :close-on-click-modal="false"
     >
       <div  class="cus-insert-keyboard" tabindex="-1"   @keydown="onPopupkeyup">
-        <div style="border: 1px solid #eee; min-height: 40px;"><span
-            v-for="item in state.parsedText">{{item}}</span>{{state.pingyin}}</div>
+        <div style="border: 1px solid #eee; min-height: 40px; display: flex; align-items: center; flex-wrap: nowrap;">
+          <template v-if="state.parsedText"><div
+              v-for="item in state.parsedText">{{item}}</div></template>
+          <span>{{state.pingyin}}</span>
+        </div>
         <div v-if="state.parsedList && state.parsedList[0]">
-          <span @click="selectCnText(item)"
-                v-for="item in state.parsedList[0]">{{item}}</span>
+          <div style="width: 100%; overflow: auto" >
+            <div style="display: flex; align-items: center; flex-wrap: nowrap">
+        <span @click="selectCnText(item)" class="a-space-ph-10"
+             v-for="item in state.parsedList[0]">{{item}}</span>
+            </div>
+          </div>
         </div>
        <div>
          <template v-for="item in insertedVars">
@@ -526,9 +533,15 @@ export default {
       e.stopPropagation()
       if (e.key === 'Backspace') {
         // state.pingyin = state.pingyin.slice(0, state.pingyin.length - 1)
-        state.parsedText.pop()
+        if (state.pingyin) {
+          state.pingyin = state.pingyin.slice(0, state.pingyin.length - 1)
+        } else {
+          if (Array.isArray(state.parsedText)) {
+            state.parsedText.pop()
+          }
+        }
       } else  if (insertedText.includes(e.key)) {
-        state.pingyin = state.pingyin + e.key
+        state.pingyin = (state.pingyin ?? '') + e.key
         state.parsedList = ZY.PinYin._getHanzi(state.pingyin)
       }
     }
@@ -557,6 +570,8 @@ export default {
       if (!document.querySelector('.cus-insert-input.focus')) {
         state.drawer = true
         state.pingyin = ''
+        state.parsedList = [[], '']
+        state.parsedText = []
       }
     }
 
