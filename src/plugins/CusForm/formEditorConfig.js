@@ -15,8 +15,8 @@ let formDef = {
         // widgetConfig: {
         //   disabled: true
         // }
-        hidden: true,
       },
+      hidden: true,
     },
     parts: {
       type: 'array',
