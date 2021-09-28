@@ -13,7 +13,7 @@
         <e-popover
             class="cus-suggest__popover"
             :placement="placement"
-            :width="400"
+            :width="conWidth"
             trigger="click"
             :append-to-body="true"
             :teleportTo="teleportTo"
@@ -24,6 +24,7 @@
           <div  style="min-height: 200px;">
             <SimpleList v-if="refMan.showed"
                         con-class="ew-suggest-list-con"
+                        :column="column"
                         :suggest="getSuggest()" @select-item="selectSuggest"></SimpleList>
           </div>
         </e-popover>
@@ -46,9 +47,14 @@ export default  {
     modelValue: null,
     teleportTo: String,
     suggest: [],
+    column: [],
     placement: {
       type: String,
       default: 'top'
+    },
+    conWidth: {
+      type: [String, Number],
+      default: 400
     }
   },
   setup(props, ctx) {

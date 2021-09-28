@@ -8,6 +8,8 @@
       <ew-suggest v-model="state.value.control.widget"
                   placement="top"
                   :suggest="state.suggest"
+                  :con-width="530"
+                  :column="column"
                   @value:change="onWidgetChange"></ew-suggest>
     </div>
 
@@ -267,6 +269,11 @@ export default {
         onChange()
       }
     }
+
+    let column = [
+
+    ]
+
     return {
       state,
       widgetConfig: props.ui.widgetConfig,
