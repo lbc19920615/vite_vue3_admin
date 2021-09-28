@@ -15,8 +15,7 @@
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender, PROPS_DEF} from "@/plugins/form-render/utils/index";
-import {ref} from "vue";
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 
 export default {
   name: 'CusCheckbox',
@@ -49,15 +48,11 @@ export default {
       value: []
     })
     init(props)
+    let widgetConfig = props.ui.widgetConfig
 
-    console.log(state.value)
-
-
-    const checkList = ref(['selected and disabled', 'Option A'])
     return {
       state,
-      widgetConfig: props.ui.widgetConfig,
-      checkList,
+      widgetConfig,
       methods,
       listeners,
     }
