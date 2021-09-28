@@ -155,7 +155,10 @@
        </div>
         <div> 函数：
           <template v-for="item in insertedFun">
-            <el-button @click="insertFun(item)"><span v-html="item"></span></el-button>
+            <el-tooltip placement="top">
+              <template #content><div v-html="getFunDOC(item)"></div></template>
+              <el-button @click="insertFun(item)"><span v-html="item"></span></el-button>
+            </el-tooltip>
           </template>
         </div>
 <!--        <div contenteditable="true" tabindex="-1" ></div>-->
@@ -227,7 +230,7 @@ export default {
 
     let inited = false
 
-    let { data, methods, listeners, init, FROM_TYPES } = defineCustomRender(props, ctx, {
+    let { data, methods, listeners, init, instanse } = defineCustomRender(props, ctx, {
       handleValueInit(newVal, from) {
         if (!newVal) {
           newVal = {
@@ -601,10 +604,26 @@ export default {
       }
     }
 
+    let toolDocs = []
+
+    function getFunDOC(funName = '') {
+      if (toolDocs.length < 1) {
+        toolDocs = instanse.ctx.dxValueTemplate('ROOT_STATE("tools.toolDocs")', [])
+      }
+      let finded = toolDocs.find(v => v.label === funName)
+
+      if (finded) {
+        return ZY_EXT.marked(finded.value)
+      }
+
+      return '空'
+    }
+
 
     return {
       state,
       widgetConfig,
+      getFunDOC,
       onChange,
       insertFun,
       insertText,

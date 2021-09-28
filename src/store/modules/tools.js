@@ -69,14 +69,21 @@ const slotTypes = [
 globalThis.ToolsDocs =  [
   {
     label: 'MODEL',
-    value: `## MODEL`
+    value: `### MODEL
+是一个用于获取当前表单 数据的方法
+
+@param path {string} 路径
+
+@param defaultVal {null} 默认值
+`
   }
 ]
+
 
 const store = {
   // namespaced: true,
   state: () => ({
-    docs: ToolsDocs,
+    toolDocs: ToolsDocs,
     partOptions: [
       {
         label: 'form',

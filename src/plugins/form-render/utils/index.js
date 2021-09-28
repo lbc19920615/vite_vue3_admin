@@ -201,6 +201,7 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     return {
         data,
         FROM_TYPES,
+        instanse,
         onJSONChange,
         init,
         listeners,
