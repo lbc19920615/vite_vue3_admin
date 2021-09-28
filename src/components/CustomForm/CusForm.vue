@@ -22,7 +22,7 @@
             v-if="!useDrag || store.model.dialog_open"
         >
           <template #array_item_before="scope">
-            <h3>{{getArrItemBeforeKey(scope)}}</h3>
+<!--            <h3>{{getArrItemBeforeKey(scope)}}</h3>-->
           </template>
           <template #array_before="scope">
             <!--        <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>-->

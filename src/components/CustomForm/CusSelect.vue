@@ -2,7 +2,6 @@
   <template v-if="inited">
 <!--    {{widgetConfig}}-->
     <el-select
-        clearable
         v-model="state.value"
         v-on="listeners"
         v-bind="widgetConfig"

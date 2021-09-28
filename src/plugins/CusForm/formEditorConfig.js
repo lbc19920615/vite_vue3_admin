@@ -50,7 +50,7 @@ let formDef = {
           name: {
             type: 'string',
             ui: {
-              label: 'PART NAME',
+              label: '名称',
             },
           },
           props: {
@@ -59,17 +59,6 @@ let formDef = {
               label: '属性',
               widget: 'CusProps',
               widgetConfig: {
-              }
-            }
-          },
-          properties: {
-            type: 'string',
-            reflect: 'props',
-            reflectTpl: `A.getProps($VAL)`,
-            ui: {
-              widgetConfig: {
-                type: 'textarea',
-                disabled: true,
               }
             }
           },
@@ -87,7 +76,7 @@ let formDef = {
               widget: 'JsonCodeEditor',
               widgetConfig: {
                 style: {
-                  height: "350px",
+                  height: "200px",
                 }
               }
             }
@@ -111,6 +100,17 @@ let formDef = {
             ui: {
               label: 'UI',
               // widget: 'JsonCodeEditor',
+              widgetConfig: {
+                type: 'textarea',
+                disabled: true,
+              }
+            }
+          },
+          properties: {
+            type: 'string',
+            reflect: 'props',
+            reflectTpl: `A.getProps($VAL)`,
+            ui: {
               widgetConfig: {
                 type: 'textarea',
                 disabled: true,
