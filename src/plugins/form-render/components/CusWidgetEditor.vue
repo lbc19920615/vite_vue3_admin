@@ -27,7 +27,7 @@
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
-import {getCurrentInstance, onMounted, toRaw} from "vue";
+import {getCurrentInstance, toRaw} from "vue";
 import ZHttpCom from "@/plugins/z-frame/components/ZHttpCom.vue";
 import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusWidgetEditor/createConfig";
 import {useReloadMan} from "@/views/home/hooks";
@@ -91,11 +91,29 @@ export default {
     })
     init(props)
 
+    function getCUR_COMPONENT_PROPS() {
+      let CUS_EDITOR = state.currentComponent.CUS_EDITOR()
+      return toRaw(
+          CUS_EDITOR.props
+      )
+    }
+
     function onChange() {
+      let comProps = getCUR_COMPONENT_PROPS()
       let clonedValue = JSON5.parse(JSON5.stringify(state.value))
       // console.log(clonedValue)
       Reflect.deleteProperty(clonedValue, 'control')
-      // console.log(clonedValue)
+
+      let comPropsKeys = Object.keys(comProps)
+      let ret = ZY.lodash.pick(clonedValue.data.widgetConfig, comPropsKeys)
+      // console.log(comProps, clonedValue.data.widgetConfig, ret)
+      ret = ZY.lodash.pickBy(ret, function (value) {
+        if (typeof value === 'string') {
+          return value
+        }
+        return false
+      });
+      clonedValue.data.widgetConfig = ret
       let str =JSON5.stringify(clonedValue)
       methods.on_change(str)
     }
@@ -173,10 +191,7 @@ export default {
 
     async function resolveConfig() {
       // console.log(state.currentComponent)
-      let CUS_EDITOR = state.currentComponent.CUS_EDITOR()
-      let comProps = toRaw(
-          CUS_EDITOR.props
-      )
+      let comProps = getCUR_COMPONENT_PROPS()
       properties = {
 
       }
