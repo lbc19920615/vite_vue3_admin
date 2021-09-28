@@ -150,58 +150,6 @@ export default {
                                 }
                             }
                         },
-                        props: {
-                            type: 'string',
-                            ui: {
-                                label: '&nbsp;',
-                                attrs: [
-                                    ['scroll-control', 'page_props'],
-                                ],
-                                widget: 'CusProps',
-                                widgetConfig: {
-                                }
-                            }
-                        },
-                        pageProperties: {
-                            type: 'string',
-                            hidden: true,
-                            computedProp: 'pagePropertiesComp',
-                            ui: {
-                                widgetConfig: {
-                                    type: 'textarea',
-                                    disabled: true,
-                                }
-                            }
-                        },
-                        beforeScript: {
-                            type: 'string',
-                            hidden: true,
-                            ui: {
-                                // widget: 'CodeJsEditor',
-                                widgetConfig: {
-                                    type: 'textarea',
-                                    // mode: 'text/html'
-                                }
-                            }
-                        },
-                        onInited: {
-                            type: 'string',
-                            ui: {
-                                label: '&nbsp;',
-                                attrs: [
-                                    ['scroll-control', 'page_onInited'],
-                                ],
-                                widget: 'CodeJsEditor',
-                                // widget: 'JsonCodeEditor',
-                                widgetConfig: {
-                                    enums: "ROOT_STATE('tools.constVars_processSteps', [])",
-                                    style: {
-                                        height: '300px'
-                                    }
-                                    // mode: 'text/html'
-                                }
-                            }
-                        },
                         forms: {
                             type: 'array',
                             tag: 'my-vue-tab',
@@ -312,7 +260,59 @@ export default {
                                     // }
                                 }
                             }
-                        }
+                        },
+                        props: {
+                            type: 'string',
+                            ui: {
+                                label: '&nbsp;',
+                                attrs: [
+                                    ['scroll-control', 'page_props'],
+                                ],
+                                widget: 'CusProps',
+                                widgetConfig: {
+                                }
+                            }
+                        },
+                        pageProperties: {
+                            type: 'string',
+                            hidden: true,
+                            computedProp: 'pagePropertiesComp',
+                            ui: {
+                                widgetConfig: {
+                                    type: 'textarea',
+                                    disabled: true,
+                                }
+                            }
+                        },
+                        beforeScript: {
+                            type: 'string',
+                            hidden: true,
+                            ui: {
+                                // widget: 'CodeJsEditor',
+                                widgetConfig: {
+                                    type: 'textarea',
+                                    // mode: 'text/html'
+                                }
+                            }
+                        },
+                        onInited: {
+                            type: 'string',
+                            ui: {
+                                label: '&nbsp;',
+                                attrs: [
+                                    ['scroll-control', 'page_onInited'],
+                                ],
+                                widget: 'CodeJsEditor',
+                                // widget: 'JsonCodeEditor',
+                                widgetConfig: {
+                                    enums: "ROOT_STATE('tools.constVars_processSteps', [])",
+                                    style: {
+                                        height: '300px'
+                                    }
+                                    // mode: 'text/html'
+                                }
+                            }
+                        },
                     }
                 },
                 computed: {
