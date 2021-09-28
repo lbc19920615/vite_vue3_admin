@@ -135,11 +135,18 @@
         :close-on-click-modal="false"
     >
       <div  class="cus-insert-keyboard" tabindex="-1"   @keydown="onPopupkeyup">
+        <div style="border: 1px solid #eee; min-height: 40px;"><span
+            v-for="item in state.parsedText">{{item}}</span>{{state.pingyin}}</div>
+        <div v-if="state.parsedList && state.parsedList[0]">
+          <span @click="selectCnText(item)"
+                v-for="item in state.parsedList[0]">{{item}}</span>
+        </div>
        <div>
          <template v-for="item in insertedVars">
            <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
          </template>
        </div>
+<!--        <div contenteditable="true" tabindex="-1" ></div>-->
         <div>
           <el-button @click="backStep">退格</el-button>
           <el-button @click="insertFun('')">插入括号</el-button>
@@ -254,7 +261,10 @@ export default {
     let state = data({
       value: {},
       control: {},
-      drawer: false
+      drawer: false,
+      pinyin: '',
+      parsedList: [],
+      parsedText: []
     })
     init(props)
 
@@ -486,13 +496,17 @@ export default {
     }
 
 
-    function handleKeyUP(e) {
+    function handleKeyUP(e, options = {}) {
       e.preventDefault()
       e.stopPropagation()
       if (e.key === 'Backspace') {
         backStep()
       } else  if (insertedText.includes(e.key)) {
-        insertText(e.key)
+        if (options.onText) {
+          options.onText(e.key, e)
+        } else {
+          insertText(e.key)
+        }
       } else if (e.key === 'ArrowLeft') {
         // console.log('ArrowLeft')
         backCursor()
@@ -507,18 +521,42 @@ export default {
       }
     }
 
+    function handleCnInput(e) {
+      e.preventDefault()
+      e.stopPropagation()
+      if (e.key === 'Backspace') {
+        // state.pingyin = state.pingyin.slice(0, state.pingyin.length - 1)
+        state.parsedText.pop()
+      } else  if (insertedText.includes(e.key)) {
+        state.pingyin = state.pingyin + e.key
+        state.parsedList = ZY.PinYin._getHanzi(state.pingyin)
+      }
+    }
+
+    function selectCnText(cn = '') {
+      // console.log('selectCnText', cn, state.parsedList[2])
+      state.parsedText.push(cn)
+      if (state.parsedList[2]) {
+        state.pingyin = state.parsedList[2]
+        state.parsedList = ZY.PinYin._getHanzi(state.parsedList[2])
+      } else {
+        state.pingyin = ''
+      }
+    }
+
     function onInsertkeyup(e) {
       handleKeyUP(e)
     }
 
     function onPopupkeyup(e) {
-      handleKeyUP(e)
+      handleCnInput(e)
     }
 
     function onInputFocus(e) {
       // console.log('onFocus', e)
       if (!document.querySelector('.cus-insert-input.focus')) {
         state.drawer = true
+        state.pingyin = ''
       }
     }
 
@@ -548,6 +586,7 @@ export default {
       insertFun,
       insertText,
       insertQute,
+      selectCnText,
       insertEmoji,
       backStep,
       hid,
