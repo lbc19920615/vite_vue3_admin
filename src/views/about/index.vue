@@ -88,11 +88,11 @@
           </template>
           <template v-else-if="scope.key === 'layoutSlotArr'">
 
-            <z-emoji face="fuck" ></z-emoji>
-            <div>
-              <img id="previewImg" src="" alt="">
-              <ew-math-jax  :latex="formula" :block="true"></ew-math-jax>
-            </div>
+<!--            <z-emoji face="fuck" ></z-emoji>-->
+<!--            <div>-->
+<!--              <img id="previewImg" src="" alt="">-->
+<!--              <ew-math-jax  :latex="formula" :block="true"></ew-math-jax>-->
+<!--            </div>-->
             <el-space   align="middle">
               <h3>片段</h3>
               <el-button size="small" @click="page.callEvent('add:arr:common', scope)">添加{{ scope.label }}</el-button>
