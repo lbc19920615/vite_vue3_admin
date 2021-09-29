@@ -87,15 +87,6 @@
             </el-space>
           </template>
           <template v-else-if="scope.key === 'layoutSlotArr'">
-
-
-            <ZLayoutEditor
-                :ref="layoutRef"
-                :controls="false"
-                :open-panel="false"
-                class="page-layout-editor"
-                @save-layout="onSaveLayout"></ZLayoutEditor>
-
 <!--            <z-emoji face="fuck" ></z-emoji>-->
 <!--            <div>-->
 <!--              <img id="previewImg" src="" alt="">-->
@@ -162,7 +153,24 @@
             </el-space>
           </div>
         </template>
+        <template #prop_beforeend="scope">
+<!--          {{scope.selfpath}}-->
+          <template v-if="scope.selfpath === 'props'">
+          </template>
+          <template v-else-if="scope.selfpath === 'name'">
+            <ZLayoutEditor
+                :ref="layoutRef"
+                :controls="false"
+                :open-panel="false"
+                class="page-layout-editor"
+                @save-layout="onSaveLayout"></ZLayoutEditor>
+          </template>
+          <template v-else>
+            <!--            -->
+          </template>
+        </template>
         <template #prop_afterbegin="scope">
+
           <!--          {{scope}}-->
           <template v-if="scope.selfpath === 'props'">
             <h3>页面变量</h3>
