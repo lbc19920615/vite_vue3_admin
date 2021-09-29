@@ -46,6 +46,7 @@ export default {
                             type: 'array',
                             tag: 'my-vue-tab',
                             con_tag: 'my-vue-tab-pane',
+                            wrap: 'section',
                             ui: {
                                 label: 'Slot',
                                 attrs: [
