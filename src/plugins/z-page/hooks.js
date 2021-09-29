@@ -1,6 +1,7 @@
 import {reactive,  toRaw} from "vue";
 import {VARS_PAGE_MODEL_NAME} from "@/vars";
 import {useRouter} from 'vue-router';
+import {COMMAND, setMessageHandler} from "@/channel";
 
 export function useRenderControl() {
     let router = useRouter()
@@ -66,10 +67,16 @@ export function useRenderControl() {
             interval1.stop()
         }
         detectChange()
-        if (interval) {
-            interval1 = new ZY.Interval(detectChange, 6000);
-            interval1.start()
-        }
+        setMessageHandler('detect layout', function (e) {
+            let data = e.data ?? ''
+            if (data === COMMAND.RELOAD) {
+                detectChange(false)
+            }
+        })
+        // if (interval) {
+        //     interval1 = new ZY.Interval(detectChange, 6000);
+        //     interval1.start()
+        // }
     }
 
     let detectEventChangeContext = {}
@@ -101,10 +108,16 @@ export function useRenderControl() {
             interval2.stop()
         }
         detectEventChange(true)
-        if (interval) {
-            interval2 = new ZY.Interval(detectEventChange, 6000);
-            interval2.start()
-        }
+        setMessageHandler('detect event', function (e) {
+            let data = e.data ?? ''
+            if (data === COMMAND.RELOAD) {
+                detectEventChange(false)
+            }
+        })
+        // if (interval) {
+        //     interval2 = new ZY.Interval(detectEventChange, 6000);
+        //     interval2.start()
+        // }
     }
 
     return {

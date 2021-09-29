@@ -88,6 +88,14 @@
           </template>
           <template v-else-if="scope.key === 'layoutSlotArr'">
 
+
+            <ZLayoutEditor
+                :ref="layoutRef"
+                :controls="false"
+                :open-panel="false"
+                class="page-layout-editor"
+                @save-layout="onSaveLayout"></ZLayoutEditor>
+
 <!--            <z-emoji face="fuck" ></z-emoji>-->
 <!--            <div>-->
 <!--              <img id="previewImg" src="" alt="">-->
@@ -170,12 +178,6 @@
       </HttpComponent>
     </template>
 
-    <ZLayoutEditor
-        :ref="layoutRef"
-        :controls="false"
-        :open-panel="false"
-        class="page-layout-editor"
-        @save-layout="demo.onSaveLayout"></ZLayoutEditor>
 
   </div>
 </template>
@@ -206,6 +208,7 @@ import EwMathJax from "@/components/Ew/EwMathjax.vue";
 import CnChar from 'cnchar'
 import 'cnchar-poly'
 import 'cnchar-order'
+import {COMMAND, sendChannelMessage} from "@/channel";
 globalThis.CnChar = CnChar
 
 globalThis.sortCnCharStroke = function (chars = []) {
@@ -568,14 +571,13 @@ export default defineComponent({
       });
     }
 
-    let demo = {
-      async onSaveLayout(e) {
-        if (cachedPageControlModel) {
-          await page.dispatchRoot('SetStoreEvents', cachedPageControlModel)
-        }
-        console.log('onSaveLayout', e)
-        await ZY_EXT.store.setItem('current-data', e.currentData)
+    async function onSaveLayout(e) {
+      if (cachedPageControlModel) {
+        await page.dispatchRoot('SetStoreEvents', cachedPageControlModel)
       }
+      console.log('onSaveLayout', e)
+      await ZY_EXT.store.setItem('current-data', e.currentData)
+      sendChannelMessage(COMMAND.RELOAD)
     }
 
     let layoutRef = page.setRef('layout')
@@ -589,7 +591,7 @@ export default defineComponent({
     return {
       layoutRef,
       store: page.store,
-      demo,
+      onSaveLayout,
       formula,
       jumpTo,
       page,
