@@ -121,17 +121,24 @@ $sel: "." + $tag;
 <!--    {{styleObj}}-->
 <!--    {{buildedGroups}}-->
     <el-dialog
-        v-model="dialogVisible" title="组选择" width="80vw"
+        v-model="dialogVisible" title="组选择" width="72vw"
     :close-on-click-modal="false"
     >
       <el-row :gutter="20">
         <el-col :span="6"
                 v-for="group in buildedGroups"
                >
-          <div>{{group.type}}</div>
-          <div>{{group.desc}}</div>
-          <div style="margin-bottom: 20px">
-            <el-button type="primary"
+          <div class="a-space-mb-10">
+            <el-space>
+              <div>{{group.type}}</div>
+              <div>{{group.desc}}</div>
+            </el-space>
+          </div>
+          <div  class="a-space-mb-10" v-if="group.img">
+            <el-image :src="group.img"></el-image>
+          </div>
+          <div class="a-space-mb-20">
+            <el-button type="primary" size="small"
                        @click="selectGroupTemplate(group)">选择</el-button>
           </div>
         </el-col>

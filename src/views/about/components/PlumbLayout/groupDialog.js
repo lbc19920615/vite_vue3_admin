@@ -9,6 +9,7 @@ export let groupManagerMixin = {
                 {
                     type: 'row',
                     desc: '横向布局',
+                    img: '/tools/row.png',
                     cls: 'RowNode'
                 },
                 {

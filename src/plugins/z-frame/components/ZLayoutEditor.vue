@@ -187,9 +187,14 @@ let plumbLayoutMixin = {
       // console.log('handleDep', dep)
     },
     handleGroup(groups) {
-      // console.log(NodeDefMap.getClsDefs())
       let clsDefs = NodeDefMap.getClsDefs() ?? []
-      let arr = clsDefs.map(v=> {
+      // console.log(clsDefs)
+      let notUseGroups = ['array', 'object']
+      let arr = clsDefs
+          .filter(v=> {
+            return !notUseGroups.includes(v[0])
+          })
+          .map(v=> {
         return v[1]
       })
       return groups.concat(arr)
