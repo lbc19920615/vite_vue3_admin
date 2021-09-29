@@ -162,7 +162,7 @@
             </el-space>
           </div>
         </template>
-        <template #prop_beforebegin="scope">
+        <template #prop_afterbegin="scope">
           <!--          {{scope}}-->
           <template v-if="scope.selfpath === 'props'">
             <h3>页面变量</h3>
