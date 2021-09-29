@@ -22,12 +22,16 @@ export default {
                 serviceTpl: {def: {}, args: {src: 'bservice.twig'}},
                 def: {
                     type: 'object',
+                    tag: 'em-props',
                     ui: {
-                        attrs: [['label-width', '150px']]
+                        attrs: [['label-width', '150px']],
+                        class: [
+                        ]
                     },
                     properties: {
                         name: {
                             type: 'string',
+                            wrap: 'em-props-item',
                             ui: {
                                 label: '页面名称',
                                 attrs: [
@@ -46,7 +50,7 @@ export default {
                             type: 'array',
                             tag: 'my-vue-tab',
                             con_tag: 'my-vue-tab-pane',
-                            wrap: 'section',
+                            wrap: 'em-props-item',
                             ui: {
                                 label: 'Slot',
                                 attrs: [
@@ -155,6 +159,7 @@ export default {
                             type: 'array',
                             tag: 'my-vue-tab',
                             con_tag: 'my-vue-tab-pane',
+                            wrap: 'em-props-item',
                             ui: {
                                 label: '表单',
                                 attrs: [
@@ -204,6 +209,7 @@ export default {
                             type: 'array',
                             tag: 'my-vue-tab',
                             con_tag: 'my-vue-tab-pane',
+                            wrap: 'em-props-item',
                             ui: {
                               label: '事件',
                               attrs:
@@ -264,6 +270,7 @@ export default {
                         },
                         props: {
                             type: 'string',
+                            wrap: 'em-props-item',
                             ui: {
                                 label: '&nbsp;',
                                 attrs: [
@@ -298,6 +305,7 @@ export default {
                         },
                         onInited: {
                             type: 'string',
+                            wrap: 'em-props-item',
                             ui: {
                                 label: '&nbsp;',
                                 attrs: [
