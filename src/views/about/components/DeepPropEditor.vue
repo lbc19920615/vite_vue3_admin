@@ -43,20 +43,17 @@
                 :is="store.model.editor_step"
                 :debug="true"
             >
-              <template #form_array_before="scope">
-                <h3>{{scope.index}}</h3>
-              </template>
               <template #object_beforebegin="scope">
                 <h3>{{getArrItemBeforeKey(scope)}}</h3>
               </template>
-              <template #array_before="scope">
+              <template #array_afterbegin="scope">
                 <el-col>
                    <h3>{{ getArrItemBeforeKey(scope) }}</h3>
                   <el-button type="primary" size="small"
                              @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加</el-button>
                 </el-col>
               </template>
-              <template #array_item_after="scope">
+              <template #array_con_beforeend="scope">
                 <el-col>
                   <el-button type="danger" size="small"
                              @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除</el-button>

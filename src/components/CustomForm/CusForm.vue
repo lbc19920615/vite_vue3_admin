@@ -21,10 +21,10 @@
             :is="store.model.editor_step"
             v-if="!useDrag || store.model.dialog_open"
         >
-          <template #array_item_before="scope">
+          <template #array_con_afterbegin="scope">
 <!--            <h3>{{getArrItemBeforeKey(scope)}}</h3>-->
           </template>
-          <template #array_before="scope">
+          <template #array_afterbegin="scope">
             <!--        <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>-->
           </template>
         </HttpComponent>

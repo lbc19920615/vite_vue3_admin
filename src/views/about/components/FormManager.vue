@@ -22,7 +22,7 @@
           :is="store.model.form_step"
           :debug="true"
       >
-        <template #array_prev="scope">
+        <template #array_beforebegin="scope">
           <template v-if="scope.key === 'forms'">
             <el-space align="middle">
               <h3>{{ scope.selfpath }}</h3>
@@ -31,11 +31,11 @@
             </el-space>
           </template>
         </template>
-        <template #array_before="scope">
-          <slot name="array_before" v-bind="scope"></slot>
+        <template #array_afterbegin="scope">
+          <slot name="array_afterbegin" v-bind="scope"></slot>
         </template>
-        <template #array_item_after="scope">
-          <slot name="array_item_after" v-bind="scope"></slot>
+        <template #array_con_beforeend="scope">
+          <slot name="array_con_beforeend" v-bind="scope"></slot>
         </template>
         <template #object_beforebegin="scope">
           <h3>{{scope.selfpath}}</h3>

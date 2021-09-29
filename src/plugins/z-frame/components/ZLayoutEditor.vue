@@ -46,10 +46,10 @@
                     :defs="allDef"
                     :is="store.model.editor_step"
                 >
-                  <template #array_item_before="scope">
+                  <template #array_con_afterbegin="scope">
                     <el-divider></el-divider>
                   </template>
-                  <template #array_before="scope">
+                  <template #array_afterbegin="scope">
                     <el-space align="middle">
                       <h3>{{ scope.key }}</h3>
                       <template v-if="scope.key !== 'items'">
@@ -58,7 +58,7 @@
                       </template>
                     </el-space>
                   </template>
-                  <template #array_item_after="scope">
+                  <template #array_con_beforeend="scope">
                     <template v-if="scope.key !== 'items'">
                       <el-col>
                         <el-button type="danger" size="small"

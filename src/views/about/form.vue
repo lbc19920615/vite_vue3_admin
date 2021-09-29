@@ -7,7 +7,7 @@
       <el-button @click="page.callEvent('gen:uniapp:file')">生成uniapp文件</el-button>
     </el-row>
     <FormManager :getConfig="getConfig" :ref="formRef">
-      <template #array_item_after="scope">
+      <template #array_con_beforeend="scope">
         <el-button size="small"
                    @click="page.callEvent(`save:form:file`, scope)"
         >保存</el-button>
