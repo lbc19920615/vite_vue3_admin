@@ -43,7 +43,7 @@ export default {
                         computedProp: {
                             type: 'string',
                             ui: {
-                                label: 'COMPUTED',
+                                label: '计算属性',
                             }
                         },
                         reflect: {
@@ -139,6 +139,9 @@ export default {
                             // hidden: true,
                             computedProp: 'srules',
                             ui: {
+                                attrs: [
+                                    ['style', 'height: 0; overflow: hidden']
+                                ],
                                 label: 'RULES',
                                 // widget: 'JsonCodeEditor',
                                 // widget: 'CodeJsEditor',
