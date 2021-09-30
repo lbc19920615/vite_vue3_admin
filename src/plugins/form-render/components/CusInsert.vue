@@ -83,18 +83,19 @@
 [cursor-div] {
   position: absolute;
   //background-color: saddlebrown;
-  width: 20px;
+  width: 10px;
   display: inline-block;
   overflow: hidden;
   height: 100%;
   //font-size: 14px;
   white-space: pre;
+  pointer-events: none;
   top: 0;
   color: transparent;
   &:focus {
     outline: none;
     &::before {
-      background-color: var(--el-color-primary-light-1);
+      //background-color: var(--el-color-primary-light-1);
     }
   }
   &::before {
@@ -116,7 +117,7 @@
     /* left: 2px; */
     margin-left: 0;
     box-sizing: border-box;
-    padding: 3px 0;
+    padding: 0;
     background-clip: content-box
   }
 }
@@ -157,7 +158,7 @@
     <div
         :id="hid"
         class="cus-insert-input"
-        :class="{'focus': state.drawer}"
+        :class="{'focus': state.drawer || state.focused}"
         tabindex="-1"
         @focus="onFocus"
         @blur="onInputBlur"
@@ -171,7 +172,11 @@
         <span :id="cursorID"  cursor-div contenteditable="true"
               autofocus
               style="display: inline-block;"
+              @focus="onCusorfocus"
+              @compositionstart="onCursorcompositionstart"
+              @compositionend="onCursorcompositionend"
               @keyup="onCursorChange"
+              @keydown="onCursorkeydown"
         ></span>
       </div>
       <el-button  class="cus-insert-input__append"  @click="onInputFocus"><i class="fas fa-keyboard"></i></el-button>
@@ -331,6 +336,7 @@ export default {
       value: {},
       control: {},
       drawer: false,
+      focused: false,
       pinyin: '',
       parsedList: [],
       parsedText: []
@@ -376,6 +382,14 @@ export default {
       setTimeout(() => {
         let length = state.control.funcs.length
         setCursor(length - 1, 'add', addLength);
+        onChange()
+      }, 30)
+    }
+    function insertChangev2(addLength) {
+      // console.log('sdsds', length)
+      // let length = state.control.funcs.length
+      setTimeout(() => {
+        setCursor(112121, 'add', addLength);
         onChange()
       }, 30)
     }
@@ -426,7 +440,7 @@ export default {
         // console.log(state.control.funcs, textCommands)
         state.control.funcs.splice(index, 0, ...textCommands)
 
-        insertChange(textCommands.length)
+        insertChangev2(textCommands.length)
       }
     }
 
@@ -527,11 +541,13 @@ export default {
       if (current) {
         current.setAttribute('selected', 1)
         // console.dir(current.offsetLeft + current.clientWidth)
+
         let newLeft = current.offsetLeft + current.clientWidth
         let cursor = document.getElementById(cursorID)
         cursor.style.left = newLeft + 'px'
         cursor.focus()
       }
+
 
     }
 
@@ -568,10 +584,10 @@ export default {
     //
     // })
 
-    globalThis.testCalc = function () {
-      let evalStr =  document.querySelector(`#${hid} [content]`).textContent
-      return ZY_EXT.eval5(evalStr)
-    }
+    // globalThis.testCalc = function () {
+    //   let evalStr =  document.querySelector(`#${hid} [content]`).textContent
+    //   return ZY_EXT.eval5(evalStr)
+    // }
 
     let lifeTimes = {
       onReady() {
@@ -680,6 +696,7 @@ export default {
           item.blur()
         })
       }
+      document.getElementById(cursorID)?.focus()
     }
 
     let toolDocs = []
@@ -697,10 +714,18 @@ export default {
       return '空'
     }
 
+    let isPinyin = false
 
     function onCursorChange(e) {
       e.stopPropagation()
       e.preventDefault()
+      console.log('isPinyin', isPinyin)
+      if (isPinyin) {
+
+      } else {
+        // console.log('sdsdsdsds', e)
+
+      }
       if (e.code === 'Space') {
         // console.log('输入法保存', e.target.innerText)
         let textArr = [...e.target.innerText]
@@ -714,8 +739,32 @@ export default {
         e.target.innerText = ''
       }
       else {
-        console.log('onCursorChange', e)
+        // console.log('onCursorChange', e)
       }
+
+      // isPinyin = false
+    }
+
+    function onCursorkeydown(e) {
+      if (!isPinyin) {
+        if (insertedText.includes(e.key)) {
+
+          insertTexts([e.key])
+          e.target.innerText = ''
+        }
+      }
+    }
+
+    function onCusorfocus() {
+      state.focused = true
+    }
+
+    function onCursorcompositionstart(e) {
+      isPinyin = true
+    }
+
+    function onCursorcompositionend(e) {
+      isPinyin = false
     }
 
     return {
@@ -728,7 +777,11 @@ export default {
       insertText,
       insertQute,
       selectCnText,
+      onCursorcompositionstart,
+      onCursorcompositionend,
       onCursorChange,
+      onCursorkeydown,
+      onCusorfocus,
       insertEmoji,
       backStep,
       hid,
