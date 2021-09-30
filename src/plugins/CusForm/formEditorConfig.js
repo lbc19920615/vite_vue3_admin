@@ -119,7 +119,7 @@ let formDef = {
             reflectTpl: `A.getProps($VAL)`,
             ui: {
               attrs: [
-                ['style', 'height: 0; overflow: hidden']
+                // ['style', 'height: 0; overflow: hidden']
               ],
               widgetConfig: {
                 type: 'textarea',

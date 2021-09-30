@@ -307,22 +307,47 @@ export default defineComponent({
       return cachedPageControlModel
     }
 
-    globalThis.getFormItem = function (depId, itemId) {
-      let formAlias = cachedPageControlModel.forms[0]
-      let formValue = ZY.JSON5.parse(formAlias.value)
+    globalThis.getFormItem = function (
+        {formName = 'process-step2', depId = 'ix4c', itemId = 'ix4c-ufobWE'} = {},
+        model = cachedPageControlModel
+    ) {
+      const lodash = ZY.lodash
+      const JSON5 = ZY.JSON5
+      let formAlias = model.forms.find(form => form.name === formName)
+      let formValue = JSON5.parse(formAlias.value)
       let part = formValue.parts[0]
-      let propsObj = ZY.JSON5.parse(formValue.parts[0].props)
+      let propsObj = JSON5.parse(part.props)
       if (Array.isArray(propsObj.deps)) {
-        let items = propsObj["deps"][1].items
-        let item0 = items[0]
-        let data = ZY.JSON5.parse(item0.data)
-        // console.log(item0)
-        data.ui.label = ZY.Time.formatDateTime()
-        item0.data = ZY.JSON5.stringify(data)
-        // console.log(propsObj)
-        part.props = ZY.JSON5.stringify(propsObj)
-        formAlias.value = ZY.JSON5.stringify(formValue)
+        let curDep = propsObj.deps.find(dep => dep.id === depId)
+        if (curDep && Array.isArray(curDep.items)) {
+          let curItem = curDep.items.find(item => item.id === itemId)
+          if (curItem) {
+            return {
+              setData(updatedData = {}) {
+                let data = JSON5.parse(item0.data)
+                lodash.each(updatedData, function (objItem, objKey) {
+                  // data.ui.label = ZY.Time.formatDateTime()
+                  let updatedValue = objItem
+                  if (lodash.isFunction(updatedValue)) {
+                    updatedValue = objItem()
+                  }
+                  else {
+                  //
+                  }
+                  lodash.set(data, objKey, updatedValue)
+                })
+                curItem.data = JSON5.stringify(data)
+                // console.log(propsObj)
+                part.props = JSON5.stringify(propsObj)
+                formAlias.value = JSON5.stringify(formValue)
+              }
+            }
+          }
+
+          console.log('curItem', curDep, curItem)
+        }
       }
+      return null
     }
 
     page.setEventHandler({

@@ -72,7 +72,8 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
       // console.log('array')
       setObj(deepObj, path, {
         type: 'array',
-        items: {}
+        items: {},
+        TOOLS_DEPID: curDep.id
       })
 
       let newPath = `${path}['items']`
@@ -88,6 +89,7 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
      let ___def = {
        type: 'object',
        properties: {},
+       TOOLS_DEPID: curDep.id
      }
 
      if (parsedData) {
@@ -101,6 +103,8 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
       for (let item of curDep.items) {
         let parsedData = {}
         parsedData = parseEditorData(item.data)
+        parsedData.TOOLS_DEPID = curDep.id
+        parsedData.TOOLS_DEP_ITEM_ID = item.id
         let newPath = `${path}['properties']['${item.key}']`
 
         // deepPoint.properties[item.key] = parsedData
@@ -108,7 +112,7 @@ export function getDeepConfigFromLinksAndDeps(links, deps) {
         // console.log(path, parsedData)
 
         setObj(deepObj, newPath,
-          parsedData
+          parsedData,
         )
 
         // 找寻当前item是否有绑定的下一个dep
