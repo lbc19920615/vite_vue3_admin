@@ -102,8 +102,12 @@ let formDef = {
             reflect: 'ui2',
             reflectTpl: 'A.parseUIObj($VAL)',
             ui: {
-              attrs: [
-                ['style', 'height: 0; overflow: hidden']
+              // attrs: [
+              //   ['style', 'height: 0; overflow: hidden']
+              // ],
+              styles: [
+                ['height', 0],
+                ['overflow', 'hidden'],
               ],
               label: 'UI',
               // widget: 'JsonCodeEditor',
@@ -120,6 +124,10 @@ let formDef = {
             ui: {
               attrs: [
                 // ['style', 'height: 0; overflow: hidden']
+              ],
+              styles: [
+                ['height', 0],
+                ['overflow', 'hidden'],
               ],
               widgetConfig: {
                 type: 'textarea',
