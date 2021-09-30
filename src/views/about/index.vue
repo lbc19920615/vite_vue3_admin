@@ -303,6 +303,28 @@ export default defineComponent({
     let currentFromDialog = null
     let cachedPageControlModel = null
 
+    globalThis.getPageCachedModel = function () {
+      return cachedPageControlModel
+    }
+
+    globalThis.getFormItem = function (depId, itemId) {
+      let formAlias = cachedPageControlModel.forms[0]
+      let formValue = ZY.JSON5.parse(formAlias.value)
+      let part = formValue.parts[0]
+      let propsObj = ZY.JSON5.parse(formValue.parts[0].props)
+      if (Array.isArray(propsObj.deps)) {
+        let items = propsObj["deps"][1].items
+        let item0 = items[0]
+        let data = ZY.JSON5.parse(item0.data)
+        // console.log(item0)
+        data.ui.label = ZY.Time.formatDateTime()
+        item0.data = ZY.JSON5.stringify(data)
+        // console.log(propsObj)
+        part.props = ZY.JSON5.stringify(propsObj)
+        formAlias.value = ZY.JSON5.stringify(formValue)
+      }
+    }
+
     page.setEventHandler({
       ['add:arr:common'](e) {
         let { parts, partName, selfpath, process } = e
