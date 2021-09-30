@@ -41,6 +41,9 @@
       background-color: var(--el-color-primary-light-1);
     }
 
+    [cursor-div]::after {
+
+    }
 
   }
   border-radius: 4px;
@@ -77,6 +80,47 @@
   background-clip: content-box
 }
 
+[cursor-div] {
+  position: absolute;
+  //background-color: saddlebrown;
+  width: 20px;
+  display: inline-block;
+  overflow: hidden;
+  height: 100%;
+  //font-size: 14px;
+  white-space: pre;
+  top: 0;
+  color: transparent;
+  &:focus {
+    outline: none;
+    &::before {
+      background-color: var(--el-color-primary-light-1);
+    }
+  }
+  &::before {
+
+    position: absolute;
+    //float: right;
+    left: 0;
+    content: " ";
+    background-color: transparent;
+    letter-spacing: 0.88px;
+    width: 1px;
+    height: calc(var(--input-size) * 2);
+    animation: cursor-blinks 1.5s infinite steps(1, start);
+    /* height: 1em; */
+    transform: translateY(-50%);
+    top: calc(50% + .1em);
+    //line-height: calc(100%);
+    /* padding-left: 4px; */
+    /* left: 2px; */
+    margin-left: 0;
+    box-sizing: border-box;
+    padding: 3px 0;
+    background-clip: content-box
+  }
+}
+
 
 @keyframes cursor-blinks {
   0% {
@@ -106,14 +150,17 @@
 <!--    {{state.value}}-->
 <!--    <el-row>-->
 <!--      <el-button @click="save">保存</el-button>-->
+<!--    tabindex="-1"-->
+<!--    @keydown="onInsertkeyup"-->
+<!--    @blur="onInputBlur"-->
+<!--    @focus="onFocus"-->
     <div
         :id="hid"
         class="cus-insert-input"
         :class="{'focus': state.drawer}"
         tabindex="-1"
-        @keydown="onInsertkeyup"
-        @blur="onInputBlur"
         @focus="onFocus"
+        @blur="onInputBlur"
     >
       <div
            style="flex: 1"
@@ -121,6 +168,11 @@
         <xy-text text-item level="-1">&nbsp;</xy-text>
         <div content style="display: inline-block"
                                                            class="cus-insert-html" v-html="runFuncs(state.control.funcs)"></div>
+        <span :id="cursorID"  cursor-div contenteditable="true"
+              autofocus
+              style="display: inline-block;"
+              @keyup="onCursorChange"
+        ></span>
       </div>
       <el-button  class="cus-insert-input__append"  @click="onInputFocus"><i class="fas fa-keyboard"></i></el-button>
     </div>
@@ -135,19 +187,23 @@
         :close-on-click-modal="false"
     >
       <div  class="cus-insert-keyboard" tabindex="-1"   @keydown="onPopupkeyup">
-        <div style="border: 1px solid #eee; min-height: 40px; display: flex; align-items: center; flex-wrap: nowrap;">
-          <template v-if="state.parsedText"><div
-              v-for="item in state.parsedText">{{item}}</div></template>
-          <span>{{state.pingyin}}</span>
-        </div>
-        <div v-if="state.parsedList && state.parsedList[0]">
-          <div style="width: 100%; overflow: auto" >
-            <div style="display: flex; align-items: center; flex-wrap: nowrap">
-        <span @click="selectCnText(item)" class="a-space-ph-10"
-             v-for="item in sortSuggest(state.parsedList[0])">{{item}}</span>
-            </div>
-          </div>
-        </div>
+<!--        <div style="border: 1px solid #eee; min-height: 40px; display: flex; align-items: center; flex-wrap: nowrap;">-->
+<!--          <template v-if="state.parsedText"><div-->
+<!--              v-for="item in state.parsedText">{{item}}</div></template>-->
+<!--          <span>{{state.pingyin}}</span>-->
+<!--        </div>-->
+<!--        <div v-if="state.parsedList && state.parsedList[0]">-->
+<!--          <div style="width: 100%; overflow: auto" >-->
+<!--            <div style="display: flex; align-items: center; flex-wrap: nowrap">-->
+<!--        <span @click="selectCnText(item)" class="a-space-ph-10"-->
+<!--             v-for="item in sortSuggest(state.parsedList[0])">{{item}}</span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+        <el-row >input输入：
+                  <div style="flex: 1" contenteditable="true" tabindex="-1" autofocus></div>
+          <el-button>插入</el-button>
+        </el-row>
        <div> 同级变量：
          <template v-for="item in insertedVars">
            <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
@@ -161,7 +217,7 @@
             </el-tooltip>
           </template>
         </div>
-<!--        <div contenteditable="true" tabindex="-1" ></div>-->
+
         <div>
           <el-button @click="backStep">退格</el-button>
           <el-button @click="insertFun('')">插入括号</el-button>
@@ -199,6 +255,7 @@ export default {
     let JSON5 = ZY.JSON5;
     let lastIndex = -1
     let hid = 'htm' + ZY.rid(6).toLowerCase()
+    let cursorID = 'cursor' +  ZY.rid(6).toLowerCase()
 
     let widgetConfig =  props.ui.widgetConfig
 
@@ -304,21 +361,21 @@ export default {
       }
     }
 
-    function getIndex() {
+    function getIndex(added = 1) {
       if (lastIndex === -1) {
         return 0
       }
       if (lastIndex < -1) {
         return state.control.funcs.length
       }
-      return lastIndex + 1
+      return lastIndex + added
     }
 
-    function insertChange() {
+    function insertChange(addLength) {
       // console.log('sdsds', length)
       setTimeout(() => {
         let length = state.control.funcs.length
-        setCursor(length - 1, 'add');
+        setCursor(length - 1, 'add', addLength);
         onChange()
       }, 30)
     }
@@ -357,6 +414,22 @@ export default {
 
       insertChange()
     }
+
+
+    function insertTexts(texts = [], tag = 'xy-text', attr = '') {
+      if (Array.isArray(texts) && texts.length > 0) {
+        resetFuncs()
+        let index  = getIndex()
+        let textCommands = texts.map(v => {
+          return ['return \`${VAL}<'+tag+' text-item level="${INDEX}" '+attr+' >'+v+'</'+tag+'>\`']
+        })
+        // console.log(state.control.funcs, textCommands)
+        state.control.funcs.splice(index, 0, ...textCommands)
+
+        insertChange(textCommands.length)
+      }
+    }
+
 
     function insertEmoji() {
       // <z-emoji zoom=".7" face="fuck">&nbsp;</z-emoji>
@@ -435,7 +508,7 @@ export default {
       })
     }
 
-    function setCursor(index, type) {
+    function setCursor(index, type, addLength = 1) {
 
       let INDEX = parseInt(index)
 
@@ -445,7 +518,7 @@ export default {
       }
       // console.log(lastIndex)
       if (type === 'add') {
-        lastIndex = lastIndex + 1
+        lastIndex = lastIndex + addLength
       } else {
         lastIndex = INDEX
       }
@@ -453,6 +526,11 @@ export default {
       let current = document.querySelector(`#${hid} [level="${lastIndex}"]`)
       if (current) {
         current.setAttribute('selected', 1)
+        // console.dir(current.offsetLeft + current.clientWidth)
+        let newLeft = current.offsetLeft + current.clientWidth
+        let cursor = document.getElementById(cursorID)
+        cursor.style.left = newLeft + 'px'
+        cursor.focus()
       }
 
     }
@@ -534,21 +612,21 @@ export default {
     }
 
     function handleCnInput(e) {
-      e.preventDefault()
-      e.stopPropagation()
-      if (e.key === 'Backspace') {
-        // state.pingyin = state.pingyin.slice(0, state.pingyin.length - 1)
-        if (state.pingyin) {
-          state.pingyin = state.pingyin.slice(0, state.pingyin.length - 1)
-        } else {
-          if (Array.isArray(state.parsedText)) {
-            state.parsedText.pop()
-          }
-        }
-      } else  if (insertedText.includes(e.key)) {
-        state.pingyin = (state.pingyin ?? '') + e.key
-        state.parsedList = ZY.PinYin._getHanzi(state.pingyin)
-      }
+      // e.preventDefault()
+      // e.stopPropagation()
+      // if (e.key === 'Backspace') {
+      //   // state.pingyin = state.pingyin.slice(0, state.pingyin.length - 1)
+      //   if (state.pingyin) {
+      //     state.pingyin = state.pingyin.slice(0, state.pingyin.length - 1)
+      //   } else {
+      //     if (Array.isArray(state.parsedText)) {
+      //       state.parsedText.pop()
+      //     }
+      //   }
+      // } else  if (insertedText.includes(e.key)) {
+      //   state.pingyin = (state.pingyin ?? '') + e.key
+      //   state.parsedList = ZY.PinYin._getHanzi(state.pingyin)
+      // }
     }
 
     function selectCnText(cn = '') {
@@ -620,15 +698,37 @@ export default {
     }
 
 
+    function onCursorChange(e) {
+      e.stopPropagation()
+      e.preventDefault()
+      if (e.code === 'Space') {
+        // console.log('输入法保存', e.target.innerText)
+        let textArr = [...e.target.innerText]
+        insertTexts(textArr)
+        e.target.innerText = ''
+      }
+      else if (e.code === 'Enter') {
+        console.log('Enterbaocun')
+        let textArr = [...e.target.innerText]
+        insertTexts(textArr)
+        e.target.innerText = ''
+      }
+      else {
+        console.log('onCursorChange', e)
+      }
+    }
+
     return {
       state,
       widgetConfig,
       getFunDOC,
       onChange,
+      cursorID,
       insertFun,
       insertText,
       insertQute,
       selectCnText,
+      onCursorChange,
       insertEmoji,
       backStep,
       hid,
