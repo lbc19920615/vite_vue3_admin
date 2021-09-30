@@ -175,8 +175,8 @@ export default {
                 },
                 computed: {
                     // doubled: "MODEL('name', '') + ',s'",
-                    swidget: `A.getWidgetEditor(MODEL('ui.widget2'), 'widget')`,
-                    swidget_config: `A.getWidgetExt(A.getWidgetEditor(MODEL('ui.widget2'), 'widgetConfig'), MODEL('ui.widgetExt'))`,
+                    // swidget: `A.getWidgetEditor(MODEL('ui.widget2'), 'widget')`,
+                    // swidget_config: `A.getWidgetExt(A.getWidgetEditor(MODEL('ui.widget2'), 'widgetConfig'), MODEL('ui.widgetExt'))`,
                     srules: `A.getRulesFromRulesArr(MODEL('rulesArr'))`,
                 }
             }]

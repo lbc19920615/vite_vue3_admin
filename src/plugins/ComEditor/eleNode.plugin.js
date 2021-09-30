@@ -84,6 +84,9 @@ export let EditorConfig = function ( { properties = {}, computed = {} } = {}, de
                     type: 'string',
                     // hidden: true,
                     ui: {
+                        attrs: [
+                            ['style', 'height: 0; overflow: hidden']
+                        ],
                         label: 'text',
                         widgetConfig: {
                             type: 'textarea',
