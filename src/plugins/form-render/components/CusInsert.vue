@@ -173,6 +173,7 @@
               autofocus
               style="display: inline-block;"
               @focus="onCusorfocus"
+              @blur="onCusorblur"
               @compositionstart="onCursorcompositionstart"
               @compositionend="onCursorcompositionend"
               @keyup="onCursorChange"
@@ -759,6 +760,10 @@ export default {
       state.focused = true
     }
 
+    function onCusorblur() {
+      state.focused = false
+    }
+
     function onCursorcompositionstart(e) {
       isPinyin = true
     }
@@ -782,6 +787,7 @@ export default {
       onCursorChange,
       onCursorkeydown,
       onCusorfocus,
+      onCusorblur,
       insertEmoji,
       backStep,
       hid,
