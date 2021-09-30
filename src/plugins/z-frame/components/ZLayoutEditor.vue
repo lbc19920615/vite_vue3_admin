@@ -325,7 +325,8 @@ export default defineComponent({
         getXML()
       },
       ['model:update:all'](e) {
-        let { model, key, newVal, config } = e
+        // let { model, key, newVal, config } = e
+        ctx.emit('mode:update:all', e)
       },
       ['model:update'](e) {
         let { model, key, newVal, config } = e

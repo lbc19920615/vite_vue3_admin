@@ -24,6 +24,7 @@
           <el-button type="primary" @click="save">保存</el-button>
         </el-row>
         <div>
+<!--          {{state.value}}-->
           <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>
 <!--          <el-input type="textarea" readonly-->
 <!--                    :value="getXMLDisplay(state.value)"></el-input>-->
@@ -35,6 +36,7 @@
             :store-prefix="storePrefix"
             :auto-load="false"
             @plumb-inited="onPlumbInited"
+            @mode:update:all="onPlumbUpdate"
             @save-layout="onSaveLayout"
         ></ZLayoutEditor>
       </div>
@@ -124,6 +126,7 @@ export default {
     }
 
     function onSaveLayout(e) {
+      console.log('onSaveLayout', e)
     }
 
     function getXML() {
@@ -139,7 +142,9 @@ export default {
       let v = layoutRef.getToolsData()
       // console.log('getToolsData', v)
       await layoutRef.saveCache2Storage(v)
-      methods.on_change(JSON5.stringify(v))
+      let ret = JSON5.stringify(v)
+
+      methods.on_change(ret)
     }
 
     async function onClosed() {
@@ -148,6 +153,14 @@ export default {
 
     function getXMLDisplay(v) {
       return getApp().buildXML(v)
+    }
+
+    function onPlumbUpdate(e) {
+      // let { model, key, newVal, config } = e
+      let v = layoutRef.getToolsData()
+      let ret = JSON5.stringify(v)
+      // console.log(ret)
+      state.value = ret
     }
 
     onBeforeUnmount(() => {
@@ -168,6 +181,7 @@ export default {
       storePrefix,
       save,
       setLayoutRef,
+      onPlumbUpdate,
       getXMLDisplay,
       widgetConfig: props.ui.widgetConfig,
       methods,

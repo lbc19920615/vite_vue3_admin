@@ -9,7 +9,7 @@
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import jsBeautify from 'js-beautify'
-import {onMounted, reactive} from "vue";
+import {onMounted, reactive, watch} from "vue";
 
 export default {
   name: 'EwXmlShower',
@@ -30,6 +30,11 @@ export default {
 
     onMounted(() => {
       state.inited = true
+    })
+
+    watch(() => props.value, (newVal) => {
+      console.log('sdsds', newVal)
+      state.value = newVal ?? ''
     })
 
     return {

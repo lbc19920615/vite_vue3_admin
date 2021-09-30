@@ -82,7 +82,7 @@ export let EditorConfig = function ( { properties = {}, computed = {} } = {}, de
 
                 textContent: {
                     type: 'string',
-                    hidden: true,
+                    // hidden: true,
                     ui: {
                         label: 'text',
                         widgetConfig: {
@@ -117,7 +117,7 @@ registerEditorConfig('ele',  function (dep) {
         properties: {
             beforeAttrs: {
                 type: 'string',
-                hidden: true,
+                // hidden: true,
                 computedProp: 'computedProp1',
                 ui: {
                     widgetConfig: {
