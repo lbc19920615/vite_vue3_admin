@@ -51,19 +51,19 @@
                   </template>
                   <template #array_afterbegin="scope">
                     <el-space align="middle">
-                      <h3>{{ scope.key }}</h3>
+                      <h3>{{ scope.label }}</h3>
                       <template v-if="scope.key !== 'items'">
                         <el-button type="primary" size="small"
-                                   @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加{{ scope.key }}</el-button>
+                                   @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加{{ scope.label }}</el-button>
                       </template>
                     </el-space>
                   </template>
                   <template #array_con_beforeend="scope">
                     <template v-if="scope.key !== 'items'">
-                      <el-col>
+                      <div>
                         <el-button type="danger" size="small"
-                                   @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除{{ scope.key }}</el-button>
-                      </el-col>
+                                   @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除{{ scope.label }}</el-button>
+                      </div>
                     </template>
                   </template>
                 </HttpComponent>

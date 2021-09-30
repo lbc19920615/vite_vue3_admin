@@ -12,6 +12,7 @@ export let EditorConfig = function ( { properties = {}, computed = {} } = {}, de
             properties: {
                 name: {
                     type: 'string',
+                    hidden: true,
                     ui: {
                         label: '名称'
                     },
@@ -21,18 +22,6 @@ export let EditorConfig = function ( { properties = {}, computed = {} } = {}, de
                     ui: {
                         label: '标签名'
                     },
-                },
-                textContent: {
-                    type: 'string',
-                    ui: {
-                        label: 'text',
-                        widgetConfig: {
-                            type: 'textarea',
-                            rows: 1,
-                            disabled: true,
-                        }
-                    },
-                    computedProp: 'computedEditText'
                 },
                 editText: {
                     type: 'string',
@@ -48,7 +37,7 @@ export let EditorConfig = function ( { properties = {}, computed = {} } = {}, de
                 events: {
                     type: 'array',
                     ui: {
-                        label: '校验'
+                        label: '事件'
                     },
                     items: {
                         type: "object",
@@ -56,6 +45,7 @@ export let EditorConfig = function ( { properties = {}, computed = {} } = {}, de
                             value: {
                                 type: 'string',
                                 ui: {
+                                    label: '事件',
                                     widget: 'CusComEvents',
                                     widgetConfig: {
                                     }
@@ -66,6 +56,9 @@ export let EditorConfig = function ( { properties = {}, computed = {} } = {}, de
                 },
                 attrs: {
                     type: 'array',
+                    ui: {
+                      label: '属性'
+                    },
                     "items": {
                         "type": "object",
                         "properties": {
@@ -85,6 +78,20 @@ export let EditorConfig = function ( { properties = {}, computed = {} } = {}, de
                             },
                         }
                     }
+                },
+
+                textContent: {
+                    type: 'string',
+                    hidden: true,
+                    ui: {
+                        label: 'text',
+                        widgetConfig: {
+                            type: 'textarea',
+                            rows: 1,
+                            disabled: true,
+                        }
+                    },
+                    computedProp: 'computedEditText'
                 },
             }
         }, {
@@ -110,6 +117,7 @@ registerEditorConfig('ele',  function (dep) {
         properties: {
             beforeAttrs: {
                 type: 'string',
+                hidden: true,
                 computedProp: 'computedProp1',
                 ui: {
                     widgetConfig: {
@@ -122,7 +130,7 @@ registerEditorConfig('ele',  function (dep) {
             inputEdit: {
                 type: 'string',
                 ui: {
-                    label: 'INPUT',
+                    label: '表单属性',
                     widget: 'CusFormAttr',
                     widgetConfig: {
                     }
