@@ -1,7 +1,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-<!--    {{state.value}}-->
+    {{state.value}}
   <div v-if="state.inited && state.value && state.value.control">
 <!--    <el-input v-model="state.value.control.widget"></el-input>-->
     <div class="a-space-mb-20">
@@ -108,13 +108,13 @@ export default {
 
       let comPropsKeys = Object.keys(comProps)
       let ret = ZY.lodash.pick(clonedValue.data.widgetConfig, comPropsKeys)
-      // console.log(comProps, clonedValue.data.widgetConfig, ret)
       ret = ZY.lodash.pickBy(ret, function (value) {
         if (typeof value === 'string') {
           return value
         }
-        return false
+        return true
       });
+      console.log(comProps, clonedValue.data.widgetConfig, ret)
       clonedValue.data.widgetConfig = ret
       let str =JSON5.stringify(clonedValue)
       methods.on_change(str)
