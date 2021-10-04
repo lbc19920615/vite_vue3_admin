@@ -1,3 +1,5 @@
+import {nextTick} from "vue";
+
 export function clearPlumbLayoutStorage(storagePrefix) {
   ZY_EXT.store.removeItem( storagePrefix +'-deps')
   ZY_EXT.store.removeItem( storagePrefix +'-links')
@@ -54,6 +56,68 @@ export let plumbLayoutMixn = {
     }
   },
   methods: {
+    ZINDEX_ITEMS(items) {
+      return items.sort((a, b) => {
+        let a_ZINDEX = a.ZINDEX ?? 0
+        let b_ZINDEX= b.ZINDEX ?? 0
+        return b_ZINDEX - a_ZINDEX
+      })
+    },
+    async ON_CHANGE_ZINDEX(ZINDEX, item, dep) {
+      // dep.$___random == Math.random()
+     // item.ZINDEX = item.ZINDEX_TEMP
+
+      // this.$nextTick(() => {
+      //   this.instance.repaintEverything()
+      // })
+      // console.log(this.instance.getAllConnections())
+      let allConnections = this.instance.getAllConnections()
+      let self = this
+
+      let cachedConnections = new Map()
+
+      dep.items.forEach(DEP_ITEM => {
+        let selfConnections = allConnections.filter(v => {
+          return v.sourceId === DEP_ITEM.id
+        })
+
+        // console.log(selfConnectionTemp)
+        selfConnections.forEach(connection => {
+          self.instance.deleteConnection(connection)
+        })
+
+        cachedConnections.set(DEP_ITEM.id, selfConnections)
+      })
+
+      await nextTick()
+      item.ZINDEX = item.ZINDEX_TEMP
+
+      await nextTick()
+      await ZY.sleep(300)
+
+      // console.log(cachedConnections)
+      dep.items.forEach(DEP_ITEM => {
+        let selfConnections = cachedConnections.get(DEP_ITEM.id)
+
+        let selfConnectionTemp = selfConnections.map(v => {
+          return {
+            from: DEP_ITEM.id,
+            to: v.targetId
+          }
+        })
+
+        console.log(selfConnectionTemp)
+
+        // console.log(selfConnectionTemp)
+        self.insComLinks(selfConnectionTemp)
+      })
+
+      await nextTick()
+      this.instance.repaintEverything()
+
+      cachedConnections.clear()
+      cachedConnections = null
+    },
     /**
      *
      * @param id

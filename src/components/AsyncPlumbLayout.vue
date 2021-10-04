@@ -5,7 +5,9 @@ $tag: "async-plumb-layout";
 $sel: "." + $tag;
 
 #{$sel} {
-  @include init-plumb-layout();
+  @include init-plumb-layout() {
+    --plumb-con-width: 330px;
+  }
 }
 </style>
 
@@ -43,12 +45,20 @@ $sel: "." + $tag;
 
         <template v-if="!dep.config.closure">
 <!--          <p style="margin: 10px 0;">items</p>-->
-          <template v-for="(item, index) in dep.items" :key="item.id">
+          <template v-for="(item, index) in ZINDEX_ITEMS(dep.items)" :key="item.id">
             <div :id="item.id" :data-pid="dep.id" class="item content-item">
+<!--              {{item.id}}-->
               <div class="a-space-mr-10">
-                <el-input v-if="dep.type !== 'array'"
+                <el-input v-if="dep.type !== 'array'" size="mini"
                           v-model="item.key" placeholder="请填写key"></el-input>
                 <div v-else>{{item.key}}</div>
+              </div>
+              <div class="a-space-mr-10">
+                <el-input  size="mini"
+                          v-model="item.ZINDEX_TEMP"
+                           style="width: 90px;"
+                           @blur="ON_CHANGE_ZINDEX(item.ZINDEX_TEMP, item, dep)"
+                           placeholder="ZINDEX"></el-input>
               </div>
 <!--              <template v-if="dep.type === 'array' || dep.type === 'object'">-->
 <!--              </template>-->
@@ -197,7 +207,7 @@ export default {
       ids.forEach(id => {
         if (document.getElementById(id)) {
           let points = this.pointsMap[depId]
-          console.log(points, depId, this.pointsMap)
+          // console.log(points, depId, this.pointsMap)
           if (points) {
             for (let [key,point] of Object.entries(points)) {
               instance.deleteEndpoint(point)
