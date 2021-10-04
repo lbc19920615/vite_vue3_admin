@@ -106,7 +106,7 @@ export let plumbLayoutMixn = {
           }
         })
 
-        console.log(selfConnectionTemp)
+        // console.log(selfConnectionTemp)
 
         // console.log(selfConnectionTemp)
         self.insComLinks(selfConnectionTemp)
