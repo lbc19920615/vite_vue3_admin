@@ -14,23 +14,23 @@
 <!--    {{store.model}}-->
 <!--    {{store.computedModel}}-->
 
-    <my-fixed>
-      <el-card class="box-card" v-show="page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')">
-        <template #header>
-          <div class="card-header">
-            <span>跳转</span>
-          </div>
-        </template>
-       <el-space direction="vertical">
-         <div v-for="o in store.model.domes"
-              style="cursor: pointer;"
-              @click="jumpTo(o)"
-              :key="o" class="text item">
-           {{o && o.getAttribute('scroll-control')}}
-         </div>
-       </el-space>
-      </el-card>
-    </my-fixed>
+<!--    <my-fixed>-->
+<!--      <el-card class="box-card" v-show="page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')">-->
+<!--        <template #header>-->
+<!--          <div class="card-header">-->
+<!--            <span>跳转</span>-->
+<!--          </div>-->
+<!--        </template>-->
+<!--       <el-space direction="vertical">-->
+<!--         <div v-for="o in store.model.domes"-->
+<!--              style="cursor: pointer;"-->
+<!--              @click="jumpTo(o)"-->
+<!--              :key="o" class="text item">-->
+<!--           {{o && o.getAttribute('scroll-control')}}-->
+<!--         </div>-->
+<!--       </el-space>-->
+<!--      </el-card>-->
+<!--    </my-fixed>-->
 
     <CustomElement is="my-vue-dialog" name="form-event-dialog"
                    :params="{sstyle: 'width: 60vw; min-width: 720px;'}">
@@ -602,29 +602,29 @@ export default defineComponent({
     })
 
 
-    function detectChange() {
-      let doms =  Array.of(
-          ...document.querySelectorAll('.http-com .z-form__object [scroll-control]'))
-      page.setData({
-        domes: doms
-      })
-      if (Array.isArray(doms) && doms.length > 0) {
-        interval1.stop()
-      }
-    }
-
-    let interval1 = new ZY.Interval(detectChange, 6000);
-    interval1.start()
-
-    function jumpTo(o) {
-      // console.log(o.getBoundingClientRect().top + window.scrollY)
-      let top = o.getBoundingClientRect().top + window.scrollY - 40
-      // ZY.U.scrollToView(o)
-      window.scrollTo({
-        top: top,
-        behavior: "smooth"
-      });
-    }
+    // function detectChange() {
+    //   let doms =  Array.of(
+    //       ...document.querySelectorAll('.http-com .z-form__object [scroll-control]'))
+    //   page.setData({
+    //     domes: doms
+    //   })
+    //   if (Array.isArray(doms) && doms.length > 0) {
+    //     interval1.stop()
+    //   }
+    // }
+    //
+    // let interval1 = new ZY.Interval(detectChange, 6000);
+    // interval1.start()
+    //
+    // function jumpTo(o) {
+    //   // console.log(o.getBoundingClientRect().top + window.scrollY)
+    //   let top = o.getBoundingClientRect().top + window.scrollY - 40
+    //   // ZY.U.scrollToView(o)
+    //   window.scrollTo({
+    //     top: top,
+    //     behavior: "smooth"
+    //   });
+    // }
 
     async function onSaveLayout(e) {
       if (cachedPageControlModel) {
@@ -648,7 +648,7 @@ export default defineComponent({
       store: page.store,
       onSaveLayout,
       formula,
-      jumpTo,
+      // jumpTo,
       page,
       allDef: page.defMap,
     }
