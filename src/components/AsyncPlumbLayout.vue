@@ -6,7 +6,7 @@ $sel: "." + $tag;
 
 #{$sel} {
   @include init-plumb-layout() {
-    --plumb-con-width: 330px;
+    --plumb-con-width: 370px;
   }
 }
 </style>
@@ -70,6 +70,7 @@ $sel: "." + $tag;
                          style="padding: 6px  10px"
                          type="primary"
                          @click="editDep(dep, item)"><el-icon><Edit></Edit></el-icon></el-button>
+              <slot name="actions" v-bind="{dep, item, key: item.key, index}"></slot>
             </div>
           </template>
           <el-button size="small" v-if="dep.type === 'object'"

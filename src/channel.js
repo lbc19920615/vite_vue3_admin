@@ -20,6 +20,26 @@ export function sendChannelMessage(str = '') {
   return port1.postMessage(str)
 }
 
+export function sendJSON5ChannelMessage(obj = {}) {
+  return port1.postMessage(ZY.JSON5.stringify(obj))
+}
+
+export function setCommandHandler(COMMAND_TYPE, onCallback, eventName = ZY.rid()) {
+  setMessageHandler(eventName, function (e) {
+    let data = e.data ?? ''
+    if (data) {
+      let obj = ZY.JSON5.parse(data)
+      // console.log('obj', obj)
+      if (obj.type && obj.type === COMMAND_TYPE) {
+        if (onCallback) {
+          onCallback(obj.e)
+        }
+      }
+    }
+  })
+}
+
 export const COMMAND = {
-  RELOAD: 'BC:RELOAD'
+  RELOAD: 'BC:RELOAD',
+  INSPECT: 'BC:INSPECT',
 }

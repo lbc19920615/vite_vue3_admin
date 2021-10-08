@@ -23,7 +23,14 @@
           @edit-dep="onEditDep"
           @save-data="onSaveDep"
           :style="{height}"
-      ></AsyncPlumbLayout>
+      >
+        <template #actions="scope">
+          <el-button size="mini"
+                     style="padding: 6px  10px"
+                     type="primary"
+                     @click="inspect(scope)"><el-icon><Coffee></Coffee></el-icon></el-button>
+        </template>
+      </AsyncPlumbLayout>
     </el-dialog>
 
 
@@ -41,7 +48,7 @@
             <HttpComponent
                 :defs="allDef"
                 :is="store.model.editor_step"
-                :debug="true"
+                :debug="false"
             >
               <template #object_beforebegin="scope">
                 <h3>{{getArrItemBeforeKey(scope)}}</h3>
@@ -72,6 +79,8 @@
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
 import {getCurrentInstance, nextTick, toRaw} from "vue";
 import {extendControl2Page, useControl, useAppPageControl, extendCommonArrEventHandler} from "@/mixins/framework";
+import {Coffee} from "@element-plus/icons";
+import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 
 let depManagerMixin = {
   data() {
@@ -209,7 +218,7 @@ let plumbLayoutMixin = {
 
 export default {
   name: "DeepPropEditor",
-  components: {AsyncPlumbLayout},
+  components: {AsyncPlumbLayout, Coffee},
   props: {
     serviceName: String,
     height: {
@@ -231,25 +240,6 @@ export default {
   },
   setup(props) {
     let self = getCurrentInstance().ctx
-    // console.log('serviceName', props.serviceName)
-    // let { $SERVICE_ID } = await globalThis.createServiceCom()
-    // let serviceName = globalThis.createServiceComSync()
-    let serviceName = props.serviceName
-    // let page = usePage({
-    //   data: {
-    //     editor_step: {
-    //       type: String,
-    //     },
-    //   },
-    //   filters: {
-    //     showCom: "ZY_NOT(MODEL('reload'))",
-    //   },
-    //   defaultVal: {
-    //     editor_step: '',
-    //   },
-    //   serviceName,
-    // })
-
     let page = useControl({
       properties: {
         editor_step: {
@@ -353,10 +343,24 @@ export default {
       return label
     }
 
+    /**
+     * 视察某个元素
+     * @param dep
+     * @param item
+     */
+    function inspect(e) {
+      console.log('inspect', e)
+      sendJSON5ChannelMessage({
+        type: COMMAND.INSPECT,
+        e
+      })
+    }
+
     return {
       loadStepByContent,
       onBeforeClose,
       onDrawerClose,
+      inspect,
       store: page.store,
       filter: page.filter,
       EVENT_NAMES,

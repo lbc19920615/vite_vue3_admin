@@ -720,7 +720,7 @@ export default {
     function onCursorChange(e) {
       e.stopPropagation()
       e.preventDefault()
-      console.log('isPinyin', isPinyin)
+      // console.log('isPinyin', isPinyin)
       if (isPinyin) {
 
       } else {
@@ -739,8 +739,11 @@ export default {
         insertTexts(textArr)
         e.target.innerText = ''
       }
+      else if (e.code === 'Backspace') {
+        backStep()
+      }
       else {
-        // console.log('onCursorChange', e)
+        console.log('onCursorChange', e)
       }
 
       // isPinyin = false

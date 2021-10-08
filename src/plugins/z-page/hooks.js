@@ -1,7 +1,7 @@
 import {reactive,  toRaw} from "vue";
 import {VARS_PAGE_MODEL_NAME} from "@/vars";
 import {useRouter} from 'vue-router';
-import {COMMAND, setMessageHandler} from "@/channel";
+import {COMMAND, setCommandHandler, setMessageHandler} from "@/channel";
 
 export function useRenderControl() {
     let router = useRouter()
@@ -119,6 +119,10 @@ export function useRenderControl() {
         //     interval2.start()
         // }
     }
+
+    setCommandHandler(COMMAND.INSPECT, function (e) {
+        console.log(e)
+    })
 
     return {
         setLayout,
