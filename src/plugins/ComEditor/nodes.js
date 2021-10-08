@@ -74,6 +74,7 @@ let formEditorConfig = function () {
       partName: {
         type: 'string',
         ui: {
+          label: '页面属性',
         },
       },
     }

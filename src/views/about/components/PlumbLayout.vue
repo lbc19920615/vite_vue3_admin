@@ -203,7 +203,9 @@ $sel: "." + $tag;
             >
               <template #reference>
                 <el-button  size="mini"
-                            type="danger"><i class="el-icon-remove" ></i></el-button>
+                            type="danger">
+                  <el-icon><Remove></Remove></el-icon>
+                </el-button>
               </template>
             </el-popconfirm>
             <template v-if="dep.type === 'events'">
@@ -213,11 +215,13 @@ $sel: "." + $tag;
                 <div>
                   <div>
                     <el-button size="mini"
-                               @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
+                               @click="editDep(dep)">
+                      <el-icon><Edit></Edit></el-icon>
+                    </el-button>
                   </div>
-                  <div>type: {{dep.type}}</div>
-                  <div>type: {{dep.sub}}</div>
-                  <div>id: {{dep.id}}</div>
+                  <div>类型: {{dep.type}}</div>
+                  <div>SUB: {{dep.sub}}</div>
+                  <div>ID: {{dep.id}}</div>
                 </div>
               </div>
               <template v-if="!dep.config.closure">
@@ -238,8 +242,10 @@ $sel: "." + $tag;
                    :id="dep.id + '-top'">
                 <div class="a-space-mb-10">
                   <el-space>
-                    <div>type: {{dep.type}}</div>
-                    <el-button size="mini" @click="editDep(dep)"><i class="el-icon-edit" ></i></el-button>
+                    <div>类型: {{dep.type}}</div>
+                    <el-button size="mini" @click="editDep(dep)">
+                      <el-icon><Edit></Edit></el-icon>
+                    </el-button>
                   </el-space>
                   <div></div>
 <!--                  <el-space>-->
@@ -248,7 +254,7 @@ $sel: "." + $tag;
                   <div v-if="dep.type === 'ele'">
                     <div v-if="dep.data && dep.data.tagName">标签名: {{dep.data.tagName}}</div>
                   </div>
-                  <div v-if="dep.data && dep.data.partName">part: {{dep.data.partName}}</div>
+                  <div v-if="dep.data && dep.data.partName">PART: {{dep.data.partName}}</div>
                 </div>
               </div>
               <!--          <div class="item content-item" :data-pid="dep.id"-->
@@ -258,17 +264,21 @@ $sel: "." + $tag;
                 <!--            <h3 style="margin: 10px 0;">items</h3>-->
                 <template v-for="(item, index) in dep.items" :key="index">
                   <div :id="item.id" :data-pid="dep.id" class="item content-item">
-                    <div>
+                    <div class="a-space-mr-10">
                       <el-input :readonly="dep.keyReadonly" v-model="item.key" placeholder="请填写key"></el-input>
                     </div>
                     <template v-if="!dep.noToolsRemove">
-                      <el-button size="mini" @click="deleteItem(dep, item, index)"><i class="el-icon-remove" ></i></el-button>
+                      <el-button size="mini" @click="deleteItem(dep, item, index)">
+                        <el-icon><Remove></Remove></el-icon>
+                      </el-button>
                     </template>
                   </div>
                 </template>
                 <template v-if="!dep.noToolsAdd">
                   <el-button size="mini"
-                             @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
+                             @click="appendItem(dep)">
+                    <el-icon><plus></plus></el-icon>
+                  </el-button>
                 </template>
               </template>
 
@@ -307,12 +317,15 @@ import {createPlumbConfig} from "@/plugins/PlumbLayout/utils";
 import draggable from 'vuedraggable'
 import {toRaw} from "vue";
 import {getXmlData} from "@/views/about/components/PlumbLayout/xmlData";
-import {Fold} from '@element-plus/icons'
+import {Fold, Remove, Plus, Edit} from '@element-plus/icons'
 
 let UIMixin = {
   components: {
     draggable,
-    Fold
+    Fold,
+    Remove,
+    Plus,
+    Edit
   },
   computed: {
     styleObj() {
