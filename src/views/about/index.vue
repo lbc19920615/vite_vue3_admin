@@ -216,7 +216,7 @@ import EwMathJax from "@/components/Ew/EwMathjax.vue";
 import CnChar from 'cnchar'
 import 'cnchar-poly'
 import 'cnchar-order'
-import {COMMAND, sendChannelMessage} from "@/channel";
+import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 globalThis.CnChar = CnChar
 
 globalThis.sortCnCharStroke = function (chars = []) {
@@ -632,7 +632,11 @@ export default defineComponent({
       }
       console.log('onSaveLayout', e)
       await ZY_EXT.store.setItem('current-data', e.currentData)
-      sendChannelMessage(COMMAND.RELOAD)
+      // sendChannelMessage(COMMAND.RELOAD)
+      sendJSON5ChannelMessage({
+        type: COMMAND.RELOAD,
+        e: {}
+      })
     }
 
     let layoutRef = page.setRef('layout')

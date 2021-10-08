@@ -67,12 +67,12 @@ export function useRenderControl() {
             interval1.stop()
         }
         detectChange()
-        setMessageHandler('detect layout', function (e) {
-            let data = e.data ?? ''
-            if (data === COMMAND.RELOAD) {
-                detectChange(false)
-            }
-        })
+        // setMessageHandler('detect layout', function (e) {
+        //     let data = e.data ?? ''
+        //     if (data === COMMAND.RELOAD) {
+        //         detectChange(false)
+        //     }
+        // })
         // if (interval) {
         //     interval1 = new ZY.Interval(detectChange, 6000);
         //     interval1.start()
@@ -108,20 +108,26 @@ export function useRenderControl() {
             interval2.stop()
         }
         detectEventChange(true)
-        setMessageHandler('detect event', function (e) {
-            let data = e.data ?? ''
-            if (data === COMMAND.RELOAD) {
-                detectEventChange(false)
-            }
-        })
+        // setMessageHandler('detect event', function (e) {
+        //     let data = e.data ?? ''
+        //     if (data === COMMAND.RELOAD) {
+        //         detectEventChange(false)
+        //     }
+        // })
         // if (interval) {
         //     interval2 = new ZY.Interval(detectEventChange, 6000);
         //     interval2.start()
         // }
     }
 
+    setCommandHandler(COMMAND.RELOAD, function (e) {
+        console.log('RELOAD')
+        detectEventChange(false)
+        detectChange(false)
+    })
+
     setCommandHandler(COMMAND.INSPECT, function (e) {
-        console.log(e)
+        // console.log(e)
         try {
             let olded = document.querySelector('.prop-selected')
             olded?.classList?.remove('prop-selected')
