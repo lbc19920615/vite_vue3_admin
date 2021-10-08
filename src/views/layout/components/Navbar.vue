@@ -6,7 +6,8 @@
       <div class="avatar-wrapper">
 <!--        <img class="user-avatar" :src="avatar">-->
         <span>欢迎你，{{name}}</span>
-        <i class="el-icon-caret-bottom"></i>
+<!--        <i class="el-icon-caret-bottom"></i>-->
+        <el-icon><CaretBottom></CaretBottom></el-icon>
       </div>
       <template #dropdown>
         <el-dropdown-menu class="user-dropdown">
@@ -27,6 +28,7 @@ import { mapGetters } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger/index.vue'
 // import { redirectToOA } from '@/utils'
+import {CaretBottom} from "@element-plus/icons";
 
 export default {
   data() {
@@ -38,6 +40,7 @@ export default {
   components: {
     // Breadcrumb,
     Hamburger,
+    CaretBottom,
   },
   computed: {
     ...mapGetters([

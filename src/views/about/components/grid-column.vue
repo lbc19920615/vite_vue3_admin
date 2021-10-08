@@ -58,22 +58,22 @@
 <template>
   <div class="vue-grid-column-tools">
 <!--    {{rowvItems}}-->
-    <div ref="row" class="vue-grid-column vue-column-items" v-if="showEdit">
-      <vue-resizable  :active="['b']"  class="vue-column-item vue-grid-column-item-tool"
-                      :height="item.h ? item.h : 1"
-                      @resize:end="onResizeEnd(item, index, $event)"
-                      v-for="(item, index) in rowvItems">
-     {{item.h}} <button class="grid-column-handle"><i class="el-icon-rank"></i></button>
-      </vue-resizable>
-    </div>
+<!--    <div ref="row" class="vue-grid-column vue-column-items" v-if="showEdit">-->
+<!--      <vue-resizable  :active="['b']"  class="vue-column-item vue-grid-column-item-tool"-->
+<!--                      :height="item.h ? item.h : 1"-->
+<!--                      @resize:end="onResizeEnd(item, index, $event)"-->
+<!--                      v-for="(item, index) in rowvItems">-->
+<!--     {{item.h}} <button class="grid-column-handle"><i class="el-icon-rank"></i></button>-->
+<!--      </vue-resizable>-->
+<!--    </div>-->
     <div class="vue-grid-column">
       <div  :active="['b']"  class="vue-column-item"
                       :style="item.style"  v-for="(item, index) in rowv2">
         <slot v-bind="{item, index}"></slot>
       </div>
     </div>
-    <div class="vue-grid-column-tools__action"><button
-        @click="enableEdit"><i class="el-icon-edit"></i></button></div>
+<!--    <div class="vue-grid-column-tools__action"><button-->
+<!--        @click="enableEdit"><i class="el-icon-edit"></i></button></div>-->
   </div>
 </template>
 
