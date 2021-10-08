@@ -122,6 +122,18 @@ export function useRenderControl() {
 
     setCommandHandler(COMMAND.INSPECT, function (e) {
         console.log(e)
+        try {
+            let olded = document.querySelector('.prop-selected')
+            olded?.classList?.remove('prop-selected')
+            let itemData = ZY.JSON5.parse(e.item.data)
+            let dep_item = document.querySelector(`[tools_dep_item_id=${e.item.id}]`)
+            if (dep_item) {
+
+                dep_item.classList.toggle('prop-selected')
+            }
+        } catch (e) {
+        //
+        }
     })
 
     return {
