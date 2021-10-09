@@ -164,12 +164,12 @@
         tabindex="-1"
         @focus="onFocus"
         @blur="onInputBlur"
-        @mouseup="onMainMouseUp"
-        @mousedown="onMouseDown"
-        @mousemove="onMouseMove"
     >
       <div
            style="flex: 1"
+           @mouseup="onMainMouseUp"
+           @mousedown="onMouseDown"
+           @mousemove="onMouseMove"
       >
 <!--        <xy-text text-item level="-1">&nbsp;</xy-text>-->
         <div content style="display: inline-block"
@@ -184,7 +184,8 @@
               @keydown="onCursorkeydown"
         ></span>
       </div>
-      <el-button  class="cus-insert-input__append"  @click="onInputFocus"><i class="fas fa-keyboard"></i></el-button>
+      <el-button  class="cus-insert-input__append"
+                  @click="onInputFocus"><i class="fas fa-keyboard"></i></el-button>
     </div>
 
     <el-drawer
@@ -687,6 +688,7 @@ export default {
 
     function onInputFocus(e) {
       // console.log('onFocus', e)
+      e.stopPropagation();
       if (!document.querySelector('.cus-insert-input.focus')) {
         state.drawer = true
         state.pingyin = ''
