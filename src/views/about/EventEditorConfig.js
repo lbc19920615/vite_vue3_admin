@@ -96,7 +96,7 @@ export default {
                                         type: 'string',
                                         tag: 'div',
                                         ui: {
-                                            label: 'xml编辑',
+                                            label: '片段XML',
                                             widget: 'CusLayoutEditor',
                                             widgetConfig: {
                                                 suffix: 'slayout',
@@ -109,6 +109,10 @@ export default {
                                         reflect: 'layouts',
                                         reflectTpl: `A.buildXML($VAL)`,
                                         ui: {
+                                            styles: [
+                                                ['height', 0],
+                                                ['overflow', 'hidden'],
+                                            ],
                                             widget: 'CusXmlShower',
                                             widgetConfig: {
                                                 type: 'textarea',
