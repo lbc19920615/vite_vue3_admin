@@ -268,6 +268,8 @@ export default {
     let hid = 'htm' + ZY.rid(6).toLowerCase()
     let cursorID = 'cursor' +  ZY.rid(6).toLowerCase()
 
+    let mouse_down_focused = false
+
     let widgetConfig =  props.ui.widgetConfig
 
     let insertedText = [
@@ -733,16 +735,20 @@ export default {
         document.getElementById(cursorID)?.focus()
       }
       state.selected = false
+      mouse_down_focused = false
     }
     function onMouseDown(e) {
       moveStart = e.clientX
+      mouse_down_focused = true
     }
     function onMouseMove(e) {
       // console.log('moveInstanse', moveInstanse, e.clientX)
-      moveInstanse =  Math.abs(e.clientX-moveStart)
-      if (moveInstanse > MOVE_DETECT) {
-        document.getElementById(cursorID)?.blur()
-        state.selected = true
+      if (mouse_down_focused) {
+        moveInstanse =  Math.abs(e.clientX-moveStart)
+        if (moveInstanse > MOVE_DETECT) {
+          document.getElementById(cursorID)?.blur()
+          state.selected = true
+        }
       }
     }
 
