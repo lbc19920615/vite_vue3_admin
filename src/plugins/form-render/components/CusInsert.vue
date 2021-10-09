@@ -163,6 +163,8 @@
         @focus="onFocus"
         @blur="onInputBlur"
         @mouseup="onMainKeyDown"
+        @mousedown="onMouseDown"
+        @mousemove="onMouseMove"
     >
       <div
            style="flex: 1"
@@ -709,6 +711,11 @@ export default {
       // document.getElementById(cursorID)?.focus()
     }
 
+
+
+    let moveStart = 0
+    let moveInstanse = 0
+
     function onMainKeyDown(e) {
       console.log('onMainKeyDown', e)
       // if (e.key === 'Control') {
@@ -716,7 +723,16 @@ export default {
       // } else {
       //   document.getElementById(cursorID)?.focus()
       // }
-      document.getElementById(cursorID)?.focus()
+      if (moveInstanse < 60) {
+        document.getElementById(cursorID)?.focus()
+      }
+    }
+    function onMouseDown(e) {
+      moveStart = e.clientX
+    }
+    function onMouseMove(e) {
+      // console.log('moveInstanse', moveInstanse, e.clientX)
+      moveInstanse =  Math.abs(e.clientX-moveStart)
     }
 
     let toolDocs = []
@@ -740,7 +756,11 @@ export default {
     function onCursorChange(e) {
       e.stopPropagation()
       e.preventDefault()
-      console.log('isPinyin', isPinyin)
+      // console.log('isPinyin', isPinyin)
+      if (moveInstanse > 59) {
+        return;
+      }
+
       if (isPinyin) {
 
       } else {
@@ -837,6 +857,8 @@ export default {
       insertedFun,
       onFocus,
       onMainKeyDown,
+      onMouseDown,
+      onMouseMove,
       insertedVars,
       onValueChanged,
       methods,
