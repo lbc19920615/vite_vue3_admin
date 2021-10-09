@@ -166,7 +166,7 @@
       <div
            style="flex: 1"
       >
-        <xy-text text-item level="-1">&nbsp;</xy-text>
+<!--        <xy-text text-item level="-1">&nbsp;</xy-text>-->
         <div content style="display: inline-block"
                                                            class="cus-insert-html" v-html="runFuncs(state.control.funcs)"></div>
         <span :id="cursorID"  cursor-div contenteditable="true"
@@ -259,7 +259,7 @@ export default {
     let {part_key} = props.defs;
     let obj;
     let JSON5 = ZY.JSON5;
-    let lastIndex = -1
+    let lastIndex = 0
     let hid = 'htm' + ZY.rid(6).toLowerCase()
     let cursorID = 'cursor' +  ZY.rid(6).toLowerCase()
 
@@ -309,7 +309,7 @@ export default {
 
             if (!inited) {
               inited = true
-              lastIndex = toRaw( obj.funcs).length - 1
+              lastIndex = toRaw( obj.funcs).length
               // console.log(lastIndex)
               nextTick(() => {
                 if (state.value.funcs) {
@@ -369,13 +369,14 @@ export default {
     }
 
     function getIndex(added = 1) {
-      if (lastIndex === -1) {
+      let trueIndex = lastIndex - 1
+      if (trueIndex === -1) {
         return 0
       }
-      if (lastIndex < -1) {
+      if (trueIndex < -1) {
         return state.control.funcs.length
       }
-      return lastIndex + added
+      return trueIndex + added
     }
 
     function insertChange(addLength) {
@@ -452,18 +453,23 @@ export default {
     }
 
     function runFuncs(funcs) {
+      let trueFuns = [ ['return `<xy-text text-item level="0">&nbsp;</xy-text>`']]
       if (Array.isArray(funcs)) {
-        let trueFuns = funcs.map((v, index) => {
+        trueFuns = trueFuns.concat(
+            funcs
+        ).map((v, index) => {
           return new Function('VAL', `let INDEX = ${index}; ` + v[0])
         })
 
-        if (trueFuns.length > 0) {
+        // console.log(trueFuns)
+
+        // if (trueFuns.length > 0) {
 
           let ret = ZY.R.pipe.apply(null, trueFuns)('')
           // console.log(trueFuns, ret)
           return ret
-        }
-      return ''
+        // }
+      // return ''
       }
 
       return ''
@@ -474,6 +480,7 @@ export default {
       if (Index < -1) {
         Index = -1
       }
+      console.log('backCursor', Index)
       setTimeout(() => {
         setCursor(
             Index,
@@ -491,7 +498,9 @@ export default {
       //   Index =    state.control.funcs.length - 1
       // }
 
-      if (Index <  state.control.funcs.length) {
+      // console.log('nextCursor', Index)
+
+      if (Index <  state.control.funcs.length + 1) {
         setTimeout(() => {
           setCursor(
               Index,
@@ -554,14 +563,14 @@ export default {
 
     function setFirstCursor() {
       setCursor(
-          -1,
+          0,
           'index'
       )
     }
 
     function setLastCursor() {
       setCursor(
-          state.control.funcs.length - 1,
+          state.control.funcs.length,
           'index'
       )
     }
@@ -747,6 +756,18 @@ export default {
       else if (e.code === 'ShiftLeft') {
         // console.log('ShiftLeft', e.target.innerText)
         change_ime_temped_text =  e.target.innerText
+      }
+      else if (e.key === 'ArrowLeft') {
+        // console.log('ArrowLeft')
+        backCursor()
+      } else if (e.key === 'ArrowRight') {
+        // console.log('ArrowRight')
+        nextCursor()
+      } else if (e.key === 'ArrowUp') {
+        // console.log('ArrowUp')
+        setFirstCursor()
+      } else if (e.key === 'ArrowDown') {
+        setLastCursor()
       }
       else {
         console.log('onCursorChange', e)
