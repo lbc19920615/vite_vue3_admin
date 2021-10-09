@@ -716,6 +716,7 @@ export default {
     }
 
     let isPinyin = false
+    let change_ime_temped_text = ''
 
     function onCursorChange(e) {
       e.stopPropagation()
@@ -729,18 +730,23 @@ export default {
       }
       if (e.code === 'Space') {
         // console.log('输入法保存', e.target.innerText)
-        let textArr = [...e.target.innerText]
+        let text = e.target.innerText?.replace(change_ime_temped_text, '') ?? ''
+        let textArr = [...text]
         insertTexts(textArr)
         e.target.innerText = ''
       }
       else if (e.code === 'Enter') {
-        console.log('Enterbaocun')
+        // console.log('Enterbaocun')
         let textArr = [...e.target.innerText]
         insertTexts(textArr)
         e.target.innerText = ''
       }
       else if (e.code === 'Backspace') {
         backStep()
+      }
+      else if (e.code === 'ShiftLeft') {
+        // console.log('ShiftLeft', e.target.innerText)
+        change_ime_temped_text =  e.target.innerText
       }
       else {
         console.log('onCursorChange', e)
