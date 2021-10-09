@@ -206,10 +206,10 @@
 <!--            </div>-->
 <!--          </div>-->
 <!--        </div>-->
-        <el-row >input输入：
-                  <div style="flex: 1" contenteditable="true" tabindex="-1" autofocus></div>
-          <el-button>插入</el-button>
-        </el-row>
+<!--        <el-row >input输入：-->
+<!--                  <div style="flex: 1" contenteditable="true" tabindex="-1" autofocus></div>-->
+<!--          <el-button>插入</el-button>-->
+<!--        </el-row>-->
        <div> 同级变量：
          <template v-for="item in insertedVars">
            <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
