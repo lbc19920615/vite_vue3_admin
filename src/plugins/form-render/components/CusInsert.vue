@@ -33,19 +33,21 @@
 }
 
 .cus-insert-input {
+
   &:focus, &.focus {
     border-color: var(--el-color-primary-light-1);
 
     [text-item][selected]::after {
-
       background-color: var(--el-color-primary-light-1);
     }
-
-    [cursor-div]::after {
-
-    }
-
   }
+
+  &.selected {
+    [text-item][selected]::after {
+      background-color: transparent;
+    }
+  }
+
   border-radius: 4px;
 }
 
@@ -158,11 +160,11 @@
     <div
         :id="hid"
         class="cus-insert-input"
-        :class="{'focus': state.drawer || state.focused}"
+        :class="{'focus': state.drawer || state.focused, selected: state.selected}"
         tabindex="-1"
         @focus="onFocus"
         @blur="onInputBlur"
-        @mouseup="onMainKeyDown"
+        @mouseup="onMainMouseUp"
         @mousedown="onMouseDown"
         @mousemove="onMouseMove"
     >
@@ -340,6 +342,7 @@ export default {
       control: {},
       drawer: false,
       focused: false,
+      selected: false,
       pinyin: '',
       parsedList: [],
       parsedText: []
@@ -715,17 +718,19 @@ export default {
 
     let moveStart = 0
     let moveInstanse = 0
+    let MOVE_DETECT = 60
 
-    function onMainKeyDown(e) {
-      console.log('onMainKeyDown', e)
+    function onMainMouseUp(e) {
+      // console.log('onMainMouseUp', e)
       // if (e.key === 'Control') {
       // //
       // } else {
       //   document.getElementById(cursorID)?.focus()
       // }
-      if (moveInstanse < 60) {
+      if (moveInstanse < MOVE_DETECT) {
         document.getElementById(cursorID)?.focus()
       }
+      state.selected = false
     }
     function onMouseDown(e) {
       moveStart = e.clientX
@@ -733,6 +738,10 @@ export default {
     function onMouseMove(e) {
       // console.log('moveInstanse', moveInstanse, e.clientX)
       moveInstanse =  Math.abs(e.clientX-moveStart)
+      if (moveInstanse > MOVE_DETECT) {
+        document.getElementById(cursorID)?.blur()
+        state.selected = true
+      }
     }
 
     let toolDocs = []
@@ -757,7 +766,7 @@ export default {
       e.stopPropagation()
       e.preventDefault()
       // console.log('isPinyin', isPinyin)
-      if (moveInstanse > 59) {
+      if (moveInstanse > MOVE_DETECT - 1) {
         return;
       }
 
@@ -856,7 +865,7 @@ export default {
       insertedText,
       insertedFun,
       onFocus,
-      onMainKeyDown,
+      onMainMouseUp,
       onMouseDown,
       onMouseMove,
       insertedVars,
