@@ -9,7 +9,7 @@
     <div hidden>{{store.model}}</div>
     <el-button v-if="useDrag"
 
-
+              size="small"
                @click="openDialog">打开编辑</el-button>
     <CustomElement :is="useDrag ? 'my-vue-dialog' : 'div'" :name="dialogName"
                    :params="{sstyle: 'width: 80vw; min-width: 720px;'}"

@@ -10,7 +10,7 @@
 <!--  {{deps}}-->
 <!--  {{rootId}}-->
   <el-row type="flex">
-    <el-button @click="dialogVisible = true">编辑</el-button>
+    <el-button size="small" @click="dialogVisible = true">编辑</el-button>
     <el-dialog
         v-model="dialogVisible" title="" width="96vw"
     :before-close="onBeforeClose"
