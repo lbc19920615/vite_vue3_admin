@@ -12,6 +12,18 @@
     <el-row type="flex" >
       <el-button size="small" @click="openDialog">打开编辑</el-button>
 <!--      <el-button @click="getXML">获取xml</el-button>-->
+      <el-popover
+          v-model:visible="state.previewVisible"
+          placement="bottom"
+          title=""
+          :width="600"
+          trigger="click"
+      >
+        <template #reference>
+          <el-button size="small" @click="state.previewVisible = !state.previewVisible">XML预览</el-button>
+        </template>
+        <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>
+      </el-popover>
     </el-row>
     <el-dialog
         v-model="state.dialogVisible"
@@ -98,7 +110,8 @@ export default {
       }
     })
     let state = data({
-      dialogVisible: false
+      dialogVisible: false,
+      previewVisible: false
     })
     init(props)
 
