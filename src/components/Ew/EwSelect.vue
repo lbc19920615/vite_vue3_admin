@@ -46,6 +46,7 @@ export default {
     change(val) {
       // console.log('sdsdsdsds', val)
       this.$emit('update:modelValue', val)
+      this.$emit('change', val)
     }
   }
 }

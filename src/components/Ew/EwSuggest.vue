@@ -1,14 +1,17 @@
-<style lang="scss">
+<style lang="scss" scoped>
 .ew-suggest-list-con {
   max-height: 300px;
   overflow: auto;
+}
+.el-form-item__content .el-input-group {
+  vertical-align: middle;
 }
 </style>
 
 <template>
   <div class="ew-suggest">
 <!--{{state.value}}-->
-    <el-input v-model="state.value" @blur="onBlur" @input="onInput">
+    <el-input v-bind="$attrs" v-model="state.value" @blur="onBlur" @input="onInput">
       <template #append>
         <e-popover
             class="cus-suggest__popover"

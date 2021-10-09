@@ -3,6 +3,10 @@
   flex: 1;
   width: initial;
 }
+
+.z-style-select {
+  /*width: 150px;*/
+}
 </style>
 
 <template>
@@ -10,13 +14,38 @@
 <!--    {{valueConfig}}-->
     <template v-if="store.model.styleObj">
       {{store.model.styleObj}}
-      <el-row align="middle" type="flex">
-        <h3 class="a-space-pr-10">width</h3>
+      <el-row align="middle" type="flex"  class="a-space-mb-10"
+              v-for="(styleItem, styleItemIndex) in store.model.styleObj"
+              :key="styleItemIndex"
+      >
+<!--        <h3 class="a-space-pr-10">width</h3>-->
+        <ew-select
+            size="small"
+            class="a-space-mr-10 z-style-select" filterable
+            :options="store.model.options" v-model="styleItem[0]"></ew-select>
 <!--        <el-input class="z-style-input"-->
 <!--                  v-model="store.model.styleObj.width"></el-input>-->
-        <unit-input  v-model="store.model.styleObj.width"></unit-input>
+        <div class="a-space-mr-10" v-if="styleItem[0]">
+          <unit-input v-if="isLengthProp(styleItem[0])"
+                      v-model="styleItem[1]"></unit-input>
+<!--          <el-input    size="small" v-else v-model="styleItem[1]"></el-input>-->
+          <ew-suggest
+              v-else-if="styleItem[0]"
+              size="small"
+                       v-model="styleItem[1]"></ew-suggest>
+        </div>
+        <el-button size="mini" type="danger"
+                   @click="removeStyleItem(store.model.styleObj, styleItemIndex)">
+          <el-icon>
+            <Delete></Delete>
+          </el-icon>
+        </el-button>
       </el-row>
     </template>
+    <el-button size="mini"
+               @click="page.callEvent('add:styleObj', store.model.styleObj)">
+      <el-icon><Plus></Plus></el-icon>
+    </el-button>
   </div>
 </template>
 
@@ -24,9 +53,15 @@
 import {extendControl2Page, useControl, extendCommonArrEventHandler} from "@/mixins/framework";
 import {onBeforeUnmount, onMounted, toRaw} from "vue";
 import UnitInput from "@/components/UnitInput.vue";
+import EwSelect from "@/components/Ew/EwSelect.vue";
+import {Plus, Delete} from "@element-plus/icons";
+import EwSuggest from "@/components/Ew/EwSuggest.vue";
+
+let LENGTH_PROPS = ['width', 'height']
+
 export default {
   name: 'ZStyles',
-  components: {UnitInput},
+  components: {EwSuggest, EwSelect, UnitInput, Plus, Delete},
   emits: [
     'props-change',
       'form:input:blur'
@@ -49,12 +84,23 @@ export default {
       },
       styleObj: {
         type: null
+      },
+      options: {
+        type: null
       }
     }
     let computed = {}
     function onInited({storeControl}) {
       storeControl.set({
-        styleObj: {}
+        styleObj: [],
+        options:
+            ZY.DOM.getAllPropKeys()
+            .map(v => {
+              return {
+                label: v,
+                value: v
+              }
+            })
       })
     }
     let page = useControl({properties, computed}, {
@@ -83,14 +129,30 @@ export default {
       ['form:input:blur'](e) {
         // console.log('sdsdsdsdsdsds', e)
         ctx.emit('form:input:blur', e)
+      },
+      ['add:styleObj'](styleArr) {
+        styleArr.push(['', ''])
       }
     })
+
+    function isLengthProp(v) {
+      if (!v) {
+        return false
+      }
+      return LENGTH_PROPS.includes(v)
+    }
+
+    function removeStyleItem(arr, index) {
+      arr.splice(index, 1)
+    }
 
     onMounted(function () {
 
     })
 
     return {
+      isLengthProp,
+      removeStyleItem,
       EVENT_NAMES,
       page,
       store: page.store

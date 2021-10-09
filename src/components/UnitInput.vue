@@ -19,7 +19,7 @@ $sel: "." + $tag;
     <el-input-number size="small"  controls-position="right"
                      style="width: 90px;" v-model.number="num"
                      @change="changeItem(num)" type="text" ></el-input-number>
-    <el-select class="a-space-ml-10"  size="small" v-model="unit" clearable
+    <el-select class="a-space-ml-10" filterable size="small" v-model="unit" clearable
                 @change="changeItem(unit)" style="width: 90px;">
       <el-option v-for="unit in units"
                  :label="unit" :value="unit" ></el-option>
