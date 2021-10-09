@@ -1,7 +1,7 @@
 <style lang="scss">
 .cus-insert-input {
   --input-size: 14px;
-  user-select: none;
+  //user-select: none;
   display: flex;
   align-items: center;
   [text-item] {
@@ -162,6 +162,7 @@
         tabindex="-1"
         @focus="onFocus"
         @blur="onInputBlur"
+        @mouseup="onMainKeyDown"
     >
       <div
            style="flex: 1"
@@ -170,7 +171,6 @@
         <div content style="display: inline-block"
                                                            class="cus-insert-html" v-html="runFuncs(state.control.funcs)"></div>
         <span :id="cursorID"  cursor-div contenteditable="true"
-              autofocus
               style="display: inline-block;"
               @focus="onCusorfocus"
               @blur="onCusorblur"
@@ -514,7 +514,7 @@ export default {
     }
 
     function backStep() {
-      state.control.funcs.splice(lastIndex, 1)
+      state.control.funcs.splice(lastIndex - 1, 1)
       // console.log(state.control.funcs)
       // let Index = lastIndex - 1
       // if (Index < -1) {
@@ -706,6 +706,16 @@ export default {
           item.blur()
         })
       }
+      // document.getElementById(cursorID)?.focus()
+    }
+
+    function onMainKeyDown(e) {
+      console.log('onMainKeyDown', e)
+      // if (e.key === 'Control') {
+      // //
+      // } else {
+      //   document.getElementById(cursorID)?.focus()
+      // }
       document.getElementById(cursorID)?.focus()
     }
 
@@ -730,7 +740,7 @@ export default {
     function onCursorChange(e) {
       e.stopPropagation()
       e.preventDefault()
-      // console.log('isPinyin', isPinyin)
+      console.log('isPinyin', isPinyin)
       if (isPinyin) {
 
       } else {
@@ -770,7 +780,7 @@ export default {
         setLastCursor()
       }
       else {
-        console.log('onCursorChange', e)
+        // console.log('onCursorChange', e)
       }
 
       // isPinyin = false
@@ -826,6 +836,7 @@ export default {
       insertedText,
       insertedFun,
       onFocus,
+      onMainKeyDown,
       insertedVars,
       onValueChanged,
       methods,
