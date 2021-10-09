@@ -35,7 +35,14 @@
       <ZProps
           style="flex: 1"
           v-model:value="state.value.control.attrsObj" @form:input:blur="onBlur" @props-change="onAttrsChange"></ZProps>
+    </el-row>
 
+
+    <el-row  class="a-space-mb-10">
+      <div class="cus-ui__label">styles</div>
+      <ZStyles
+          style="flex: 1"
+          v-model:value="state.value.control.attrsObj" @form:input:blur="onBlur" @props-change="onStylesChange"></ZStyles>
     </el-row>
 
   </template>
@@ -46,10 +53,11 @@
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
 import ZProps from "@/plugins/z-frame/components/ZProps.vue";
+import ZStyles from "@/plugins/z-frame/components/ZStyles.vue";
 
 export default {
   name: 'CusUI',
-  components: {ZProps, EwSuggest},
+  components: {ZStyles, ZProps, EwSuggest},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -150,6 +158,10 @@ export default {
       })
     }
 
+    function onStylesChange(e) {
+    //
+    }
+
     function save() {
       onChange()
     }
@@ -165,6 +177,7 @@ export default {
       methods,
       onAttrsChange,
       onClassChange,
+      onStylesChange,
       onBlur,
       save,
       listeners,

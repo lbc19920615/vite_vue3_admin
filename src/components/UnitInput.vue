@@ -3,6 +3,14 @@ $tag: "unit-input";
 $sel: "." + $tag;
 
 #{$sel} {
+  display: flex;
+  align-items: center;
+  &__clear {
+    border-radius: 10000px;
+    font-size: 12px;
+    padding: 0 2px;
+    min-height: auto;
+  }
 }
 </style>
 
@@ -11,17 +19,25 @@ $sel: "." + $tag;
     <el-input-number size="small"  controls-position="right"
                      style="width: 90px;" v-model.number="num"
                      @change="changeItem(num)" type="text" ></el-input-number>
-    <el-select  size="small" v-model="unit" clearable
-                @change="changeItem(unit)" style="width: 60px;">
+    <el-select class="a-space-ml-10"  size="small" v-model="unit" clearable
+                @change="changeItem(unit)" style="width: 90px;">
       <el-option v-for="unit in units"
                  :label="unit" :value="unit" ></el-option>
     </el-select>
+    <el-button class="a-space-ml-10 unit-input__clear"
+               @click="clearAll"
+               size="mini"><el-icon><Close></Close></el-icon></el-button>
   </div>
 </template>
 
 <script>
+import { Close } from "@element-plus/icons";
+
 export default {
   name: "UnitInput",
+  components: {
+    Close
+  },
   props: {
     modelValue: null,
     config: {
@@ -74,9 +90,15 @@ export default {
     },
     changeItem() {
       let v = `${this.num}${this.unit}`
-      console.log('change item', v)
+      // console.log('change item', v)
       this.$emit('update:modelValue', v)
       this.$emit('change', v)
+    },
+    clearAll() {
+      this.num = ''
+      this.unit = ''
+      this.$emit('update:modelValue', '')
+      this.$emit('change', '')
     }
   }
 }
