@@ -21,10 +21,20 @@
 <!--        <h3 class="a-space-pr-10">width</h3>-->
         <ew-select
             size="small"
-            class="a-space-mr-10 z-style-select" filterable
+            class="z-style-select" filterable
             :options="store.model.options" v-model="styleItem[0]"></ew-select>
 <!--        <el-input class="z-style-input"-->
 <!--                  v-model="store.model.styleObj.width"></el-input>-->
+
+        <z-window  class="a-space-ml-10 a-space-mr-10" v-if="styleItem[0]"
+        :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/' + styleItem[0]"
+        >
+<!--          <el-icon>-->
+<!--            <info-filled />-->
+<!--          </el-icon>-->
+          文档
+        </z-window>
+
         <div class="a-space-mr-10" style="display:flex; align-items: center" v-if="styleItem[0]">
           <unit-input v-if="isLengthProp(styleItem[0])"
                       v-model="styleItem[1]"></unit-input>
@@ -58,15 +68,16 @@ import {extendControl2Page, useControl, extendCommonArrEventHandler} from "@/mix
 import {onBeforeUnmount, onMounted, toRaw} from "vue";
 import UnitInput from "@/components/UnitInput.vue";
 import EwSelect from "@/components/Ew/EwSelect.vue";
-import {Plus, Delete} from "@element-plus/icons";
+import * as elementIcons from "@element-plus/icons";
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
+import ZWindow from "@/plugins/z-frame/components/ZWindow.vue";
 
 let LENGTH_PROPS = ['width', 'height']
 let COLOR_PROPS = ['color', 'background-color']
 
 export default {
   name: 'ZStyles',
-  components: {EwSuggest, EwSelect, UnitInput, Plus, Delete},
+  components: {ZWindow, EwSuggest, EwSelect, UnitInput, ...elementIcons},
   emits: [
     'props-change',
       'form:input:blur'
