@@ -25,9 +25,13 @@
             :options="store.model.options" v-model="styleItem[0]"></ew-select>
 <!--        <el-input class="z-style-input"-->
 <!--                  v-model="store.model.styleObj.width"></el-input>-->
-        <div class="a-space-mr-10" v-if="styleItem[0]">
+        <div class="a-space-mr-10" style="display:flex; align-items: center" v-if="styleItem[0]">
           <unit-input v-if="isLengthProp(styleItem[0])"
                       v-model="styleItem[1]"></unit-input>
+          <el-color-picker v-model="styleItem[1]" show-alpha
+                           v-else-if="isPropType(styleItem[0], 'color')"
+          />
+
 <!--          <el-input    size="small" v-else v-model="styleItem[1]"></el-input>-->
           <ew-suggest
               v-else-if="styleItem[0]"
@@ -58,6 +62,7 @@ import {Plus, Delete} from "@element-plus/icons";
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
 
 let LENGTH_PROPS = ['width', 'height']
+let COLOR_PROPS = ['color', 'background-color']
 
 export default {
   name: 'ZStyles',
@@ -142,6 +147,13 @@ export default {
       return LENGTH_PROPS.includes(v)
     }
 
+    function isPropType(v, type = '') {
+      if (type === 'color') {
+        return COLOR_PROPS.includes(v) || v.includes('-color')
+      }
+      return false
+    }
+
     function removeStyleItem(arr, index) {
       arr.splice(index, 1)
     }
@@ -152,6 +164,7 @@ export default {
 
     return {
       isLengthProp,
+      isPropType,
       removeStyleItem,
       EVENT_NAMES,
       page,
