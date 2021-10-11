@@ -13,10 +13,10 @@ export default {
   },
   methods: {
    open() {
-
+     let manager = ZY.BOM.createWindowManager({url: this.url})
      let ClientRect = this.$el.getBoundingClientRect();
-     console.log(ClientRect)
-      this.manager.open({
+     // console.log(ClientRect)
+      manager.open({
         left: ClientRect.left, top: ClientRect.top
       })
     }
@@ -25,11 +25,11 @@ export default {
     let state = reactive({
 
     })
-    let manager = ZY.BOM.createWindowManager({url: props.url})
+
 
     return {
       state,
-      manager,
+
     }
   }
 }

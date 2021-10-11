@@ -13,7 +13,7 @@
   <div class="z-styles" v-if="page.inited">
 <!--    {{valueConfig}}-->
     <template v-if="store.model.styleObj">
-      {{store.model.styleObj}}
+<!--      {{store.model.styleObj}}-->
       <el-row align="middle" type="flex"  class="a-space-mb-10"
               v-for="(styleItem, styleItemIndex) in store.model.styleObj"
               :key="styleItemIndex"
@@ -22,11 +22,13 @@
         <ew-select
             size="small"
             class="z-style-select" filterable
-            :options="store.model.options" v-model="styleItem[0]"></ew-select>
+            :options="store.model.options"
+            @change="onPropKeyChange(styleItemIndex, styleItem)"
+            v-model="styleItem[0]"></ew-select>
 <!--        <el-input class="z-style-input"-->
 <!--                  v-model="store.model.styleObj.width"></el-input>-->
 
-        <z-window  class="a-space-ml-10 a-space-mr-10" v-if="styleItem[0]"
+        <z-window  class="a-space-ml-10" v-if="styleItem[0]"
         :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/' + styleItem[0]"
         >
 <!--          <el-icon>-->
@@ -35,7 +37,7 @@
           文档
         </z-window>
 
-        <div class="a-space-mr-10" style="display:flex; align-items: center" v-if="styleItem[0]">
+        <div class="a-space-ml-10" style="display:flex; align-items: center" v-if="styleItem[0]">
           <unit-input v-if="isLengthProp(styleItem[0])"
                       v-model="styleItem[1]"></unit-input>
           <el-color-picker v-model="styleItem[1]" show-alpha
@@ -48,12 +50,14 @@
               size="small"
                        v-model="styleItem[1]"></ew-suggest>
         </div>
-        <el-button size="mini" type="danger"
-                   @click="removeStyleItem(store.model.styleObj, styleItemIndex)">
-          <el-icon>
-            <Delete></Delete>
-          </el-icon>
-        </el-button>
+        <div class="a-space-ml-10"  style="display:flex; align-items: center">
+          <el-button size="mini" type="danger"
+                     @click="removeStyleItem(store.model.styleObj, styleItemIndex)">
+            <el-icon>
+              <Delete></Delete>
+            </el-icon>
+          </el-button>
+        </div>
       </el-row>
     </template>
     <el-button size="mini"
@@ -169,13 +173,18 @@ export default {
       arr.splice(index, 1)
     }
 
-    onMounted(function () {
 
-    })
+    function onPropKeyChange(styleItemIndex, styleItem) {
+      // console.log('styleItemIndex', styleItemIndex, styleItem)
+      if (styleItem[1]) {
+        styleItem[1] = ''
+      }
+    }
 
     return {
       isLengthProp,
       isPropType,
+      onPropKeyChange,
       removeStyleItem,
       EVENT_NAMES,
       page,
