@@ -17,7 +17,13 @@
       <section class="a-space-mb-15">
         <header><h3>文字</h3></header>
         <el-row align="middle" type="flex" class="a-space-mb-15">
-          <div class="a-space-mr-10">family</div>
+          <div class="a-space-mr-10">字体
+            <z-window  class="a-space-ml-5"
+                       :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/font-family'"
+            >
+              <i class="fa fa-book"></i>
+            </z-window>
+          </div>
           <ew-select multiple
                      style="width: 350px"
                      :model-value="getStyleObjArrLikeValue('font-family')"
@@ -25,22 +31,50 @@
                      :options="fontStyle.familyOptions"></ew-select>
         </el-row>
         <el-row align="middle" type="flex" class="a-space-mb-15">
-          <div class="a-space-mr-10">weight</div>
+          <div class="a-space-mr-10">粗细
+            <z-window  class="a-space-ml-5"
+                       :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight'"
+            >
+              <i class="fa fa-book"></i>
+            </z-window>
+          </div>
           <ew-select
 
                      :model-value="getStyleObjValue('font-weight')"
                      @change="onStaticChange('font-weight', $event)"
                      :options="fontStyle.weightOptions"></ew-select>
         </el-row>
-        <el-row align="middle" type="flex">
-          <div>ALIGN</div>
+        <el-row align="middle" type="flex" class="a-space-mb-15">
+          <div  class="a-space-mr-10">ALIGN
+            <z-window  class="a-space-ml-5"
+                       :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/text-align'"
+            >
+              <i class="fa fa-book"></i>
+            </z-window>
+          </div>
           <ZRadioButtons
               size="small"
-              class="a-space-ml-10"
+
               :model-value="getStyleObjValue('text-align')"
               :options="fontStyle.alignOptions"
               @change="onStaticChange('text-align', $event)"
           ></ZRadioButtons>
+        </el-row>
+        <el-row align="middle" type="flex" class="a-space-mb-15">
+          <div  class="a-space-mr-10">颜色
+            <z-window  class="a-space-ml-5"
+                       :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/color'"
+            >
+              <i class="fa fa-book"></i>
+            </z-window>
+          </div>
+          <el-color-picker
+              show-alpha
+              :model-value="getStyleObjValue('color')"
+              :options="fontStyle.alignOptions"
+              @change="onStaticChange('color', $event)"
+              :predefine="predefineColors"
+          />
         </el-row>
       </section>
 
@@ -75,6 +109,7 @@
                         v-model="styleItem[1]"></unit-input>
             <el-color-picker v-model="styleItem[1]" show-alpha
                              v-else-if="isPropType(styleItem[0], 'color')"
+                             :predefine="predefineColors"
             />
 
             <!--          <el-input    size="small" v-else v-model="styleItem[1]"></el-input>-->
@@ -113,7 +148,7 @@ import ZRadioButtons from "@/plugins/z-frame/components/ZRadioButtons.vue";
 
 let LENGTH_PROPS = ['width', 'height']
 let COLOR_PROPS = ['color', 'background-color']
-let STATIC_PROPS = ['text-align', 'font-family', 'font-weight']
+let STATIC_PROPS = ['text-align', 'font-family', 'font-weight', 'color']
 
 export default {
   name: 'ZStyles',
@@ -239,7 +274,7 @@ export default {
     let { EVENT_NAMES, onChange } = extendCommonArrEventHandler(page)
 
     function dispatchChange() {
-      // ctx.emit('props-change', page.store.model.styleObj)
+      ctx.emit('props-change', page.store.model.styleObj)
     }
 
     onChange( (type, e) => {
@@ -351,6 +386,15 @@ export default {
       return ''
     }
 
+    let predefineColors = [
+        '#409EFF',
+        '#67C23A',
+        '#E6A23C',
+        '#F56C6C',
+        '#909399',
+        '#303133'
+    ]
+
     watch(page.store, (newVal) => {
       // console.log('sdsdsdsdsds', newVal)
       dispatchChange()
@@ -370,6 +414,7 @@ export default {
       getStyleObjArrLikeValue,
       page,
       store: page.store,
+      predefineColors,
       fontStyle
     }
 
