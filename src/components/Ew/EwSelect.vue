@@ -1,5 +1,6 @@
 <template>
   <div class="ew-select">
+<!--    {{value}}-->
     <el-select
         class="ew-select__select"
         v-model="value"

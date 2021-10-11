@@ -14,11 +14,28 @@
 <!--    {{valueConfig}}-->
     <template v-if="store.model.styleObj">
       {{store.model.styleObj}}
-      <section class="a-space-mb-10">
-        <header>文字</header>
+      <section class="a-space-mb-15">
+        <header><h3>文字</h3></header>
+        <el-row align="middle" type="flex" class="a-space-mb-15">
+          <div class="a-space-mr-10">family</div>
+          <ew-select multiple
+                     style="width: 350px"
+                     :model-value="getStyleObjArrLikeValue('font-family')"
+                     @change="onArrLikeStaticChange('font-family', $event)"
+                     :options="fontStyle.familyOptions"></ew-select>
+        </el-row>
+        <el-row align="middle" type="flex" class="a-space-mb-15">
+          <div class="a-space-mr-10">weight</div>
+          <ew-select
+
+                     :model-value="getStyleObjValue('font-weight')"
+                     @change="onStaticChange('font-weight', $event)"
+                     :options="fontStyle.weightOptions"></ew-select>
+        </el-row>
         <el-row align="middle" type="flex">
           <div>ALIGN</div>
           <ZRadioButtons
+              size="small"
               class="a-space-ml-10"
               :model-value="getStyleObjValue('text-align')"
               :options="fontStyle.alignOptions"
@@ -27,51 +44,54 @@
         </el-row>
       </section>
 
-      <el-row align="middle" type="flex"  class="a-space-mb-10"
-              v-for="(styleItem, styleItemIndex) in filterStatic( store.model.styleObj)"
-              :key="styleItemIndex"
-      >
-<!--        <h3 class="a-space-pr-10">width</h3>-->
-        <ew-select
-            size="small"
-            class="z-style-select" filterable
-            :options="filterOptions(store.model.options)"
-            @change="onPropKeyChange(styleItemIndex, styleItem)"
-            v-model="styleItem[0]"></ew-select>
-<!--        <el-input class="z-style-input"-->
-<!--                  v-model="store.model.styleObj.width"></el-input>-->
-
-        <z-window  class="a-space-ml-10" v-if="styleItem[0]"
-        :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/' + styleItem[0]"
+      <section>
+        <header><h3>其他</h3></header>
+        <el-row align="middle" type="flex"  class="a-space-mb-10"
+                v-for="(styleItem, styleItemIndex) in filterStatic( store.model.styleObj)"
+                :key="styleItemIndex"
         >
-<!--          <el-icon>-->
-<!--            <info-filled />-->
-<!--          </el-icon>-->
-          <i class="fa fa-book"></i>
-        </z-window>
-
-        <div class="a-space-ml-10" style="display:flex; align-items: center" v-if="styleItem[0]">
-          <unit-input v-if="isLengthProp(styleItem[0])"
-                      v-model="styleItem[1]"></unit-input>
-          <el-color-picker v-model="styleItem[1]" show-alpha
-                           v-else-if="isPropType(styleItem[0], 'color')"
-          />
-
-<!--          <el-input    size="small" v-else v-model="styleItem[1]"></el-input>-->
-          <ew-suggest
-              v-else-if="styleItem[0]"
+          <!--        <h3 class="a-space-pr-10">width</h3>-->
+          <ew-select
               size="small"
-                       v-model="styleItem[1]"></ew-suggest>
-        </div>
-        <div class="a-space-ml-10"  style="display:flex; align-items: center">
-          <el-button size="mini" type="danger"
-                     @click="removeStyleItem(store.model.styleObj, styleItem)">
-            <el-icon>
-              <Delete></Delete>
-            </el-icon>
-          </el-button>
-        </div>
-      </el-row>
+              class="z-style-select" filterable
+              :options="filterOptions(store.model.options)"
+              @change="onPropKeyChange(styleItemIndex, styleItem)"
+              v-model="styleItem[0]"></ew-select>
+          <!--        <el-input class="z-style-input"-->
+          <!--                  v-model="store.model.styleObj.width"></el-input>-->
+
+          <z-window  class="a-space-ml-10" v-if="styleItem[0]"
+                     :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/' + styleItem[0]"
+          >
+            <!--          <el-icon>-->
+            <!--            <info-filled />-->
+            <!--          </el-icon>-->
+            <i class="fa fa-book"></i>
+          </z-window>
+
+          <div class="a-space-ml-10" style="display:flex; align-items: center" v-if="styleItem[0]">
+            <unit-input v-if="isLengthProp(styleItem[0])"
+                        v-model="styleItem[1]"></unit-input>
+            <el-color-picker v-model="styleItem[1]" show-alpha
+                             v-else-if="isPropType(styleItem[0], 'color')"
+            />
+
+            <!--          <el-input    size="small" v-else v-model="styleItem[1]"></el-input>-->
+            <ew-suggest
+                v-else-if="styleItem[0]"
+                size="small"
+                v-model="styleItem[1]"></ew-suggest>
+          </div>
+          <div class="a-space-ml-10"  style="display:flex; align-items: center">
+            <el-button size="mini" type="danger"
+                       @click="removeStyleItem(store.model.styleObj, styleItem)">
+              <el-icon>
+                <Delete></Delete>
+              </el-icon>
+            </el-button>
+          </div>
+        </el-row>
+      </section>
     </template>
     <el-button size="mini"
                @click="page.callEvent('add:styleObj', store.model.styleObj)">
@@ -92,7 +112,7 @@ import ZRadioButtons from "@/plugins/z-frame/components/ZRadioButtons.vue";
 
 let LENGTH_PROPS = ['width', 'height']
 let COLOR_PROPS = ['color', 'background-color']
-let STATIC_PROPS = ['text-align']
+let STATIC_PROPS = ['text-align', 'font-family', 'font-weight']
 
 export default {
   name: 'ZStyles',
@@ -125,6 +145,65 @@ export default {
       }
     }
     let computed = {}
+
+
+    let fontStyle = {
+      alignOptions: [
+        {
+          label: 'left',
+          icon: 'align-left',
+          value: 'left'
+        },
+        {
+          label: 'center',
+          icon: 'align-center',
+          value: 'center'
+        },
+        {
+          label: 'right',
+          icon: 'align-right',
+          value: 'right'
+        },
+        {
+          label: 'justify',
+          icon: 'align-justify',
+          value: 'justify'
+        }
+      ],
+      familyOptions: [
+        {
+          label: 'Arial',
+          value: 'Arial'
+        },
+        {
+          label: 'Helvetica',
+          value: 'Helvetica'
+        },
+        {
+          label: '微软雅黑',
+          value: '微软雅黑'
+        },
+        {
+          label: 'sans-serif',
+          value: 'sans-serif'
+        }
+      ],
+      weightOptions: [
+        {
+          label: 'lighter 细',
+          value: 'lighter',
+        },
+        {
+          label: 'normal 正常',
+          value: 'normal',
+        },
+        {
+          label: 'bold 粗',
+          value: 'bold',
+        },
+      ]
+    }
+
     function onInited({storeControl}) {
       // console.log('value', props.value)
       storeControl.set({
@@ -246,29 +325,17 @@ export default {
       }
     }
 
-    let fontStyle = {
-      alignOptions: [
-        {
-          label: 'left',
-          icon: 'align-left',
-          value: 'left'
-        },
-        {
-          label: 'center',
-          icon: 'align-center',
-          value: 'center'
-        },
-        {
-          label: 'right',
-          icon: 'align-right',
-          value: 'right'
-        },
-        {
-          label: 'justify',
-          icon: 'align-justify',
-          value: 'justify'
-        }
-      ]
+    function onArrLikeStaticChange(key, value) {
+      let trueVal = value.join()
+      onStaticChange(key, trueVal)
+    }
+
+    function getStyleObjArrLikeValue(key) {
+      let v = getStyleObjValue(key)
+      if (v && v.includes(',')) {
+        return v.split(',')
+      }
+      return ''
     }
 
     watch(page.store, (newVal) => {
@@ -286,6 +353,8 @@ export default {
       removeStyleItem,
       EVENT_NAMES,
       onStaticChange,
+      onArrLikeStaticChange,
+      getStyleObjArrLikeValue,
       page,
       store: page.store,
       fontStyle
