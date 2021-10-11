@@ -17,7 +17,8 @@ export default {
      let ClientRect = this.$el.getBoundingClientRect();
      // console.log(ClientRect)
       manager.open({
-        left: ClientRect.left, top: ClientRect.top
+        left: ClientRect.left,
+        top: ClientRect.top
       })
     }
   },
