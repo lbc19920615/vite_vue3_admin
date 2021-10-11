@@ -14,7 +14,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-    {{state.value.control}}
+<!--    {{state.value.control}}-->
 <!--    <el-row>-->
 <!--      <el-button @click="save">保存</el-button>-->
 <!--    </el-row>-->
@@ -166,7 +166,7 @@ export default {
     }
 
     function onStylesChange(e) {
-      console.log('onStylesChange', e)
+      // console.log('onStylesChange', e)
       state.value.control.stylesObj = e
       state.value.data.styles = e
       onChange()

@@ -13,26 +13,29 @@
   <div class="z-styles" v-if="page.inited">
 <!--    {{valueConfig}}-->
     <template v-if="store.model.styleObj">
-<!--      {{store.model.styleObj}}-->
-      <section>
+      {{store.model.styleObj}}
+      <section class="a-space-mb-10">
         <header>文字</header>
         <el-row align="middle" type="flex">
           <div>ALIGN</div>
           <ZRadioButtons
               class="a-space-ml-10"
-              :options="fontStyle.alignOptions"></ZRadioButtons>
+              :model-value="getStyleObjValue('text-align')"
+              :options="fontStyle.alignOptions"
+              @change="onStaticChange('text-align', $event)"
+          ></ZRadioButtons>
         </el-row>
       </section>
 
       <el-row align="middle" type="flex"  class="a-space-mb-10"
-              v-for="(styleItem, styleItemIndex) in store.model.styleObj"
+              v-for="(styleItem, styleItemIndex) in filterStatic( store.model.styleObj)"
               :key="styleItemIndex"
       >
 <!--        <h3 class="a-space-pr-10">width</h3>-->
         <ew-select
             size="small"
             class="z-style-select" filterable
-            :options="store.model.options"
+            :options="filterOptions(store.model.options)"
             @change="onPropKeyChange(styleItemIndex, styleItem)"
             v-model="styleItem[0]"></ew-select>
 <!--        <el-input class="z-style-input"-->
@@ -62,7 +65,7 @@
         </div>
         <div class="a-space-ml-10"  style="display:flex; align-items: center">
           <el-button size="mini" type="danger"
-                     @click="removeStyleItem(store.model.styleObj, styleItemIndex)">
+                     @click="removeStyleItem(store.model.styleObj, styleItem)">
             <el-icon>
               <Delete></Delete>
             </el-icon>
@@ -89,6 +92,7 @@ import ZRadioButtons from "@/plugins/z-frame/components/ZRadioButtons.vue";
 
 let LENGTH_PROPS = ['width', 'height']
 let COLOR_PROPS = ['color', 'background-color']
+let STATIC_PROPS = ['text-align']
 
 export default {
   name: 'ZStyles',
@@ -122,7 +126,7 @@ export default {
     }
     let computed = {}
     function onInited({storeControl}) {
-      console.log('value', props.value)
+      // console.log('value', props.value)
       storeControl.set({
         styleObj: Array.isArray(props.value) ? props.value : [],
         options:
@@ -185,8 +189,14 @@ export default {
       return false
     }
 
-    function removeStyleItem(arr, index) {
-      arr.splice(index, 1)
+    function removeStyleItem(arr, item) {
+      // arr.splice(index, 1)
+      let index = arr.findIndex(v => {
+        return v[0] === item[0]
+      })
+      if (index > -1) {
+        arr.splice(index, 1)
+      }
     }
 
 
@@ -194,6 +204,45 @@ export default {
       // console.log('styleItemIndex', styleItemIndex, styleItem)
       if (styleItem[1]) {
         styleItem[1] = ''
+      }
+    }
+
+    function filterStatic(options = []) {
+      return options.filter(v => {
+        return !STATIC_PROPS.includes(v[0])
+      })
+    }
+
+    function filterOptions(options) {
+      return options.filter(v => {
+        return !STATIC_PROPS.includes(v.label)
+      })
+    }
+
+
+    function onStaticChange(key, value) {
+      let styleObj = page.store.model.styleObj
+      let finded = styleObj.find(v => {
+        return v[0] === key
+      })
+      if (finded) {
+        finded[1] = value
+      }
+      else {
+        styleObj.push([
+            key,
+            value
+        ])
+      }
+    }
+
+    function getStyleObjValue(key) {
+      let styleObj = page.store.model.styleObj
+      let finded = styleObj.find(v => {
+        return v[0] === key
+      })
+      if (finded) {
+        return finded[1]
       }
     }
 
@@ -231,8 +280,12 @@ export default {
       isLengthProp,
       isPropType,
       onPropKeyChange,
+      filterStatic,
+      filterOptions,
+      getStyleObjValue,
       removeStyleItem,
       EVENT_NAMES,
+      onStaticChange,
       page,
       store: page.store,
       fontStyle

@@ -3,6 +3,7 @@
     <el-radio-button
     v-for="option in getOptions(options)"
     :label="option.value"
+    @change="onChange"
     >
       <el-tooltip
           effect="dark"
@@ -48,6 +49,9 @@ export default defineComponent({
     },
     getIconCls(option) {
       return 'fa-' + option.icon
+    },
+    onChange(e) {
+      this.$emit('change', this.radio)
     }
   }
 })
