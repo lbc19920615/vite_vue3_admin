@@ -167,8 +167,9 @@ export default {
 
     function onStylesChange(e) {
       // console.log('onStylesChange', e)
-      state.value.control.stylesObj = e
+      // state.value.control.stylesObj = e
       state.value.data.styles = e
+      //
       onChange()
     }
 

@@ -13,7 +13,7 @@
   <div class="z-styles" v-if="page.inited">
 <!--    {{valueConfig}}-->
     <template v-if="store.model.styleObj">
-      {{store.model.styleObj}}
+<!--      {{store.model.styleObj}}-->
       <section class="a-space-mb-15">
         <header><h3>文字</h3></header>
         <el-row align="middle" type="flex" class="a-space-mb-15">
@@ -47,14 +47,15 @@
       <section>
         <header><h3>其他</h3></header>
         <el-row align="middle" type="flex"  class="a-space-mb-10"
-                v-for="(styleItem, styleItemIndex) in filterStatic( store.model.styleObj)"
+                v-for="(styleItem, styleItemIndex) in
+                filterStatic(store.model.styleObj)"
                 :key="styleItemIndex"
         >
           <!--        <h3 class="a-space-pr-10">width</h3>-->
           <ew-select
               size="small"
               class="z-style-select" filterable
-              :options="filterOptions(store.model.options)"
+              :options="store.model.options"
               @change="onPropKeyChange(styleItemIndex, styleItem)"
               v-model="styleItem[0]"></ew-select>
           <!--        <el-input class="z-style-input"-->
@@ -78,7 +79,7 @@
 
             <!--          <el-input    size="small" v-else v-model="styleItem[1]"></el-input>-->
             <ew-suggest
-                v-else-if="styleItem[0]"
+                v-else
                 size="small"
                 v-model="styleItem[1]"></ew-suggest>
           </div>
@@ -204,18 +205,29 @@ export default {
       ]
     }
 
+    let keys =   ZY.DOM.getAllPropKeys()
+        .filter(v => {
+          return !v.startsWith('webkit')
+        })
+        .filter(v => {
+          return !STATIC_PROPS.includes(v)
+        })
+
     function onInited({storeControl}) {
       // console.log('value', props.value)
+      let styleObj =  Array.isArray(props.value) ? props.value : []
+
+
       storeControl.set({
-        styleObj: Array.isArray(props.value) ? props.value : [],
+        styleObj: styleObj,
         options:
-            ZY.DOM.getAllPropKeys()
-            .map(v => {
-              return {
-                label: v,
-                value: v
-              }
-            })
+            keys
+                .map(v => {
+                  return {
+                    label: v,
+                    value: v
+                  }
+                })
       })
     }
     let page = useControl({properties, computed}, {
@@ -227,7 +239,7 @@ export default {
     let { EVENT_NAMES, onChange } = extendCommonArrEventHandler(page)
 
     function dispatchChange() {
-      ctx.emit('props-change', page.store.model.styleObj)
+      // ctx.emit('props-change', page.store.model.styleObj)
     }
 
     onChange( (type, e) => {
@@ -245,10 +257,10 @@ export default {
       //     ctx.emit('props-change', e.model)
       //   }
       // },
-      ['form:input:blur'](e) {
-        // console.log('sdsdsdsdsdsds', e)
-        ctx.emit('form:input:blur', e)
-      },
+      // ['form:input:blur'](e) {
+      //   // console.log('sdsdsdsdsdsds', e)
+      //   ctx.emit('form:input:blur', e)
+      // },
       ['add:styleObj'](styleArr) {
         styleArr.push(['', ''])
       }
@@ -284,18 +296,18 @@ export default {
       if (styleItem[1]) {
         styleItem[1] = ''
       }
+      // ctx.emit('form:input:blur', '')
     }
 
     function filterStatic(options = []) {
+      // return options
       return options.filter(v => {
         return !STATIC_PROPS.includes(v[0])
       })
     }
 
     function filterOptions(options) {
-      return options.filter(v => {
-        return !STATIC_PROPS.includes(v.label)
-      })
+      return options
     }
 
 
@@ -313,6 +325,7 @@ export default {
             value
         ])
       }
+      // ctx.emit('form:input:blur', '')
     }
 
     function getStyleObjValue(key) {
