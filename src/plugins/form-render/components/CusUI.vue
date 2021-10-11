@@ -14,7 +14,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-<!--    {{state.value.control}}-->
+<!--    {{state.value.data}}-->
 <!--    <el-row>-->
 <!--      <el-button @click="save">保存</el-button>-->
 <!--    </el-row>-->

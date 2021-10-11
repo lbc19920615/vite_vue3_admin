@@ -169,9 +169,11 @@ ${item.value}
           let obj = ZY.JSON5.parse(uiJSON5)
           let classes = obj.data.class ?? []
           let attrs = obj.data.attrs ?? []
+          let styles = obj.data.styles ?? []
           // console.log(classes, attrs)
           ret.attrs = attrs
           ret.class = classes
+          ret.styles = styles
           return ZY.JSON5.stringify(ret, null, 2)
         }
       } catch (e) {
