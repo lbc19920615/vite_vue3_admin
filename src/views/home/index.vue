@@ -40,7 +40,7 @@
               :defs="allDef"
               :is="store.model.dialogStep"
           >
-            <template #form_after="scope">
+            <template #form_afterend="scope">
 <!--              {{scope}}-->
               <CusSubmitButton>提交</CusSubmitButton>
             </template>
