@@ -14,7 +14,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-<!--    {{state.value}}-->
+    {{state.value.control}}
 <!--    <el-row>-->
 <!--      <el-button @click="save">保存</el-button>-->
 <!--    </el-row>-->
@@ -42,7 +42,8 @@
       <div class="cus-ui__label">styles</div>
       <ZStyles
           style="flex: 1"
-          v-model:value="state.value.control.attrsObj" @form:input:blur="onBlur" @props-change="onStylesChange"></ZStyles>
+          :value="state.value.control.stylesObj" @form:input:blur="onBlur"
+          @props-change="onStylesChange"></ZStyles>
     </el-row>
 
   </template>
@@ -115,6 +116,12 @@ export default {
               }
             }
 
+            obj.control.stylesObj = []
+
+            if (obj.data.styles) {
+              obj.control.stylesObj = obj.data.styles
+            }
+
             return obj
           } catch (e) {
             // console.log(e)
@@ -159,7 +166,10 @@ export default {
     }
 
     function onStylesChange(e) {
-    //
+      console.log('onStylesChange', e)
+      state.value.control.stylesObj = e
+      state.value.data.styles = e
+      onChange()
     }
 
     function save() {

@@ -79,7 +79,7 @@
 
 <script>
 import {extendControl2Page, useControl, extendCommonArrEventHandler} from "@/mixins/framework";
-import {onBeforeUnmount, onMounted, toRaw} from "vue";
+import {onBeforeUnmount, onMounted, toRaw, watch} from "vue";
 import UnitInput from "@/components/UnitInput.vue";
 import EwSelect from "@/components/Ew/EwSelect.vue";
 import * as elementIcons from "@element-plus/icons";
@@ -122,8 +122,9 @@ export default {
     }
     let computed = {}
     function onInited({storeControl}) {
+      console.log('value', props.value)
       storeControl.set({
-        styleObj: [],
+        styleObj: Array.isArray(props.value) ? props.value : [],
         options:
             ZY.DOM.getAllPropKeys()
             .map(v => {
@@ -142,21 +143,25 @@ export default {
     page = extendControl2Page(page)
     let { EVENT_NAMES, onChange } = extendCommonArrEventHandler(page)
 
+    function dispatchChange() {
+      ctx.emit('props-change', page.store.model.styleObj)
+    }
+
     onChange( (type, e) => {
-      let { parts, partName, selfpath, process } = e
-      let model = parts[partName].getModel()
-      let newVal = toRaw(model)
-      // console.log(type, e, toRaw(model))
-      ctx.emit('update:value', newVal)
-      ctx.emit('change', newVal)
+      // let { parts, partName, selfpath, process } = e
+      // let model = parts[partName].getModel()
+      // let newVal = toRaw(model)
+      // // console.log(type, e, toRaw(model))
+      // ctx.emit('update:value', newVal)
+      // ctx.emit('change', newVal)
     })
 
     page.setEventHandler({
-      ['model:update:all'](e) {
-        if (!locks) {
-          ctx.emit('props-change', e.model)
-        }
-      },
+      // ['model:update:all'](e) {
+      //   if (!locks) {
+      //     ctx.emit('props-change', e.model)
+      //   }
+      // },
       ['form:input:blur'](e) {
         // console.log('sdsdsdsdsdsds', e)
         ctx.emit('form:input:blur', e)
@@ -216,6 +221,11 @@ export default {
         }
       ]
     }
+
+    watch(page.store, (newVal) => {
+      console.log('sdsdsdsdsds', newVal)
+      dispatchChange()
+    })
 
     return {
       isLengthProp,
