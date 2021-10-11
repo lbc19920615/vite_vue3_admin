@@ -69,6 +69,8 @@ export default {
     let JSON5 = ZY.JSON5;
     let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
+
+        console.log('CusUI', newVal, typeof  newVal)
         if (!newVal) {
           newVal = {
             // classObj: {},
@@ -79,7 +81,6 @@ export default {
           return newVal
         }
         if (newVal) {
-          console.log('newVal', newVal, typeof  newVal)
           try {
             obj = JSON5.parse(newVal)
             if (!obj.data) {

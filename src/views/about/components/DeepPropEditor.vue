@@ -48,7 +48,7 @@
             <HttpComponent
                 :defs="allDef"
                 :is="store.model.editor_step"
-                :debug="false"
+                :debug="true"
             >
               <template #object_beforebegin="scope">
                 <h3>{{getArrItemBeforeKey(scope)}}</h3>
@@ -292,6 +292,8 @@ export default {
           cached = ZY.JSON5.parse(item.data)
         }
 
+        console.log('cached', cached)
+
         for (let [partName, data] of Object.entries(config.defaultVal)) {
           let defaultObj = ZY.JSON5.parse(ZY.JSON5.stringify(data))
            page.setPartModel( config.name, partName,
@@ -319,7 +321,7 @@ export default {
     }
 
     function onDrawerClose(currentEditItem) {
-      // console.log('onDrawerClose', cachedDeepEditorModel, currentEditItem)
+      console.log('onDrawerClose', cachedDeepEditorModel, currentEditItem)
       if (cachedDeepEditorModel) {
 
         currentEditItem.data = ZY.JSON5.stringify(cachedDeepEditorModel)

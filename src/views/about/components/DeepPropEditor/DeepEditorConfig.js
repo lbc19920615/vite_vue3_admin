@@ -54,11 +54,6 @@ export default {
                                     // disabled: true
                                 }
                             },
-                            // rules: {
-                            //     type: 'boolean'
-                            // }
-                            // reflect: 'reflectTpl',
-                            // reflectTpl: "$VAL ? 'true': 'false'"
                         },
                         reflectTpl: {
                             type: 'string',
@@ -66,6 +61,35 @@ export default {
                                 label: '反射模板'
                             }
                         },
+                        ui2: {
+                            type: 'string',
+                            ui: {
+                                widget: 'CusStyle'
+                            }
+                        },
+                        // ui2: {
+                        //     type: 'string',
+                        //     ui: {
+                        //         widget: 'CusUI',
+                        //         label: 'UI编辑',
+                        //     }
+                        // },
+                        // ui_ext: {
+                        //     type: 'string',
+                        //     reflect: 'ui2',
+                        //     reflectTpl: 'A.parseUIObj($VAL)',
+                        //     ui: {
+                        //         // styles: [
+                        //         //     ['height', 0],
+                        //         //     ['overflow', 'hidden'],
+                        //         // ],
+                        //         label: 'UI',
+                        //         widgetConfig: {
+                        //             type: 'textarea',
+                        //             disabled: true,
+                        //         }
+                        //     }
+                        // },
                         ui: {
                             type: 'object',
                             ui: {
@@ -106,32 +130,6 @@ export default {
                                         }
                                     },
                                 },
-                                // widget: {
-                                //     type: 'string',
-                                //     ui: {
-                                //         label: 'widget',
-                                //         widgetConfig: {
-                                //             disabled: true,
-                                //         }
-                                //     },
-                                //     computedProp: 'swidget',
-                                //     // reflect: 'widget2',
-                                //     // reflectTpl: 'A.getWidgetEditor($VAL, "widget")'
-                                // },
-                                // widgetConfig: {
-                                //     type: 'string',
-                                //     ui: {
-                                //         label: 'widgetConfig',
-                                //         // widget: 'CodeJsEditor',
-                                //         // widget: 'JsonCodeEditor',
-                                //         widgetConfig: {
-                                //             type: 'textarea',
-                                //             disabled: true,
-                                //             style: {}
-                                //         }
-                                //     },
-                                //     computedProp: 'swidget_config',
-                                // },
                             }
                         },
                         rules: {

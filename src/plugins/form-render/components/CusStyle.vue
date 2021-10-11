@@ -1,0 +1,168 @@
+<style lang="scss">
+//.cus-ui__class-props {
+//  .z-props__name {
+//    display: none;
+//  }
+//}
+//.cus-ui__label {
+//  width: 80px;
+//  font-weight: bold;
+//  font-size: 18px;
+//}
+</style>
+
+<template>
+  <template v-if="inited">
+
+    CusStyle
+  </template>
+</template>
+
+<script>
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
+import EwSuggest from "@/components/Ew/EwSuggest.vue";
+import ZProps from "@/plugins/z-frame/components/ZProps.vue";
+import ZStyles from "@/plugins/z-frame/components/ZStyles.vue";
+
+export default {
+  name: 'CusStyle',
+  components: {ZStyles, ZProps, EwSuggest},
+  mixins: [
+    CustomRenderControlMixin
+  ],
+  setup(props, ctx) {
+
+    let {part_key} = props.defs;
+    let obj;
+    let JSON5 = ZY.JSON5;
+    let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
+      handleValueInit(newVal) {
+
+        console.log('CusStyle', newVal, typeof  newVal)
+        // if (!newVal) {
+        //   newVal = {
+        //     // classObj: {},
+        //     // attrsObj: {},
+        //     control: {},
+        //     data: {}
+        //   }
+        //   return newVal
+        // }
+        // if (newVal) {
+        //   try {
+        //     obj = JSON5.parse(newVal)
+        //     if (!obj.data) {
+        //       obj.data = {}
+        //     }
+        //     if (!obj.control) {
+        //       obj.control = {}
+        //     }
+        //     // delete obj.data.classObj;
+        //
+        //     if (obj.data.attrs) {
+        //       let props = []
+        //       for (let [key, value] of obj.data.attrs) {
+        //         props.push({
+        //           name: key,
+        //           value: value,
+        //         })
+        //       }
+        //       obj.control.attrsObj = {
+        //         props
+        //       }
+        //     }
+        //
+        //     if (obj.data.class) {
+        //       let props = []
+        //       for (let value of obj.data.class) {
+        //         props.push({
+        //           name: value,
+        //           value: value,
+        //         })
+        //       }
+        //       obj.control.classObj  = {
+        //         props
+        //       }
+        //     }
+        //
+        //     obj.control.stylesObj = []
+        //
+        //     if (obj.data.styles) {
+        //       obj.control.stylesObj = obj.data.styles
+        //     }
+        //
+        //     return obj
+        //   } catch (e) {
+        //     // console.log(e)
+        //   }
+        // }
+        return {}
+      }
+    })
+    let state = data({
+      value: {}
+    })
+    init(props)
+
+    function onChange() {
+      let clonedValue = JSON5.parse(JSON5.stringify(state.value))
+      // console.log(clonedValue)
+      Reflect.deleteProperty(clonedValue, 'control')
+      let str =JSON5.stringify(clonedValue)
+      methods.on_change(str)
+    }
+
+
+    function onAttrsChange(e) {
+      // console.log('onAttrsChange', e.props)
+      // state.value.attrsObj = e
+
+      state.value.data.attrs = e.props.filter(v => {
+        return v.name
+      }).map(v => {
+        return [
+            v.name, ZY.defaultStr(v.value, '')
+        ]
+      })
+    }
+
+    function onClassChange(e) {
+      state.value.data.class = e.props.filter(v => {
+        return v.value
+      }).map(v => {
+        return ZY.defaultStr(v.value, '')
+      })
+    }
+
+    function onStylesChange(e) {
+      // console.log('onStylesChange', e)
+      // state.value.control.stylesObj = e
+      state.value.data.styles = e
+      //
+      onChange()
+    }
+
+    function save() {
+      onChange()
+    }
+
+    function onBlur() {
+      onChange()
+    }
+
+    return {
+      state,
+      widgetConfig: props.ui.widgetConfig,
+      onChange,
+      methods,
+      onAttrsChange,
+      onClassChange,
+      onStylesChange,
+      onBlur,
+      save,
+      listeners,
+    }
+  },
+}
+</script>
+
