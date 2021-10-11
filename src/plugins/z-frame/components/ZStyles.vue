@@ -223,7 +223,7 @@ export default {
     }
 
     watch(page.store, (newVal) => {
-      console.log('sdsdsdsdsds', newVal)
+      // console.log('sdsdsdsdsds', newVal)
       dispatchChange()
     })
 
