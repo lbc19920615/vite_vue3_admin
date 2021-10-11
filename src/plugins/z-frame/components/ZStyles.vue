@@ -14,6 +14,16 @@
 <!--    {{valueConfig}}-->
     <template v-if="store.model.styleObj">
 <!--      {{store.model.styleObj}}-->
+      <section>
+        <header>文字</header>
+        <el-row align="middle" type="flex">
+          <div>ALIGN</div>
+          <ZRadioButtons
+              class="a-space-ml-10"
+              :options="fontStyle.alignOptions"></ZRadioButtons>
+        </el-row>
+      </section>
+
       <el-row align="middle" type="flex"  class="a-space-mb-10"
               v-for="(styleItem, styleItemIndex) in store.model.styleObj"
               :key="styleItemIndex"
@@ -34,7 +44,7 @@
 <!--          <el-icon>-->
 <!--            <info-filled />-->
 <!--          </el-icon>-->
-          文档
+          <i class="fa fa-book"></i>
         </z-window>
 
         <div class="a-space-ml-10" style="display:flex; align-items: center" v-if="styleItem[0]">
@@ -75,13 +85,14 @@ import EwSelect from "@/components/Ew/EwSelect.vue";
 import * as elementIcons from "@element-plus/icons";
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
 import ZWindow from "@/plugins/z-frame/components/ZWindow.vue";
+import ZRadioButtons from "@/plugins/z-frame/components/ZRadioButtons.vue";
 
 let LENGTH_PROPS = ['width', 'height']
 let COLOR_PROPS = ['color', 'background-color']
 
 export default {
   name: 'ZStyles',
-  components: {ZWindow, EwSuggest, EwSelect, UnitInput, ...elementIcons},
+  components: {ZRadioButtons, ZWindow, EwSuggest, EwSelect, UnitInput, ...elementIcons},
   emits: [
     'props-change',
       'form:input:blur'
@@ -181,6 +192,31 @@ export default {
       }
     }
 
+    let fontStyle = {
+      alignOptions: [
+        {
+          label: 'left',
+          icon: 'align-left',
+          value: 'left'
+        },
+        {
+          label: 'center',
+          icon: 'align-center',
+          value: 'center'
+        },
+        {
+          label: 'right',
+          icon: 'align-right',
+          value: 'right'
+        },
+        {
+          label: 'justify',
+          icon: 'align-justify',
+          value: 'justify'
+        }
+      ]
+    }
+
     return {
       isLengthProp,
       isPropType,
@@ -188,7 +224,8 @@ export default {
       removeStyleItem,
       EVENT_NAMES,
       page,
-      store: page.store
+      store: page.store,
+      fontStyle
     }
 
   }
