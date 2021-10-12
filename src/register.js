@@ -8,5 +8,5 @@
 //     })
 // }
 
-import JsonCodeEditor from '@/components/CodeEditor/JsonCodeEditor.vue'
-CustomVueComponent.register(JsonCodeEditor,'JsonCodeEditor')
+// import JsonCodeEditor from '@/components/CodeEditor/JsonCodeEditor.vue'
+// CustomVueComponent.register(JsonCodeEditor,'JsonCodeEditor')
