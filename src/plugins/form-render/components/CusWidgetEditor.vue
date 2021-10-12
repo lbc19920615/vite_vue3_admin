@@ -1,7 +1,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-    {{state.value}}
+<!--    {{state.value}}-->
   <div v-if="state.inited && state.value && state.value.control">
 <!--    <el-input v-model="state.value.control.widget"></el-input>-->
     <el-row align="middle" type="flex" class="a-space-mb-15">
@@ -332,6 +332,14 @@ export default {
       {
         label: '只读',
         value: 'readonly'
+      },
+      {
+        label: '禁用',
+        value: 'disabled'
+      },
+      {
+        label: '隐藏',
+        value: 'hidden'
       },
     ]
 

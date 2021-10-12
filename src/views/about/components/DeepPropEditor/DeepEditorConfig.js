@@ -83,6 +83,24 @@ export default {
                                         }
                                     }
                                 },
+                                styles: {
+                                    type: 'string',
+                                    computedProp: 'ui2_styles',
+                                    ui: {
+                                        styles: [
+                                            ['height', 0],
+                                            ['overflow', 'hidden'],
+                                        ],
+                                        widgetConfig: {
+                                            type: 'textarea',
+                                            disabled: true
+                                            // style: {height: '200px'}
+                                        }
+                                    },
+                                    rules: {
+                                        type: 'any'
+                                    }
+                                },
                                 widgetExt: {
                                     type: 'string',
                                     ui: {
@@ -101,30 +119,13 @@ export default {
                                         label: 'widget格式化'
                                     }
                                 },
-                                styles: {
-                                    type: 'string',
-                                    computedProp: 'ui2_styles',
-                                    ui: {
-                                        styles: [
-                                            ['height', 0],
-                                            ['overflow', 'hidden'],
-                                        ],
-                                        widgetConfig: {
-                                            type: 'textarea',
-                                            disabled: true
-                                            // style: {height: '200px'}
-                                        }
-                                    },
-                                    rules: {
-                                        type: 'any'
-                                    }
-                                }
+
                             }
                         },
                         ui2: {
                             type: 'string',
                             ui: {
-                                label: 'UI配置',
+                                label: '样式配置',
 
                                 widget: 'CusStyle'
                             }

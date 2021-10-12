@@ -14,7 +14,7 @@
 <!--    {{valueConfig}}-->
     <template v-if="store.model.styleObj">
 <!--      {{store.model.styleObj}}-->
-      <el-collapse >
+      <el-collapse :border="false">
         <el-collapse-item title="文字" class="a-space-mb-15">
 <!--          <header><h3>文字</h3></header>-->
           <el-row align="middle" type="flex" class="a-space-mb-15">
@@ -94,68 +94,78 @@
             />
           </el-row>
         </el-collapse-item>
+
+
+        <div title="其他" class="a-space-mb-15">
+
+          <section>
+<!--            <header><h3>其他</h3></header>-->
+            <el-row align="middle" type="flex"  class="a-space-mb-10"
+                    v-for="(styleItem, styleItemIndex) in
+                filterStatic(store.model.styleObj)"
+                    :key="styleItemIndex"
+            >
+              <!--        <h3 class="a-space-pr-10">width</h3>-->
+              <ew-select
+                  size="small"
+                  class="z-style-select" filterable
+                  :options="store.model.options"
+                  @change="onPropKeyChange(styleItemIndex, styleItem)"
+                  v-model="styleItem[0]"></ew-select>
+              <!--        <el-input class="z-style-input"-->
+              <!--                  v-model="store.model.styleObj.width"></el-input>-->
+
+              <z-window  class="a-space-ml-10" v-if="styleItem[0]"
+                         :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/' + styleItem[0]"
+              >
+                <!--          <el-icon>-->
+                <!--            <info-filled />-->
+                <!--          </el-icon>-->
+                <i class="fa fa-book"></i>
+              </z-window>
+
+              <div class="a-space-ml-10" style="display:flex; align-items: center" v-if="styleItem[0]">
+                <unit-input v-if="isLengthProp(styleItem[0])"
+                            v-model="styleItem[1]"
+                            @change="onPropValueChange"
+                ></unit-input>
+                <el-color-picker v-model="styleItem[1]" show-alpha
+                                 v-else-if="isPropType(styleItem[0], 'color')"
+                                 :predefine="predefineColors"
+                                 @change="onPropValueChange"
+                />
+
+                <!--          <el-input    size="small" v-else v-model="styleItem[1]"></el-input>-->
+                <ew-suggest
+                    v-else
+                    size="small"
+                    v-model="styleItem[1]"
+                    @value:change="onPropValueChange"
+                ></ew-suggest>
+              </div>
+              <div class="a-space-ml-10"  style="display:flex; align-items: center">
+                <el-button size="mini" type="danger"
+                           @click="removeStyleItem(store.model.styleObj, styleItem)">
+                  <el-icon>
+                    <Delete></Delete>
+                  </el-icon>
+                </el-button>
+              </div>
+            </el-row>
+          </section>
+          <el-button size="mini"
+                     @click="page.callEvent('add:styleObj', store.model.styleObj)">
+            <el-icon><Plus></Plus></el-icon>
+          </el-button>
+        </div>
+
       </el-collapse>
 
-      <section>
-        <header><h3>其他</h3></header>
-        <el-row align="middle" type="flex"  class="a-space-mb-10"
-                v-for="(styleItem, styleItemIndex) in
-                filterStatic(store.model.styleObj)"
-                :key="styleItemIndex"
-        >
-          <!--        <h3 class="a-space-pr-10">width</h3>-->
-          <ew-select
-              size="small"
-              class="z-style-select" filterable
-              :options="store.model.options"
-              @change="onPropKeyChange(styleItemIndex, styleItem)"
-              v-model="styleItem[0]"></ew-select>
-          <!--        <el-input class="z-style-input"-->
-          <!--                  v-model="store.model.styleObj.width"></el-input>-->
 
-          <z-window  class="a-space-ml-10" v-if="styleItem[0]"
-                     :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/' + styleItem[0]"
-          >
-            <!--          <el-icon>-->
-            <!--            <info-filled />-->
-            <!--          </el-icon>-->
-            <i class="fa fa-book"></i>
-          </z-window>
 
-          <div class="a-space-ml-10" style="display:flex; align-items: center" v-if="styleItem[0]">
-            <unit-input v-if="isLengthProp(styleItem[0])"
-                        v-model="styleItem[1]"
-                        @change="onPropValueChange"
-            ></unit-input>
-            <el-color-picker v-model="styleItem[1]" show-alpha
-                             v-else-if="isPropType(styleItem[0], 'color')"
-                             :predefine="predefineColors"
-                             @change="onPropValueChange"
-            />
 
-            <!--          <el-input    size="small" v-else v-model="styleItem[1]"></el-input>-->
-            <ew-suggest
-                v-else
-                size="small"
-                v-model="styleItem[1]"
-                @value:change="onPropValueChange"
-            ></ew-suggest>
-          </div>
-          <div class="a-space-ml-10"  style="display:flex; align-items: center">
-            <el-button size="mini" type="danger"
-                       @click="removeStyleItem(store.model.styleObj, styleItem)">
-              <el-icon>
-                <Delete></Delete>
-              </el-icon>
-            </el-button>
-          </div>
-        </el-row>
-      </section>
+
     </template>
-    <el-button size="mini"
-               @click="page.callEvent('add:styleObj', store.model.styleObj)">
-      <el-icon><Plus></Plus></el-icon>
-    </el-button>
   </div>
 </template>
 

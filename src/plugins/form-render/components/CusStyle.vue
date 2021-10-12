@@ -17,9 +17,9 @@
 
     <template v-if="state.control">
       <section  class="a-space-mb-10" v-if="state.control.styles">
-        <div class="cus-style__label">样式
-          <el-divider></el-divider>
-        </div>
+<!--        <div class="cus-style__label">样式-->
+<!--          <el-divider></el-divider>-->
+<!--        </div>-->
         <ZStyles
             style="flex: 1"
             :value="state.control.styles" @form:input:blur="onBlur"
