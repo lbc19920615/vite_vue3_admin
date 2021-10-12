@@ -36,7 +36,7 @@
 
     <el-drawer
         title="属性"
-        size="700px"
+        size="900px"
         v-model="renderFormDesigner"
         :lock-scroll="false"
         destroy-on-close
