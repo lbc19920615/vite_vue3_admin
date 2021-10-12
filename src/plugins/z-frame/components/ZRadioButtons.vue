@@ -10,7 +10,8 @@
           :content="option.label"
           placement="top-start"
       >
-      <i class="fa" :class="getIconCls(option)"></i>
+      <i class="fa" v-if="option.icon" :class="getIconCls(option)"></i>
+      <span v-else-if="option.label">{{option.label}}</span>
       </el-tooltip>
     </el-radio-button>
 <!--    <el-radio-button label="Washington"></el-radio-button>-->

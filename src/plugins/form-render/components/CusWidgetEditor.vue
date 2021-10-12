@@ -4,7 +4,22 @@
     {{state.value}}
   <div v-if="state.inited && state.value && state.value.control">
 <!--    <el-input v-model="state.value.control.widget"></el-input>-->
-    <div class="a-space-mb-20">
+    <el-row align="middle" type="flex" class="a-space-mb-15">
+      <div class="a-space-mr-10">描述</div>
+      <el-input v-model="state.value.data.common_desc"
+      @change="onCommonChange" style="width: 350px"
+      ></el-input>
+    </el-row>
+    <el-row align="middle" type="flex" class="a-space-mb-15">
+      <div class="a-space-mr-10">状态</div>
+      <ZRadioButtons
+          size="small"
+          :options="commonOptions"
+          v-model="state.value.data.common_state"
+          @change="onCommonChange"
+      ></ZRadioButtons>
+    </el-row>
+    <div class="a-space-mb-15">
       <ew-suggest v-model="state.value.control.widget"
                   placement="top"
                   :suggest="state.suggest"
@@ -33,10 +48,11 @@ import {getCurrentInstance, resolveComponent, toRaw} from "vue";
 import ZHttpCom from "@/plugins/z-frame/components/ZHttpCom.vue";
 import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusWidgetEditor/createConfig";
 import {useReloadMan} from "@/views/home/hooks";
+import ZRadioButtons from "@/plugins/z-frame/components/ZRadioButtons.vue";
 
 export default {
   name: 'CusWidgetEditor',
-  components: {ZHttpCom, EwSuggest},
+  components: {ZRadioButtons, ZHttpCom, EwSuggest},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -71,6 +87,7 @@ export default {
               obj.control = {}
             }
 
+        console.log(obj.data)
             if (obj.data.widget) {
               obj.control.widget = obj.data.widget
             }
@@ -94,28 +111,33 @@ export default {
     init(props)
 
     function getCUR_COMPONENT_PROPS() {
-      let CUS_EDITOR = state.currentComponent.CUS_EDITOR()
-      return toRaw(
-          CUS_EDITOR.props
-      )
+      if ( state.currentComponent) {
+        let CUS_EDITOR = state.currentComponent.CUS_EDITOR()
+        return toRaw(
+            CUS_EDITOR.props
+        )
+      }
+      return null
     }
 
     function onChange() {
-      let comProps = getCUR_COMPONENT_PROPS()
       let clonedValue = JSON5.parse(JSON5.stringify(state.value))
       // console.log(clonedValue)
       Reflect.deleteProperty(clonedValue, 'control')
 
-      let comPropsKeys = Object.keys(comProps)
-      let ret = ZY.lodash.pick(clonedValue.data.widgetConfig, comPropsKeys)
-      ret = ZY.lodash.pickBy(ret, function (value) {
-        if (typeof value === 'string') {
-          return value
-        }
-        return true
-      });
-      console.log(comProps, clonedValue.data.widgetConfig, ret)
-      clonedValue.data.widgetConfig = ret
+      let comProps = getCUR_COMPONENT_PROPS()
+      if (Array.isArray(comProps)) {
+        let comPropsKeys = Object.keys(comProps)
+        let ret = ZY.lodash.pick(clonedValue.data.widgetConfig, comPropsKeys)
+        ret = ZY.lodash.pickBy(ret, function (value) {
+          if (typeof value === 'string') {
+            return value
+          }
+          return true
+        });
+        // console.log(comProps, clonedValue.data.widgetConfig, ret)
+        clonedValue.data.widgetConfig = ret
+      }
       let str =JSON5.stringify(clonedValue)
       methods.on_change(str)
     }
@@ -140,6 +162,10 @@ export default {
         }
         onChange()
       }, 30)
+    }
+
+    function onCommonChange() {
+      onChange()
     }
 
     function save() {
@@ -298,6 +324,17 @@ export default {
       },
     ]
 
+    let commonOptions = [
+      {
+        label: '普通',
+        value: ''
+      },
+      {
+        label: '只读',
+        value: 'readonly'
+      },
+    ]
+
     return {
       state,
       widgetConfig: props.ui.widgetConfig,
@@ -305,7 +342,9 @@ export default {
       methods,
       resolveConfig,
       onModelChange,
+      onCommonChange,
       onWidgetChange,
+      commonOptions,
       refMan,
       onBlur,
       column,

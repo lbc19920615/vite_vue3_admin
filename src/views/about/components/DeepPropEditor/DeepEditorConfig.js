@@ -67,12 +67,6 @@ export default {
                               label: "UI"
                             },
                             properties: {
-                                widgetFormat: {
-                                    type: 'string',
-                                    ui: {
-                                        label: 'widget格式化'
-                                    }
-                                },
                                 label: {
                                     type: 'string',
                                     ui: {
@@ -100,6 +94,12 @@ export default {
                                             style: {}
                                         }
                                     },
+                                },
+                                widgetFormat: {
+                                    type: 'string',
+                                    ui: {
+                                        label: 'widget格式化'
+                                    }
                                 },
                                 styles: {
                                     type: 'string',
