@@ -19,19 +19,19 @@
 <!--      <el-button @click="save">保存</el-button>-->
 <!--    </el-row>-->
     <el-row class="a-space-mb-10">
-      <div class="cus-ui__label">label</div>
+      <div class="cus-ui__label">标题</div>
       <el-input  style="width: auto; flex: 1"
                 v-model="state.value.data.label" @blur="onBlur"></el-input>
     </el-row>
     <el-row  class="a-space-mb-10">
-      <div class="cus-ui__label">class</div>
+      <div class="cus-ui__label">类</div>
       <ZProps
           style="flex: 1"
           class="cus-ui__class-props" v-model:value="state.value.control.classObj" @form:input:blur="onBlur" @props-change="onClassChange"></ZProps>
     </el-row>
 
     <el-row  class="a-space-mb-10">
-      <div class="cus-ui__label">attrs</div>
+      <div class="cus-ui__label">属性</div>
       <ZProps
           style="flex: 1"
           v-model:value="state.value.control.attrsObj" @form:input:blur="onBlur" @props-change="onAttrsChange"></ZProps>
@@ -39,7 +39,7 @@
 
 
     <el-row  class="a-space-mb-10">
-      <div class="cus-ui__label">styles</div>
+      <div class="cus-ui__label">样式</div>
       <ZStyles
           style="flex: 1"
           :value="state.value.control.stylesObj" @form:input:blur="onBlur"
