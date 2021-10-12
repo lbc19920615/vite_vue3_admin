@@ -61,37 +61,6 @@ export default {
                                 label: '反射模板'
                             }
                         },
-                        ui2: {
-                            type: 'string',
-                            ui: {
-                                label: 'UI配置',
-
-                                widget: 'CusStyle'
-                            }
-                        },
-                        // ui2: {
-                        //     type: 'string',
-                        //     ui: {
-                        //         widget: 'CusUI',
-                        //         label: 'UI编辑',
-                        //     }
-                        // },
-                        // ui_ext: {
-                        //     type: 'string',
-                        //     reflect: 'ui2',
-                        //     reflectTpl: 'A.parseUIObj($VAL)',
-                        //     ui: {
-                        //         // styles: [
-                        //         //     ['height', 0],
-                        //         //     ['overflow', 'hidden'],
-                        //         // ],
-                        //         label: 'UI',
-                        //         widgetConfig: {
-                        //             type: 'textarea',
-                        //             disabled: true,
-                        //         }
-                        //     }
-                        // },
                         ui: {
                             type: 'object',
                             ui: {
@@ -146,6 +115,14 @@ export default {
                                         type: 'any'
                                     }
                                 }
+                            }
+                        },
+                        ui2: {
+                            type: 'string',
+                            ui: {
+                                label: 'UI配置',
+
+                                widget: 'CusStyle'
                             }
                         },
                         rules: {

@@ -14,85 +14,87 @@
 <!--    {{valueConfig}}-->
     <template v-if="store.model.styleObj">
 <!--      {{store.model.styleObj}}-->
-      <section class="a-space-mb-15">
-        <header><h3>文字</h3></header>
-        <el-row align="middle" type="flex" class="a-space-mb-15">
-          <div class="a-space-mr-10">字体
-            <z-window  class="a-space-ml-5"
-                       :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/font-family'"
-            >
-              <i class="fa fa-book"></i>
-            </z-window>
-          </div>
-<!--          {{getStyleObjArrLikeValue('font-family')}}-->
+      <el-collapse >
+        <el-collapse-item title="文字" class="a-space-mb-15">
+<!--          <header><h3>文字</h3></header>-->
+          <el-row align="middle" type="flex" class="a-space-mb-15">
+            <div class="a-space-mr-10">字体
+              <z-window  class="a-space-ml-5"
+                         :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/font-family'"
+              >
+                <i class="fa fa-book"></i>
+              </z-window>
+            </div>
+            <!--          {{getStyleObjArrLikeValue('font-family')}}-->
 
-          <ew-select multiple
-                     style="width: 350px"
-                     :model-value="getStyleObjArrLikeValue('font-family')"
-                     @change="onArrLikeStaticChange('font-family', $event)"
-                     :options="fontStyle.familyOptions"></ew-select>
-        </el-row>
-        <el-row align="middle" type="flex" class="a-space-mb-15">
-          <div class="a-space-mr-10">粗细
-            <z-window  class="a-space-ml-5"
-                       :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight'"
-            >
-              <i class="fa fa-book"></i>
-            </z-window>
-          </div>
-          <ew-select
+            <ew-select multiple
+                       style="width: 350px"
+                       :model-value="getStyleObjArrLikeValue('font-family')"
+                       @change="onArrLikeStaticChange('font-family', $event)"
+                       :options="fontStyle.familyOptions"></ew-select>
+          </el-row>
+          <el-row align="middle" type="flex" class="a-space-mb-15">
+            <div class="a-space-mr-10">粗细
+              <z-window  class="a-space-ml-5"
+                         :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight'"
+              >
+                <i class="fa fa-book"></i>
+              </z-window>
+            </div>
+            <ew-select
 
-                     :model-value="getStyleObjValue('font-weight')"
-                     @change="onStaticChange('font-weight', $event)"
-                     :options="fontStyle.weightOptions"></ew-select>
-        </el-row>
-        <el-row align="middle" type="flex" class="a-space-mb-15">
-          <div class="a-space-mr-10">样式
-            <z-window  class="a-space-ml-5"
-                       :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/font-style'"
-            >
-              <i class="fa fa-book"></i>
-            </z-window>
-          </div>
-          <ew-select
+                :model-value="getStyleObjValue('font-weight')"
+                @change="onStaticChange('font-weight', $event)"
+                :options="fontStyle.weightOptions"></ew-select>
+          </el-row>
+          <el-row align="middle" type="flex" class="a-space-mb-15">
+            <div class="a-space-mr-10">样式
+              <z-window  class="a-space-ml-5"
+                         :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/font-style'"
+              >
+                <i class="fa fa-book"></i>
+              </z-window>
+            </div>
+            <ew-select
 
-              :model-value="getStyleObjValue('font-style')"
-              @change="onStaticChange('font-style', $event)"
-              :options="fontStyle.styleOptions"></ew-select>
-        </el-row>
-        <el-row align="middle" type="flex" class="a-space-mb-15">
-          <div  class="a-space-mr-10">ALIGN
-            <z-window  class="a-space-ml-5"
-                       :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/text-align'"
-            >
-              <i class="fa fa-book"></i>
-            </z-window>
-          </div>
-          <ZRadioButtons
-              size="small"
+                :model-value="getStyleObjValue('font-style')"
+                @change="onStaticChange('font-style', $event)"
+                :options="fontStyle.styleOptions"></ew-select>
+          </el-row>
+          <el-row align="middle" type="flex" class="a-space-mb-15">
+            <div  class="a-space-mr-10">ALIGN
+              <z-window  class="a-space-ml-5"
+                         :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/text-align'"
+              >
+                <i class="fa fa-book"></i>
+              </z-window>
+            </div>
+            <ZRadioButtons
+                size="small"
 
-              :model-value="getStyleObjValue('text-align')"
-              :options="fontStyle.alignOptions"
-              @change="onStaticChange('text-align', $event)"
-          ></ZRadioButtons>
-        </el-row>
-        <el-row align="middle" type="flex" class="a-space-mb-15">
-          <div  class="a-space-mr-10">颜色
-            <z-window  class="a-space-ml-5"
-                       :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/color'"
-            >
-              <i class="fa fa-book"></i>
-            </z-window>
-          </div>
-          <el-color-picker
-              show-alpha
-              :model-value="getStyleObjValue('color')"
-              :options="fontStyle.alignOptions"
-              @change="onStaticChange('color', $event)"
-              :predefine="predefineColors"
-          />
-        </el-row>
-      </section>
+                :model-value="getStyleObjValue('text-align')"
+                :options="fontStyle.alignOptions"
+                @change="onStaticChange('text-align', $event)"
+            ></ZRadioButtons>
+          </el-row>
+          <el-row align="middle" type="flex" class="a-space-mb-15">
+            <div  class="a-space-mr-10">颜色
+              <z-window  class="a-space-ml-5"
+                         :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/color'"
+              >
+                <i class="fa fa-book"></i>
+              </z-window>
+            </div>
+            <el-color-picker
+                show-alpha
+                :model-value="getStyleObjValue('color')"
+                :options="fontStyle.alignOptions"
+                @change="onStaticChange('color', $event)"
+                :predefine="predefineColors"
+            />
+          </el-row>
+        </el-collapse-item>
+      </el-collapse>
 
       <section>
         <header><h3>其他</h3></header>

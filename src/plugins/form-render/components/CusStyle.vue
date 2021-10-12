@@ -14,6 +14,7 @@
 <template>
   <template v-if="inited">
 <!--    {{state}}-->
+
     <template v-if="state.control">
       <section  class="a-space-mb-10" v-if="state.control.styles">
         <div class="cus-style__label">样式
