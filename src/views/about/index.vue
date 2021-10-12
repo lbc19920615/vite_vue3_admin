@@ -87,11 +87,6 @@
             </el-space>
           </template>
           <template v-else-if="scope.key === 'layoutSlotArr'">
-<!--            <z-emoji face="fuck" ></z-emoji>-->
-<!--            <div>-->
-<!--              <img id="previewImg" src="" alt="">-->
-<!--              <ew-math-jax  :latex="formula" :block="true"></ew-math-jax>-->
-<!--            </div>-->
             <el-space   align="middle">
               <h3>片段</h3>
               <el-button size="small" @click="page.callEvent('add:arr:common', scope)">添加{{ scope.label }}</el-button>
@@ -99,7 +94,6 @@
             </el-space>
           </template>
           <template v-else-if="scope.key === 'forms'">
-
             <el-space   align="middle">
               <h3>表单</h3>
               <el-button size="small" @click="page.callEvent('add:forms', scope)">添加{{ scope.label }}</el-button>
@@ -158,12 +152,15 @@
           <template v-if="scope.selfpath === 'props'">
           </template>
           <template v-else-if="scope.selfpath === 'name'">
-            <ZLayoutEditor
-                :ref="layoutRef"
-                :controls="false"
-                :open-panel="false"
-                class="page-layout-editor"
-                @save-layout="onSaveLayout"></ZLayoutEditor>
+            <h3>组件关系</h3>
+            <z-easy-modal>
+              <ZLayoutEditor
+                  :ref="layoutRef"
+                  :controls="false"
+                  :open-panel="false"
+                  class="page-layout-editor"
+                  @save-layout="onSaveLayout"></ZLayoutEditor>
+            </z-easy-modal>
           </template>
           <template v-else>
             <!--            -->
@@ -217,6 +214,7 @@ import CnChar from 'cnchar'
 import 'cnchar-poly'
 import 'cnchar-order'
 import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
+import ZEasyModal from "@/plugins/z-frame/ZEasyModal.vue";
 globalThis.CnChar = CnChar
 
 globalThis.sortCnCharStroke = function (chars = []) {
@@ -255,6 +253,7 @@ export default defineComponent({
     }
   },
   components: {
+    ZEasyModal,
     EwMathJax,
     FormsLayoutSelect,
     ZLayoutEditor,
