@@ -38,12 +38,6 @@ let formDef = {
               }
             },
           },
-          name: {
-            type: 'string',
-            ui: {
-              label: '名称',
-            },
-          },
           props: {
             type: 'string',
             ui: {
@@ -101,6 +95,15 @@ let formDef = {
                 }
               }
             }
+          },
+          name: {
+            type: 'string',
+            ui: {
+              label: '名称',
+              widgetConfig: {
+                readonly: true
+              }
+            },
           },
           ui: {
             type: 'string',
