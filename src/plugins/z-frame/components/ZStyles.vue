@@ -47,6 +47,20 @@
                      :options="fontStyle.weightOptions"></ew-select>
         </el-row>
         <el-row align="middle" type="flex" class="a-space-mb-15">
+          <div class="a-space-mr-10">样式
+            <z-window  class="a-space-ml-5"
+                       :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/font-style'"
+            >
+              <i class="fa fa-book"></i>
+            </z-window>
+          </div>
+          <ew-select
+
+              :model-value="getStyleObjValue('font-style')"
+              @change="onStaticChange('font-style', $event)"
+              :options="fontStyle.styleOptions"></ew-select>
+        </el-row>
+        <el-row align="middle" type="flex" class="a-space-mb-15">
           <div  class="a-space-mr-10">ALIGN
             <z-window  class="a-space-ml-5"
                        :url="'https://developer.mozilla.org/en-US/docs/Web/CSS/text-align'"
@@ -155,7 +169,7 @@ import ZRadioButtons from "@/plugins/z-frame/components/ZRadioButtons.vue";
 
 let LENGTH_PROPS = ['width', 'height']
 let COLOR_PROPS = ['color', 'background-color']
-let STATIC_PROPS = ['text-align', 'font-family', 'font-weight', 'color']
+let STATIC_PROPS = ['text-align', 'font-family', 'font-weight', 'color', 'font-style']
 
 export default {
   name: 'ZStyles',
@@ -244,6 +258,16 @@ export default {
         {
           label: 'bold 粗',
           value: 'bold',
+        },
+      ],
+      styleOptions: [
+        {
+          label: 'normal 正常',
+          value: 'normal',
+        },
+        {
+          label: 'italic 斜',
+          value: 'italic',
         },
       ]
     }
