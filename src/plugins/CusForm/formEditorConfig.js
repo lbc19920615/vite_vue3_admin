@@ -77,7 +77,11 @@ let formDef = {
             type: 'string',
             ui: {
               label: '计算属性',
-              widget: 'JsonCodeEditor',
+              styles: [
+                ['height', 0],
+                ['overflow', 'hidden'],
+              ],
+              // widget: 'JsonCodeEditor',
               widgetConfig: {
                 style: {
                   height: "200px",
@@ -89,7 +93,8 @@ let formDef = {
             type: 'string',
             ui: {
               label: '默认值',
-              widget: 'JsonCodeEditor',
+              // widget: 'JsonCodeEditor',
+              widget: 'CodeJsEditor',
               widgetConfig: {
                 style: {
                   height: "200px",
