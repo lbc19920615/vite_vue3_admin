@@ -281,7 +281,7 @@ export default {
     }
 
     let insertedFun = [
-        'Math'
+        // 'Math'
     ]
 
     if (Array.isArray(widgetConfig.insFun)) {

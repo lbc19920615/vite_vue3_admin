@@ -76,7 +76,17 @@ globalThis.ToolsDocs =  [
 
 @param defaultVal {null} 默认值
 `
-  }
+  },
+  {
+    label: 'ROOT_STATE',
+    value: `### ROOT_STATE
+是一个用于获取app 底层状态的方法
+
+@param path {string} 路径
+
+@param defaultVal {null} 默认值
+`
+  },
 ]
 
 
@@ -86,21 +96,21 @@ const store = {
     toolDocs: ToolsDocs,
     partOptions: [
       {
-        label: 'form',
+        label: 'form 表单',
         value: 'form',
       },
       {
-        label: 'table',
+        label: 'table 表格',
         value: 'table',
       },
       {
-        label: 'form2',
+        label: 'form2 移动',
         value: 'form2',
       },
-      {
-        label: 'aform',
-        value: 'aform',
-      },
+      // {
+      //   label: 'aform',
+      //   value: 'aform',
+      // },
     ],
     propTypes: [
       {
