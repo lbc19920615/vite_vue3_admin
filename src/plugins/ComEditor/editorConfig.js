@@ -150,25 +150,34 @@ export let rowEditorConfig = function (defaultVal = {}) {
             },
             items: {
                 type: 'array',
+                ui: {
+                    label: '子元素'
+                },
                 "items": {
                     "type": "object",
                     "properties": {
                         id: {
                             type: 'string',
                             ui: {
-                                label: 'ID'
+                                label: 'ID',
+                                styles: [
+                                    ['height', 0],
+                                    ['overflow', 'hidden'],
+                                ],
                             },
                         },
                         w: {
                             type: 'string',
                             ui: {
-                                label: 'WIDTH'
+                                label: '长度',
+                                widget: 'unit-input',
                             },
                         },
                         h: {
                             type: 'string',
                             ui: {
-                                label: 'HEIGHT'
+                                label: '高度',
+                                widget: 'unit-input',
                             },
                         },
                     }

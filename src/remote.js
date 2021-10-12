@@ -34,7 +34,7 @@ export async function loadPage(name) {
       script = `
 const { buildFormDep } = globalThis.ZPageBuild;       
 const { extendControl2Page, useAppPageControl, useControl, extendCommonArrEventHandler } = globalThis.Framework;   
-const { useRenderControl } = globalThis.ZPageHooks; 
+const { useRenderControl, useGlobalEasy } = globalThis.ZPageHooks; 
 ` + script
 
       return script

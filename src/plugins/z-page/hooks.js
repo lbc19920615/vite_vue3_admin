@@ -3,6 +3,29 @@ import {VARS_PAGE_MODEL_NAME} from "@/vars";
 import {useRouter} from 'vue-router';
 import {COMMAND, setCommandHandler, setMessageHandler} from "@/channel";
 
+export function useGlobalEasy(page) {
+    class G {
+        static 设置步骤(...args) {
+            if (args.length === 2) {
+                工具.设置步骤({
+                    [args[0]]: args[1]
+                })
+            }
+        }
+        static 数组添加(e) {
+            let {parts, partName, selfpath} = e;
+            parts[partName].arrAppend(selfpath, {
+
+            })
+        }
+        static 数组删除(e) {
+            let {parts, partName, fromPath, indexKey} = e;
+            parts[partName].arrSplice(fromPath, indexKey);
+        }
+    }
+    globalThis.G = G
+}
+
 export function useRenderControl() {
     let router = useRouter()
     let currentRoute = router.currentRoute

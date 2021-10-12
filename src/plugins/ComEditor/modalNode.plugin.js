@@ -15,38 +15,51 @@ export let tabEditorConfig = function (defaultVal = {}) {
                         label: '名称'
                     },
                 },
-                pageRef: {
+                partName: {
                     type: 'string',
                     ui: {
-                        // label: '弹框名'
+                        label: '页面变量名',
                     },
                 },
-                pageVars: {
-                    type: 'array',
-                    items: {
-                        type: "object",
-                        properties: {
-                            name: {
-                                type: 'string',
-                                ui: {
-                                },
-                            },
-                            value: {
-                                type: 'string',
-                                ui: {
-                                },
-                            },
-                        }
-                    },
-                },
+                // pageRef: {
+                //     type: 'string',
+                //     ui: {
+                //         // label: '弹框名'
+                //     },
+                // },
+                // pageVars: {
+                //     type: 'array',
+                //     items: {
+                //         type: "object",
+                //         properties: {
+                //             name: {
+                //                 type: 'string',
+                //                 ui: {
+                //                 },
+                //             },
+                //             value: {
+                //                 type: 'string',
+                //                 ui: {
+                //                 },
+                //             },
+                //         }
+                //     },
+                // },
                 items: {
                     type: 'array',
-                    "items": {
+                    ui: {
+                        label: '子元素'
+                    },
+                    items: {
                         "type": "object",
                         "properties": {
                             id: {
                                 type: 'string',
                                 ui: {
+                                    styles: [
+                                        ['height', 0],
+                                        ['overflow', 'hidden'],
+                                    ],
                                     label: 'ID',
                                     widgetConfig: {
                                         readonly: true
@@ -56,6 +69,9 @@ export let tabEditorConfig = function (defaultVal = {}) {
                             name: {
                                 type: 'string',
                                 ui: {
+                                    widgetConfig: {
+                                        readonly: true
+                                    }
                                 },
                             },
                         }

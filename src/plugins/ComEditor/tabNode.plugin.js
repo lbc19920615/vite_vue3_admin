@@ -17,6 +17,9 @@ export let tabEditorConfig = function (defaultVal = {}) {
                 },
                 items: {
                     type: 'array',
+                    ui: {
+                      label: '子元素'
+                    },
                     "items": {
                         "type": "object",
                         "properties": {
