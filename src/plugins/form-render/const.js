@@ -5,6 +5,10 @@ export let eventSuggests = [
   },
   {
     label: 'MODEL改变',
+    value: 'model:update:all',
+  },
+  {
+    label: 'MODEL部分改变',
     value: 'model:update',
   },
 ]
