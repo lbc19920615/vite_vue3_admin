@@ -70,7 +70,7 @@ export default {
     let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
 
-        console.log('CusUI', newVal, typeof  newVal)
+        // console.log('CusUI', newVal, typeof  newVal)
         if (!newVal) {
           newVal = {
             // classObj: {},

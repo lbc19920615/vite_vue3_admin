@@ -13,8 +13,16 @@
 
 <template>
   <template v-if="inited">
-
-    CusStyle
+    {{state}}
+    <template v-if="state.control">
+      <el-row  class="a-space-mb-10" v-if="state.control.styles">
+        <div class="cus-ui__label">styles</div>
+        <ZStyles
+            style="flex: 1"
+            :value="state.control.styles" @form:input:blur="onBlur"
+            @props-change="onStylesChange"></ZStyles>
+      </el-row>
+    </template>
   </template>
 </template>
 
@@ -23,6 +31,7 @@ import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-rende
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
 import ZProps from "@/plugins/z-frame/components/ZProps.vue";
 import ZStyles from "@/plugins/z-frame/components/ZStyles.vue";
+import {onMounted, watch} from "vue";
 
 export default {
   name: 'CusStyle',
@@ -32,112 +41,32 @@ export default {
   ],
   setup(props, ctx) {
 
-    let {part_key} = props.defs;
+    let widgetConfig = props.ui.widgetConfig
     let obj;
     let JSON5 = ZY.JSON5;
     let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
-      handleValueInit(newVal) {
-
-        console.log('CusStyle', newVal, typeof  newVal)
-        // if (!newVal) {
-        //   newVal = {
-        //     // classObj: {},
-        //     // attrsObj: {},
-        //     control: {},
-        //     data: {}
-        //   }
-        //   return newVal
-        // }
-        // if (newVal) {
-        //   try {
-        //     obj = JSON5.parse(newVal)
-        //     if (!obj.data) {
-        //       obj.data = {}
-        //     }
-        //     if (!obj.control) {
-        //       obj.control = {}
-        //     }
-        //     // delete obj.data.classObj;
-        //
-        //     if (obj.data.attrs) {
-        //       let props = []
-        //       for (let [key, value] of obj.data.attrs) {
-        //         props.push({
-        //           name: key,
-        //           value: value,
-        //         })
-        //       }
-        //       obj.control.attrsObj = {
-        //         props
-        //       }
-        //     }
-        //
-        //     if (obj.data.class) {
-        //       let props = []
-        //       for (let value of obj.data.class) {
-        //         props.push({
-        //           name: value,
-        //           value: value,
-        //         })
-        //       }
-        //       obj.control.classObj  = {
-        //         props
-        //       }
-        //     }
-        //
-        //     obj.control.stylesObj = []
-        //
-        //     if (obj.data.styles) {
-        //       obj.control.stylesObj = obj.data.styles
-        //     }
-        //
-        //     return obj
-        //   } catch (e) {
-        //     // console.log(e)
-        //   }
-        // }
+      handleValueInit(newVal, from) {
+        // console.log(from)
+        // console.log('CusStyle', newVal, typeof  newVal)
         return {}
       }
     })
     let state = data({
-      value: {}
+      value: {},
+      control: {}
     })
-    init(props)
 
     function onChange() {
       let clonedValue = JSON5.parse(JSON5.stringify(state.value))
-      // console.log(clonedValue)
-      Reflect.deleteProperty(clonedValue, 'control')
       let str =JSON5.stringify(clonedValue)
       methods.on_change(str)
     }
 
 
-    function onAttrsChange(e) {
-      // console.log('onAttrsChange', e.props)
-      // state.value.attrsObj = e
-
-      state.value.data.attrs = e.props.filter(v => {
-        return v.name
-      }).map(v => {
-        return [
-            v.name, ZY.defaultStr(v.value, '')
-        ]
-      })
-    }
-
-    function onClassChange(e) {
-      state.value.data.class = e.props.filter(v => {
-        return v.value
-      }).map(v => {
-        return ZY.defaultStr(v.value, '')
-      })
-    }
-
     function onStylesChange(e) {
-      // console.log('onStylesChange', e)
-      // state.value.control.stylesObj = e
-      state.value.data.styles = e
+      console.log('onStylesChange', e)
+      // state.control.styles = e
+      state.value.styles = ZY.JSON5.parse(ZY.JSON5.stringify(e))
       //
       onChange()
     }
@@ -150,13 +79,28 @@ export default {
       onChange()
     }
 
+    // onMounted(() => {
+    //   init(props)
+    // })
+
+    watch(() => props.modelValue, (newVal) => {
+      if (newVal) {
+        try {
+          obj = JSON5.parse(newVal)
+          console.log('watch', newVal, obj)
+          state.control = obj
+        } catch (e) {
+        //
+        }
+      }
+    }, {
+      immediate: true
+    })
     return {
       state,
-      widgetConfig: props.ui.widgetConfig,
+      widgetConfig,
       onChange,
       methods,
-      onAttrsChange,
-      onClassChange,
       onStylesChange,
       onBlur,
       save,

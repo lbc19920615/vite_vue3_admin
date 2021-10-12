@@ -95,6 +95,11 @@ export let provideDxValueTemplateMixin = {
     }
 }
 
+export let CUSOM_RENDER_FROM_TYPES = {
+    watch: 1,
+    init: 2
+}
+
 export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     let instanse = getCurrentInstance()
     let lock = new ZY.Lock(/* optional lock name, should be unique */)
@@ -108,10 +113,7 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     }
     let events = props.ui.events ? props.ui.events : {};
 
-    let FROM_TYPES = {
-        watch: 1,
-        init: 2
-    }
+    let FROM_TYPES = CUSOM_RENDER_FROM_TYPES
 
     async function initValue(newVal, from) {
         if (handleValueInit) {
@@ -122,6 +124,7 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     }
 
     watch(() => props.modelValue, (newVal) => {
+        // console.log('custom render modelValue', newVal)
         if (!lock.isLocked) {
             // model.value = newVal
             initValue(newVal, FROM_TYPES.watch)

@@ -24,6 +24,8 @@
               <i class="fa fa-book"></i>
             </z-window>
           </div>
+<!--          {{getStyleObjArrLikeValue('font-family')}}-->
+
           <ew-select multiple
                      style="width: 350px"
                      :model-value="getStyleObjArrLikeValue('font-family')"
@@ -106,17 +108,22 @@
 
           <div class="a-space-ml-10" style="display:flex; align-items: center" v-if="styleItem[0]">
             <unit-input v-if="isLengthProp(styleItem[0])"
-                        v-model="styleItem[1]"></unit-input>
+                        v-model="styleItem[1]"
+                        @change="onPropValueChange"
+            ></unit-input>
             <el-color-picker v-model="styleItem[1]" show-alpha
                              v-else-if="isPropType(styleItem[0], 'color')"
                              :predefine="predefineColors"
+                             @change="onPropValueChange"
             />
 
             <!--          <el-input    size="small" v-else v-model="styleItem[1]"></el-input>-->
             <ew-suggest
                 v-else
                 size="small"
-                v-model="styleItem[1]"></ew-suggest>
+                v-model="styleItem[1]"
+                @value:change="onPropValueChange"
+            ></ew-suggest>
           </div>
           <div class="a-space-ml-10"  style="display:flex; align-items: center">
             <el-button size="mini" type="danger"
@@ -168,7 +175,6 @@ export default {
     }
   },
   setup(props, ctx) {
-    let locks = true
     let properties =  {
       editor_step: {
         type: String,
@@ -180,6 +186,8 @@ export default {
         type: null
       }
     }
+    let lock = new ZY.Lock(/* optional lock name, should be unique */)
+    let locks = true
     let computed = {}
 
 
@@ -249,7 +257,8 @@ export default {
         })
 
     function onInited({storeControl}) {
-      // console.log('value', props.value)
+      console.log('value', props.value)
+      locks = false
       let styleObj =  Array.isArray(props.value) ? props.value : []
 
 
@@ -274,28 +283,12 @@ export default {
     let { EVENT_NAMES, onChange } = extendCommonArrEventHandler(page)
 
     function dispatchChange() {
-      ctx.emit('props-change', page.store.model.styleObj)
+      lock.lock(() => {
+        ctx.emit('props-change', page.store.model.styleObj)
+      })
     }
 
-    onChange( (type, e) => {
-      // let { parts, partName, selfpath, process } = e
-      // let model = parts[partName].getModel()
-      // let newVal = toRaw(model)
-      // // console.log(type, e, toRaw(model))
-      // ctx.emit('update:value', newVal)
-      // ctx.emit('change', newVal)
-    })
-
     page.setEventHandler({
-      // ['model:update:all'](e) {
-      //   if (!locks) {
-      //     ctx.emit('props-change', e.model)
-      //   }
-      // },
-      // ['form:input:blur'](e) {
-      //   // console.log('sdsdsdsdsdsds', e)
-      //   ctx.emit('form:input:blur', e)
-      // },
       ['add:styleObj'](styleArr) {
         styleArr.push(['', ''])
       }
@@ -323,6 +316,10 @@ export default {
       if (index > -1) {
         arr.splice(index, 1)
       }
+
+      setTimeout(() => {
+        dispatchChange()
+      }, 0)
     }
 
 
@@ -332,6 +329,13 @@ export default {
         styleItem[1] = ''
       }
       // ctx.emit('form:input:blur', '')
+    }
+
+    function onPropValueChange() {
+      console.log('onPropValueChange')
+      setTimeout(() => {
+        dispatchChange()
+      }, 0)
     }
 
     function filterStatic(options = []) {
@@ -361,6 +365,9 @@ export default {
         ])
       }
       // ctx.emit('form:input:blur', '')
+      setTimeout(() => {
+        dispatchChange()
+      }, 0)
     }
 
     function getStyleObjValue(key) {
@@ -380,9 +387,15 @@ export default {
 
     function getStyleObjArrLikeValue(key) {
       let v = getStyleObjValue(key)
-      if (v && v.includes(',')) {
-        return v.split(',')
+      if (v) {
+        if ( v.includes(',')) {
+          return v.split(',')
+        }
+        else {
+          return [v]
+        }
       }
+
       return ''
     }
 
@@ -394,11 +407,19 @@ export default {
         '#909399',
         '#303133'
     ]
+    //
+    // watch(() => page.store.model.styleObj, (newVal) => {
+    //   console.log('styleObj', newVal)
+    //   // if (!lock.isLocked) {
+    //   //   dispatchChange()
+    //   // }
+    // })
+    //
+    // watch(() => props, (newVal) => {
+    //   console.log('sdsdsdsdsdsdsds')
+    // })
 
-    watch(page.store, (newVal) => {
-      // console.log('sdsdsdsdsds', newVal)
-      dispatchChange()
-    })
+
 
     return {
       isLengthProp,
@@ -411,6 +432,7 @@ export default {
       EVENT_NAMES,
       onStaticChange,
       onArrLikeStaticChange,
+      onPropValueChange,
       getStyleObjArrLikeValue,
       page,
       store: page.store,
