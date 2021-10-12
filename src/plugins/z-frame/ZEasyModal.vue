@@ -1,11 +1,23 @@
+<style lang="scss">
+.z-easy-modal {
+  &__content {
+    height: 0;
+    overflow: hidden;
+  }
+}
+</style>
+
 <template>
-  <section>
+  <section class="z-easy-modal">
     <el-button @click="openModal">{{title}}</el-button>
-    <el-dialog width="90vw" v-model="opened">
-      <div>
-        <slot></slot>
-      </div>
-    </el-dialog>
+<!--    <el-dialog width="90vw" v-model="opened">-->
+<!--      <div>-->
+<!--        <slot></slot>-->
+<!--      </div>-->
+<!--    </el-dialog>-->
+    <div class="z-easy-modal__content" :style="getStyle()">
+      <slot></slot>
+    </div>
   </section>
 </template>
 
@@ -25,7 +37,16 @@ export default {
   },
   methods: {
     openModal() {
-      this.opened = true
+      this.opened = !this.opened
+    },
+    getStyle() {
+      if (this.opened ) {
+        return {
+          height: 'auto'
+        }
+      }
+      return {
+      }
     }
   }
 }

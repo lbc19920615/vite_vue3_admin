@@ -528,9 +528,9 @@ export default defineComponent({
         )
       },
       ['add:events'](e) {
-        let { parts, partName, selfpath, process } = e
-        // console.log('add:events', e, model)
+        let { parts, partName, selfpath } = e
         parts[partName].arrAppend(selfpath)
+        // console.log('add:events',  parts[partName])
       },
       ['open:events'](e) {
         currentFromDialog = e
@@ -590,14 +590,14 @@ export default defineComponent({
       },
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e
-        // console.log('page about model:update:all', e)
         if (config.process === page.store.model.textarea_step) {
+          // console.log('page about model:update:all', model)
           cachedPageControlModel = model
         }
       },
-      ['model:update'](e) {
-        let { model, key, newVal, config } = e
-      }
+      // ['model:update'](e) {
+      //   let { model, key, newVal, config } = e
+      // }
     })
 
 
@@ -627,9 +627,10 @@ export default defineComponent({
 
     async function onSaveLayout(e) {
       if (cachedPageControlModel) {
+
         await page.dispatchRoot('SetStoreEvents', cachedPageControlModel)
       }
-      console.log('onSaveLayout', e)
+      console.log('onSaveLayout', cachedPageControlModel, e)
       await ZY_EXT.store.setItem('current-data', e.currentData)
       // sendChannelMessage(COMMAND.RELOAD)
       sendJSON5ChannelMessage({
