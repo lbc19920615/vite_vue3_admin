@@ -257,7 +257,7 @@ export default {
         })
 
     function onInited({storeControl}) {
-      console.log('value', props.value)
+      // console.log('value', props.value)
       locks = false
       let styleObj =  Array.isArray(props.value) ? props.value : []
 
@@ -332,7 +332,7 @@ export default {
     }
 
     function onPropValueChange() {
-      console.log('onPropValueChange')
+      // console.log('onPropValueChange')
       setTimeout(() => {
         dispatchChange()
       }, 0)

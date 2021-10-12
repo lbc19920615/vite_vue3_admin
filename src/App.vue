@@ -57,6 +57,19 @@ export default defineComponent({
       }
       return '{}'
     },
+    get_ui2_styles(styles) {
+      try {
+        let o = ZY.JSON5.parse(styles)
+        // console.log('styles', styles, o)
+        if (Array.isArray(o.styles)) {
+          return o.styles
+          // return ZY.JSON5.stringify(o.styles, null, 2)
+        }
+      } catch (e) {
+      //
+      }
+      return []
+    },
     getRulesFromRulesArr(arr) {
 
       if (Array.isArray(arr)) {

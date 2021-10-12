@@ -87,7 +87,7 @@ export default {
       if (newVal) {
         try {
           obj = JSON5.parse(newVal)
-          console.log('watch', newVal, obj)
+          // console.log('watch', newVal, obj)
           state.control = obj
         } catch (e) {
         //

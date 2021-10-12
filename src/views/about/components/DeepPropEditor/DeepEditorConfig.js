@@ -64,6 +64,7 @@ export default {
                         ui2: {
                             type: 'string',
                             ui: {
+                                label: 'UI配置',
                                 widget: 'CusStyle'
                             }
                         },
@@ -130,6 +131,20 @@ export default {
                                         }
                                     },
                                 },
+                                styles: {
+                                    type: 'string',
+                                    computedProp: 'ui2_styles',
+                                    ui: {
+                                        widgetConfig: {
+                                            type: 'textarea',
+                                            disabled: true
+                                            // style: {height: '200px'}
+                                        }
+                                    },
+                                    rules: {
+                                        type: 'any'
+                                    }
+                                }
                             }
                         },
                         rules: {
@@ -173,9 +188,8 @@ export default {
                 },
                 computed: {
                     // doubled: "MODEL('name', '') + ',s'",
-                    // swidget: `A.getWidgetEditor(MODEL('ui.widget2'), 'widget')`,
-                    // swidget_config: `A.getWidgetExt(A.getWidgetEditor(MODEL('ui.widget2'), 'widgetConfig'), MODEL('ui.widgetExt'))`,
                     srules: `A.getRulesFromRulesArr(MODEL('rulesArr'))`,
+                    ui2_styles: `A.get_ui2_styles(MODEL('ui2'))`
                 }
             }]
         }, args: {src: 'comformscr2.twig'}
