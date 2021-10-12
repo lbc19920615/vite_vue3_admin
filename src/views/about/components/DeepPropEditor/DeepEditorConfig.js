@@ -105,6 +105,10 @@ export default {
                                     type: 'string',
                                     computedProp: 'ui2_styles',
                                     ui: {
+                                        styles: [
+                                            ['height', 0],
+                                            ['overflow', 'hidden'],
+                                        ],
                                         widgetConfig: {
                                             type: 'textarea',
                                             disabled: true
