@@ -13,15 +13,17 @@
 
 <template>
   <template v-if="inited">
-    {{state}}
+<!--    {{state}}-->
     <template v-if="state.control">
-      <el-row  class="a-space-mb-10" v-if="state.control.styles">
-        <div class="cus-ui__label">styles</div>
+      <section  class="a-space-mb-10" v-if="state.control.styles">
+        <div class="cus-style__label">样式
+          <el-divider></el-divider>
+        </div>
         <ZStyles
             style="flex: 1"
             :value="state.control.styles" @form:input:blur="onBlur"
             @props-change="onStylesChange"></ZStyles>
-      </el-row>
+      </section>
     </template>
   </template>
 </template>

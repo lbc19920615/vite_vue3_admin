@@ -48,7 +48,7 @@
             <HttpComponent
                 :defs="allDef"
                 :is="store.model.editor_step"
-                :debug="true"
+                :debug="false"
             >
               <template #object_beforebegin="scope">
                 <h3>{{getArrItemBeforeKey(scope)}}</h3>

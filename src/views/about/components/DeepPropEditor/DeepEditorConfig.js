@@ -65,6 +65,7 @@ export default {
                             type: 'string',
                             ui: {
                                 label: 'UI配置',
+
                                 widget: 'CusStyle'
                             }
                         },
