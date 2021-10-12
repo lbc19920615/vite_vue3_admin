@@ -76,7 +76,7 @@ export default {
                                 label: {
                                     type: 'string',
                                     ui: {
-                                        label: 'LABEL'
+                                        label: '标题'
                                     }
                                 },
                                 widget2: {
@@ -137,7 +137,7 @@ export default {
                                 attrs: [
                                     ['style', 'height: 0; overflow: hidden']
                                 ],
-                                label: 'RULES',
+                                label: '验证规则',
                                 // widget: 'JsonCodeEditor',
                                 // widget: 'CodeJsEditor',
                                 widgetConfig: {
