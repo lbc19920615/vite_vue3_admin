@@ -25,7 +25,19 @@
                   :suggest="state.suggest"
                   :con-width="530"
                   :column="column"
-                  @value:change="onWidgetChange"></ew-suggest>
+                  :no-input="true"
+                  @value:change="onWidgetChange">
+        <template #prepend="scope">
+          <el-row v-if="scope.value" style="flex-wrap: nowrap">
+            <div>{{scope.value}}</div>
+            <z-window  class="a-space-ml-5"
+                       :url="getUrl(scope.value)"
+            >
+              <i class="fa fa-book"></i>
+            </z-window>
+          </el-row>
+        </template>
+      </ew-suggest>
     </div>
 
     <div v-if="state.currentComponent && refMan.showed">
@@ -49,10 +61,11 @@ import ZHttpCom from "@/plugins/z-frame/components/ZHttpCom.vue";
 import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusWidgetEditor/createConfig";
 import {useReloadMan} from "@/views/home/hooks";
 import ZRadioButtons from "@/plugins/z-frame/components/ZRadioButtons.vue";
+import ZWindow from "@/plugins/z-frame/components/ZWindow.vue";
 
 export default {
   name: 'CusWidgetEditor',
-  components: {ZRadioButtons, ZHttpCom, EwSuggest},
+  components: {ZWindow, ZRadioButtons, ZHttpCom, EwSuggest},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -298,13 +311,17 @@ export default {
       }
     }
 
+    function  getDocAddressName(v = '') {
+      return v.replace('Cus', '').toLowerCase()
+    }
+
     let column = [
       {
         prop: 'label',
         width: '250px',
         render(h, props) {
           const scope = props.scope
-          const cusName = scope.row.label.replace('Cus', '').toLowerCase()
+          const cusName = getDocAddressName(scope.row.label)
           let tooltip = resolveComponent('el-tooltip')
           let elLink = resolveComponent('el-link')
           let text = h('span', {}, scope.row.label)
@@ -343,6 +360,11 @@ export default {
       },
     ]
 
+    function getUrl(value) {
+      const cusName = getDocAddressName(value)
+      return `https://element-plus.gitee.io/zh-CN/component/${cusName}.html`
+    }
+
     return {
       state,
       widgetConfig: props.ui.widgetConfig,
@@ -353,6 +375,7 @@ export default {
       onCommonChange,
       onWidgetChange,
       commonOptions,
+      getUrl,
       refMan,
       onBlur,
       column,

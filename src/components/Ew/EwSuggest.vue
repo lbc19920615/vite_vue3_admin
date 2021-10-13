@@ -6,12 +6,27 @@
 .el-form-item__content .el-input-group {
   vertical-align: middle;
 }
+[input-width-none] {
+  .el-input-group {
+    ::v-deep .el-input-group__prepend {
+      background-color: transparent;
+    }
+    width: 0;
+    ::v-deep .el-input__inner {
+      padding: 0 !important;
+      border-right: none;
+    }
+  }
+}
 </style>
 
 <template>
-  <div class="ew-suggest">
+  <div class="ew-suggest" :input-width-none="noInput">
 <!--{{state.value}}-->
     <el-input v-bind="$attrs" v-model="state.value" @blur="onBlur" @input="onInput">
+      <template #prepend>
+        <slot name="prepend" v-bind="{value: state.value}"></slot>
+      </template>
       <template #append>
         <e-popover
             class="cus-suggest__popover"
@@ -51,6 +66,7 @@ export default  {
     teleportTo: String,
     suggest: [],
     column: [],
+    noInput: Boolean,
     placement: {
       type: String,
       default: 'top'
