@@ -54,17 +54,17 @@
                 <h3>{{getArrItemBeforeKey(scope)}}</h3>
               </template>
               <template #array_afterbegin="scope">
-                <el-col>
+                <div>
                    <h3>{{ getArrItemBeforeKey(scope) }}</h3>
                   <el-button type="primary" size="small"
                              @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加</el-button>
-                </el-col>
+                </div>
               </template>
               <template #array_con_beforeend="scope">
-                <el-col>
+                <div>
                   <el-button type="danger" size="small"
                              @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除</el-button>
-                </el-col>
+                </div>
               </template>
             </HttpComponent>
           </template>

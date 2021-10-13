@@ -14,12 +14,8 @@
 <template>
   <template v-if="inited">
 <!--    {{state}}-->
-
     <template v-if="state.control">
       <section  class="a-space-mb-10" v-if="state.control.styles">
-<!--        <div class="cus-style__label">样式-->
-<!--          <el-divider></el-divider>-->
-<!--        </div>-->
         <ZStyles
             style="flex: 1"
             :value="state.control.styles" @form:input:blur="onBlur"
@@ -90,11 +86,13 @@ export default {
       if (newVal) {
         try {
           obj = JSON5.parse(newVal)
-          // console.log('watch', newVal, obj)
           state.control = obj
         } catch (e) {
         //
         }
+      } else {
+        state.control.styles = []
+        console.log('sdsdsds')
       }
     }, {
       immediate: true
