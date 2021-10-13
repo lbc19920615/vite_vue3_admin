@@ -109,7 +109,9 @@ export default {
                                         // widget: 'JsonCodeEditor',
                                         widgetConfig: {
                                             // disabled: true,
-                                            style: {}
+                                            style: {
+                                                height: '150px'
+                                            }
                                         }
                                     },
                                 },
