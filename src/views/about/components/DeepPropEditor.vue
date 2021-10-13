@@ -3,13 +3,17 @@
   overflow: auto;
 }
 .deep-editor-no-modal {
-  .el-overlay {
+ .deep-editor-toggle + .el-overlay {
     pointer-events: none;
     background-color: transparent;
-    > * > .el-dialog {
+    * {
       pointer-events: all;
     }
+    > .el-overlay-dialog {
+      pointer-events: none;
+    }
   }
+
 }
 </style>
 
@@ -19,11 +23,11 @@
 <!--  {{deps}}-->
 <!--  {{rootId}}-->
   <el-row type="flex">
-    <el-button size="small" @click="dialogVisible = true">编辑</el-button>
+    <el-button class="deep-editor-toggle" size="small" @click="dialogVisible = true">编辑</el-button>
     <el-dialog
         v-model="dialogVisible" title="" width="96vw"
     :before-close="onBeforeClose"
-
+class="deep-editor-dialog"
     >
       <AsyncPlumbLayout
           @init="onPlumbLayoutInit"
