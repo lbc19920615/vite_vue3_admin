@@ -26,6 +26,7 @@
                   :con-width="530"
                   :column="column"
                   :no-input="true"
+                  :use-prepend="true"
                   @value:change="onWidgetChange">
         <template #prepend="scope">
           <el-row v-if="scope.value" style="flex-wrap: nowrap">

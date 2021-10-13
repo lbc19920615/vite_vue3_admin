@@ -2,40 +2,40 @@
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
 <!--    {{state.value}}-->
-    <div label="type">
+    <z-cell-item label="type">
       <ew-suggest v-model="state.value.type"
                   @value:change="onChange" :suggest="typeSuggest"></ew-suggest>
-    </div>
-    <div label="message">
+    </z-cell-item>
+    <z-cell-item label="message">
       <el-input v-model="state.value.message"
                 clearable
                 @change="onChange"></el-input>
-    </div>
-    <div label="required">
+    </z-cell-item>
+    <z-cell-item label="required">
       <el-switch v-model="state.value.required" @change="onChange"
                  active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-    </div>
-    <div label="pattern">
+    </z-cell-item>
+    <z-cell-item label="pattern">
       <el-input v-model="state.value.pattern"
                 clearable
                 @change="onChange"></el-input>
-    </div>
-    <div label="max">
+    </z-cell-item>
+    <z-cell-item label="max">
       <el-input-number
           v-model="state.value.max"
           @change="onChange"
           :min="1"
           :max="1000"
       ></el-input-number>
-    </div>
-    <div label="min">
+    </z-cell-item>
+    <z-cell-item label="min">
       <el-input-number
           v-model="state.value.min"
           @change="onChange"
           :min="1"
           :max="1000"
       ></el-input-number>
-    </div>
+    </z-cell-item>
   </template>
 
 </template>

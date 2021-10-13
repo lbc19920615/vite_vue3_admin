@@ -6,7 +6,21 @@
 .el-form-item__content .el-input-group {
   vertical-align: middle;
 }
-[input-width-none] {
+.ew-suggest:not(.input-width-none) {
+  .el-input-group {
+    &.el-input-group--prepend ::v-deep .el-input__inner {
+      border-top-left-radius: var(--el-input-border-radius, var(--el-border-radius-base));
+      border-bottom-left-radius: var(--el-input-border-radius, var(--el-border-radius-base));
+    }
+    ::v-deep .el-input-group__prepend {
+      padding: 0;
+      //border-left: none !important;
+      //border-right: none !important;
+      display: none;
+    }
+  }
+}
+.ew-suggest.input-width-none {
   .el-input-group {
     ::v-deep .el-input-group__prepend {
       background-color: transparent;
@@ -21,10 +35,10 @@
 </style>
 
 <template>
-  <div class="ew-suggest" :input-width-none="noInput">
+  <div class="ew-suggest" :class="{'input-width-none': noInput}">
 <!--{{state.value}}-->
     <el-input v-bind="$attrs" v-model="state.value" @blur="onBlur" @input="onInput">
-      <template #prepend>
+      <template  #prepend>
         <slot name="prepend" v-bind="{value: state.value}"></slot>
       </template>
       <template #append>
@@ -67,6 +81,7 @@ export default  {
     suggest: [],
     column: [],
     noInput: Boolean,
+    usePrepend: Boolean,
     placement: {
       type: String,
       default: 'top'

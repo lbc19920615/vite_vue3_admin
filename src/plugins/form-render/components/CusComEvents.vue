@@ -2,16 +2,16 @@
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
 <!--    {{state.value}}-->
-    <el-form-item label="类型">
+    <z-cell-item label="类型">
       <ew-suggest v-model="state.value.type"
                   @value:change="onChange"
                   :suggest="typeSuggest"></ew-suggest>
-    </el-form-item>
-    <el-form-item label="名称">
+    </z-cell-item>
+    <z-cell-item label="名称">
       <el-input v-model="state.value.eventName"
                 clearable
                 @change="onChange"></el-input>
-    </el-form-item>
+    </z-cell-item>
 
   </template>
 
