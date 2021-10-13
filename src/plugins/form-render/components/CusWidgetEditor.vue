@@ -101,12 +101,10 @@ export default {
               obj.control = {}
             }
 
-        console.log(obj.data)
+        // console.log(obj.data)
             if (obj.data.widget) {
               obj.control.widget = obj.data.widget
             }
-
-
 
             return obj
           } catch (e) {
@@ -136,7 +134,7 @@ export default {
 
     function onChange() {
       let clonedValue = JSON5.parse(JSON5.stringify(state.value))
-      console.log(clonedValue)
+      // console.log(clonedValue)
       Reflect.deleteProperty(clonedValue, 'control')
 
       let base_ret = {}

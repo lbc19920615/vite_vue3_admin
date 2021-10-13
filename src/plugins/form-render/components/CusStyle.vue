@@ -13,11 +13,12 @@
 
 <template>
   <template v-if="inited">
-<!--    {{state}}-->
+    {{state}}
     <template v-if="state.control">
-      <section  class="a-space-mb-10" v-if="state.control.styles">
+      <section  class="a-space-mb-10">
         <ZStyles
             style="flex: 1"
+            @inited="onStylesInited"
             :value="state.control.styles" @form:input:blur="onBlur"
             @props-change="onStylesChange"></ZStyles>
       </section>
@@ -43,16 +44,34 @@ export default {
     let widgetConfig = props.ui.widgetConfig
     let obj;
     let JSON5 = ZY.JSON5;
+    let needInited = false
     let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
       handleValueInit(newVal, from) {
         // console.log(from)
         // console.log('CusStyle', newVal, typeof  newVal)
+        if (newVal) {
+          try {
+            obj = JSON5.parse(newVal)
+            state.control = obj
+          } catch (e) {
+            //
+          }
+        } else {
+          state.control.styles = []
+          // console.log('sdsdsds')
+        }
+        if (styleInitData) {
+          // styleInitData(state.control.styles)
+        } else {
+          // needInited = true
+        }
         return {}
       }
     })
     let state = data({
       value: {},
-      control: {}
+      control: {},
+      chushi: false
     })
 
     function onChange() {
@@ -63,11 +82,16 @@ export default {
 
 
     function onStylesChange(e) {
-      console.log('onStylesChange', e)
+      // console.log('onStylesChange', e)
       // state.control.styles = e
       state.value.styles = ZY.JSON5.parse(ZY.JSON5.stringify(e))
       //
       onChange()
+    }
+
+    let styleInitData = null
+    function onStylesInited({initData}) {
+      styleInitData = initData
     }
 
     function save() {
@@ -78,30 +102,23 @@ export default {
       onChange()
     }
 
-    // onMounted(() => {
-    //   init(props)
-    // })
+    onMounted(() => {
+      // init(props)
+    })
 
     watch(() => props.modelValue, (newVal) => {
-      if (newVal) {
-        try {
-          obj = JSON5.parse(newVal)
-          state.control = obj
-        } catch (e) {
-        //
-        }
-      } else {
-        state.control.styles = []
-        console.log('sdsdsds')
-      }
+
     }, {
-      immediate: true
+      // immediate: true
     })
+
+
     return {
       state,
       widgetConfig,
       onChange,
       methods,
+      onStylesInited,
       onStylesChange,
       onBlur,
       save,

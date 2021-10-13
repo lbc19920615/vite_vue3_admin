@@ -261,7 +261,10 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
   }
 
   function setData(v) {
-    storeControl.set(v)
+    // console.log(storeControl)
+    if (storeControl) {
+      storeControl.set(v)
+    }
   }
 
   function setEventHandler(_eventHandler) {

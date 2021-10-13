@@ -98,6 +98,7 @@
         <div title="其他" class="a-space-mb-15">
           <section>
 <!--            <header><h3>其他</h3></header>-->
+<!--            {{store.model.styleObj}}-->
             <el-row align="middle" type="flex"  class="a-space-mb-10"
                     v-for="(styleItem, styleItemIndex) in
                 filterStatic(store.model.styleObj)"
@@ -290,22 +291,34 @@ export default {
           return !STATIC_PROPS.includes(v)
         })
 
+    function initData(arr = []) {
+      if (page && page.setData) {
+        let styleObj =  Array.isArray(arr) ? arr : []
+        // console.log(styleObj)
+        page.setData({
+          styleObj: styleObj,
+          options:
+              keys
+                  .map(v => {
+                    return {
+                      label: v,
+                      value: v
+                    }
+                  })
+        })
+        setTimeout(() => {
+          locks = false
+        }, 150)
+      }
+    }
+
     function onInited({storeControl}) {
-      // console.log('value', props.value)
-      locks = false
-      let styleObj =  Array.isArray(props.value) ? props.value : []
-
-
-      storeControl.set({
-        styleObj: styleObj,
-        options:
-            keys
-                .map(v => {
-                  return {
-                    label: v,
-                    value: v
-                  }
-                })
+      // console.log('zstyles', props.value)
+      if (locks) {
+        initData(props.value)
+      }
+      ctx.emit('inited', {
+        initData
       })
     }
     let page = useControl({properties, computed}, {
@@ -449,9 +462,19 @@ export default {
     //   // }
     // })
     //
-    // watch(() => props, (newVal) => {
-    //   console.log('sdsdsdsdsdsdsds')
-    // })
+    watch(() => props.value, (newVal) => {
+      // console.log('sdsdsdsdsdsdsds', locks, newVal)
+      // initData(newVal)
+      // if (typeof newVal === 'undefined') {
+      //   // console.log(initData, newVal, page)
+      // }
+      // console.log(initData, newVal, page)
+      if (locks) {
+        initData(newVal)
+      }
+    }, {
+      // immediate: true
+    })
 
 
 
