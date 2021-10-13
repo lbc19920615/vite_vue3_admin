@@ -137,7 +137,7 @@
           </el-space>
         </template>
         <template #form_beforebegin="scope">
-          <div class="mao-bo-li" style="position: sticky; top: 0; z-index: 121212121; padding: var(--z-size-10) var(--z-size-10)">
+          <div class="mao-bo-li" style="position: sticky; top: 0; z-index: 121; padding: var(--z-size-10) var(--z-size-10)">
             <el-space>
               <el-button type="primary" @click="page.callEvent('call:save', scope)">保存</el-button>
               <el-button type="primary" @click="page.callEvent('call:save:file', scope)">保存文件</el-button>

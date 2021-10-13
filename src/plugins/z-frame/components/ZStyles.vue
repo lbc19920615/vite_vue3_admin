@@ -95,9 +95,7 @@
           </el-row>
         </el-collapse-item>
 
-
         <div title="其他" class="a-space-mb-15">
-
           <section>
 <!--            <header><h3>其他</h3></header>-->
             <el-row align="middle" type="flex"  class="a-space-mb-10"
@@ -108,7 +106,7 @@
               <!--        <h3 class="a-space-pr-10">width</h3>-->
               <ew-select
                   size="small"
-                  class="z-style-select" filterable
+                  class="z-style-select" filterable  allow-create
                   :options="store.model.options"
                   @change="onPropKeyChange(styleItemIndex, styleItem)"
                   v-model="styleItem[0]"></ew-select>

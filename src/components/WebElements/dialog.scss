@@ -69,9 +69,11 @@ $com: ".dialog";
   //display: none;
   //transition: opacity .5s ease, z-index .5s ease 1s;
   opacity: 0;
-  overflow: auto;
+  overflow: hidden;
   &-body {
     padding: var(--dialog-body-padding);
+    height: 80vh;
+    overflow: auto;
   }
 }
 
@@ -88,6 +90,8 @@ $com: ".dialog";
   position: relative;
   top: 0;
   z-index: 11;
+  pointer-events: all;
+  box-shadow: 0 0 10px #d5d5d5;
 }
 
 .dialog--opened {
@@ -106,6 +110,11 @@ $com: ".dialog";
   top: var(--dialog-inner-top);
   animation: upToDown 1s;
   padding: var(--dialog-inner-padding);
+}
+
+.dialog--no-modal {
+  background-color: transparent;
+  pointer-events: none;
 }
 
 @include button-reset($com + '-close')

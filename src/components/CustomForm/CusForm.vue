@@ -12,7 +12,7 @@
               size="small"
                @click="openDialog">打开编辑</el-button>
     <CustomElement :is="useDrag ? 'my-vue-dialog' : 'div'" :name="dialogName"
-                   :params="{sstyle: 'width: 80vw; min-width: 720px;'}"
+                   :params="{sstyle: 'width: 80vw; min-width: 720px;', modal: false}"
     @closed="onClosed"
     >
       <template #default>
