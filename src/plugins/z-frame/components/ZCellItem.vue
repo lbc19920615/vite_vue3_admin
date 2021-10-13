@@ -1,9 +1,14 @@
 <style lang="scss">
 .z-cell-item {
+  &.has-label {
+    .z-cell-item__label {
+      width: var(--z-cell-item-label-width, 100px);
+
+      padding-right: var(--z-cell-item-padding-right, 10px);
+    }
+  }
   &__label {
-    width: var(--z-cell-item-label-width, 100px);
     text-align: var(--z-cell-item-text-align, right);
-    padding-right: var(--z-cell-item-padding-right, 10px);
   }
   &__content {
     flex: 1;
@@ -15,7 +20,7 @@
 </style>
 
 <template>
-  <el-row class="z-cell-item" type="flex">
+  <el-row class="z-cell-item" :class="{'has-label': label}" type="flex">
     <div class="z-cell-item__label">{{label}}</div>
     <div class="z-cell-item__content"><slot></slot></div>
   </el-row>

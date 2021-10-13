@@ -1,9 +1,9 @@
 <template>
   <div class="simple-list">
 <!--    {{state}}-->
-    <el-form-item>
+    <z-cell-item>
       <el-input v-model="state.search" @input="handleSearch"></el-input>
-    </el-form-item>
+    </z-cell-item>
     <div class="simple-list-con"
          :style="conStyle"
          :class="conClass">
