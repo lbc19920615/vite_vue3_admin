@@ -136,7 +136,7 @@ export default {
                             computedProp: 'srules',
                             ui: {
                                 attrs: [
-                                    ['style', 'height: 0; overflow: hidden']
+                                    // ['style', 'height: 0; overflow: hidden']
                                 ],
                                 label: '验证规则',
                                 // widget: 'JsonCodeEditor',

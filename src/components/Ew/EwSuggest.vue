@@ -53,7 +53,7 @@
           <template #reference>
             <el-button class="cus-suggest__button" @click="setRefMan(true)">选择</el-button>
           </template>
-          <div  style="min-height: 200px;">
+          <div  style="min-height: 200px; max-height: 400px; overflow:auto">
             <SimpleList v-if="refMan.showed"
                         con-class="ew-suggest-list-con"
                         :column="column"
