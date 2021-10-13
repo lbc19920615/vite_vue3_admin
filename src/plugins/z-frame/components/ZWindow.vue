@@ -5,9 +5,10 @@
 </template>
 
 <script>
-import {getCurrentInstance, reactive} from "vue";
+import {reactive} from "vue";
 
 export default {
+  name: 'ZWindow',
   props: {
     url: String
   },

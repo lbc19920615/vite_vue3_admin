@@ -347,11 +347,11 @@ export default {
           const scope = props.scope
           const cusName = getDocAddressName(scope.row.label)
           let tooltip = resolveComponent('el-tooltip')
-          let elLink = resolveComponent('el-link')
+          let elLink = resolveComponent('z-window')
           let text = h('span', {}, scope.row.label)
           let icon = h('i', {class: 'el-icon-info a-space-ml-10'})
           let link = h(elLink, {
-            href: `https://element-plus.gitee.io/zh-CN/component/${cusName}.html`,
+            url: `https://element-plus.gitee.io/zh-CN/component/${cusName}.html`,
             type: 'primary',
             class: 'a-space-ml-10',
             target: '_blank'
