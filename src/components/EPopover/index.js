@@ -1,7 +1,7 @@
 import { ref, computed, watch, defineComponent, toDisplayString, renderSlot, createTextVNode, createCommentVNode, h, Fragment, withDirectives, Teleport } from 'vue';
 import { ClickOutside } from 'element-plus/es/directives';
 import ElPopper, { usePopper, renderPopper, Effect, renderArrow, renderTrigger, popperDefaultProps } from 'element-plus/es/components/popper';
-import { warn } from 'element-plus/es/utils/error';
+import { debugWarn } from 'element-plus/es/utils/error';
 import { renderIf, PatchFlags } from 'element-plus/es/utils/vnode';
 import { isString } from 'element-plus/es/utils/util';
 import PopupManager from 'element-plus/es/utils/popup-manager';
@@ -112,7 +112,7 @@ var script = defineComponent({
   emits,
   setup(props, ctx) {
     if (process.env.NODE_ENV !== "production" && props.visible && !ctx.slots.reference) {
-      warn(NAME, `
+      debugWarn(NAME, `
         You cannot init popover without given reference
       `);
     }

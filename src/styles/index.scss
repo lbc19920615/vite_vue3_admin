@@ -138,4 +138,19 @@ a:hover {
 .el-date-editor .el-range-separator{padding: 0 !important;width: auto !important;}
 
 
+.el-dialog {
+  //margin: auto !important;
+  max-width: 90vw !important;
+  transform: translateY(10%);
+  .el-dialog__header {
+    padding-bottom: 30px;
+  }
+  .el-dialog__body {
+    max-height: 90vh;
+    overflow: auto;
+    position: relative;
+    padding-top: 0;
+  }
+}
+
 
