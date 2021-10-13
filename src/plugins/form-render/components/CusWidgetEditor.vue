@@ -135,8 +135,18 @@ export default {
 
     function onChange() {
       let clonedValue = JSON5.parse(JSON5.stringify(state.value))
-      // console.log(clonedValue)
+      console.log(clonedValue)
       Reflect.deleteProperty(clonedValue, 'control')
+
+      let base_ret = {}
+      ZY.lodash.each(clonedValue.data, function (item, key) {
+        if (key.startsWith('common_')) {
+          base_ret[key] = item
+        }
+      })
+
+      // console.log('base_ret', base_ret)
+      clonedValue.data.widgetConfig = Object.assign(clonedValue.data.widgetConfig, base_ret)
 
       let comProps = getCUR_COMPONENT_PROPS()
       if (Array.isArray(comProps)) {
@@ -148,9 +158,11 @@ export default {
           }
           return true
         });
-        // console.log(comProps, clonedValue.data.widgetConfig, ret)
-        clonedValue.data.widgetConfig = ret
+
+        clonedValue.data.widgetConfig = Object.assign(clonedValue.data.widgetConfig, ret)
       }
+
+      console.log(comProps, clonedValue.data.widgetConfig)
       let str =JSON5.stringify(clonedValue)
       methods.on_change(str)
     }

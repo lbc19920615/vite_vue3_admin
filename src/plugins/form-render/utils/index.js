@@ -113,6 +113,12 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     }
     let events = props.ui.events ? props.ui.events : {};
 
+    let parsedWidgetConfig = props?.ui?.widgetConfig ?? {}
+    // console.log(parsedWidgetConfig)
+    if (parsedWidgetConfig.common_state) {
+        parsedWidgetConfig[parsedWidgetConfig.common_state] = parsedWidgetConfig.common_state
+    }
+
     let FROM_TYPES = CUSOM_RENDER_FROM_TYPES
 
     async function initValue(newVal, from) {
@@ -204,6 +210,7 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     return {
         data,
         FROM_TYPES,
+        parsedWidgetConfig,
         instanse,
         onJSONChange,
         init,

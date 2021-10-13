@@ -1,6 +1,6 @@
 <template>
   <template v-if="inited">
-<!--    {{widgetConfig}}-->
+<!--    {{parsedWidgetConfig}}-->
     <el-select
         v-model="state.value"
         v-on="listeners"
@@ -45,13 +45,14 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods, listeners, init } = defineCustomRender(props, ctx)
+    let { data, methods, listeners, init, parsedWidgetConfig } = defineCustomRender(props, ctx)
     let state = data()
     init(props)
 
     return {
       state,
       widgetConfig: props.ui.widgetConfig,
+      parsedWidgetConfig,
       methods,
       listeners,
     }
