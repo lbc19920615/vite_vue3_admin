@@ -2,7 +2,7 @@
   <template v-if="inited">
 <!--        {{state}}-->
     <DeepPropEditor
-
+        :modal="false"
         v-model:posMap="state.posMap"
         v-model:deps="state.deps"
         v-model:links="state.links"

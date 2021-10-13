@@ -1,11 +1,20 @@
-<style>
+<style lang="scss">
 .deep-editor .el-drawer__body {
   overflow: auto;
+}
+.deep-editor-no-modal {
+  .el-overlay {
+    pointer-events: none;
+    background-color: transparent;
+    > * > .el-dialog {
+      pointer-events: all;
+    }
+  }
 }
 </style>
 
 <template>
-<div class="deep-editor">
+<div class="deep-editor" :class="{'deep-editor-no-modal': !modal}">
   <div style="opacity: 0; font-size: 0; line-height: 0;">{{store.model}}</div>
 <!--  {{deps}}-->
 <!--  {{rootId}}-->
@@ -14,6 +23,7 @@
     <el-dialog
         v-model="dialogVisible" title="" width="96vw"
     :before-close="onBeforeClose"
+
     >
       <AsyncPlumbLayout
           @init="onPlumbLayoutInit"
@@ -228,6 +238,10 @@ export default {
     rootId: {
       type: String,
       default: 'i0'
+    },
+    modal: {
+      type: Boolean,
+      default: true,
     }
   },
   mixins: [
