@@ -63,6 +63,9 @@ import 'element-plus/theme-chalk/src/index.scss';
 
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 
+import 'xy-ui/components/xy-text';
+import 'xy-ui/components/xy-tips';
+
 import '@/components/WebElements/index'
 
 // vant

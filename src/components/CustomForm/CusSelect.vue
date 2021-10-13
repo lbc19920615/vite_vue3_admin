@@ -41,7 +41,8 @@ export default {
           type: String,
           ui: {
             label: '枚举',
-            notice: '枚举可以使用的方法',
+            notice: `枚举可以使用的方法
+<xy-tips tips="some tips" >提示</xy-tips>`,
             widget: 'CusInsert',
             widgetConfig: {
               // enums: "[]",

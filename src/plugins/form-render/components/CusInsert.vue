@@ -222,10 +222,11 @@
        </div>
         <div> 函数：
           <template v-for="item in insertedFun">
-            <el-tooltip placement="top">
-              <template #content><div v-html="getFunDOC(item)"></div></template>
-              <el-button @click="insertFun(item)"><span v-html="item"></span></el-button>
-            </el-tooltip>
+            <el-popover trigger="hover" width="450" placement="top">
+<!--              <template #content><div v-html="getFunDOC(item)"></div></template>-->
+              <div v-html="getFunDOC(item)"></div>
+              <template #reference><el-button @click="insertFun(item)"><span v-html="item"></span></el-button></template>
+            </el-popover>
           </template>
         </div>
 
@@ -249,7 +250,6 @@
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
-import 'xy-ui/components/xy-text';
 import {nextTick, onBeforeUnmount, onMounted, toRaw, watch, watchEffect} from "vue";
 import {Edit} from "@element-plus/icons";
 

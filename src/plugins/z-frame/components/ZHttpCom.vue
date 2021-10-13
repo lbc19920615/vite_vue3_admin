@@ -10,7 +10,7 @@
         :is="store.model.editor_step"
     >
       <template #prop_label_beforeend="scope">
-        <z-tooltip :tooltip="scope.config.ui ? scope.config.ui.notice : ''"></z-tooltip>
+        <z-tooltip trigger="click" :tooltip="scope.config.ui ? scope.config.ui.notice : ''"></z-tooltip>
       </template>
       <template #array_con_afterbegin="scope">
         <el-divider></el-divider>

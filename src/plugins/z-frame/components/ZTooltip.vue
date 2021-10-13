@@ -1,11 +1,12 @@
 <template>
-  <el-tooltip
+  <el-popover
       effect="dark"
       placement="top-start"
+      v-bind="$attrs"
   >
-    <template #content><div v-html="state.marked"></div></template>
-    <el-icon><InfoFilled></InfoFilled></el-icon>
-  </el-tooltip>
+    <div v-html="state.marked"></div>
+    <template #reference><el-icon><InfoFilled></InfoFilled></el-icon></template>
+  </el-popover>
 </template>
 
 <script>
