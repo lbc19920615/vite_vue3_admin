@@ -272,8 +272,49 @@ export default {
 
     let widgetConfig =  props.ui.widgetConfig
 
+    let codes = [
+      'a',
+      'b',
+      'c',
+      'd',
+      'e',
+      'f',
+      'g',
+      'h',
+      'i',
+      'j',
+      'k',
+      'l',
+      'm',
+      'n',
+      'o',
+      'p',
+      'q',
+      'r',
+      's',
+      't',
+      'u',
+      'v',
+      'w',
+      'x',
+      'y',
+      'z',
+    ]
+
+    codes = codes.concat(
+        codes.map(v => {
+          return v.toUpperCase()
+        })
+    )
+
     let insertedText = [
-        '+', '-', '*', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '[', ']', '.'
+        '+', '-', '*', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '[', ']', '.',
+        '_',
+      '(',
+      ')',
+      ',',
+      '\'',
+ ...codes
     ]
 
     if (Array.isArray(widgetConfig.insText)) {
@@ -357,7 +398,8 @@ export default {
       // console.log(clonedValue)
       // clonedValue = toRaw(state.control)
       // Reflect.deleteProperty(clonedValue, 'control')
-      clonedValue.textContent = document.querySelector(`#${hid} [content]`).textContent
+      let content = document.querySelector(`#${hid} [content]`)?.textContent ?? ''
+      clonedValue.textContent = content.trim()
       let str =JSON5.stringify(clonedValue)
       methods.on_change(str)
     }
@@ -761,7 +803,7 @@ export default {
       let finded = toolDocs.find(v => v.label === funName)
 
       if (finded) {
-        return ZY_EXT.marked(finded.value)
+        return ZY_EXT.marked(finded.value ?? '')
       }
 
       return '空'

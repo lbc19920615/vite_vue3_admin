@@ -70,6 +70,17 @@ export default defineComponent({
       }
       return []
     },
+    getCusInsertContent(str = '') {
+      // console.log('getCusInsertContent', str)
+      try {
+        let o = ZY.JSON5.parse(str)
+        // console.log(o)
+        return o?.textContent ?? ''
+      } catch (e) {
+        //
+      }
+      return ''
+    },
     getRulesFromRulesArr(arr) {
 
       if (Array.isArray(arr)) {

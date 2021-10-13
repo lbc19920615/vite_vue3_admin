@@ -132,6 +132,16 @@ export default {
       return null
     }
 
+    function getCUR_COMPONENT_COMPUTED() {
+      if ( state.currentComponent) {
+        let CUS_EDITOR = state.currentComponent.CUS_EDITOR()
+        return toRaw(
+            CUS_EDITOR.computed
+        )
+      }
+      return {}
+    }
+
     function onChange() {
       let clonedValue = JSON5.parse(JSON5.stringify(state.value))
       // console.log(clonedValue)
@@ -161,7 +171,7 @@ export default {
         clonedValue.data.widgetConfig = Object.assign(clonedValue.data.widgetConfig, ret)
       }
 
-      console.log(comProps, clonedValue.data.widgetConfig)
+      // console.log(comProps, clonedValue.data.widgetConfig)
       let str =JSON5.stringify(clonedValue)
       methods.on_change(str)
     }
@@ -246,6 +256,7 @@ export default {
     async function resolveConfig() {
       // console.log(state.currentComponent)
       let comProps = getCUR_COMPONENT_PROPS()
+      let computed = getCUR_COMPONENT_COMPUTED()
       properties = {
 
       }
@@ -293,10 +304,12 @@ export default {
             ['label-width', '100px']
           ],
         },
-        properties
+        properties,
       }
       return {
-        default: createCusWidgetEditorConfig(formDef)
+        default: createCusWidgetEditorConfig(formDef,
+            computed
+      )
       }
     }
 
