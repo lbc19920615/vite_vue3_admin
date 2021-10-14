@@ -37,12 +37,19 @@ class="deep-editor-dialog"
           @edit-dep="onEditDep"
           @save-data="onSaveDep"
           :style="{height}"
+          :custom-label="true"
       >
         <template #actions="scope">
           <el-button size="mini"
                      style="padding: 6px  10px"
                      type="primary"
                      @click="inspect(scope)"><el-icon><Coffee></Coffee></el-icon></el-button>
+        </template>
+        <template #label="scope">
+          <el-popover    trigger="hover">
+            <div v-html="getContent(scope.data)"></div>
+            <template #reference><el-button style="padding: 0; border: none;"><z-text :ellipsisLength="10" :value="scope.key"></z-text></el-button></template>
+          </el-popover>
         </template>
       </AsyncPlumbLayout>
     </el-dialog>
@@ -232,7 +239,7 @@ let plumbLayoutMixin = {
 
 export default {
   name: "DeepPropEditor",
-  components: {AsyncPlumbLayout, Coffee},
+  components: { AsyncPlumbLayout, Coffee},
   props: {
     serviceName: String,
     height: {
@@ -376,6 +383,17 @@ export default {
       })
     }
 
+    function getContent(v = '') {
+      try {
+        let o = ZY.JSON5.parse(v)
+        console.log('getContent', o)
+        return o?.ui?.label ?? ''
+      } catch (e) {
+      //
+      }
+      return ''
+    }
+
     return {
       loadStepByContent,
       onBeforeClose,
@@ -384,6 +402,7 @@ export default {
       store: page.store,
       filter: page.filter,
       EVENT_NAMES,
+      getContent,
       allDef: page.defMap,
       getArrItemBeforeKey,
       page,

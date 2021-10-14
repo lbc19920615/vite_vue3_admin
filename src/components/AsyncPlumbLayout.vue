@@ -49,9 +49,12 @@ $sel: "." + $tag;
             <div :id="item.id" :data-pid="dep.id" class="item content-item">
 <!--              {{item.id}}-->
               <div class="a-space-mr-10">
-                <el-input v-if="dep.type !== 'array'" size="mini"
-                          v-model="item.key" placeholder="请填写key"></el-input>
-                <div v-else>{{item.key}}</div>
+                <template v-if="customLabel"><slot name="label" v-bind="item"></slot></template>
+                <template v-else>
+                  <el-input v-if="dep.type !== 'array'" size="mini"
+                            v-model="item.key" placeholder="请填写key"></el-input>
+                  <div v-else>{{item.key}}</div>
+                </template>
               </div>
               <div class="a-space-mr-10">
                 <el-input  size="mini"
@@ -112,7 +115,8 @@ export default {
       default() {
         return function () {}
       }
-    }
+    },
+    customLabel: Boolean
   },
   data() {
     return {
