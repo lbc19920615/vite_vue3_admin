@@ -36,6 +36,26 @@ export default {
             },
             notice: '是否可以清除'
           }
+        },
+        filterable: {
+          type: Boolean,
+          ui: {
+            label: '是否过滤',
+            widgetConfig:  {
+              ext: 'booleanWithClearable'
+            },
+            notice: '是否可以过滤'
+          }
+        },
+        multiple: {
+          type: Boolean,
+          ui: {
+            label: '是否多选',
+            widgetConfig:  {
+              ext: 'booleanWithClearable'
+            },
+            notice: '是否可以多选'
+          }
         }
       },
       computed: {
