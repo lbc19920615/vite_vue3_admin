@@ -9,6 +9,13 @@
   font-weight: bold;
   font-size: 18px;
 }
+.cus-ui__class {
+  .z-form__prop:first-child {
+    height: 0;
+    width: 0;
+    opacity: 0;
+  }
+}
 </style>
 
 <template>
@@ -23,7 +30,7 @@
       <el-input  style="width: auto; flex: 1"
                 v-model="state.value.data.label" @blur="onBlur"></el-input>
     </el-row>
-    <el-row  class="a-space-mb-10">
+    <el-row  class="a-space-mb-10 cus-ui__class">
       <div class="cus-ui__label">类</div>
       <ZProps
           style="flex: 1"
