@@ -25,13 +25,54 @@ export default {
   CUS_EDITOR: function () {
     return {
       props: {
+        // enums: {
+        //   type: String,
+        //   ui: {
+        //     label: '枚举',
+        //     notice: '枚举可以使用的方法 [sdsd](sdsds)'
+        //   }
+        // }
         enums: {
           type: String,
           ui: {
             label: '枚举',
-            notice: '枚举可以使用的方法 [sdsd](sdsds)'
+            notice: '是否可以清除',
+            styles: [
+              ['height', 0],
+              ['overflow', 'hidden'],
+            ],
+          },
+          computedProp: 'enums_content'
+        },
+        enums2: {
+          type: String,
+          ui: {
+            label: '枚举',
+            notice: `枚举可以使用的方法
+<xy-tips tips="some tips" >提示</xy-tips>`,
+            widget: 'CusInsert',
+            widgetConfig: {
+              // enums: "[]",
+              insFun: [
+                'MODEL',
+                'ROOT_STATE',
+              ]
+            }
+          }
+        },
+        clearable: {
+          type: Boolean,
+          ui: {
+            label: '是否清除',
+            widgetConfig:  {
+              ext: 'booleanWithClearable'
+            },
+            notice: '是否可以清除'
           }
         }
+      },
+      computed: {
+        enums_content: `A.getCusInsertContent(MODEL('enums2'))`
       }
     }
   },

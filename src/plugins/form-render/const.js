@@ -26,3 +26,25 @@ export let pageNames = [
     value: 'page1',
   },
 ]
+
+export let radios = [
+  {
+    label: 'radio1',
+    value: 'radio1',
+  },
+  {
+    label: 'radio2',
+    value: 'radio2',
+  },
+]
+
+export let checkboxes = [
+  {
+    label: 'checkbox1',
+    value: 'checkbox1',
+  },
+  {
+    label: 'checkbox2',
+    value: 'checkbox2',
+  },
+]
