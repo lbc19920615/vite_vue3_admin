@@ -146,8 +146,21 @@ const store = {
     // processSteps,
     // eventSuggests,
   }),
-  mutations: {
-
+  getters: {
+    options (state) {
+      return (name = 'name') => {
+        return [
+          {
+            label: name + '1',
+            value: name + '1',
+          },
+          {
+            label: name + '2',
+            value: name + '2',
+          }
+        ]
+      }
+    }
   },
   actions: {
     ToggleSideBar: ({ rootState }) => {

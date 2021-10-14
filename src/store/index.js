@@ -6,9 +6,9 @@ import tools from './modules/tools'
 import getters from './getters'
 // import createPersistedPlugin from './plugins/createPersistedPlugin.js'
 // const persistedPlugin = createPersistedPlugin()
-import VuexPersistence from 'vuex-persist'
-
-let vuexLocal = new VuexPersistence()
+// import VuexPersistence from 'vuex-persist'
+//
+// let vuexLocal = new VuexPersistence()
 
 const store = createStore({
   modules: {

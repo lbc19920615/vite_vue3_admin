@@ -35,6 +35,7 @@ export function createBaseCusEnumsCONFIG() {
             ...constVarsKeys
           ],
           insFun: [
+            'ROOT_GETTERS',
             'MODEL',
             'ROOT_STATE',
           ]
