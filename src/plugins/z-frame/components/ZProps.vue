@@ -75,6 +75,12 @@ export default {
       // console.log(type, e, toRaw(model))
       ctx.emit('update:value', newVal)
       ctx.emit('change', newVal)
+      console.log('type', type, model)
+      if (type === EVENT_NAMES.ARR_REMOVE_COMMON) {
+        ctx.emit('props-change', model)
+        ctx.emit('form:input:blur', '')
+      }
+
     })
 
     page.setEventHandler({

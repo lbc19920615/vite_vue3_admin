@@ -372,7 +372,7 @@ export function extendCommonArrEventHandler(page) {
       let { parts, partName, fromPath, indexKey } = e
       parts[partName].appSplice(fromPath, indexKey)
       if (_bindFun) {
-        _bindFun(EVENT_NAMES.ARR_APPEND_COMMON, e)
+        _bindFun(EVENT_NAMES.ARR_REMOVE_COMMON, e)
       }
     },
   })

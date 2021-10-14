@@ -31,7 +31,11 @@
     </el-row>
 
     <el-row  class="a-space-mb-10">
-      <div class="cus-ui__label">属性</div>
+      <div class="cus-ui__label">属性
+      <z-window class="a-space-ml-5" url="https://element-plus.gitee.io/en-US/component/form.html">
+        <i class="fa fa-book"></i>
+      </z-window>
+      </div>
       <ZProps
           style="flex: 1"
           v-model:value="state.value.control.attrsObj" @form:input:blur="onBlur" @props-change="onAttrsChange"></ZProps>
