@@ -8,11 +8,11 @@
 }
 .ew-suggest:not(.input-width-none) {
   .el-input-group {
-    &.el-input-group--prepend :deep .el-input__inner {
+    &.el-input-group--prepend :deep(.el-input__inner)  {
       border-top-left-radius: var(--el-input-border-radius, var(--el-border-radius-base));
       border-bottom-left-radius: var(--el-input-border-radius, var(--el-border-radius-base));
     }
-    :deep .el-input-group__prepend {
+    :deep(.el-input-group__prepend) {
       padding: 0;
       //border-left: none !important;
       //border-right: none !important;
@@ -22,11 +22,11 @@
 }
 .ew-suggest.input-width-none {
   .el-input-group {
-    :deep .el-input-group__prepend {
+    :deep(.el-input-group__prepend) {
       background-color: transparent;
     }
     width: 0;
-    :deep .el-input__inner {
+    :deep(.el-input__inner) {
       padding: 0 !important;
       border-right: none;
     }
