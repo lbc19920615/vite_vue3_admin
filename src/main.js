@@ -65,6 +65,7 @@ import locale from 'element-plus/lib/locale/lang/zh-cn'
 
 import 'xy-ui/components/xy-text';
 import 'xy-ui/components/xy-tips';
+import '@alenaksu/json-viewer';
 
 import '@/components/WebElements/index'
 
@@ -164,9 +165,9 @@ window.startApp = function () {
   app.use(router)
   app.use(store)
   // import JsonViewer from "vue3-json-viewer";
-  import("vue3-json-viewer").then(res => {
-    app.use(res.default)
-  })
+  // import("vue3-json-viewer").then(res => {
+  //   app.use(res.default)
+  // })
   // import * as highlightPlugin from '@/plugins/highlight'
   // import('@/plugins/highlight').then(highlightPlugin => {
   //   app.use(highlightPlugin)

@@ -151,12 +151,6 @@
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
 <!--    {{state.value}}-->
-<!--    <el-row>-->
-<!--      <el-button @click="save">保存</el-button>-->
-<!--    tabindex="-1"-->
-<!--    @keydown="onInsertkeyup"-->
-<!--    @blur="onInputBlur"-->
-<!--    @focus="onFocus"-->
     <div
         :id="hid"
         class="cus-insert-input"
@@ -171,7 +165,6 @@
            @mousedown="onMouseDown"
            @mousemove="onMouseMove"
       >
-<!--        <xy-text text-item level="-1">&nbsp;</xy-text>-->
         <div content style="display: inline-block"
                                                            class="cus-insert-html" v-html="runFuncs(state.control.funcs)"></div>
         <span :id="cursorID"  cursor-div contenteditable="true"
@@ -217,13 +210,15 @@
 <!--        </el-row>-->
        <div> 变量：
          <template v-for="item in insertedVars">
-           <el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button>
+           <el-popover trigger="hover" width="450" placement="top">
+             <div v-html="getFunDOC(item)"></div>
+             <template #reference><el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button></template>
+           </el-popover>
          </template>
        </div>
         <div> 函数：
           <template v-for="item in insertedFun">
             <el-popover trigger="hover" width="450" placement="top">
-<!--              <template #content><div v-html="getFunDOC(item)"></div></template>-->
               <div v-html="getFunDOC(item)"></div>
               <template #reference><el-button @click="insertFun(item)"><span v-html="item"></span></el-button></template>
             </el-popover>
@@ -259,6 +254,12 @@ export default {
   mixins: [
     CustomRenderControlMixin
   ],
+  props: {
+    docEnums: {
+      type: String,
+      default: 'ROOT_STATE("tools.toolDocs")'
+    }
+  },
   setup(props, ctx) {
 
     let {part_key} = props.defs;
@@ -316,6 +317,8 @@ export default {
       '\'',
  ...codes
     ]
+
+    console.log(widgetConfig.insText)
 
     if (Array.isArray(widgetConfig.insText)) {
       insertedText = insertedText.concat(widgetConfig.insText)
@@ -530,7 +533,7 @@ export default {
       if (Index < -1) {
         Index = -1
       }
-      console.log('backCursor', Index)
+      // console.log('backCursor', Index)
       setTimeout(() => {
         setCursor(
             Index,
@@ -798,12 +801,16 @@ export default {
 
     function getFunDOC(funName = '') {
       if (toolDocs.length < 1) {
-        toolDocs = instanse.ctx.dxValueTemplate('ROOT_STATE("tools.toolDocs")', [])
+        toolDocs = instanse.ctx.dxValueTemplate(props.docEnums, [])
       }
       let finded = toolDocs.find(v => v.label === funName)
 
       if (finded) {
-        return ZY_EXT.marked(finded.value ?? '')
+        let str = finded.value
+        if (ZY.lodash.isFunction(finded.value)) {
+          str = finded.value()
+        }
+        return ZY_EXT.marked(str ?? '')
       }
 
       return '空'

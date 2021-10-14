@@ -1,8 +1,22 @@
 import * as constVars from "@/plugins/form-render/const";
 
 let obj = {}
+let objDoc = []
 for (let [key, value] of Object.entries(constVars)) {
-  obj['constVars_' + key] = value
+  let label = 'constVars_' + key
+  obj[label] = value
+  objDoc.push(
+    {
+      label: label,
+      value: function () {
+        return  `### ${label}
+<json-viewer>
+${JSON.stringify(value)}
+</json-viewer>   
+`
+      }
+    }
+  )
 }
 
 // <!-- beforebegin -->
@@ -66,7 +80,9 @@ const slotTypes = [
   ...propArr
 ]
 
+
 globalThis.ToolsDocs =  [
+  ...objDoc,
   {
     label: 'MODEL',
     value: `### MODEL
@@ -87,7 +103,9 @@ globalThis.ToolsDocs =  [
 @param defaultVal {null} 默认值
 `
   },
+
 ]
+
 
 
 const store = {

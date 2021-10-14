@@ -48,3 +48,4 @@ export let checkboxes = [
     value: 'checkbox2',
   },
 ]
+

@@ -31,7 +31,6 @@
 <!--       </el-space>-->
 <!--      </el-card>-->
 <!--    </my-fixed>-->
-
     <CustomElement is="my-vue-dialog" name="form-event-dialog"
                    :params="{sstyle: 'width: 60vw; min-width: 720px;'}">
       <template #default="scope">
