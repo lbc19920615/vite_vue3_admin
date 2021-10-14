@@ -10,7 +10,7 @@
         :is="store.model.editor_step"
     >
       <template #array_con_afterbegin="scope">
-        <el-divider></el-divider>
+<!--        <el-divider></el-divider>-->
       </template>
       <template #array_afterbegin="scope">
        <div>
@@ -75,7 +75,7 @@ export default {
       // console.log(type, e, toRaw(model))
       ctx.emit('update:value', newVal)
       ctx.emit('change', newVal)
-      console.log('type', type, model)
+      // console.log('type', type, model)
       if (type === EVENT_NAMES.ARR_REMOVE_COMMON) {
         ctx.emit('props-change', model)
         ctx.emit('form:input:blur', '')
