@@ -336,7 +336,7 @@ export default {
     }
 
     function  getDocAddressName(v = '') {
-      return v.replace('Cus', '').toLowerCase()
+      return ZY.lodash.kebabCase( v.replace('Cus', ''))
     }
 
     let column = [

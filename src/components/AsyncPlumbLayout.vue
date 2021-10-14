@@ -50,11 +50,11 @@ $sel: "." + $tag;
 <!--              {{item.id}}-->
               <div class="a-space-mr-10">
                 <template v-if="customLabel"><slot name="label" v-bind="item"></slot></template>
-                <template v-else>
-                  <el-input v-if="dep.type !== 'array'" size="mini"
-                            v-model="item.key" placeholder="请填写key"></el-input>
-                  <div v-else>{{item.key}}</div>
+                <template v-if="dep.type !== 'array'">
+                  <el-input  size="mini"
+                             v-model="item.key" placeholder="请填写key"></el-input>
                 </template>
+                <div v-else>{{item.key}}</div>
               </div>
               <div class="a-space-mr-10">
                 <el-input  size="mini"
