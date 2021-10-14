@@ -197,7 +197,7 @@ export default {
                         rulesArr: {
                             type: 'array',
                             ui: {
-                                label: '校验规则'
+                                label: '校验规则',
                             },
                             items: {
                                 type: "object",
@@ -205,6 +205,13 @@ export default {
                                     value: {
                                         type: 'string',
                                         ui: {
+                                            form_item: {
+                                                labelWidth: '70px'
+                                            },
+                                            // attrs: [
+                                            //     ['label-width', '70px']
+                                            // ],
+                                            label: ' ',
                                             widget: 'CusFormRules',
                                             widgetConfig: {
                                             }

@@ -83,8 +83,14 @@ class="deep-editor-dialog"
               </template>
               <template #array_con_beforeend="scope">
                 <div>
-                  <el-button type="danger" size="small"
-                             @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除</el-button>
+                  <el-popconfirm title="确定删除吗？"
+                                 @confirm="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">
+                    <template #reference>
+                      <el-button type="danger" size="small">删除</el-button>
+                    </template>
+                  </el-popconfirm>
+<!--                  <el-button type="danger" size="small"-->
+<!--                             @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除</el-button>-->
                 </div>
               </template>
             </HttpComponent>
@@ -366,6 +372,8 @@ export default {
       // console.log(partCONFIG)
 
       let label = ZY.getStrFromObj(partCONFIG, 'ui.label', scope.key)
+
+      // console.log('label', label)
 
       return label
     }
