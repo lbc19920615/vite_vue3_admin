@@ -31,6 +31,48 @@ export default {
             notice: '是否可以清除'
           }
         },
+        type: {
+          type: String,
+          ui: {
+            label: '类型',
+          },
+          noticeIframe: `https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types`
+        },
+        maxlength: {
+          type: String,
+          ui: {
+            label: '最大长度',
+            notice: ''
+          }
+        },
+        showWordLimit: {
+          type: Boolean,
+          ui: {
+            label: '是否计数',
+            widgetConfig:  {
+              ext: 'booleanWithClearable'
+            },
+            notice: '是否可以计数'
+          }
+        },
+        rows: {
+          type: Number,
+          ui: {
+            label: '行数',
+          }
+        },
+        prefixIcon: {
+          type: String,
+          ui: {
+            label: '前面icon',
+          }
+        },
+        suffixIcon: {
+          type: String,
+          ui: {
+            label: '后面icon',
+          }
+        }
       }
     }
   },
