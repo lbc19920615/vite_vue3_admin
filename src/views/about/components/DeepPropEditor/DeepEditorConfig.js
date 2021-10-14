@@ -61,6 +61,24 @@ export default {
                                 label: '反射模板'
                             }
                         },
+                        wrap_start: {
+                            type: 'string',
+                            ui: {
+                                label: '前置标签'
+                            }
+                        },
+                        wrap_end: {
+                            type: 'string',
+                            ui: {
+                                label: '后置标签'
+                            }
+                        },
+                        tag: {
+                            type: 'string',
+                            ui: {
+                                label: '标签'
+                            }
+                        },
                         ui: {
                             type: 'object',
                             ui: {
@@ -121,7 +139,33 @@ export default {
                                         label: 'widget格式化'
                                     }
                                 },
-
+                                attrs2: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'object',
+                                        properties: {
+                                            label: {
+                                                type: 'string',
+                                            },
+                                            value: {
+                                                type: 'string',
+                                            }
+                                        }
+                                    }
+                                },
+                                attrs: {
+                                    type: 'string',
+                                    ui: {
+                                        widgetConfig: {
+                                            type: 'textarea',
+                                            disabled: true
+                                        }
+                                    },
+                                    computedProp: 'attrs_com',
+                                    rules: {
+                                        type: 'any'
+                                    }
+                                }
                             }
                         },
                         ui2: {
@@ -174,7 +218,8 @@ export default {
                 computed: {
                     // doubled: "MODEL('name', '') + ',s'",
                     srules: `A.getRulesFromRulesArr(MODEL('rulesArr'))`,
-                    ui2_styles: `A.get_ui2_styles(MODEL('ui2'))`
+                    ui2_styles: `A.get_ui2_styles(MODEL('ui2'))`,
+                    attrs_com: `A.parseOptions2Entries(MODEL("ui.attrs2"))`
                 }
             }]
         }, args: {src: 'comformscr2.twig'}
