@@ -10,7 +10,14 @@
         :is="store.model.editor_step"
     >
       <template #prop_label_beforeend="scope">
-        <z-tooltip trigger="click" :tooltip="scope.config.ui ? scope.config.ui.notice : ''"></z-tooltip>
+        <template v-if="scope.config">
+          <z-window v-if="scope.config.noticeIframe" :url="scope.config.noticeIframe">
+            <i class="fa fa-book"></i>
+          </z-window>
+          <z-tooltip trigger="click"
+                     v-if="scope.config.ui && scope.config.ui.notice"
+                     :tooltip="scope.config.ui ? scope.config.ui.notice : ''"></z-tooltip>
+        </template>
       </template>
       <template #array_con_afterbegin="scope">
         <el-divider></el-divider>

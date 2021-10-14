@@ -3,6 +3,7 @@
       effect="dark"
       placement="top-start"
       v-bind="$attrs"
+      trigger="hover"
   >
     <div v-html="state.marked"></div>
     <template #reference><el-icon><InfoFilled></InfoFilled></el-icon></template>
@@ -19,12 +20,12 @@ export default {
     InfoFilled
   },
   props: {
-    tooltip: null
+    tooltip: String
   },
   setup(props) {
-    // console.log('tooltip', props.tooltip)
+    console.log('tooltip', props.tooltip)
     let state = reactive({
-      marked: ZY_EXT.marked(props.tooltip)
+      marked: ZY_EXT.marked(props.tooltip ?? '')
     })
 
 
