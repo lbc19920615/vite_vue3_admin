@@ -1,6 +1,7 @@
 import CustomFormRender from './components/CustomFormRender.vue'
 import UnitInput from "@/components/UnitInput.vue";
 import CusDateTimePicker from "@/components/CustomForm/CusDateTimePicker.vue";
+import CusTimePicker from "@/components/CustomForm/CusTimePicker.vue";
 import CusSelect from "@/components/CustomForm/CusSelect.vue";
 import CusRadio from "@/components/CustomForm/CusRadio.vue";
 import CusCheckbox from "@/components/CustomForm/CusCheckbox.vue"
@@ -38,6 +39,7 @@ const plugin = {
         CustomVueComponent.register(CustomFormRender)
         CustomVueComponent.register(UnitInput)
         CustomVueComponent.register(CusDateTimePicker)
+        CustomVueComponent.register(CusTimePicker)
         CustomVueComponent.register(CusSelect)
         CustomVueComponent.register(CusProps)
         CustomVueComponent.register(CusForm)
