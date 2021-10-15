@@ -1,5 +1,21 @@
 import * as constVars from "@/plugins/form-render/const";
 
+export function createAbleProp({label}) {
+  return  {
+    type: Boolean,
+    ui: {
+      label: '是否' + label,
+      widgetConfig:  {
+        ext: 'booleanWithClearable'
+      },
+      notice: '是否可以' + label
+    },
+    rules: {
+      type: 'any'
+    }
+  }
+}
+
 export function createBaseCusCONFIG() {
   let ret = {
     placeholder: {

@@ -335,8 +335,15 @@ export default {
             if (item !== null) {
               filterModel[key] = item
             }
-          } else {
-            filterModel[key] = item
+          }
+          // else if() {
+          //
+          // }
+          else {
+            // console.log('item', item)
+            if (item !== '') {
+              filterModel[key] = item
+            }
           }
         })
         // console.log('onModelChange', model, filterModel)

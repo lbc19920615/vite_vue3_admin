@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender, PROPS_DEF} from "@/plugins/form-render/utils/index";
-import {createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
+import {createAbleProp, createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
 
 export default {
   name: 'CusInputNumber',
@@ -23,19 +23,36 @@ export default {
     return {
       props: {
         ...createBaseCusCONFIG(),
-        clearable: {
-          type: Boolean,
+        clearable: createAbleProp({
+          label: '清除'
+        }),
+        step: {
+          type: Number,
           ui: {
-            label: '是否清除',
-            widgetConfig:  {
-              ext: 'booleanWithClearable'
-            },
-            notice: '是否可以清除'
-          },
-          rules: {
-            type: 'any'
+            label: '步数',
+            widgetConfig: {
+              clearable: true
+            }
           }
         },
+        min: {
+          type: Number,
+          ui: {
+            label: '最小',
+            widgetConfig: {
+              clearable: true
+            }
+          }
+        },
+        max: {
+          type: Number,
+          ui: {
+            label: '步数',
+            widgetConfig: {
+              clearable: true
+            }
+          }
+        }
       }
     }
   },
