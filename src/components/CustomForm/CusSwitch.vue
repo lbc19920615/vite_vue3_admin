@@ -22,6 +22,30 @@ export default {
   CUS_EDITOR: function () {
     return {
       props: {
+        activeText: {
+          type: String,
+          ui: {
+            label: '激活text'
+          }
+        },
+        inactiveText: {
+          type: String,
+          ui: {
+            label: '不激活text'
+          }
+        },
+        activeValue: {
+          type: String,
+          ui: {
+            label: '激活值'
+          }
+        },
+        inactiveValue: {
+          type: String,
+          ui: {
+            label: '不激活值'
+          }
+        },
         enums: {
           type: String,
           ui: {
