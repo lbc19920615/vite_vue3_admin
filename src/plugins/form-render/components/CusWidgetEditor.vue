@@ -151,11 +151,20 @@ export default {
       ZY.lodash.each(clonedValue.data, function (item, key) {
         if (key.startsWith('common_')) {
           base_ret[key] = item
+          // let replaces = key.replace('common_', '')
+          // if (item && key === 'common_state') {
+          //   base_ret[item] = item
+          // }
+
         }
       })
 
-      // console.log('base_ret', base_ret)
-      clonedValue.data.widgetConfig = Object.assign(clonedValue.data.widgetConfig, base_ret)
+      let widgetConf = clonedValue?.data?.widgetConfig ?? {}
+      clonedValue.data.widgetConfig = Object.assign(widgetConf, base_ret)
+
+      // Reflect.deleteProperty(clonedValue.data.widgetConfig, 'disabled')
+      // Reflect.deleteProperty(clonedValue.data.widgetConfig, 'readonly')
+      // console.log('base_ret', Object.assign(widgetConf, base_ret))
 
       let comProps = getCUR_COMPONENT_PROPS()
       if (Array.isArray(comProps)) {
