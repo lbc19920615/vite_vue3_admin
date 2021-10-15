@@ -22,6 +22,24 @@ export default {
   CUS_EDITOR: function () {
     return {
       props: {
+        min: {
+          type: Number,
+          ui: {
+            label: '最小',
+            widgetConfig: {
+              clearable: true
+            }
+          }
+        },
+        max: {
+          type: Number,
+          ui: {
+            label: '步数',
+            widgetConfig: {
+              clearable: true
+            }
+          }
+        },
         enums: {
           type: String,
           ui: {
