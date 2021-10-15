@@ -1,5 +1,17 @@
 import * as constVars from "@/plugins/form-render/const";
 
+export function createBaseCusCONFIG() {
+  let ret = {
+    placeholder: {
+      type: String,
+      ui: {
+        label: '占位提示',
+      }
+    }
+  }
+  return ret
+}
+
 export function createBaseCusEnumsCONFIG() {
   let constVarsKeys = Object.keys(constVars)
   // console.log('constVarsKeys', constVarsKeys)

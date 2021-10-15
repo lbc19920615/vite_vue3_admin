@@ -16,7 +16,7 @@
 
 <script>
 import {CustomRenderControlMixin, defineCustomRender, PROPS_DEF} from "@/plugins/form-render/utils/index";
-import {createBaseCusEnumsCONFIG} from "@/plugins/z-frame/CusBaseEditor";
+import {createBaseCusCONFIG, createBaseCusEnumsCONFIG} from "@/plugins/z-frame/CusBaseEditor";
 
 export default {
   name: 'CusRadio',
@@ -26,6 +26,7 @@ export default {
   CUS_EDITOR: function () {
     return {
       props: {
+        ...createBaseCusCONFIG(),
         ...createBaseCusEnumsCONFIG(),
         clearable: {
           type: Boolean,
@@ -35,6 +36,9 @@ export default {
               ext: 'booleanWithClearable'
             },
             notice: '是否可以清除'
+          },
+          rules: {
+            type: 'any'
           }
         }
       },

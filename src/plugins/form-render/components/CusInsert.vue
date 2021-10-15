@@ -369,7 +369,11 @@ export default {
                 setTimeout(() => {
                   setCursor(
                       lastIndex,
-                      'init'
+                      'init',
+                      1,
+                      {
+                        focus: false
+                      }
                   )
                 }, 100)
               })
@@ -585,7 +589,7 @@ export default {
       })
     }
 
-    function setCursor(index, type, addLength = 1) {
+    function setCursor(index, type, addLength = 1, {focus = true} = {}) {
 
       let INDEX = parseInt(index)
 
@@ -608,7 +612,9 @@ export default {
         let newLeft = current.offsetLeft + current.clientWidth
         let cursor = document.getElementById(cursorID)
         cursor.style.left = newLeft + 'px'
-        cursor.focus()
+        if (focus) {
+          cursor.focus()
+        }
       }
 
 

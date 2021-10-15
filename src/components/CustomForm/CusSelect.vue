@@ -17,7 +17,7 @@
 
 <script>
 import {CustomRenderControlMixin, defineCustomRender, PROPS_DEF} from "@/plugins/form-render/utils/index";
-import {createBaseCusEnumsCONFIG} from "@/plugins/z-frame/CusBaseEditor";
+import {createBaseCusCONFIG, createBaseCusEnumsCONFIG} from "@/plugins/z-frame/CusBaseEditor";
 
 export default {
   name: 'CusSelect',
@@ -27,6 +27,7 @@ export default {
   CUS_EDITOR: function () {
     return {
       props: {
+        ...createBaseCusCONFIG(),
         ...createBaseCusEnumsCONFIG(),
         clearable: {
           type: Boolean,
@@ -62,6 +63,19 @@ export default {
               ext: 'booleanWithClearable'
             },
             notice: '是否可以多选'
+          },
+          rules: {
+            type: 'any'
+          }
+        },
+        collapseTags: {
+          type: Boolean,
+          ui: {
+            label: '是否折叠',
+            widgetConfig:  {
+              ext: 'booleanWithClearable'
+            },
+            notice: '是否可以折叠'
           },
           rules: {
             type: 'any'

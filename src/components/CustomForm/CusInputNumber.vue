@@ -12,6 +12,7 @@
 
 <script>
 import {CustomRenderControlMixin, defineCustomRender, PROPS_DEF} from "@/plugins/form-render/utils/index";
+import {createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
 
 export default {
   name: 'CusInputNumber',
@@ -21,6 +22,7 @@ export default {
   CUS_EDITOR: function () {
     return {
       props: {
+        ...createBaseCusCONFIG(),
         clearable: {
           type: Boolean,
           ui: {
@@ -29,6 +31,9 @@ export default {
               ext: 'booleanWithClearable'
             },
             notice: '是否可以清除'
+          },
+          rules: {
+            type: 'any'
           }
         },
       }
