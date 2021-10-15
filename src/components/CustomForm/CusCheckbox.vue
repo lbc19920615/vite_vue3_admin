@@ -36,7 +36,25 @@ export default {
             },
             notice: '是否可以清除'
           }
-        }
+        },
+        min: {
+          type: Number,
+          ui: {
+            label: '最少选择数',
+            widgetConfig: {
+              clearable: true
+            }
+          }
+        },
+        max: {
+          type: Number,
+          ui: {
+            label: '最多选择数',
+            widgetConfig: {
+              clearable: true
+            }
+          }
+        },
       },
       computed: {
         enums_content: `A.getCusInsertContent(MODEL('enums2'))`
