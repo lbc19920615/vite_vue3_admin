@@ -10,8 +10,8 @@
 <template>
   <template v-if="inited">
 <!--        {{state}}-->
-<!--    {{ui.widgetConfig.teleportTo}}-->
-    <el-input v-model="state.value" @input="onChange">
+<!--    {{ui.widgetConfig}}-->
+    <el-input :style="widgetConfig.inputStyle"  :readonly="widgetConfig.mode === 'select'" v-model="state.value" @input="onChange">
       <template #append>
         <e-popover
             class="cus-suggest__popover"
@@ -28,6 +28,7 @@
             <SimpleList v-if="refMan.showed"
                         :suggest="getSuggest()"
                         :column="extendColumn"
+
                         :class="widgetConfig.listCls ? widgetConfig.listCls : ''"
                         :con-style="widgetConfig.listStyle ? widgetConfig.listStyle : ''"
                         @select-item="selectSuggest"></SimpleList>

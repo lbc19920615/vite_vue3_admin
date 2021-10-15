@@ -1,8 +1,9 @@
 <template>
   <div class="simple-list">
 <!--    {{state}}-->
-    <z-cell-item>
-      <el-input v-model="state.search" @input="handleSearch"></el-input>
+    <z-cell-item class="a-space-mb-15">
+      <el-input :readonly="selectOnly"
+                v-model="state.search" @input="handleSearch"></el-input>
     </z-cell-item>
     <div class="simple-list-con"
          :style="conStyle"
@@ -33,7 +34,8 @@ export default {
       }
     },
     conClass: String,
-    conStyle: String
+    conStyle: String,
+    selectOnly: Boolean
   },
   components: {
     ZTable

@@ -37,7 +37,7 @@
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import HttpComponent from "@/components/HttpComponent.vue";
 import {extendControl2Page, useControl} from "@/mixins/framework";
-import {getCurrentInstance, inject, nextTick, onMounted, onBeforeMount} from 'vue';
+import {getCurrentInstance, inject, nextTick, onMounted, provide} from 'vue';
 import CustomElement from "@/components/CustomElement.vue";
 
 export default {
@@ -52,6 +52,7 @@ export default {
     let instanse = getCurrentInstance()
     let locks = true
     let cached = null
+    let cachedModel = null
     let { methods, init, data } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
         // console.log('handleValueInit', newVal, typeof newVal)
@@ -109,6 +110,7 @@ export default {
       async ['model:update:all'](e) {
         let { model, key, newVal, config } = e
         // console.log('cus:form model:update:all', model)
+        cachedModel = model
         if (!locks) {
           let val = ZY.JSON5.stringify(model)
           page.setData({
@@ -118,6 +120,16 @@ export default {
           methods.on_change(val)
         }
       },
+    })
+
+
+    provide('CusFormExpose', {
+      getModel() {
+        return cachedModel
+      },
+      getPartModel(){
+        return cachedModel?.parts[0]
+      }
     })
 
     let setStepModel = null

@@ -318,7 +318,7 @@ export default {
  ...codes
     ]
 
-    console.log(widgetConfig.insText)
+    // console.log(widgetConfig.insText)
 
     if (Array.isArray(widgetConfig.insText)) {
       insertedText = insertedText.concat(widgetConfig.insText)

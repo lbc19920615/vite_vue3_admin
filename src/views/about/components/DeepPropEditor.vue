@@ -104,10 +104,11 @@ class="deep-editor-dialog"
 
 <script>
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
-import {getCurrentInstance, nextTick, toRaw} from "vue";
+import {getCurrentInstance, nextTick, toRaw, inject} from "vue";
 import {extendControl2Page, useControl, useAppPageControl, extendCommonArrEventHandler} from "@/mixins/framework";
 import {Coffee} from "@element-plus/icons";
 import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
+import {useStore} from "vuex";
 
 let depManagerMixin = {
   data() {
@@ -270,6 +271,8 @@ export default {
     }
   },
   setup(props) {
+    const rootStore = useStore()
+    let CusFormExpose = inject('CusFormExpose')
     let self = getCurrentInstance().ctx
     let page = useControl({
       properties: {
@@ -307,6 +310,23 @@ export default {
     let self_config = {}
 
     async function loadStepByContent( varName = '', item) {
+
+      let model = CusFormExpose.getPartModel()
+      let computed2 = ZY.JSON5.parse(model.computed2 ?? {})
+      // console.log(computed2)
+      let computedO = computed2.parts.map(v => {
+        return {
+          label: v.name,
+          value: v.name
+        }
+      })
+      rootStore.dispatch('setDynamicOptions',
+          [
+              'DEEP_COMPUTED_OPTIONS_TEMP',
+            computedO
+          ]
+      )
+
       let [,res] = await ZY.awaitTo(
           import('./DeepPropEditor/DeepEditorConfig')
       )
@@ -384,7 +404,7 @@ export default {
      * @param item
      */
     function inspect(e) {
-      console.log('inspect', e)
+      // console.log('inspect', e)
       sendJSON5ChannelMessage({
         type: COMMAND.INSPECT,
         e
@@ -394,7 +414,7 @@ export default {
     function getContent(v = '') {
       try {
         let o = ZY.JSON5.parse(v)
-        console.log('getContent', o)
+        // console.log('getContent', o)
         return o?.ui?.label ?? ''
       } catch (e) {
       //

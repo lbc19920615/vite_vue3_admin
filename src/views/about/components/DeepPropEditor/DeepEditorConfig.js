@@ -34,6 +34,7 @@ export default {
                                 // widget: 'CusSelect',
                                 widget: 'CusSuggest',
                                 widgetConfig: {
+                                    inputStyle: 'width: 350px',
                                     enums: "ROOT_STATE('tools.propTypes', [])",
                                 },
                                 events: {
@@ -44,6 +45,12 @@ export default {
                             type: 'string',
                             ui: {
                                 label: '计算属性',
+                                widget: 'CusSuggest',
+                                widgetConfig: {
+                                    // mode: 'select',
+                                    inputStyle: 'width: 350px',
+                                    enums: "ROOT_GETTERS('dOptions', ['DEEP_COMPUTED_OPTIONS_TEMP'])",
+                                },
                             }
                         },
                         reflect: {

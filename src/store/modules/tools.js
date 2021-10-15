@@ -107,6 +107,7 @@ globalThis.ToolsDocs =  [
 ]
 
 
+let dynimcalOptions = new Map()
 
 const store = {
   // namespaced: true,
@@ -160,12 +161,26 @@ const store = {
           }
         ]
       }
+    },
+    dOptions (state) {
+      return (name = '') => {
+        // console.log('dOptions', name)
+        let ret = dynimcalOptions.get(name)
+        if (Array.isArray(ret)) {
+          return ret
+        }
+        return []
+      }
     }
   },
   actions: {
     ToggleSideBar: ({ rootState }) => {
       console.log(rootState)
     },
+    setDynamicOptions: ({rootState}, payload) => {
+      // console.log(payload)
+      dynimcalOptions.set(payload[0], payload[1])
+    }
   }
 }
 

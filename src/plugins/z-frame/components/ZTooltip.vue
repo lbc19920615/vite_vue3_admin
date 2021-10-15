@@ -23,7 +23,7 @@ export default {
     tooltip: String
   },
   setup(props) {
-    console.log('tooltip', props.tooltip)
+    // console.log('tooltip', props.tooltip)
     let state = reactive({
       marked: ZY_EXT.marked(props.tooltip ?? '')
     })
