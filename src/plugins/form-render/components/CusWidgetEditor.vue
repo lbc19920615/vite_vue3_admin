@@ -292,6 +292,10 @@ export default {
               ...value
             }
           }
+          if (value.rules) {
+            properties[key].rules = Object.assign(
+                properties[key].rules, value.rules)
+          }
         }
       }
 
