@@ -36,6 +36,9 @@ export default {
               ext: 'booleanWithClearable'
             },
             notice: '是否可以清除'
+          },
+          rules: {
+            type: 'any'
           }
         },
         filterable: {
@@ -46,6 +49,9 @@ export default {
               ext: 'booleanWithClearable'
             },
             notice: '是否可以过滤'
+          },
+          rules: {
+            type: 'any'
           }
         },
         multiple: {
@@ -56,6 +62,9 @@ export default {
               ext: 'booleanWithClearable'
             },
             notice: '是否可以多选'
+          },
+          rules: {
+            type: 'any'
           }
         }
       },
