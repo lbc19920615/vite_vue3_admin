@@ -328,13 +328,23 @@ export default {
           }
         }
       } else {
-        // console.log('onModelChange', e.model, e)
         let model = ZY.JSON5.parse(ZY.JSON5.stringify(e.model))
+        let filterModel = {}
+        ZY.lodash.each(model, (item, key) => {
+          if (key.endsWith('able')) {
+            if (item !== null) {
+              filterModel[key] = item
+            }
+          } else {
+            filterModel[key] = item
+          }
+        })
+        // console.log('onModelChange', model, filterModel)
         if (Array.isArray(model.props) && model.props.length < 1) {
           Reflect.deleteProperty(model, 'props')
         }
 
-        state.value.data.widgetConfig = model
+        state.value.data.widgetConfig = filterModel
         onChange()
       }
     }
