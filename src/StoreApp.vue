@@ -19,8 +19,9 @@ export default defineComponent({
     let self = this
     let servicesManager = createRefManager({
       eventHandler({type, e}) {
+        // console.log('servicesManager eventHandler', type, self.EVENT_TYPES, e)
         if (type === self.EVENT_TYPES.SET_MODEL_READY) {
-          // const {ctx, model} = e
+          const {ctx, model} = e
           // vuexStore.commit('increment')
           // vuexStore.dispatch('storeApp/ToggleSideBar')
           // console.log('SET_MODEL_READY', ctx)
@@ -147,8 +148,8 @@ export default defineComponent({
     }
 
     const EVENT_TYPES = {
-      INIT_MODEL_READY: Symbol('INIT_MODEL_READY'),
-      SET_MODEL_READY: Symbol('SET_MODEL_READY')
+      INIT_MODEL_READY: 'INIT_MODEL_READY_' + ZY.rid(6),
+      SET_MODEL_READY: 'SET_MODEL_READY_' + ZY.rid(6),
     }
 
     function onWatchEffect(e) {
