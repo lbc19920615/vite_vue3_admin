@@ -148,6 +148,9 @@ export default {
                                 },
                                 attrs2: {
                                     type: 'array',
+                                    ui: {
+                                        label: '属性',
+                                    },
                                     items: {
                                         type: 'object',
                                         properties: {
@@ -163,6 +166,10 @@ export default {
                                 attrs: {
                                     type: 'string',
                                     ui: {
+                                        styles: [
+                                            ['height', 0],
+                                            ['overflow', 'hidden'],
+                                        ],
                                         widgetConfig: {
                                             type: 'textarea',
                                             disabled: true
@@ -189,7 +196,7 @@ export default {
                             computedProp: 'srules',
                             ui: {
                                 attrs: [
-                                    // ['style', 'height: 0; overflow: hidden']
+                                    ['style', 'height: 0; overflow: hidden']
                                 ],
                                 label: '验证规则',
                                 // widget: 'JsonCodeEditor',

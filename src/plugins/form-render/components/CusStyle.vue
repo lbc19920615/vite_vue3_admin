@@ -13,7 +13,7 @@
 
 <template>
   <template v-if="inited">
-    {{state}}
+<!--    {{state}}-->
     <template v-if="state.control">
       <section  class="a-space-mb-10">
         <ZStyles

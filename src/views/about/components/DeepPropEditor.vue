@@ -72,11 +72,11 @@ class="deep-editor-dialog"
                 :debug="false"
             >
               <template #object_beforebegin="scope">
-                <h3>{{getArrItemBeforeKey(scope)}}</h3>
+                <h3>{{scope.label}}</h3>
               </template>
               <template #array_afterbegin="scope">
                 <div>
-                   <h3>{{ getArrItemBeforeKey(scope) }}</h3>
+                   <h3>{{scope.label }}</h3>
                   <el-button type="primary" size="small"
                              @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加</el-button>
                 </div>
