@@ -52,6 +52,21 @@ export default {
               clearable: true
             }
           }
+        },
+        precision: {
+          type: Number,
+          ui: {
+            label: '精度',
+            widgetConfig: {
+              clearable: true
+            }
+          }
+        },
+        controlsPosition: {
+          type: String,
+          ui: {
+            label: '按钮位置'
+          }
         }
       }
     }
