@@ -102,6 +102,7 @@ export let CUSOM_RENDER_FROM_TYPES = {
 
 export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     let instanse = getCurrentInstance()
+    let curFormCon = inject('curFormCon')
     let lock = new ZY.Lock(/* optional lock name, should be unique */)
     let model = null;
     let data = function (opt) {
@@ -207,11 +208,17 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
         methods.on_change(str)
     }
 
+    function dxValueEval(template) {
+        return curFormCon.dxValue(props.context, template)
+    }
+
     return {
         data,
+        curFormCon,
         FROM_TYPES,
         parsedWidgetConfig,
         instanse,
+        dxValueEval,
         onJSONChange,
         init,
         listeners,

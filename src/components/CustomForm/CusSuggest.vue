@@ -11,7 +11,10 @@
   <template v-if="inited">
 <!--        {{state}}-->
 <!--    {{ui.widgetConfig}}-->
-    <el-input :style="widgetConfig.inputStyle"  :readonly="widgetConfig.mode === 'select'" v-model="state.value" @input="onChange">
+    <el-input :style="widgetConfig.inputStyle"
+              :readonly="widgetConfig.mode === 'select'"
+              v-model="state.value"
+              @input="onChange">
       <template #append>
         <e-popover
             class="cus-suggest__popover"

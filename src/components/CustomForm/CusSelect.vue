@@ -5,8 +5,9 @@
         v-model="state.value"
         v-on="listeners"
         v-bind="widgetConfig"
+        @change="onSelectChange"
     >
-      <el-option v-for="(option, key) in dxValueTemplate(widgetConfig.enums)"
+      <el-option v-for="(option, key) in options"
                  :label="option.label" :value="option.value"
       ></el-option>
     </el-select>
@@ -64,13 +65,30 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods, listeners, init, parsedWidgetConfig } = defineCustomRender(props, ctx)
+    let { data, methods, listeners, init, parsedWidgetConfig, curFormCon, dxValueEval } = defineCustomRender(props, ctx)
     let state = data()
     init(props)
+
+    let options = dxValueEval(props.ui.widgetConfig.enums)
+    if (!options) {
+      options = []
+    } else {
+      options = ZY.JSON5.parse(ZY.JSON5.stringify(options))
+    }
+
+    function onSelectChange(e) {
+      curFormCon.callPageEvent('CUS_SELECT:CHANGE',
+          {
+            value: state.value,
+            options
+          }, e)
+    }
 
     return {
       state,
       widgetConfig: props.ui.widgetConfig,
+      options,
+      onSelectChange,
       parsedWidgetConfig,
       methods,
       listeners,
