@@ -7,7 +7,8 @@
         v-bind="widgetConfig"
         @change="onSelectChange"
     >
-      <el-option v-for="(option, key) in options"
+      <el-option vs-for="(option, key) in options"
+                 v-for="(option, key) in dxValueTemplate(widgetConfig.enums)"
                  :label="option.label" :value="option.value"
       ></el-option>
     </el-select>
@@ -16,8 +17,9 @@
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender, PROPS_DEF} from "@/plugins/form-render/utils/index";
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import {createBaseCusCONFIG, createBaseCusEnumsCONFIG} from "@/plugins/z-frame/CusBaseEditor";
+import {toRaw} from "vue";
 
 export default {
   name: 'CusSelect',
@@ -102,7 +104,10 @@ export default {
     function onSelectChange(e) {
       curFormCon.callPageEvent('CUS_SELECT:CHANGE',
           {
+            defs: toRaw(props.defs),
             value: state.value,
+
+            model: curFormCon,
             options
           }, e)
     }

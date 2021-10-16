@@ -128,7 +128,13 @@ import {initStoreApp} from "@/storeApp";
 
 
 import {initMathJax} from "@/components/Ew/EwMathJax/utils";
+import {initChinaAreaManangerFromUrl} from "@/plugins/chinaArea";
+
 initMathJax()
+
+globalThis.chinaAreaManager = await initChinaAreaManangerFromUrl(
+    ZY.REMOTE_ORIGIN + '/public/area.json'
+)
 
 window.startApp = function () {
 
@@ -179,6 +185,7 @@ window.startApp = function () {
   initStoreApp(storeApp)
 
   app.mount('#app')
+
 
   return app
 }

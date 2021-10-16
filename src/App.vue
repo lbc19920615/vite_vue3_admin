@@ -37,6 +37,22 @@ export default defineComponent({
     }
   },
   methods: {
+    AREA_GET_PROVICES(code = '86') {
+      return this.AREA_GET_OPTS(code)
+    },
+    AREA_GET_OPTS(code = '') {
+      let arr = []
+      let obj = chinaAreaManager.get(code)
+      if (obj) {
+        arr = Object.entries(obj).map(v => {
+          return {
+            label: v[1],
+            value: v[0]
+          }
+        })
+      }
+      return arr
+    },
     getElementComponentTags() {
       let appContext = getAppContext()
       return Object.keys(appContext.components)
