@@ -212,12 +212,15 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
         return curFormCon.dxValue(props.context, template)
     }
 
+    let selfpath = props?.defs?.selfpath ?? ''
+
     return {
         data,
         curFormCon,
         FROM_TYPES,
         parsedWidgetConfig,
         instanse,
+        selfpath,
         dxValueEval,
         onJSONChange,
         init,

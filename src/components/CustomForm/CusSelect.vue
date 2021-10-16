@@ -90,9 +90,11 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods, listeners, init, parsedWidgetConfig, curFormCon, dxValueEval } = defineCustomRender(props, ctx)
+    let { data, methods, listeners, init, parsedWidgetConfig, curFormCon, dxValueEval, selfpath } = defineCustomRender(props, ctx)
     let state = data()
     init(props)
+
+    console.log('selfpath', selfpath)
 
     let options = dxValueEval(props.ui.widgetConfig.enums)
     if (!options) {
@@ -102,14 +104,17 @@ export default {
     }
 
     function onSelectChange(e) {
-      curFormCon.callPageEvent('CUS_SELECT:CHANGE',
-          {
-            defs: toRaw(props.defs),
-            value: state.value,
-
-            model: curFormCon,
-            options
-          }, e)
+      let defs = toRaw(props.defs)
+  let sendObj =         {
+    defs: defs,
+    selfpath,
+    context: defs.context,
+    value: state.value,
+    model: curFormCon,
+    options
+  }
+      curFormCon.callPageEvent('CUS_SELECT:CHANGE',sendObj, e)
+      curFormCon.callPageEvent(`CUS_SELECT:CHANGE(${selfpath})`,sendObj, e)
     }
 
     return {
