@@ -184,7 +184,8 @@ $sel: "." + $tag;
               <template #item="{element}">
                 <el-col class="list-group-item"
                         :class="list1ItemCls(element)"
-                        :span="12"><div class="element-list-item">{{element.name}}</div></el-col>
+                        :span="12"><div
+                    class="element-list-item">{{element.label ? element.label : element.name}}</div></el-col>
               </template>
             </draggable>
           </div>
@@ -388,7 +389,8 @@ let UIMixin = {
       let {added = {}} = e
       let elementRawData = toRaw(added.element.data)
       this.insertEleGroup({
-        tagName: elementRawData.tagName
+        // tagName: elementRawData.tagName
+        ...elementRawData
       }, added.element)
       this.disableDrag = false
       this.$emit('ele-drag-change')

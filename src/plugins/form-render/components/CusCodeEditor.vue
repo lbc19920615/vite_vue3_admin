@@ -241,12 +241,14 @@ export default {
       let elementTags = [
         {
           name: 'codes',
+          label: '代码',
           data: {
             tagName: '代码'
           }
         },
         {
           name: 'control',
+          label: '控制',
           data: {
             tagName: '控制'
           },
@@ -267,6 +269,7 @@ export default {
         },
         {
           name: 'loop',
+          label: '循环',
           data: {
             tagName: '循环'
           },
@@ -285,6 +288,7 @@ export default {
       let eleTags = elementTags.map(elementTag => {
         return {
           name: elementTag.name,
+          label: elementTag.label,
           value: '',
           id: ZY.rid(),
           data: {
