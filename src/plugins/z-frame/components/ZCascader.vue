@@ -1,6 +1,7 @@
 <template>
   <div class="z-cascader">
-    <el-cascader-panel  :props="props" />
+    {{value}}
+    <el-cascader-panel v-model="value" :props="props" />
   </div>
 </template>
 
@@ -13,6 +14,7 @@ export default {
    let id = 0
    const state = reactive({
      props: {
+       multiple: true,
        lazy: true,
        async lazyLoad(node, resolve) {
          const { level } = node
@@ -26,6 +28,7 @@ export default {
          resolve(nodes)
        },
      },
+     value: undefined
    })
    return {
      ...toRefs(state),
