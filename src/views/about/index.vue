@@ -70,6 +70,8 @@
       </template>
     </CustomElement>
 
+    <z-cascader></z-cascader>
+
     <template v-if="store.model.textarea_step">
       <!--      {{store.computedModel}}-->
       <HttpComponent
@@ -214,6 +216,7 @@ import 'cnchar-poly'
 import 'cnchar-order'
 import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 import ZEasyModal from "@/plugins/z-frame/ZEasyModal.vue";
+import ZCascader from "@/plugins/z-frame/components/ZCascader.vue";
 globalThis.CnChar = CnChar
 
 globalThis.sortCnCharStroke = function (chars = []) {
@@ -252,6 +255,7 @@ export default defineComponent({
     }
   },
   components: {
+    ZCascader,
     ZEasyModal,
     EwMathJax,
     FormsLayoutSelect,
