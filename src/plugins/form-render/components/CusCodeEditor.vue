@@ -45,6 +45,9 @@
       }
     }
   }
+  .plumb-layout__plus-btn {
+    display: none;
+  }
 }
 </style>
 

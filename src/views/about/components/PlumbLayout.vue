@@ -280,11 +280,14 @@ $sel: "." + $tag;
                   </div>
                 </template>
                 <template v-if="!dep.noToolsAdd">
-                  <el-button size="mini"
+                  <el-button
+                      class="plumb-layout__plus-btn"
+                      size="mini"
                              @click="appendItem(dep)">
                     <el-icon><plus></plus></el-icon>
                   </el-button>
                 </template>
+                <slot name="plus-action" v-bind="{dep, renderRefresh}"></slot>
               </template>
 
             </template>

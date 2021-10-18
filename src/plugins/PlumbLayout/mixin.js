@@ -191,7 +191,10 @@ export let plumbLayoutMixn = {
       this.renderItem(newItem, dep.id)
       this.instance.repaintEverything()
     },
-
+    renderRefresh(newItem, dep) {
+      this.renderItem(newItem, dep.id)
+      this.instance.repaintEverything()
+    },
     getLinks() {
       let links = this.getLinkRealtions()
 
