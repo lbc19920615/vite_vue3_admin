@@ -37,7 +37,7 @@
             <slot name="plumb-layout-item-action-beforeend" v-bind="scope"></slot>
           </template>
           <template #plus-action="scope">
-            <slot name="plumb-layout-plus-action" v-bind="dep"></slot>
+            <slot name="plumb-layout-plus-action" v-bind="scope"></slot>
           </template>
         </PlumbLayout>
 
