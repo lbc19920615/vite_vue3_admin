@@ -366,7 +366,11 @@ export default {
     }
 
     function  getDocAddressName(v = '') {
-      return ZY.lodash.kebabCase( v.replace('Cus', ''))
+      let v =  ZY.lodash.kebabCase( v.replace('Cus', ''))
+      if (v === 'date-time-picker') {
+        v = 'date-picker'
+      }
+      return v
     }
 
     let column = [
@@ -416,10 +420,6 @@ export default {
 
     function getUrl(value) {
       let cusName = getDocAddressName(value)
-      // console.log('cusName', cusName)
-      if (cusName === 'date-time-picker') {
-        cusName = 'date-picker'
-      }
       return `https://element-plus.gitee.io/zh-CN/component/${cusName}.html`
     }
 
