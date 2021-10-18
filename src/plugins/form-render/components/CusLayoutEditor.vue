@@ -16,8 +16,12 @@
     > * {
       display: flex;
       > *:first-child {
+
         //height: 0;
-        //display: none;
+        > *:first-child {
+
+          display: none;
+        }
       }
     }
   }
