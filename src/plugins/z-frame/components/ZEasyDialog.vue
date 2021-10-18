@@ -8,14 +8,16 @@
 
 <template>
   <section class="z-easy-dialog">
-    <el-button @click="openModal">{{title}}</el-button>
-    {{modelAttr}}
-    <el-dialog custom-class="z-easy-dialog__dialog" v-bind="modelAttr"
-               v-model="opened">
+<!--    {{modelAttr}}-->
+    <el-popover class="z-easy-dialog__dialog" v-bind="modelAttr"
+               v-model="opened"
+                placement="left"
+    >
+      <template #reference> <el-button @click="openModal">{{title}}</el-button></template>
       <div class="z-easy-dialog__content">
         <slot></slot>
       </div>
-    </el-dialog>
+    </el-popover>
   </section>
 </template>
 

@@ -27,8 +27,8 @@
 <!--       </div>-->
 <!--     </el-popover>-->
      <z-easy-dialog title="快捷指令" :model-attr="modelAttr">
-       <el-row style="height: 650px">
-         <el-col :span="6">
+       <el-row style="height: 350px">
+         <el-col :span="24">
            <el-row>
              <el-col class="g-list-group-item" v-for="element in elements"
                      :span="12"><div class="g-list-group-item__element"
@@ -36,7 +36,6 @@
              >{{element.label}}</div></el-col>
            </el-row>
          </el-col>
-         <el-col :span="18"></el-col>
        </el-row>
      </z-easy-dialog>
 <!--      <el-button @click="test">test</el-button>-->
@@ -175,7 +174,7 @@ sdsds
 
     let modelAttr = {
       // modal: false
-      width: '80%'
+      width: '50%'
     }
 
     let elements = [
