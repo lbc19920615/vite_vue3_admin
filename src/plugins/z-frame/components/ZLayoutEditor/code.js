@@ -74,9 +74,14 @@ function buildRootXmlLink(curContext, context) {
     if (rawData.tagName === 'control') {
       rawItems.forEach((rawItem, index) => {
         let key = rawItem?.key
+        let cond = rawItem.cond ?? ''
         // console.log('rawData', rawItem)
         if (key !== 'default') {
-          str = str + `${key} ${rawItem.cond ?? ''} { ${inners[index]}}`
+          if (key === 'else') {
+            str = str + `${key} ${cond} { ${inners[index]}}`
+          } else {
+            str = str + `${key}(${cond}) { ${inners[index]}}`
+          }
         } else {
           console.log(inners)
           str = str + `
@@ -94,7 +99,7 @@ ${inners[index]}
         if (key !== 'default') {
           str = str + `${key}(${rawItem.cond ?? ''}) { ${inners[index]}}`
         } else {
-          console.log(inners)
+          // console.log(inners)
           str = str + `
 ${inners[index]}
 `
