@@ -1,0 +1,243 @@
+<style lang="scss">
+
+.cus-code-dialog {
+  .plumb-layout__tools {
+    display: none;
+  }
+}
+
+.cus-code-editor {
+  .el-overlay {
+    background-color: transparent;
+    pointer-events: none;
+    > * {
+      pointer-events: none;
+      > * {
+        pointer-events: all;
+      }
+    }
+  }
+}
+</style>
+
+<template>
+  <div class="cus-code-editor">
+    <template v-if="inited">
+      <!--    {{widgetConfig.enums}}-->
+      <el-row type="flex" >
+        <el-button size="small" @click="openDialog">打开编辑</el-button>
+        <!--      <el-button @click="getXML">获取xml</el-button>-->
+      </el-row>
+      <el-dialog
+          custom-class="cus-code-dialog"
+          v-model="state.dialogVisible"
+          title="代码可视化编辑" width="80vw"
+          :close-on-click-modal="false"
+          @closed="onClosed"
+      >
+        <div :mode="parsedWidgetConfig.mode">
+          <el-row class="a-space-mb-10">
+            <el-button type="primary" @click="save">保存</el-button>
+          </el-row>
+          <div>
+            <textarea>{{buildCodeTemplate(state.value)}}</textarea>
+          </div>
+          <ZLayoutEditor
+              :ref="setLayoutRef"
+              :controls="false"
+              @ele-drag-change="onEleDragChange"
+              :store-prefix="storePrefix"
+              :auto-load="false"
+              @plumb-inited="onPlumbInited"
+              @mode:update:all="onPlumbUpdate"
+              @save-layout="onSaveLayout"
+              :handleList1="handleList1"
+          ></ZLayoutEditor>
+        </div>
+      </el-dialog>
+    </template>
+  </div>
+</template>
+
+<script>
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils";
+import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
+import {onBeforeUnmount} from "vue";
+import {clearPlumbLayoutStorage} from "@/plugins/PlumbLayout/mixin";
+import EwXmlShower from "@/components/Ew/EwXmlShower.vue";
+import {buildCode} from "@/plugins/z-frame/components/ZLayoutEditor/code";
+
+async function cachedArrOperate(key = '', fun = () => {} ) {
+  let cachedKeys = await ZY_EXT.store.getItem(key)
+  if (!Array.isArray(cachedKeys)) {
+    cachedKeys = []
+  }
+  // cachedKeys.push(v)
+  cachedKeys = await fun(cachedKeys);
+  await ZY_EXT.store.setItem(key, cachedKeys)
+}
+
+export default {
+  name: 'CusCodeEditor',
+  components: {EwXmlShower, ZLayoutEditor},
+  mixins: [
+    CustomRenderControlMixin
+  ],
+  setup(props, ctx) {
+    let {part_key} = props.defs;
+    let obj;
+    let JSON5 = ZY.JSON5;
+    let storePrefix = ZY.rid(6);
+
+    (async function () {
+      await cachedArrOperate('code-store-prefix', (arr) => {
+
+        arr.forEach(cachedKey => {
+          clearPlumbLayoutStorage(cachedKey)
+        })
+
+        return []
+      })
+    })();
+
+    let locks = true
+    let { data, methods, listeners, init, parsedWidgetConfig } = defineCustomRender(props, ctx, {
+      handleValueInit(newVal) {
+        if (!newVal) {
+          newVal = '{data: {links: [], deps: []}, posMap: {}}'
+        }
+        if (newVal) {
+          obj = JSON5.parse(newVal)
+        }
+        // openDialog()
+        return newVal
+      }
+    })
+    let state = data({
+      dialogVisible: false,
+      previewVisible: false
+    })
+    init(props)
+
+    async function openDialog() {
+      state.dialogVisible =true
+
+      await cachedArrOperate('layout-store-prefix', (arr) => {
+        return arr.concat([storePrefix])
+      })
+    }
+
+
+    async function onPlumbInited({context}) {
+      // console.log('handleValueInit', part_key, obj, context)
+      await context.importToolsData(obj)
+      await ZY.sleep(300)
+      await context.saveCache2Storage(obj)
+
+    }
+
+
+    let layoutRef = null
+    function setLayoutRef(target, options) {
+      layoutRef = target
+    }
+
+    function onSaveLayout(e) {
+      console.log('onSaveLayout', e)
+    }
+
+    function getXML() {
+      let v = layoutRef.getXML()
+      // console.log('getXML', v)
+    }
+
+    function onEleDragChange() {
+      // console.log('onEleDragChange')
+    }
+
+    async function save() {
+      let v = layoutRef.getToolsData()
+      // console.log('getToolsData', v)
+      await layoutRef.saveCache2Storage(v)
+      let ret = JSON5.stringify(v)
+
+      methods.on_change(ret)
+    }
+
+    async function onClosed() {
+      await save();
+    }
+
+    function getXMLDisplay(v) {
+      return getApp().buildXML(v)
+    }
+
+    function onPlumbUpdate(e) {
+      // let { model, key, newVal, config } = e
+      let v = layoutRef.getToolsData()
+      let ret = JSON5.stringify(v)
+      // console.log(ret)
+      state.value = ret
+    }
+
+    onBeforeUnmount(() => {
+      if (layoutRef) {
+
+        layoutRef.clearLayoutStorage()
+      }
+    })
+
+    function handleList1() {
+      let elementTags = [
+          'codes',
+          'control',
+          'loop',
+      ]
+      let eleTags = elementTags.map(elementTag => {
+        return {
+          name: elementTag,
+          value: '',
+          id: ZY.rid(),
+          data: {
+            tagName: elementTag,
+          },
+          lib: 'control'
+        }
+      })
+      return eleTags
+    }
+
+    function buildCodeTemplate(data) {
+      if (data) {
+        let obj = ZY.JSON5.parse(data)
+        let str = buildCode(obj.data)
+        // console.log('buildXML', obj, str)
+        return str
+      }
+      return ''
+    }
+
+    return {
+      state,
+      getXML,
+      openDialog,
+      onPlumbInited,
+      onEleDragChange,
+      buildCodeTemplate,
+      onClosed,
+      onSaveLayout,
+      storePrefix,
+      save,
+      setLayoutRef,
+      handleList1,
+      onPlumbUpdate,
+      getXMLDisplay,
+      parsedWidgetConfig,
+      widgetConfig: props?.ui?.widgetConfig ?? {},
+      methods,
+      listeners,
+    }
+  },
+}
+</script>
+

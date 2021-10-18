@@ -26,6 +26,7 @@
             :handleAppend="handleAppend"
             :handle-dep="handleDep"
             :open-panel="openPanel"
+            :handleList1="handleList1"
             :handle-group="handleGroup"
             @delete-dep="onDeleteDep"
             @save-data="onSaveData"
@@ -261,7 +262,8 @@ export default defineComponent({
     openPanel: {
       type: Boolean,
       default: true
-    }
+    },
+    handleList1: null
   },
   data() {
     return {

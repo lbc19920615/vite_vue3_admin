@@ -345,12 +345,14 @@ let UIMixin = {
     openPanel: {
       type: Boolean,
       default: true
-    }
+    },
+    handleList1: null
   },
   data() {
+    let list1 = this.handleList1 ? this.handleList1() : getXmlData()
     return {
       panelOpend: this.openPanel,
-      list1: getXmlData(),
+      list1: list1,
       list2: [
         // {
         //   name: 'sdsds3',

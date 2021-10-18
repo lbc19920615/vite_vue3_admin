@@ -259,6 +259,16 @@ export default {
                                             }
                                         }
                                     },
+                                    code2: {
+                                        type: 'string',
+                                        ui: {
+                                            label: '事件2',
+                                            widget: 'CusCodeEditor',
+                                            widgetConfig: {
+
+                                            }
+                                        }
+                                    }
                                     // prop1: {
                                     //     type: 'string',
                                     //     tag: 'div',
