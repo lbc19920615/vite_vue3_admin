@@ -415,7 +415,7 @@ export default {
     ]
 
     function getUrl(value) {
-      const cusName = getDocAddressName(value)
+      let cusName = getDocAddressName(value)
       // console.log('cusName', cusName)
       if (cusName === 'date-time-picker') {
         cusName = 'date-picker'
