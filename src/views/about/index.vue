@@ -70,7 +70,7 @@
       </template>
     </CustomElement>
 
-    <z-cascader></z-cascader>
+<!--    <z-cascader></z-cascader>-->
 
     <template v-if="store.model.textarea_step">
       <!--      {{store.computedModel}}-->
