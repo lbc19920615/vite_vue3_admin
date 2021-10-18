@@ -311,21 +311,25 @@ export default {
 
     async function loadStepByContent( varName = '', item) {
 
-      let model = CusFormExpose.getPartModel()
-      let computed2 = ZY.JSON5.parse(model.computed2 ?? {})
-      // console.log(computed2)
-      let computedO = computed2.parts.map(v => {
-        return {
-          label: v.name,
-          value: v.name
-        }
-      })
-      rootStore.dispatch('setDynamicOptions',
-          [
+      let model = {}
+      if (CusFormExpose && CusFormExpose.getPartModel) {
+        model = CusFormExpose.getPartModel()
+        let computed2 = ZY.JSON5.parse(model.computed2 ?? {})
+        // console.log(computed2)
+        let computedO = computed2.parts.map(v => {
+          return {
+            label: v.name,
+            value: v.name
+          }
+        })
+        rootStore.dispatch('setDynamicOptions',
+            [
               'DEEP_COMPUTED_OPTIONS_TEMP',
-            computedO
-          ]
-      )
+              computedO
+            ]
+        )
+      }
+
 
       let [,res] = await ZY.awaitTo(
           import('./DeepPropEditor/DeepEditorConfig')
