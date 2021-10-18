@@ -191,7 +191,10 @@ export function install({
                     },
                 ]
             } else {
-                this.items = obj.items
+                this.items = obj.items.map((v, index) => {
+                    v.id = id + '-' + index
+                    return v
+                })
             }
             this.data = obj.data
         }

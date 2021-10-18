@@ -12,12 +12,16 @@
   .plumb-layout__header-desc {
     margin-bottom: 0;
   }
+  .plumb-layout__item-input-key {
+    width: 0;
+    overflow: hidden;
+  }
   .plumb-layout__item-action {
     display: flex;
     align-items: center;
-    > *:first-child {
-      width: 150px;
-    }
+    //> *:first-child {
+    //  width: 150px;
+    //}
   }
   .plumb-layout .header {
     > * {
@@ -81,6 +85,19 @@
               :debug="true"
           >
             <template #plumb-layout-item-action-beforeend="scope">
+
+<!--              {{scope.item}}-->
+<!--              <el-tooltip :content="scope.item.key">-->
+<!--                <el-input readonly style="width: 150px"-->
+<!--                          v-if="scope.item.name"-->
+<!--                          :value="scope.item.name "></el-input>-->
+<!--                <el-input readonly style="width: 150px"-->
+<!--                          v-else-if="scope.item.key"-->
+<!--                          :value="scope.item.key"></el-input>-->
+<!--              </el-tooltip>-->
+              <div style="width: 120px">
+                {{scope.item.name ? scope.item.name : scope.item.key}}
+              </div>
               <el-input v-model="scope.item.cond"
                         placeholder="请填写"></el-input>
             </template>
@@ -232,13 +249,37 @@ export default {
           name: 'control',
           data: {
             tagName: '控制'
-          }
+          },
+          items: [
+            {
+              name: '如果',
+              key: 'if'
+            },
+            {
+              name: '但是',
+              key: 'else'
+            },
+            {
+              name: '默认',
+              key: 'default',
+            }
+          ]
         },
         {
           name: 'loop',
           data: {
             tagName: '循环'
-          }
+          },
+          items: [
+            {
+              name: '循环',
+              key: 'for'
+            },
+            {
+              name: '默认',
+              key: 'default',
+            }
+          ]
         },
       ]
       let eleTags = elementTags.map(elementTag => {
@@ -250,6 +291,7 @@ export default {
             // tagName: elementTag,
             ...elementTag.data
           },
+          items: elementTag.items,
           lib: 'control'
         }
       })

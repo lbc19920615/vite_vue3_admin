@@ -266,7 +266,9 @@ $sel: "." + $tag;
                 <template v-for="(item, index) in dep.items" :key="index">
                   <div :id="item.id" :data-pid="dep.id" class="item content-item">
                     <div class="a-space-mr-10 plumb-layout__item-action">
-                      <el-input :readonly="dep.keyReadonly" v-model="item.key" placeholder="请填写key"></el-input>
+                      <el-input class="plumb-layout__item-input-key"
+                                :readonly="dep.keyReadonly"
+                                v-model="item.key" placeholder="请填写key"></el-input>
                       <slot name="item-action-beforeend" v-bind="{item}"></slot>
                     </div>
                     <template v-if="!dep.noToolsRemove">
@@ -637,8 +639,9 @@ export default {
     /**
      * 快捷安装ele节点
      * @param defaultData
+     * @param element
      */
-    insertEleGroup(defaultData = null, element) {
+    insertEleGroup(defaultData = null, element = {}) {
       let eleGroup = this.buildedGroups.find(v => v.type === 'ele')
       if (eleGroup) {
         let dep = this.buildDepFromGroup(eleGroup)
@@ -647,6 +650,10 @@ export default {
           tagName: 'div'
         }
         dep.lib = element.lib
+        // console.log('insertEleGroup', element)
+        if (Array.isArray(element.items)) {
+          dep.items = element.items
+        }
         this.appendDep(
             dep
         )

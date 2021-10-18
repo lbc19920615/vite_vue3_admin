@@ -196,7 +196,7 @@ export default {
       setLayoutRef,
       onPlumbUpdate,
       getXMLDisplay,
-      widgetConfig: props.ui.widgetConfig,
+      widgetConfig: props?.ui?.widgetConfig ?? {},
       methods,
       listeners,
     }

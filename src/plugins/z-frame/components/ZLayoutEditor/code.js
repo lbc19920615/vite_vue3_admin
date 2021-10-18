@@ -83,7 +83,7 @@ function buildRootXmlLink(curContext, context) {
             str = str + `${key}(${cond}) { ${inners[index]}}`
           }
         } else {
-          console.log(inners)
+          // console.log(inners)
           str = str + `
 ${inners[index]}
 `
