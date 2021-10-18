@@ -1,24 +1,44 @@
+<style>
+.z-easy-dialog__dialog {
+  top: 50%;
+  transform: translateY(-50%);
+}
+</style>
+
 <template>
  <div class="code-js-editor">
 <!--   {{state}}-->
    <el-space class="a-space-mb-10"  align="middle">
-     <el-popover
-         placement="bottom"
-         :width="700"
-         trigger="click"
-         v-model:visible="state.visible"
-     >
-       <template #reference>
-         <el-button size="small" @click="setRefMan(true)">快捷代码</el-button>
-       </template>
-       <div  style="min-height: 200px">
-         <SimpleList v-if="refMan.showed"
-                     :column="state.column"
-                     :suggest="getSuggest()"
-                    @select-item="onSelect"
-         ></SimpleList>
-       </div>
-     </el-popover>
+<!--     <el-popover-->
+<!--         placement="bottom"-->
+<!--         :width="700"-->
+<!--         trigger="click"-->
+<!--         v-model:visible="state.visible"-->
+<!--     >-->
+<!--       <template #reference>-->
+<!--         <el-button size="small" @click="setRefMan(true)">快捷代码</el-button>-->
+<!--       </template>-->
+<!--       <div  style="min-height: 200px">-->
+<!--         <SimpleList v-if="refMan.showed"-->
+<!--                     :column="state.column"-->
+<!--                     :suggest="getSuggest()"-->
+<!--                    @select-item="onSelect"-->
+<!--         ></SimpleList>-->
+<!--       </div>-->
+<!--     </el-popover>-->
+     <z-easy-dialog title="快捷指令" :model-attr="modelAttr">
+       <el-row style="height: 650px">
+         <el-col :span="6">
+           <el-row>
+             <el-col class="g-list-group-item" v-for="element in elements"
+                     :span="12"><div class="g-list-group-item__element"
+             @click="selectQuickElement(element)"
+             >{{element.label}}</div></el-col>
+           </el-row>
+         </el-col>
+         <el-col :span="18"></el-col>
+       </el-row>
+     </z-easy-dialog>
 <!--      <el-button @click="test">test</el-button>-->
    </el-space>
    <CodeMirror
@@ -30,16 +50,19 @@
        :mode="mode"
        theme="vscode-dark"
    />
+
  </div>
 </template>
 
 <script>
-import {useReloadMan} from "@/views/home/hooks";
+import {useReloadMan} from "@/views/home/hooks.js";
 import {getCurrentInstance, reactive, resolveComponent} from "vue";
-import {provideDxValueTemplateMixin} from "@/plugins/form-render/utils";
+import {provideDxValueTemplateMixin} from "@/plugins/form-render/utils/index.js";
+import ZEasyDialog from "@/plugins/z-frame/components/ZEasyDialog.vue";
 
 export default {
   name: 'CodeJsEditor',
+  components: {ZEasyDialog},
   mixins: [
     provideDxValueTemplateMixin
   ],
@@ -150,9 +173,27 @@ sdsds
       }, 30)
     }
 
+    let modelAttr = {
+      // modal: false
+    }
+
+    let elements = [
+      {
+        label: '数组添加',
+        value: `G.数组添加(e)`
+      }
+    ]
+
+    function selectQuickElement(element = {}) {
+      onSelect(element.value ?? '')
+    }
+
     return {
       state,
       onSelect,
+      modelAttr,
+      elements,
+      selectQuickElement,
       test,
       getSuggest,
       refMan,

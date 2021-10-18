@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @import 'variables.scss';
 @import 'mixin.scss';
 @import 'transition.scss';
@@ -158,3 +160,41 @@ a:hover {
   color: var(--cm-filed__label-color, var(--el-text-color-regular))
 }
 
+
+$row-item-length: 2;
+$row-gutter-length: $row-item-length * 2;
+$row-gutter-deliver:  $row-item-length + 1;
+$element-list-item-g: 12px;
+$element-list-item-x: math.div($element-list-item-g *   $row-gutter-length, $row-gutter-deliver) ;
+$first-last-with: $element-list-item-g * $row-item-length - $element-list-item-x;
+.g-list-group-item__element {
+  --element-list-item-h: 30px;
+  height: var(--element-list-item-h);
+  width: calc(100% - #{$element-list-item-g * 2} - 2px);
+
+  margin-bottom: 15px;
+  border: 1px solid #eeeeee;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height:  var(--element-list-item-h);
+  box-sizing: border-box;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.g-list-group-item {
+  &:nth-child(2n+1) {
+    .element-list-item {
+      margin-left: $element-list-item-x;
+    }
+  }
+  &:nth-child(2n) {
+    .element-list-item {
+      margin-left: $element-list-item-x - $first-last-with;
+    }
+  }
+
+  &--hidden {
+    display: none;
+  }
+}
