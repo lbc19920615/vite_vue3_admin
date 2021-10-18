@@ -175,6 +175,7 @@ sdsds
 
     let modelAttr = {
       // modal: false
+      width: '80%'
     }
 
     let elements = [

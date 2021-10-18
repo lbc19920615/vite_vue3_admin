@@ -11,7 +11,7 @@
     <el-button @click="openModal">{{title}}</el-button>
     {{modelAttr}}
     <el-dialog custom-class="z-easy-dialog__dialog" v-bind="modelAttr"
-               width="90vw" v-model="opened">
+               v-model="opened">
       <div class="z-easy-dialog__content">
         <slot></slot>
       </div>
