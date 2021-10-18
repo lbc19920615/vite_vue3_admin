@@ -49,6 +49,13 @@ function buildRootXmlLink(curContext, context) {
     }
   })
 
+  let inners = []
+  toDepContext.forEach(toDepContextItem => {
+    inners.push(
+      buildRootXmlLink(toDepContextItem, context)
+    )
+  })
+
 
   // let attrStr = buildAttrs(rawData.attrs)
   // let afterAttrs = rawData.afterAttrs ?? ''
@@ -65,9 +72,11 @@ function buildRootXmlLink(curContext, context) {
     }
     // str = `${rawData.tagName} { ${innerText} }`;
     if (rawData.tagName === 'control') {
-      str = `${rawData.tagName} { ${innerText} }`;
+      console.log('rawData', inners)
+      str = `if { ${inners[0]}} else { ${inners[1]}}`;
     } else {
-      str = `${rawData.tagName}       
+      str = `
+${rawData.tagName}       
 ${innerText}`
     }
   } else {
@@ -76,7 +85,7 @@ ${innerText}`
     }
     str = innerText
   }
-  curContext.str = str
+  curContext.str = str.trim()
   return str
 }
 
