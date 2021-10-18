@@ -4,56 +4,76 @@
     display: none;
   }
 }
+.cus-layout-editor {
+  .plumb-layout__item-action {
+    display: flex;
+    align-items: center;
+    //> *:first-child {
+    //  width: 150px;
+    //}
+  }
+  .plumb-layout .header {
+    > * {
+      display: flex;
+      > *:first-child {
+        //height: 0;
+        //display: none;
+      }
+    }
+  }
+}
 </style>
 
 <template>
-  <template v-if="inited">
-    <!--    {{widgetConfig.enums}}-->
-    <el-row type="flex" >
-      <el-button size="small" @click="openDialog">打开编辑</el-button>
-<!--      <el-button @click="getXML">获取xml</el-button>-->
-      <el-popover
-          v-model:visible="state.previewVisible"
-          placement="bottom"
-          title=""
-          :width="600"
-          trigger="click"
-      >
-        <template #reference>
-          <el-button size="small" @click="state.previewVisible = !state.previewVisible">XML预览</el-button>
-        </template>
-        <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>
-      </el-popover>
-    </el-row>
-    <el-dialog
-        v-model="state.dialogVisible"
-        title="DOM编辑" width="80vw"
-        :close-on-click-modal="false"
-        @closed="onClosed"
-    >
-      <div :mode="widgetConfig.mode">
-        <el-row class="a-space-mb-10">
-          <el-button type="primary" @click="save">保存</el-button>
-        </el-row>
-        <div>
-<!--          {{state.value}}-->
+  <div class="cus-layout-editor">
+    <template v-if="inited">
+      <!--    {{widgetConfig.enums}}-->
+      <el-row type="flex" >
+        <el-button size="small" @click="openDialog">打开编辑</el-button>
+        <!--      <el-button @click="getXML">获取xml</el-button>-->
+        <el-popover
+            v-model:visible="state.previewVisible"
+            placement="bottom"
+            title=""
+            :width="600"
+            trigger="click"
+        >
+          <template #reference>
+            <el-button size="small" @click="state.previewVisible = !state.previewVisible">XML预览</el-button>
+          </template>
           <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>
-<!--          <el-input type="textarea" readonly-->
-<!--                    :value="getXMLDisplay(state.value)"></el-input>-->
+        </el-popover>
+      </el-row>
+      <el-dialog
+          v-model="state.dialogVisible"
+          title="DOM编辑" width="80vw"
+          :close-on-click-modal="false"
+          @closed="onClosed"
+      >
+        <div :mode="widgetConfig.mode">
+          <el-row class="a-space-mb-10">
+            <el-button type="primary" @click="save">保存</el-button>
+          </el-row>
+          <div>
+            <!--          {{state.value}}-->
+            <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>
+            <!--          <el-input type="textarea" readonly-->
+            <!--                    :value="getXMLDisplay(state.value)"></el-input>-->
+          </div>
+          <ZLayoutEditor
+              :ref="setLayoutRef"
+              :controls="false"
+              @ele-drag-change="onEleDragChange"
+              :store-prefix="storePrefix"
+              :auto-load="false"
+              @plumb-inited="onPlumbInited"
+              @mode:update:all="onPlumbUpdate"
+              @save-layout="onSaveLayout"
+          ></ZLayoutEditor>
         </div>
-        <ZLayoutEditor
-            :ref="setLayoutRef"
-            :controls="false"
-            @ele-drag-change="onEleDragChange"
-            :store-prefix="storePrefix"
-            :auto-load="false"
-            @plumb-inited="onPlumbInited"
-            @mode:update:all="onPlumbUpdate"
-            @save-layout="onSaveLayout"
-        ></ZLayoutEditor>
-      </div>
-    </el-dialog>
-  </template>
+      </el-dialog>
+    </template>
+  </div>
 </template>
 
 <script>
