@@ -366,11 +366,11 @@ export default {
     }
 
     function  getDocAddressName(v = '') {
-      let v =  ZY.lodash.kebabCase( v.replace('Cus', ''))
-      if (v === 'date-time-picker') {
-        v = 'date-picker'
+      let s =  ZY.lodash.kebabCase( v.replace('Cus', ''))
+      if (s === 'date-time-picker') {
+        s = 'date-picker'
       }
-      return v
+      return s
     }
 
     let column = [
