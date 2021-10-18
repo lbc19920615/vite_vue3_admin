@@ -141,8 +141,8 @@
               <el-button type="primary" @click="page.callEvent('call:save', scope)">保存</el-button>
               <el-button type="primary" @click="page.callEvent('call:save:file', scope)">保存文件</el-button>
               <el-button type="primary" @click="page.callEvent('load:file')">加载文件</el-button>
-              <el-link href="/show/sdsds" target="_blank">打开预览</el-link>
-              <router-link class="el-link" to="/form" >跳转Form</router-link>
+              <el-button ><el-link type="primary" href="/show/sdsds" target="_blank">打开预览</el-link></el-button>
+              <el-button ><router-link class="el-link" to="/form" >跳转Form</router-link></el-button>
             </el-space>
           </div>
         </template>
