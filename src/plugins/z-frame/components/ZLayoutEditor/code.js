@@ -72,11 +72,38 @@ function buildRootXmlLink(curContext, context) {
     }
     // str = `${rawData.tagName} { ${innerText} }`;
     if (rawData.tagName === 'control') {
-      console.log('rawData', inners)
-      str = `if { ${inners[0]}} else { ${inners[1]}}`;
-    } else {
+      rawItems.forEach((rawItem, index) => {
+        let key = rawItem?.key
+        // console.log('rawData', rawItem)
+        if (key !== 'default') {
+          str = str + `${key} ${rawItem.cond ?? ''} { ${inners[index]}}`
+        } else {
+          console.log(inners)
+          str = str + `
+${inners[index]}
+`
+        }
+      })
+
+      // str = `if { ${inners[0]}} else { ${inners[1]}}`;
+    }
+    else if (rawData.tagName === 'loop') {
+      rawItems.forEach((rawItem, index) => {
+        let key = rawItem?.key
+        // console.log('rawData', rawItem)
+        if (key !== 'default') {
+          str = str + `${key}(${rawItem.cond ?? ''}) { ${inners[index]}}`
+        } else {
+          console.log(inners)
+          str = str + `
+${inners[index]}
+`
+        }
+      })
+    }
+    else {
       str = `
-${rawData.tagName}       
+${rawData.code ?? ''}       
 ${innerText}`
     }
   } else {

@@ -6,6 +6,7 @@ $tag: "plumb-layout";
 $sel: "." + $tag;
 
 #{$sel} {
+  //--plumb-height: 600px;
   @include init-plumb-layout() {
     border: none;
     --tools-height: 0px;
@@ -240,7 +241,7 @@ $sel: "." + $tag;
 
               <div class="item header" :data-pid="dep.id"
                    :id="dep.id + '-top'">
-                <div class="a-space-mb-10">
+                <div class="a-space-mb-10  plumb-layout__header-desc">
                   <el-space>
                     <div>类型: {{dep.type}}</div>
                     <el-button size="mini" @click="editDep(dep)">
@@ -264,8 +265,9 @@ $sel: "." + $tag;
                 <!--            <h3 style="margin: 10px 0;">items</h3>-->
                 <template v-for="(item, index) in dep.items" :key="index">
                   <div :id="item.id" :data-pid="dep.id" class="item content-item">
-                    <div class="a-space-mr-10">
+                    <div class="a-space-mr-10 plumb-layout__item-action">
                       <el-input :readonly="dep.keyReadonly" v-model="item.key" placeholder="请填写key"></el-input>
+                      <slot name="item-action-beforeend" v-bind="{item}"></slot>
                     </div>
                     <template v-if="!dep.noToolsRemove">
                       <el-button size="mini" @click="deleteItem(dep, item, index)">
@@ -332,7 +334,7 @@ let UIMixin = {
       return {
         ['--ele-panel-width']: '350px',
         ['--com-panel-width']: this.panelOpend ? '350px' : '70px',
-        ['--plumb-height']: '600px',
+        // ['--plumb-height']: '600px',
       }
     },
     classObj() {

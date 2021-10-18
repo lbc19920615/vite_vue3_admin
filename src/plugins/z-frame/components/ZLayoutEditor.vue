@@ -32,20 +32,27 @@
             @save-data="onSaveData"
             @edit-dep="onEditDep"
             @ele-drag-change="onFires('ele-drag-change', $event)"
-        ></PlumbLayout>
+        >
+          <template #item-action-beforeend="scope">
+            <slot name="plumb-layout-item-action-beforeend" v-bind="scope"></slot>
+          </template>
+        </PlumbLayout>
 
         <el-drawer
             title="属性"
             size="600px"
             v-model="renderFormDesigner"
             :lock-scroll="false"
-            destroy-on-close>
+            destroy-on-close
+            @closed="onDrawerClose(currentEditItem, currentEditDep)"
+        >
           <template #default>
             <div v-loading="renderFormLoading">
               <template v-if="renderFormDesigner">
                 <HttpComponent
                     :defs="allDef"
                     :is="store.model.editor_step"
+                    :debug="debug"
                 >
                   <template #array_con_afterbegin="scope">
                     <el-divider></el-divider>
@@ -96,6 +103,9 @@ import CustomElement from "@/components/CustomElement.vue";
 import {buildXml} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
 
 let depManagerMixin = {
+  props: {
+    editorContent: String
+  },
   data() {
     return {
       renderFormLoading: false,
@@ -109,14 +119,18 @@ let depManagerMixin = {
       this.renderFormLoading = true
       this.renderFormDesigner = false
       this.currentEditDep = dep
-      if (dep.editor) {
-        await this.loadStepByContent(dep.editor, 'editor_step')
-      }
-      if (Array.isArray(dep.editorTpl)) {
-        let [name] = dep.editorTpl
-        let editor = NodeDefMap.getEditorConfig(name)(dep)
-        // console.log('sdsdsdsdsds', name, editor)
-        await this.loadStepByContent(editor, 'editor_step')
+      if (this.editorContent) {
+        await this.loadStepByContent(this.editorContent, 'editor_step')
+      } else {
+        if (dep.editor) {
+          await this.loadStepByContent(dep.editor, 'editor_step')
+        }
+        if (Array.isArray(dep.editorTpl)) {
+          let [name] = dep.editorTpl
+          let editor = NodeDefMap.getEditorConfig(name)(dep)
+          // console.log('sdsdsdsdsds', name, editor)
+          await this.loadStepByContent(editor, 'editor_step')
+        }
       }
       // console.log(currentHtc)
       await this.$nextTick();
@@ -163,7 +177,8 @@ let plumbLayoutMixin = {
     autoLoad: {
       type: Boolean,
       default: true
-    }
+    },
+    debug: Boolean
   },
   methods: {
     async onPlumbLayoutInit(self) {
@@ -328,9 +343,7 @@ export default defineComponent({
       },
       ['model:update:all'](e) {
         // let { model, key, newVal, config } = e
-        ctx.emit('mode:update:all', e)
-      },
-      ['model:update'](e) {
+
         let { model, key, newVal, config } = e
         // console.log(key, model, config, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
@@ -350,7 +363,30 @@ export default defineComponent({
             }
           }
         }
-      }
+
+        ctx.emit('mode:update:all', e)
+      },
+      // ['model:update'](e) {
+      //   let { model, key, newVal, config } = e
+      //   // console.log(key, model, config, self.currentEditDep)
+      //   if (config.process === page.store.model.editor_step) {
+      //     self.currentEditDep.data = model
+      //     if (self.currentEditDep.type === 'form') {
+      //       try {
+      //         self.currentEditDep.content = buildFormDepContent(
+      //             model.parts,
+      //             model,
+      //         )
+      //         // 设置Layout里dep的content 手动注入
+      //         self.LayoutContext.setDep(self.currentEditDep.id, {
+      //           content: self.currentEditDep.content
+      //         })
+      //       } catch (e) {
+      //         console.error(e)
+      //       }
+      //     }
+      //   }
+      // }
     })
 
 
@@ -373,7 +409,7 @@ export default defineComponent({
 
       page.setDef(config, function ({done}) {
         for (let [partName, partConfig] of Object.entries(config.defaultVal)) {
-          // console.log(self.currentEditDep, depPath, ZY.lodash.get( self.currentEditDep, depPath))
+          console.log(self.currentEditDep)
           if (self.currentEditDep.data) {
             if (ZY.lodash.keys(self.currentEditDep.data).length > 0) {
               ret.updateData(partName,  self.currentEditDep.data)
@@ -435,11 +471,20 @@ export default defineComponent({
       }
     }
 
+    function onDrawerClose(currentEditItem) {
+      // console.log('onDrawerClose', cachedDeepEditorModel, currentEditItem)
+      // if (cachedDeepEditorModel) {
+      //
+      //   currentEditItem.data = ZY.JSON5.stringify(cachedDeepEditorModel)
+      // }
+    }
+
     return {
       EVENT_NAMES,
       getXML,
       onFires,
       importToolsData,
+      onDrawerClose,
       saveCache2Storage,
       onSaveLayout,
       getToolsData,

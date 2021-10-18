@@ -32,6 +32,24 @@ export let baseConfig = function (def = {}, computed = {}, {defaultVal = {}} = {
     `
 }
 
+export let createEditorConfig = function ( { properties = {}, computed = {} } = {}, defaultVal = {}) {
+    return baseConfig({
+        type: 'object',
+        ui: {
+            attrs: [
+                ['label-width', '100px']
+            ],
+        },
+        properties: {
+            ...properties
+        },
+    }, {
+        ...computed
+    },{
+        defaultVal: defaultVal
+    })
+}
+
 export let formEditorConfig = function (defaultVal = {}) {
     return baseConfig( {
         type: 'object',

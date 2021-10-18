@@ -7,8 +7,32 @@
 }
 
 .cus-code-editor {
-  .el-overlay {
-    background-color: transparent;
+  --plumb-con-width: 300px;
+  --plumb-height: 900px;
+  .plumb-layout__header-desc {
+    margin-bottom: 0;
+  }
+  .plumb-layout__item-action {
+    display: flex;
+    align-items: center;
+    > *:first-child {
+      width: 150px;
+    }
+  }
+  .plumb-layout .header {
+    > * {
+      display: flex;
+      > *:first-child {
+        //height: 0;
+        //display: none;
+      }
+    }
+  }
+  .plumb-layout .item {
+    min-height: auto;
+  }
+  > * {
+    //background-color: transparent;
     pointer-events: none;
     > * {
       pointer-events: none;
@@ -31,16 +55,17 @@
       <el-dialog
           custom-class="cus-code-dialog"
           v-model="state.dialogVisible"
-          title="代码可视化编辑" width="80vw"
+          title="代码可视化编辑" width="90vw"
           :close-on-click-modal="false"
           @closed="onClosed"
+          :modal="false"
       >
         <div :mode="parsedWidgetConfig.mode">
           <el-row class="a-space-mb-10">
             <el-button type="primary" @click="save">保存</el-button>
           </el-row>
           <div>
-            <textarea>{{buildCodeTemplate(state.value)}}</textarea>
+            <el-input type="textarea" v-model="computedXmlDisplay" readonly></el-input>
           </div>
           <ZLayoutEditor
               :ref="setLayoutRef"
@@ -51,8 +76,15 @@
               @plumb-inited="onPlumbInited"
               @mode:update:all="onPlumbUpdate"
               @save-layout="onSaveLayout"
+              :editor-content="editorContent"
               :handleList1="handleList1"
-          ></ZLayoutEditor>
+              :debug="true"
+          >
+            <template #plumb-layout-item-action-beforeend="scope">
+              <el-input v-model="scope.item.cond"
+                        placeholder="请填写"></el-input>
+            </template>
+          </ZLayoutEditor>
         </div>
       </el-dialog>
     </template>
@@ -62,10 +94,12 @@
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils";
 import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
-import {onBeforeUnmount} from "vue";
+import {computed, onBeforeUnmount} from "vue";
 import {clearPlumbLayoutStorage} from "@/plugins/PlumbLayout/mixin";
 import EwXmlShower from "@/components/Ew/EwXmlShower.vue";
 import {buildCode} from "@/plugins/z-frame/components/ZLayoutEditor/code";
+import {EditorConfig} from "@/plugins/ComEditor/eleNode.plugin";
+import {createEditorConfig} from "@/plugins/ComEditor/editorConfig";
 
 async function cachedArrOperate(key = '', fun = () => {} ) {
   let cachedKeys = await ZY_EXT.store.getItem(key)
@@ -143,7 +177,7 @@ export default {
     }
 
     function onSaveLayout(e) {
-      console.log('onSaveLayout', e)
+      // console.log('onSaveLayout', e)
     }
 
     function getXML() {
@@ -160,7 +194,6 @@ export default {
       // console.log('getToolsData', v)
       await layoutRef.saveCache2Storage(v)
       let ret = JSON5.stringify(v)
-
       methods.on_change(ret)
     }
 
@@ -189,17 +222,33 @@ export default {
 
     function handleList1() {
       let elementTags = [
-          'codes',
-          'control',
-          'loop',
+        {
+          name: 'codes',
+          data: {
+            tagName: '代码'
+          }
+        },
+        {
+          name: 'control',
+          data: {
+            tagName: '控制'
+          }
+        },
+        {
+          name: 'loop',
+          data: {
+            tagName: '循环'
+          }
+        },
       ]
       let eleTags = elementTags.map(elementTag => {
         return {
-          name: elementTag,
+          name: elementTag.name,
           value: '',
           id: ZY.rid(),
           data: {
-            tagName: elementTag,
+            // tagName: elementTag,
+            ...elementTag.data
           },
           lib: 'control'
         }
@@ -217,6 +266,28 @@ export default {
       return ''
     }
 
+    let editorContent = createEditorConfig({
+      properties: {
+        name: {
+          type: 'string'
+        },
+        code: {
+          type: 'string',
+          ui: {
+            widget: 'CodeJsEditor',
+            widgetConfig: {}
+          }
+        }
+      },
+    }, {
+      form2: {
+      }
+    })
+
+    let computedXmlDisplay= computed(function () {
+      return buildCodeTemplate(state.value)
+    })
+
     return {
       state,
       getXML,
@@ -224,9 +295,11 @@ export default {
       onPlumbInited,
       onEleDragChange,
       buildCodeTemplate,
+      computedXmlDisplay,
       onClosed,
       onSaveLayout,
       storePrefix,
+      editorContent,
       save,
       setLayoutRef,
       handleList1,
