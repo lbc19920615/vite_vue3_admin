@@ -377,8 +377,8 @@ export default {
     }
 
     function getDepData(dep) {
-      console.log('getDepData', dep)
-      return dep.data
+      // console.log('getDepData', dep)
+      return dep?.data ?? {}
     }
 
     return {
