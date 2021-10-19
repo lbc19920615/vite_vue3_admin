@@ -1,18 +1,17 @@
 <template>
   <div class="page-home" v-if="page.inited">
-
-  <el-row>
-    <el-button type="primary" @click="save">保存</el-button>
-    <el-button><el-link type="primary" target="_blank" href="/about?page=show&storeName=111">测试</el-link></el-button>
-  </el-row>
-  <template v-if="store.model.textarea_step">
-    <HttpComponent
-        :defs="allDef"
-        :is="store.model.textarea_step"
-        :debug="false"
-    >
-    </HttpComponent>
-  </template>
+    <el-row class="a-space-mb-20">
+      <el-button type="primary" @click="save">保存</el-button>
+      <el-button><el-link type="primary" target="_blank" href="/about?page=show&storeName=111">测试</el-link></el-button>
+    </el-row>
+    <template v-if="store.model.textarea_step">
+      <HttpComponent
+          :defs="allDef"
+          :is="store.model.textarea_step"
+          :debug="false"
+      >
+      </HttpComponent>
+    </template>
   </div>
 </template>
 
