@@ -11,7 +11,7 @@
 <!--    {{modelAttr}}-->
     <el-popover class="z-easy-dialog__dialog" v-bind="modelAttr"
                v-model="opened"
-                placement="left"
+                placement="top"
     >
       <template #reference> <el-button @click="openModal">{{title}}</el-button></template>
       <div class="z-easy-dialog__content">
