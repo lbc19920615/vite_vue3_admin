@@ -56,6 +56,19 @@ const store = {
       }
       // commit('SET_EVENTS', payload)
     },
+    SetStoreLocal: ({commit, state}, payload) => {
+      let {pageStoreName} = state
+      let storePrefix = pageStoreName
+      if (payload.storeName) {
+        storePrefix = payload.storeName
+      }
+      if (payload.data) {
+        let JSON5 = ZY.JSON5
+        let cloned = JSON5.parse(JSON5.stringify(payload.data))
+        ZY_EXT.store.setItem(storePrefix, cloned)
+      }
+      // commit('SET_EVENTS', payload)
+    },
     SetStoreEvents: ({commit, state}, payload) => {
       let {pageStoreName} = state
       let JSON5 = ZY.JSON5

@@ -99,9 +99,9 @@ export default {
 
 
     page.setEventHandler({
-      ['model:update'](e) {
-        let {model, key, newVal, config} = e
-      },
+      // ['model:update'](e) {
+      //   let {model, key, newVal, config} = e
+      // },
       ['add:part'](e) {
         let { parts, partName, selfpath, process } = e
         // console.log('add:event', e, model)

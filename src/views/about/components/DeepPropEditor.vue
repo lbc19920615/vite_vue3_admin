@@ -290,18 +290,22 @@ export default {
 
     let cachedDeepEditorModel = null
     page.setEventHandler({
-      ['model:update'](e) {
+      // ['model:update'](e) {
+        // let { model, key, newVal, config } = e
+        // let oldVal = ZY.lodash.get(self.currentEditItem.data, key)
+        // if (oldVal !== newVal) {
+        //   self.currentEditItem.data = ZY.JSON5.stringify(model)
+        // }
+        // console.log('deep editor model:update', model)
+        // console.log( self.currentEditItem.data)
+      // },
+      ['model:update:all'](e) {
         let { model, key, newVal, config } = e
+        // console.log('deep editor update', model)
         let oldVal = ZY.lodash.get(self.currentEditItem.data, key)
         if (oldVal !== newVal) {
           self.currentEditItem.data = ZY.JSON5.stringify(model)
         }
-        // console.log('deep editor model:update', model)
-        // console.log( self.currentEditItem.data)
-      },
-      ['model:update:all'](e) {
-        let { model, key, newVal, config } = e
-        // console.log('deep editor update', model)
         cachedDeepEditorModel = model
       }
     })
