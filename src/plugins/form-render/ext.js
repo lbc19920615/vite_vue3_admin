@@ -10,6 +10,7 @@ import CusFormRules from "@/plugins/form-render/components/CusFormRules.vue";
 import CusComEvents from "@/plugins/form-render/components/CusComEvents.vue";
 import CusXmlShower from "@/plugins/form-render/components/CusXmlShower.vue";
 import CusCodeEditor from "@/plugins/form-render/components/CusCodeEditor.vue";
+import CusJsxEditor from "@/plugins/form-render/components/CusJsxEditor.vue";
 import CusComputed from "@/plugins/form-render/components/CusComputed.vue";
 import CusStyle from "@/plugins/form-render/components/CusStyle.vue";
 import CusInsert from "@/plugins/form-render/components/CusInsert.vue";
@@ -21,6 +22,7 @@ CustomVueComponent.register(CusStyle)
 CustomVueComponent.register(CodeJsEditor)
 CustomVueComponent.register(CusWidgetEditor)
 CustomVueComponent.register(CusCodeEditor)
+CustomVueComponent.register(CusJsxEditor)
 CustomVueComponent.register(CusInsert)
 CustomVueComponent.register(CusLayoutEditor)
 CustomVueComponent.register(CusFormAttr)

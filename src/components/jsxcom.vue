@@ -1,5 +1,5 @@
 <script lang="jsx">
-import {defineComponent, h, inject, provide} from "vue";
+import {defineComponent, provide} from "vue";
 import { createRefManager } from "@/hooks/ref";
 
 export default defineComponent( {
@@ -28,16 +28,6 @@ export default defineComponent( {
     // provide('curFormCon', curFormCon)
     let RefsManager = createRefManager({
       eventHandler({type, e}) {
-        // console.log(type, e)
-        // if (type.startsWith('self:')) {
-        //   if (type === 'self:created') {
-        //     // if (ZY.lodash.isFunction(e)) {
-        //     //   e(props.attrs)
-        //     // }
-        //   }
-        // } else {
-        //   ctx.emit('fires', {type, e})
-        // }
         ctx.emit('fires', {type, e})
         // console.log('slot-com', type, e)
       }

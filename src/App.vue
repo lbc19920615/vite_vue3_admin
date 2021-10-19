@@ -26,7 +26,7 @@ import {createRefManager} from "@/hooks/ref";
 import {useRouter} from "vue-router";
 import {fetchTwigComponent} from "@/hooks/remote.js";
 import {getDeepConfigFromLinksAndDeps} from "@/views/about/components/DeepPropEditor/utils";
-import {buildObjAttrs, buildXml} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
+import {buildObjAttrs, buildXml, buildJsx} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
 import {parseFormAttrToObj, parseRulesArrToStr, parseEventsToStr} from "@/plugins/form-render/utils/CusFormAttr";
 
 export default defineComponent({
@@ -85,6 +85,17 @@ export default defineComponent({
       //
       }
       return []
+    },
+    getCusJsxEditor(jsx) {
+      try {
+        // let o = ZY.JSON5.parse(jsx)
+        // console.log('jsx', jsx, o)
+        return this.buildJSX(jsx)
+
+      } catch (e) {
+        //
+      }
+      return ''
     },
     getCusInsertContent(str = '') {
       // console.log('getCusInsertContent', str)
@@ -191,6 +202,15 @@ ${item.value}
       if (data) {
         let obj = ZY.JSON5.parse(data)
         let str = buildXml(obj.data)
+        // console.log('buildXML', obj, str)
+        return str
+      }
+      return ''
+    },
+    buildJSX(data) {
+      if (data) {
+        let obj = ZY.JSON5.parse(data)
+        let str = buildJsx(obj.data)
         // console.log('buildXML', obj, str)
         return str
       }

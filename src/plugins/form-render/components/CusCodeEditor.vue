@@ -35,16 +35,7 @@
   .plumb-layout .item {
     min-height: auto;
   }
-  > * {
-    //background-color: transparent;
-    pointer-events: none;
-    > * {
-      pointer-events: none;
-      > * {
-        pointer-events: all;
-      }
-    }
-  }
+
   .plumb-layout__plus-btn {
     display: none;
   }
@@ -85,7 +76,7 @@
               @save-layout="onSaveLayout"
               :editor-content="editorContent"
               :handleList1="handleList1"
-              :debug="true"
+              :debug="false"
           >
             <template #plumb-layout-item-action-beforeend="scope">
 
@@ -176,7 +167,7 @@ export default {
     async function openDialog() {
       state.dialogVisible =true
 
-      await cachedArrOperate('layout-store-prefix', (arr) => {
+      await cachedArrOperate('code-store-prefix', (arr) => {
         return arr.concat([storePrefix])
       })
     }

@@ -1,5 +1,5 @@
 <template>
-  <template v-if="inited">
+  <div v-if="inited">
 <!--    {{parsedWidgetConfig}}-->
     <el-select
         v-model="state.value"
@@ -7,22 +7,35 @@
         v-bind="widgetConfig"
         @change="onSelectChange"
     >
-      <el-option vs-for="(option, key) in options"
-                 v-for="(option, key) in dxValueTemplate(widgetConfig.enums)"
-                 :label="option.label" :value="option.value"
-      ></el-option>
+      <template   v-if="parsedWidgetConfig.template">
+        <el-option vs-for="(option, key) in options"
+                   v-for="(option, key) in dxValueTemplate(widgetConfig.enums)"
+                   :label="option.label" :value="option.value"
+        >
+          <jsx-render :render="dom(option)" ></jsx-render>
+        </el-option>
+      </template>
+      <template v-else>
+        <el-option vs-for="(option, key) in options"
+                   v-for="(option, key) in dxValueTemplate(widgetConfig.enums)"
+                   :label="option.label" :value="option.value"
+        >
+        </el-option>
+      </template>
     </el-select>
-  </template>
+  </div>
 
 </template>
 
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import {createBaseCusCONFIG, createBaseCusEnumsCONFIG} from "@/plugins/z-frame/CusBaseEditor";
-import {toRaw} from "vue";
+import {toRaw, h} from "vue";
+import JsxRender from "@/components/jsxrender.vue";
 
 export default {
   name: 'CusSelect',
+  components: {JsxRender},
   mixins: [
       CustomRenderControlMixin
   ],
@@ -31,6 +44,36 @@ export default {
       props: {
         ...createBaseCusCONFIG(),
         ...createBaseCusEnumsCONFIG(),
+        // template: {
+        //   type: String,
+        //   ui: {
+        //     label: '模板',
+        //     widgetConfig:  {
+        //       type: 'textarea'
+        //     }
+        //   }
+        // },
+
+        template: {
+          type: String,
+          ui: {
+            label: '模板',
+            widgetConfig:  {
+              type: 'textarea',
+              disabled: true
+            }
+          },
+          computedProp: 'template2_jsx'
+        },
+        template2: {
+          type: String,
+          ui: {
+            label: '模板',
+            widget: 'CusJsxEditor',
+            widgetConfig:  {
+            }
+          }
+        },
         clearable: {
           type: Boolean,
           ui: {
@@ -85,7 +128,8 @@ export default {
         }
       },
       computed: {
-          enums_content: `A.getCusInsertContent(MODEL('enums2'))`
+          enums_content: `A.getCusInsertContent(MODEL('enums2'))`,
+        template2_jsx: `A.getCusJsxEditor(MODEL('template2'))`
       }
     }
   },
@@ -94,7 +138,7 @@ export default {
     let state = data()
     init(props)
 
-    console.log('selfpath', selfpath)
+    // console.log('selfpath', selfpath)
 
     let options = dxValueEval(props.ui.widgetConfig.enums)
     if (!options) {
@@ -117,13 +161,24 @@ export default {
       curFormCon.callPageEvent(`CUS_SELECT:CHANGE(${selfpath})`,sendObj, e)
     }
 
+    function dom(option) {
+      return ZY_EXT.eval5(parsedWidgetConfig.template, {
+        h,
+        OPT: function (key) {
+          return option[key]
+        },
+        option,
+      })
+    }
+
     return {
       state,
-      widgetConfig: props.ui.widgetConfig,
+      widgetConfig: props?.ui?.widgetConfig ?? {},
       options,
       onSelectChange,
       parsedWidgetConfig,
       methods,
+      dom,
       listeners,
     }
   },

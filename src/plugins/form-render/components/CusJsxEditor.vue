@@ -1,4 +1,4 @@
- <style lang="scss">
+<style lang="scss">
 [mode='xml'] {
   .plumb-layout__tools {
     display: none;
@@ -29,7 +29,7 @@
 </style>
 
 <template>
-  <div class="cus-layout-editor">
+  <div class="g-pointer-events-none-modal cus-layout-editor">
     <template v-if="inited">
       <!--    {{widgetConfig.enums}}-->
       <el-row type="flex" >
@@ -43,16 +43,18 @@
             trigger="click"
         >
           <template #reference>
-            <el-button size="small" @click="state.previewVisible = !state.previewVisible">XML预览</el-button>
+            <el-button size="small" @click="state.previewVisible = !state.previewVisible">JSX预览</el-button>
           </template>
           <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>
         </el-popover>
       </el-row>
       <el-dialog
           v-model="state.dialogVisible"
-          title="DOM编辑" width="80vw"
+          title="JSX编辑" width="80vw"
           :close-on-click-modal="false"
           @closed="onClosed"
+
+          :lock-scroll="false"
       >
         <div :mode="widgetConfig.mode">
           <el-row class="a-space-mb-10">
@@ -73,6 +75,9 @@
               @plumb-inited="onPlumbInited"
               @mode:update:all="onPlumbUpdate"
               @save-layout="onSaveLayout"
+              drawer-width="750px"
+              :editor-content="editorContent"
+              :debug="false"
           ></ZLayoutEditor>
         </div>
       </el-dialog>
@@ -81,11 +86,12 @@
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils";
 import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
 import {onBeforeUnmount} from "vue";
 import {clearPlumbLayoutStorage} from "@/plugins/PlumbLayout/mixin";
 import EwXmlShower from "@/components/Ew/EwXmlShower.vue";
+import {createEditorConfig} from "@/plugins/ComEditor/editorConfig";
 
 async function cachedArrOperate(key = '', fun = () => {} ) {
   let cachedKeys = await ZY_EXT.store.getItem(key)
@@ -98,7 +104,7 @@ async function cachedArrOperate(key = '', fun = () => {} ) {
 }
 
 export default {
-  name: 'CusLayoutEditor',
+  name: 'CusJsxEditor',
   components: {EwXmlShower, ZLayoutEditor},
   mixins: [
     CustomRenderControlMixin
@@ -110,7 +116,7 @@ export default {
     let storePrefix = ZY.rid(6);
 
     (async function () {
-      await cachedArrOperate('jsx-store-prefix', (arr) => {
+      await cachedArrOperate('layout-store-prefix', (arr) => {
 
         arr.forEach(cachedKey => {
           clearPlumbLayoutStorage(cachedKey)
@@ -142,7 +148,7 @@ export default {
     async function openDialog() {
       state.dialogVisible =true
 
-      await cachedArrOperate('jsx-store-prefix', (arr) => {
+      await cachedArrOperate('layout-store-prefix', (arr) => {
         return arr.concat([storePrefix])
       })
     }
@@ -189,7 +195,7 @@ export default {
     }
 
     function getXMLDisplay(v) {
-      return getApp().buildXML(v)
+      return getApp().buildJSX(v)
     }
 
     function onPlumbUpdate(e) {
@@ -207,6 +213,103 @@ export default {
       }
     })
 
+    let editorContent = createEditorConfig({
+      properties: {
+        // name: {
+        //   type: 'string'
+        // },
+        tagName: {
+          type: 'string',
+          ui: {
+            label: '标签名'
+          },
+        },
+        editText: {
+          type: 'string',
+          ui: {
+            label: '文字',
+            widgetConfig: {
+              type: 'textarea'
+            }
+          },
+          computedProp: 'text'
+        },
+        ui2: {
+          type: 'string',
+          ui: {
+            label: '样式配置',
+            widget: 'CusStyle'
+          }
+        },
+        styles: {
+          type: 'string',
+          computedProp: 'ui2_styles',
+          ui: {
+            styles: [
+              ['height', 0],
+              ['overflow', 'hidden'],
+            ],
+            widgetConfig: {
+              type: 'textarea',
+              disabled: true
+              // style: {height: '200px'}
+            }
+          },
+          rules: {
+            type: 'any'
+          }
+        },
+        attrs: {
+          type: 'array',
+          ui: {
+            label: '属性'
+          },
+          "items": {
+            "type": "object",
+            "properties": {
+              name: {
+                type: 'string',
+                ui: {
+                  widget: 'CusSuggest',
+                  widgetConfig: {
+                    placement: 'top'
+                  }
+                },
+              },
+              value: {
+                type: 'string',
+                ui: {
+                },
+              },
+            }
+          }
+        },
+        textContent: {
+          type: 'string',
+          // hidden: true,
+          ui: {
+            attrs: [
+              // ['style', 'height: 0; overflow: hidden']
+            ],
+            label: 'text',
+            widgetConfig: {
+              type: 'textarea',
+              rows: 1,
+              disabled: true,
+            }
+          },
+          computedProp: 'computedEditText'
+        },
+      },
+      computed: {
+        ui2_styles: `A.get_ui2_styles(MODEL('ui2'))`,
+        computedEditText: "MODEL('editText', '')",
+      }
+    }, {
+      form2: {
+      }
+    })
+
     return {
       state,
       getXML,
@@ -218,6 +321,7 @@ export default {
       storePrefix,
       save,
       setLayoutRef,
+      editorContent,
       onPlumbUpdate,
       getXMLDisplay,
       widgetConfig: props?.ui?.widgetConfig ?? {},

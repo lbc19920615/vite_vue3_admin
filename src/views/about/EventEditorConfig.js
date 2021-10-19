@@ -29,6 +29,15 @@ export default {
                         ]
                     },
                     properties: {
+                        template2: {
+                            type: String,
+                            ui: {
+                                label: '模板',
+                                widget: 'CusJsxEditor',
+                                widgetConfig:  {
+                                }
+                            }
+                        },
                         name: {
                             type: 'string',
                             wrap: 'em-props-item',

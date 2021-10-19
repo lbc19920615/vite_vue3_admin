@@ -43,7 +43,7 @@
 
         <el-drawer
             title="属性"
-            size="600px"
+            :size="drawerWidth"
             v-model="renderFormDesigner"
             :lock-scroll="false"
             destroy-on-close
@@ -181,7 +181,11 @@ let plumbLayoutMixin = {
       type: Boolean,
       default: true
     },
-    debug: Boolean
+    debug: Boolean,
+    drawerWidth: {
+      type: String,
+      default: '600px'
+    }
   },
   methods: {
     async onPlumbLayoutInit(self) {

@@ -214,10 +214,13 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
 
     let selfpath = props?.defs?.selfpath ?? ''
 
+    let widgetConfig2 = props?.ui?.widgetConfig ?? {}
+
     return {
         data,
         curFormCon,
         FROM_TYPES,
+        widgetConfig2,
         parsedWidgetConfig,
         instanse,
         selfpath,
