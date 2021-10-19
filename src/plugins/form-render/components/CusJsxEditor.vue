@@ -1,10 +1,8 @@
 <style lang="scss">
-[mode='xml'] {
+.cus-jsx-editor {
   .plumb-layout__tools {
     display: none;
   }
-}
-.cus-jsx-editor {
   .plumb-layout__item-action {
     display: flex;
     align-items: center;
