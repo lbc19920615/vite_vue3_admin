@@ -36,7 +36,8 @@ export let PROPS_DEF =function () {
                 return {}
             }
         },
-        field_uuid: String
+        form_slot_content: null,
+        field_uuid: String,
     }
 }
 

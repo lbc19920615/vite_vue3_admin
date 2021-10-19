@@ -28,7 +28,8 @@ export default defineComponent({
       }
     },
     modelValue: null,
-    field_uuid: String
+    field_uuid: String,
+    slotContent: null
   },
   emits: [
     'fchange',
@@ -40,7 +41,7 @@ export default defineComponent({
     const widgetInstance = ref()
     const widgetDef = resolveComponent(widget)
 
-    // console.log('context', props.field_uuid)
+    // console.log('context', props.slotContent)
 
     const obj = reactive({
       value: props.modelValue
@@ -80,7 +81,7 @@ export default defineComponent({
       emit('change', e)
     }
 
-    return () => (<widgetDef ui={props.ui} path_arr={props.pathArr} selfpath={props.selfpath} formpath={props.formpath} field_uuid={props.field_uuid} props={props} defs={props} part_key={props.part_key} context={props.context} rules={props.rules} ref={widgetInstance} onFchange={onFchange} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
+    return () => (<widgetDef ui={props.ui} form_slot_content={props.slotContent} path_arr={props.pathArr} selfpath={props.selfpath} formpath={props.formpath} field_uuid={props.field_uuid} props={props} defs={props} part_key={props.part_key} context={props.context} rules={props.rules} ref={widgetInstance} onFchange={onFchange} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
   }
 })
 </script>

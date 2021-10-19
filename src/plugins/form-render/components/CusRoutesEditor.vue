@@ -9,6 +9,10 @@
     display: flex;
     align-items: center;
   }
+  .plumb-layout__item-input-key {
+    width: 0;
+    overflow: hidden;
+  }
   .plumb-layout .header {
     > * {
       display: flex;
@@ -28,7 +32,7 @@
     <template v-if="inited">
       <!--    {{widgetConfig.enums}}-->
       <el-row type="flex" align="top" >
-<!--        <el-button size="small" @click="openDialog">打开编辑</el-button>-->
+        <el-button size="small" @click="openDialog">打开编辑</el-button>
 
 
 <!--        <el-popover-->
@@ -45,15 +49,15 @@
 <!--          <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>-->
 <!--        </el-popover>-->
       </el-row>
-<!--      <el-dialog-->
-<!--          custom-class="el-dialog-align-middle"-->
-<!--          v-model="state.dialogVisible"-->
-<!--          title="路由编辑" width="80vw"-->
-<!--          :close-on-click-modal="false"-->
-<!--          @closed="onClosed"-->
+      <el-dialog
+          custom-class="el-dialog-align-middle"
+          v-model="state.dialogVisible"
+          title="路由编辑" width="80vw"
+          :close-on-click-modal="false"
+          @closed="onClosed"
 
-<!--          :lock-scroll="false"-->
-<!--      >-->
+          :lock-scroll="false"
+      >
         <div :mode="widgetConfig.mode">
           <el-row class="a-space-mb-10">
             <el-button type="primary" @click="save">保存</el-button>
@@ -74,9 +78,17 @@
               :editor-content="editorContent"
               :handleList1="handleList1"
               :debug="false"
-          ></ZLayoutEditor>
+          >
+            <template #plumb-layout-item-action-beforeend="scope">
+              <div style="width: 120px">
+                {{scope.item.name ? scope.item.name : scope.item.key}}
+              </div>
+              <slot-com :defs="form_slot_content" :attrs="{}"
+                        :binds="{item: scope.item}" name="route-link-custom"></slot-com>
+            </template>
+          </ZLayoutEditor>
         </div>
-<!--      </el-dialog>-->
+      </el-dialog>
     </template>
   </div>
 </template>
@@ -109,6 +121,7 @@ export default {
     CustomRenderControlMixin
   ],
   setup(props, ctx) {
+    console.log('props', props.form_slot_content)
     let {part_key} = props.defs;
     let obj;
     let JSON5 = ZY.JSON5;

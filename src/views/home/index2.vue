@@ -10,6 +10,9 @@
           :is="store.model.textarea_step"
           :debug="false"
       >
+        <template #route-link-custom="scope">
+          {{scope}}
+        </template>
       </HttpComponent>
     </template>
   </div>
