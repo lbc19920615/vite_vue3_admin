@@ -191,7 +191,6 @@
 <script>
 
 import '@/plugins/form-render/ext.js';
-import "@/register";
 import {defineComponent, toRaw, onMounted} from "vue";
 import {
   extendControl2Page,
@@ -217,6 +216,7 @@ import 'cnchar-order'
 import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 import ZEasyModal from "@/plugins/z-frame/ZEasyModal.vue";
 import ZCascader from "@/plugins/z-frame/components/ZCascader.vue";
+import {useRouter} from "vue-router";
 globalThis.CnChar = CnChar
 
 globalThis.sortCnCharStroke = function (chars = []) {
@@ -264,8 +264,10 @@ export default defineComponent({
     FormsManaSelect,
     CustomElement,
   },
-  setup() {
-    ZY.PinYin.initDict()
+  setup(props, ctx) {
+    // ZY.PinYin.initDict()
+    let router = useRouter()
+    console.log(router)
 
     function onInited({storeControl}) {
       page.commonLoadStep(

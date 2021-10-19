@@ -73,7 +73,6 @@ export default {
 </script>
 <script setup>
 import '@/plugins/form-render/ext.js';
-import "@/register";
 import SubmitButton from "@/components/SubmitButton.vue"
 import EwSelect from "@/components/Ew/EwSelect.vue"
 import {getCurrentInstance, nextTick, onMounted, reactive, ref} from "vue";

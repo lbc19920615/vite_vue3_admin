@@ -20,7 +20,6 @@
 </template>
 <script>
 import '@/plugins/form-render/ext.js';
-import "@/register";
 import FormManager from "@/views/about/components/FormManager.vue";
 import {extendControl2Page, useAppPageControl, useControl} from "@/mixins/framework";
 import {toRaw} from "vue";
