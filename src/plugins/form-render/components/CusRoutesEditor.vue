@@ -45,15 +45,15 @@
           <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>
         </el-popover>
       </el-row>
-      <el-dialog
-          custom-class="el-dialog-align-middle"
-          v-model="state.dialogVisible"
-          title="路由编辑" width="80vw"
-          :close-on-click-modal="false"
-          @closed="onClosed"
+<!--      <el-dialog-->
+<!--          custom-class="el-dialog-align-middle"-->
+<!--          v-model="state.dialogVisible"-->
+<!--          title="路由编辑" width="80vw"-->
+<!--          :close-on-click-modal="false"-->
+<!--          @closed="onClosed"-->
 
-          :lock-scroll="false"
-      >
+<!--          :lock-scroll="false"-->
+<!--      >-->
         <div :mode="widgetConfig.mode">
           <el-row class="a-space-mb-10">
             <el-button type="primary" @click="save">保存</el-button>
@@ -76,7 +76,7 @@
               :debug="false"
           ></ZLayoutEditor>
         </div>
-      </el-dialog>
+<!--      </el-dialog>-->
     </template>
   </div>
 </template>
