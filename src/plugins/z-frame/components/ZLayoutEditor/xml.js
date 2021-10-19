@@ -378,7 +378,7 @@ function buildRootDeepTreeLink(curContext, context) {
 
   let metaStr = JSON5.stringify(metasObj, null, 2)
 
-
+  // console.log(rawData)
   let str = ''
   if (rawData.tagName) {
     if (inners.length > 0) {
@@ -410,12 +410,26 @@ ${innerStr}
       if (rawData.storeName) {
         loadComponentStr = `loadPage('${rawData.tagName}', '${rawData.storeName}')`
       }
+      // console.log(Object.keys(rawData))
+     let needStr = ''
+      if (rawData.attro) {
+        // ZY.lodash.each(rawData.attro, function (item, key) {
+        //   needStr = needStr + `${key}: ${item},\n`
+        // })
+        needStr = ZY.JSON5.stringify(rawData.attro)
+      }
+      if (needStr) {
+        needStr = needStr.slice(1)
+        needStr = needStr.slice(0, needStr.length - 1)
+        needStr = needStr  + ','
+      }
+      console.log(needStr)
       str = `
 {
   name: '${rawData.tagName}',
-  path: '${rawData.path}',
- component: ["", "${loadComponentStr}"],
-  meta: ${metaStr}
+  ${needStr}
+  meta: ${metaStr},
+  component: ['', "${loadComponentStr}"],
 }
 `
     }

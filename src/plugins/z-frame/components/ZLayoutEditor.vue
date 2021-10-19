@@ -416,9 +416,10 @@ export default defineComponent({
 
       page.setDef(config, function ({done}) {
         for (let [partName, partConfig] of Object.entries(config.defaultVal)) {
-          console.log(self.currentEditDep)
+          console.log(partName, partConfig, self.currentEditDep)
           if (self.currentEditDep.data) {
-            if (ZY.lodash.keys(self.currentEditDep.data).length > 0) {
+            let keys = ZY.lodash.keys(self.currentEditDep.data)
+            if (keys.length > 0) {
               ret.updateData(partName,  self.currentEditDep.data)
             } else {
               // console.log('partConfig', partConfig)

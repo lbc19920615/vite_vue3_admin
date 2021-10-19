@@ -229,17 +229,34 @@ export default {
             label: '标签名'
           },
         },
-        path: {
-          type: 'string',
-          ui: {
-            label: '路径'
-          },
-        },
+
         storeName: {
           type: 'string',
           ui: {
             label: '缓存prefix'
           },
+        },
+        attro: {
+          type: 'object',
+          properties: {
+            path: {
+              type: 'string',
+              ui: {
+                label: '路径'
+              },
+            },
+            hidden: {
+              type: 'boolean',
+              ui: {
+                label: '隐藏',
+                widget: 'CusSwitch',
+                widgetConfig: {}
+              },
+              rules: {
+                type: 'any'
+              }
+            },
+          }
         },
         metas: {
           type: 'array',
@@ -288,6 +305,8 @@ export default {
       }
     }, {
       form2: {
+        storeName: 'sdsdsds',
+        attro: {}
       }
     })
 
@@ -315,7 +334,8 @@ export default {
           name: 'name',
           label: '节点',
           data: {
-            tagName: 'name'
+            tagName: 'name',
+            attro: {}
           }
         },
       ]
