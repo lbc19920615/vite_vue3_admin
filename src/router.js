@@ -90,7 +90,6 @@ export const constantRouterMap = [
           title: 'Show',
         },
         component: () => loadPage('Show', VARS_PAGE_MODEL_NAME),
-        uuid: 'sdsdsdsdsdsd'
       },
     ]
   },
