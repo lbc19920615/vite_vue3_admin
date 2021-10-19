@@ -28,22 +28,22 @@
     <template v-if="inited">
       <!--    {{widgetConfig.enums}}-->
       <el-row type="flex" align="top" >
-        <el-button size="small" @click="openDialog">打开编辑</el-button>
+<!--        <el-button size="small" @click="openDialog">打开编辑</el-button>-->
 
 
-        <el-popover
-            v-model:visible="state.previewVisible"
-            placement="bottom"
-            title=""
-            :width="600"
-            trigger="click"
-        >
-          <template #reference>
-            <el-button size="small" @click="toggleVisible">ROUTES预览</el-button>
-          </template>
+<!--        <el-popover-->
+<!--            v-model:visible="state.previewVisible"-->
+<!--            placement="bottom"-->
+<!--            title=""-->
+<!--            :width="600"-->
+<!--            trigger="click"-->
+<!--        >-->
+<!--          <template #reference>-->
+<!--            <el-button size="small" @click="toggleVisible">ROUTES预览</el-button>-->
+<!--          </template>-->
 
-          <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>
-        </el-popover>
+<!--          <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>-->
+<!--        </el-popover>-->
       </el-row>
 <!--      <el-dialog-->
 <!--          custom-class="el-dialog-align-middle"-->
