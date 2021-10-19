@@ -216,7 +216,7 @@ import 'cnchar-order'
 import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 import ZEasyModal from "@/plugins/z-frame/ZEasyModal.vue";
 import ZCascader from "@/plugins/z-frame/components/ZCascader.vue";
-import {useRouter} from "vue-router";
+import {useRouter2} from "@/hooks/router";
 globalThis.CnChar = CnChar
 
 globalThis.sortCnCharStroke = function (chars = []) {
@@ -266,22 +266,27 @@ export default defineComponent({
   },
   setup(props, ctx) {
     // ZY.PinYin.initDict()
-    let router = useRouter()
-    console.log(router)
+    let { currentRoute } = useRouter2()
+    // console.log(currentRoute)
+
 
     function onInited({storeControl}) {
-      page.commonLoadStep(
-          import('./EventEditorConfig'),
-          'textarea_step',
-          {
-            async onMounted(config) {
-              // console.log('commonLoadStep onMounted')
-              let eventModel = await page.dispatchRoot('GetStoreEvents')
-              page.setPartModel(config.name, 'form2', eventModel ?? {})
-              // console.log('eventModel', config, eventModel)
+      if (!currentRoute.query.page || !currentRoute.query.storeName) {
+        alert('缺少page 或 storeName')
+      } else {
+        page.commonLoadStep(
+            import('./EventEditorConfig'),
+            'textarea_step',
+            {
+              async onMounted(config) {
+                // console.log('commonLoadStep onMounted')
+                let eventModel = await page.dispatchRoot('GetStoreEvents')
+                page.setPartModel(config.name, 'form2', eventModel ?? {})
+                // console.log('eventModel', config, eventModel)
+              }
             }
-          }
-      )
+        )
+      }
     }
     let properties =  {
       textarea_step: {

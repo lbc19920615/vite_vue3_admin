@@ -56,7 +56,7 @@ export const constantRouterMap = [
       {
         path: "about",
         name: "About",
-
+        hidden: true,
         meta: {
           title: '页面设计',
           // icon: 'shangdian'
@@ -88,6 +88,7 @@ export const constantRouterMap = [
         hidden: true,
         meta: {
           title: 'Show',
+          storeName: VARS_PAGE_MODEL_NAME
         },
         component: () => loadPage('Show', VARS_PAGE_MODEL_NAME),
       },
