@@ -156,6 +156,11 @@ a:hover {
   }
 }
 
+.el-dialog-align-middle {
+  transform: translateY(-50%);
+  top: 50%;
+}
+
 
 .cm-filed__label {
   color: var(--cm-filed__label-color, var(--el-text-color-regular))

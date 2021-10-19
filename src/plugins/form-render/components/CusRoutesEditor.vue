@@ -1,5 +1,7 @@
 <style lang="scss">
 .cus-routes-editor {
+  -moz-animation: 111;
+  --plumb-height: 560px;
   .plumb-layout__tools {
     display: none;
   }
@@ -44,6 +46,7 @@
 <!--        </el-popover>-->
       </el-row>
       <el-dialog
+          custom-class="el-dialog-align-middle"
           v-model="state.dialogVisible"
           title="路由编辑" width="80vw"
           :close-on-click-modal="false"

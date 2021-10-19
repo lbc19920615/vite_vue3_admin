@@ -1,6 +1,5 @@
 <template>
   <div class="page-home" v-if="page.inited">
-  <h3>欢迎使用</h3>
   <el-row>
     <el-button type="primary" @click="save">保存</el-button>
   </el-row>
