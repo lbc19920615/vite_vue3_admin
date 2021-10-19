@@ -3,7 +3,7 @@
 
   <el-row>
     <el-button type="primary" @click="save">保存</el-button>
-    <el-button><router-link type="primary" to="/about?page=show&storeName=111">测试</router-link></el-button>
+    <el-button><el-link type="primary" target="_blank" href="/about?page=show&storeName=111">测试</el-link></el-button>
   </el-row>
   <template v-if="store.model.textarea_step">
     <HttpComponent
