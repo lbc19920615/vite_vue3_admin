@@ -1,10 +1,8 @@
 <style lang="scss">
-[mode='xml'] {
+.cus-routes-editor {
   .plumb-layout__tools {
     display: none;
   }
-}
-.cus-jsx-editor {
   .plumb-layout__item-action {
     display: flex;
     align-items: center;
@@ -24,36 +22,30 @@
 </style>
 
 <template>
-  <div class="g-pointer-events-none-modal cus-jsx-editor">
+  <div class="g-pointer-events-none-modal cus-routes-editor">
     <template v-if="inited">
       <!--    {{widgetConfig.enums}}-->
       <el-row type="flex" align="top" >
         <el-button size="small" @click="openDialog">打开编辑</el-button>
-<!--        <z-easy-modal title="jsx" @opened="onDisplayOpened">-->
-<!--          <CodeMirror-->
-<!--              :ref="setEditorRef"-->
-<!--              theme="vscode-dark"-->
-<!--          />-->
-<!--        </z-easy-modal>-->
-        <!--      <el-button @click="getXML">获取xml</el-button>-->
 
-        <el-popover
-            v-model:visible="state.previewVisible"
-            placement="bottom"
-            title=""
-            :width="600"
-            trigger="click"
-        >
-          <template #reference>
-            <el-button size="small" @click="toggleVisible">JSX预览</el-button>
-          </template>
 
-          <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>
-        </el-popover>
+<!--        <el-popover-->
+<!--            v-model:visible="state.previewVisible"-->
+<!--            placement="bottom"-->
+<!--            title=""-->
+<!--            :width="600"-->
+<!--            trigger="click"-->
+<!--        >-->
+<!--          <template #reference>-->
+<!--            <el-button size="small" @click="toggleVisible">JSX预览</el-button>-->
+<!--          </template>-->
+
+<!--          <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>-->
+<!--        </el-popover>-->
       </el-row>
       <el-dialog
           v-model="state.dialogVisible"
-          title="JSX编辑" width="80vw"
+          title="路由编辑" width="80vw"
           :close-on-click-modal="false"
           @closed="onClosed"
 
@@ -64,10 +56,7 @@
             <el-button type="primary" @click="save">保存</el-button>
           </el-row>
           <div>
-            <!--          {{state.value}}-->
             <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>
-            <!--          <el-input type="textarea" readonly-->
-            <!--                    :value="getXMLDisplay(state.value)"></el-input>-->
           </div>
           <ZLayoutEditor
               :ref="setLayoutRef"
@@ -80,6 +69,7 @@
               @save-layout="onSaveLayout"
               drawer-width="750px"
               :editor-content="editorContent"
+              :handleList1="handleList1"
               :debug="false"
           ></ZLayoutEditor>
         </div>
@@ -110,7 +100,7 @@ async function cachedArrOperate(key = '', fun = () => {} ) {
 }
 
 export default {
-  name: 'CusJsxEditor',
+  name: 'CusRoutesEditor',
   components: {ZEasyModal, EwXmlShower, ZLayoutEditor},
   mixins: [
     CustomRenderControlMixin
@@ -122,7 +112,7 @@ export default {
     let storePrefix = ZY.rid(6);
 
     (async function () {
-      await cachedArrOperate('layout-store-prefix', (arr) => {
+      await cachedArrOperate('routes-store-prefix', (arr) => {
 
         arr.forEach(cachedKey => {
           clearPlumbLayoutStorage(cachedKey)
@@ -154,7 +144,7 @@ export default {
     async function openDialog() {
       state.dialogVisible =true
 
-      await cachedArrOperate('layout-store-prefix', (arr) => {
+      await cachedArrOperate('routes-store-prefix', (arr) => {
         return arr.concat([storePrefix])
       })
     }
@@ -205,7 +195,9 @@ export default {
     }
 
     function getXMLDisplay(v) {
-      return jsBeautify.js(getApp().buildJSX(v))
+
+      return jsBeautify.js(getApp().buildDeepTree(v))
+      // return getApp().buildDeepTree(v)
     }
 
     function onPlumbUpdate(e) {
@@ -234,45 +226,22 @@ export default {
             label: '标签名'
           },
         },
-        editText: {
+        path: {
           type: 'string',
           ui: {
-            label: '文字',
-            widgetConfig: {
-              type: 'textarea'
-            }
+            label: '路径'
           },
-          computedProp: 'text'
         },
-        ui2: {
+        storeName: {
           type: 'string',
           ui: {
-            label: '样式配置',
-            widget: 'CusStyle'
-          }
-        },
-        styles: {
-          type: 'string',
-          computedProp: 'ui2_styles',
-          ui: {
-            styles: [
-              ['height', 0],
-              ['overflow', 'hidden'],
-            ],
-            widgetConfig: {
-              type: 'textarea',
-              disabled: true
-              // style: {height: '200px'}
-            }
+            label: '缓存prefix'
           },
-          rules: {
-            type: 'any'
-          }
         },
-        attrs: {
+        metas: {
           type: 'array',
           ui: {
-            label: '属性'
+            label: 'META'
           },
           "items": {
             "type": "object",
@@ -294,25 +263,24 @@ export default {
             }
           }
         },
-        textContent: {
-          type: 'string',
-          // hidden: true,
-          ui: {
-            attrs: [
-              // ['style', 'height: 0; overflow: hidden']
-            ],
-            label: 'text',
-            widgetConfig: {
-              type: 'textarea',
-              rows: 1,
-              disabled: true,
-            }
-          },
-          computedProp: 'computedEditText'
-        },
+        // textContent: {
+        //   type: 'string',
+        //   // hidden: true,
+        //   ui: {
+        //     attrs: [
+        //       // ['style', 'height: 0; overflow: hidden']
+        //     ],
+        //     label: 'text',
+        //     widgetConfig: {
+        //       type: 'textarea',
+        //       rows: 1,
+        //       disabled: true,
+        //     }
+        //   },
+        //   computedProp: 'computedEditText'
+        // },
       },
       computed: {
-        ui2_styles: `A.get_ui2_styles(MODEL('ui2'))`,
         computedEditText: "MODEL('editText', '')",
       }
     }, {
@@ -338,6 +306,33 @@ export default {
       }, 150)
     }
 
+    function handleList1() {
+      let elementTags = [
+        {
+          name: 'name',
+          label: '节点',
+          data: {
+            tagName: 'name'
+          }
+        },
+      ]
+      let eleTags = elementTags.map(elementTag => {
+        return {
+          name: elementTag.name,
+          label: elementTag.label,
+          value: '',
+          id: ZY.rid(),
+          data: {
+            // tagName: elementTag,
+            ...elementTag.data
+          },
+          items: elementTag.items,
+          lib: 'control'
+        }
+      })
+      return eleTags
+    }
+
     return {
       state,
       getXML,
@@ -355,6 +350,7 @@ export default {
       toggleVisible,
       onPlumbUpdate,
       getXMLDisplay,
+      handleList1,
       widgetConfig: props?.ui?.widgetConfig ?? {},
       methods,
       listeners,

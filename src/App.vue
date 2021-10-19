@@ -26,7 +26,7 @@ import {createRefManager} from "@/hooks/ref";
 import {useRouter} from "vue-router";
 import {fetchTwigComponent} from "@/hooks/remote.js";
 import {getDeepConfigFromLinksAndDeps} from "@/views/about/components/DeepPropEditor/utils";
-import {buildObjAttrs, buildXml, buildJsx} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
+import {buildObjAttrs, buildXml, buildJsx, buildDeepTree} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
 import {parseFormAttrToObj, parseRulesArrToStr, parseEventsToStr} from "@/plugins/form-render/utils/CusFormAttr";
 
 export default defineComponent({
@@ -215,6 +215,43 @@ ${item.value}
         return str
       }
       return ''
+    },
+    buildDeepTree(data) {
+      if (data) {
+        let obj = ZY.JSON5.parse(data)
+        let str = buildDeepTree(obj.data)
+        // console.log('buildXML', obj, str)
+        return str
+      }
+      return ''
+    },
+    initRoutesFromJSON5(str) {
+//       let str = `{
+// name: 'main',
+// children: [{
+// name: 'Test',
+// path: '/test',
+// component: [
+// '',
+// "loadPage('Test')",
+// ],
+// meta: {
+// ssds: '111',
+// },
+// z_parent: 'main',
+// }],
+// meta: {}
+// }`
+
+
+      let obj = ZY.JSON5.parse(str, function (k, v) {
+        if (k === 'component') {
+          return new Function(v[0], v[1])
+        }
+
+        return v
+      })
+      return obj
     },
     calcBeforeAttrs(commonFormAttr, rules = [], events = []) {
       // console.log('calcBeforeAttrs', rules)

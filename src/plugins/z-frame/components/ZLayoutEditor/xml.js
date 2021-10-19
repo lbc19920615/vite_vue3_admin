@@ -312,7 +312,181 @@ export function buildJsx(data) {
     str = str + buildRootJsxLink(context[multiRoot.id], context)
   })
 
-
-  // console.log(multiRoots)
   return str
 }
+
+function buildRootDeepTreeLink(curContext, context) {
+  let {append, id} = curContext
+  let {linkFroms,links, eleDeps} = append
+  let ele = eleDeps.find(v => v.id === id)
+  // console.log('id', id, ele)
+  let {data, items} = ele
+  let rawData = toRaw(data)
+
+  let rawItems = toRaw(items)
+  let toDepContext = []
+  rawItems.forEach(rawItem => {
+    let rawItemId = rawItem.id
+    if (linkFroms.includes(rawItemId)) {
+      let link = links.find(link => link.from === rawItemId)
+      let toDepID = link.toPID
+
+      let c  = {
+        str: '',
+        id: toDepID,
+        append: append
+      }
+      // console.log(toDepID, eleDep)
+      context[toDepID] = c
+      toDepContext.push(c)
+    }
+  })
+  // console.log(toDepContext)
+
+  let innerText = ''
+  toDepContext.forEach(toDepContextItem => {
+    if (toDepContextItem) {
+      innerText = innerText + buildRootDeepTreeLink(toDepContextItem, context)
+    }
+  })
+
+  let inners = []
+  toDepContext.forEach(toDepContextItem => {
+    inners.push(
+      buildRootDeepTreeLink(toDepContextItem, context)
+    )
+  })
+
+
+  // let attrStr = buildAttrs(rawData.attrs)
+  // let afterAttrs = rawData.afterAttrs ?? ''
+  // let beforeAttrs = rawData.beforeAttrs ?? ''
+  let JSON5 = ZY.JSON5
+  let metasObj = {}
+
+
+
+  if (Array.isArray(rawData.metas)) {
+    metasObj =Object.fromEntries( rawData.metas.map(v => {
+      return [
+        v.name,
+        v.value
+      ]
+    }))
+  }
+
+
+  let metaStr = JSON5.stringify(metasObj, null, 2)
+
+
+  let str = ''
+  if (rawData.tagName) {
+    if (inners.length > 0) {
+
+      let innerStrs = []
+      inners.forEach(function (inner) {
+        // console.log(inner)
+        try {
+          let innerObj = JSON5.parse(inner)
+          innerObj.z_parent = rawData.tagName
+          innerStrs.push(JSON5.stringify(innerObj, null, 2))
+        } catch (e) {
+          console.log(e, inner)
+          innerStrs.push(JSON5.stringify({}, null, 2))
+        }
+      })
+      let innerStr = innerStrs.join(',\n');
+      str = `{
+  name: '${rawData.tagName}',
+  children: [
+${innerStr}
+],
+  meta: ${metaStr}
+}`
+    } else {
+      // str = `h('${rawData.tagName}', ${attrStr}, [${rawData.textContent ?? ''}])`
+
+      let loadComponentStr = `loadPage('${rawData.tagName}')`
+      if (rawData.storeName) {
+        loadComponentStr = `loadPage('${rawData.tagName}', '${rawData.storeName}')`
+      }
+      str = `
+{
+  name: '${rawData.tagName}',
+  path: '${rawData.path}',
+ component: ["", "${loadComponentStr}"],
+  meta: ${metaStr}
+}
+`
+    }
+    // str = `<${rawData.tagName} ${beforeAttrs} ${attrStr} ${afterAttrs}>${innerText}</${rawData.tagName}>`;
+  } else {
+    if (rawData.textContent) {
+      innerText = rawData.textContent
+    }
+    str = innerText
+  }
+  curContext.str = str
+  return str
+}
+
+export function commonBuildDeepTree(startFun) {
+  return function (data) {
+    let context = {}
+    let { deps, links } = data
+    // console.log(deps, links)
+    let eleDeps  = []
+    eleDeps = deps.filter(dep => dep.type === 'ele')
+    let multiRoots = []
+    let linkFromPIDS = links.map((item) => item.fromPID)
+    let linkToPIDS = links.map((item) => item.toPID)
+    let linkFroms = links.map((item) => item.from)
+    let append = {
+      eleDeps,
+      linkToPIDS,
+      linkFroms,
+      links,
+      linkFromPIDS
+    }
+    if (linkToPIDS.length === 0 && linkFromPIDS.length === 0) {
+      if (eleDeps.length > 0) {
+        multiRoots.push(eleDeps[0])
+        let eleDep = eleDeps[0]
+        let id = eleDep.id
+        context[id] = {
+          str: '',
+          id: eleDep.id,
+          append
+        }
+      }
+    }
+    else {
+      eleDeps.forEach((eleDep) => {
+        let id = eleDep.id
+
+        if (linkFromPIDS.includes(id) && !linkToPIDS.includes(id)) {
+          multiRoots.push(eleDep)
+          context[id] = {
+            str: '',
+            id: eleDep.id,
+            append
+          }
+        }
+
+      })
+    }
+
+    let str = ''
+
+
+    multiRoots.forEach((multiRoot) => {
+      str = str + startFun(context[multiRoot.id], context)
+    })
+
+    return str
+  }
+}
+
+export let buildDeepTree = commonBuildDeepTree(
+  buildRootDeepTreeLink
+)

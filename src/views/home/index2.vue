@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import '@/plugins/form-render/ext.js';
 import HttpComponent from "@/components/HttpComponent.vue";
 import {defineComponent} from "vue";
 import {extendControl2Page, PageControlMixin, useAppPageControl, useControl} from "@/mixins/framework";

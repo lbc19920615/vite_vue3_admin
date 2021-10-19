@@ -15,9 +15,9 @@ function createPage() {
   }
 }
 
-export async function loadPage(name) {
+export async function loadPage(name, storeName = VARS_PAGE_MODEL_NAME) {
   return await loadComponent( async () => {
-    let currentData = await ZY_EXT.store.getItem(VARS_PAGE_MODEL_NAME)
+    let currentData = await ZY_EXT.store.getItem(storeName)
     // console.log(currentData)
     // let res = await globalThis.importScripts('./configs/page1.js')
     let res = createPage()

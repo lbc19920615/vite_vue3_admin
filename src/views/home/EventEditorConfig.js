@@ -42,7 +42,7 @@ export default {
                             type: 'string',
                             wrap: 'em-props-item',
                             ui: {
-                                label: '页面名称',
+                                label: 'APP名称',
                                 attrs: [
                                     ['scroll-control', 'page_name'],
                                 ],
@@ -55,7 +55,15 @@ export default {
                                 }
                             }
                         },
-
+                        routers: {
+                            type: String,
+                            ui: {
+                                label: '路由',
+                                widget: 'CusRoutesEditor',
+                                widgetConfig:  {
+                                }
+                            }
+                        },
                     }
                 },
                 computed: {

@@ -4,6 +4,7 @@ import { createWebHistory, createRouter, createRouterMatcher } from "vue-router"
 import Layout from './views/layout/Layout.vue'
 import {loadPage} from "@/remote";
 import store from "@/store";
+import {VARS_PAGE_MODEL_NAME} from "@/vars";
 
 export const constantRouterMap = [
   {
@@ -88,7 +89,7 @@ export const constantRouterMap = [
         meta: {
           title: 'Show',
         },
-        component: () => loadPage('Show'),
+        component: () => loadPage('Show', VARS_PAGE_MODEL_NAME),
         uuid: 'sdsdsdsdsdsd'
       },
     ]
