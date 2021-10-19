@@ -32,9 +32,16 @@
   <div class="g-pointer-events-none-modal cus-layout-editor">
     <template v-if="inited">
       <!--    {{widgetConfig.enums}}-->
-      <el-row type="flex" >
+      <el-row type="flex" align="top" >
         <el-button size="small" @click="openDialog">打开编辑</el-button>
+<!--        <z-easy-modal title="jsx" @opened="onDisplayOpened">-->
+<!--          <CodeMirror-->
+<!--              :ref="setEditorRef"-->
+<!--              theme="vscode-dark"-->
+<!--          />-->
+<!--        </z-easy-modal>-->
         <!--      <el-button @click="getXML">获取xml</el-button>-->
+
         <el-popover
             v-model:visible="state.previewVisible"
             placement="bottom"
@@ -45,11 +52,7 @@
           <template #reference>
             <el-button size="small" @click="toggleVisible">JSX预览</el-button>
           </template>
-<!--          <CodeMirror-->
-<!--              :ref="setEditorRef"-->
-<!--              :value="getXMLDisplay(state.value)"-->
-<!--              theme="vscode-dark"-->
-<!--          />-->
+
           <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>
         </el-popover>
       </el-row>
@@ -98,6 +101,7 @@ import {onBeforeUnmount} from "vue";
 import {clearPlumbLayoutStorage} from "@/plugins/PlumbLayout/mixin";
 import EwXmlShower from "@/components/Ew/EwXmlShower.vue";
 import {createEditorConfig} from "@/plugins/ComEditor/editorConfig";
+import ZEasyModal from "@/plugins/z-frame/ZEasyModal.vue";
 
 
 async function cachedArrOperate(key = '', fun = () => {} ) {
@@ -112,7 +116,7 @@ async function cachedArrOperate(key = '', fun = () => {} ) {
 
 export default {
   name: 'CusJsxEditor',
-  components: { EwXmlShower, ZLayoutEditor},
+  components: {ZEasyModal, EwXmlShower, ZLayoutEditor},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -333,6 +337,12 @@ export default {
       }
     }
 
+    function onDisplayOpened() {
+      setTimeout(() => {
+        editorRef.setModel(getXMLDisplay(state.value))
+      }, 150)
+    }
+
     return {
       state,
       getXML,
@@ -344,6 +354,7 @@ export default {
       storePrefix,
       save,
       setLayoutRef,
+      onDisplayOpened,
       setEditorRef,
       editorContent,
       toggleVisible,

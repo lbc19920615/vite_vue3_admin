@@ -24,6 +24,9 @@
 <script>
 export default {
   name: 'ZEasyModal',
+  emits: [
+    'opened'
+  ],
   props: {
     title: {
       type: String,
@@ -38,6 +41,9 @@ export default {
   methods: {
     openModal() {
       this.opened = !this.opened
+      if (this.opened) {
+        this.$emit('opened')
+      }
     },
     getStyle() {
       if (this.opened ) {
