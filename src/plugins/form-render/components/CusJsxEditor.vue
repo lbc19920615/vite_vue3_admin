@@ -43,8 +43,13 @@
             trigger="click"
         >
           <template #reference>
-            <el-button size="small" @click="state.previewVisible = !state.previewVisible">JSX预览</el-button>
+            <el-button size="small" @click="toggleVisible">JSX预览</el-button>
           </template>
+<!--          <CodeMirror-->
+<!--              :ref="setEditorRef"-->
+<!--              :value="getXMLDisplay(state.value)"-->
+<!--              theme="vscode-dark"-->
+<!--          />-->
           <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>
         </el-popover>
       </el-row>
@@ -86,12 +91,14 @@
 </template>
 
 <script>
+import jsBeautify from 'js-beautify'
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils";
 import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
 import {onBeforeUnmount} from "vue";
 import {clearPlumbLayoutStorage} from "@/plugins/PlumbLayout/mixin";
 import EwXmlShower from "@/components/Ew/EwXmlShower.vue";
 import {createEditorConfig} from "@/plugins/ComEditor/editorConfig";
+
 
 async function cachedArrOperate(key = '', fun = () => {} ) {
   let cachedKeys = await ZY_EXT.store.getItem(key)
@@ -105,7 +112,7 @@ async function cachedArrOperate(key = '', fun = () => {} ) {
 
 export default {
   name: 'CusJsxEditor',
-  components: {EwXmlShower, ZLayoutEditor},
+  components: { EwXmlShower, ZLayoutEditor},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -162,6 +169,10 @@ export default {
 
     }
 
+    let editorRef = null
+    function setEditorRef(target, options) {
+      editorRef = target
+    }
 
     let layoutRef = null
     function setLayoutRef(target, options) {
@@ -195,7 +206,7 @@ export default {
     }
 
     function getXMLDisplay(v) {
-      return getApp().buildJSX(v)
+      return jsBeautify.js(getApp().buildJSX(v))
     }
 
     function onPlumbUpdate(e) {
@@ -310,6 +321,18 @@ export default {
       }
     })
 
+    function toggleVisible() {
+      // state.previewVisible = !state.previewVisible
+      if (state.previewVisible) {
+        state.previewVisible = false
+      } else {
+        state.previewVisible = true
+        setTimeout(() => {
+          editorRef.setModel(getXMLDisplay(state.value))
+        }, 150)
+      }
+    }
+
     return {
       state,
       getXML,
@@ -321,7 +344,9 @@ export default {
       storePrefix,
       save,
       setLayoutRef,
+      setEditorRef,
       editorContent,
+      toggleVisible,
       onPlumbUpdate,
       getXMLDisplay,
       widgetConfig: props?.ui?.widgetConfig ?? {},
