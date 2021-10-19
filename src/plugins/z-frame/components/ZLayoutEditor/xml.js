@@ -423,7 +423,7 @@ ${innerStr}
         needStr = needStr.slice(0, needStr.length - 1)
         needStr = needStr  + ','
       }
-      console.log(needStr)
+      // console.log(needStr)
       str = `
 {
   name: '${rawData.tagName}',
