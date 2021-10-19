@@ -270,7 +270,7 @@ $sel: "." + $tag;
                       <el-input class="plumb-layout__item-input-key"
                                 :readonly="dep.keyReadonly"
                                 v-model="item.key" placeholder="请填写key"></el-input>
-                      <slot name="item-action-beforeend" v-bind="{item}"></slot>
+                      <slot name="item-action-beforeend" v-bind="{item, dep}"></slot>
                     </div>
                     <template v-if="!dep.noToolsRemove">
                       <el-button size="mini" @click="deleteItem(dep, item, index)">

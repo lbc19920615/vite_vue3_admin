@@ -32,7 +32,7 @@
     <template v-if="inited">
       <!--    {{widgetConfig.enums}}-->
       <el-row type="flex" align="top" >
-        <el-button size="small" @click="openDialog">打开编辑</el-button>
+<!--        <el-button size="small" @click="openDialog">打开编辑</el-button>-->
 
 
 <!--        <el-popover-->
@@ -49,15 +49,16 @@
 <!--          <EwXmlShower :value="getXMLDisplay(state.value)"></EwXmlShower>-->
 <!--        </el-popover>-->
       </el-row>
-      <el-dialog
-          custom-class="el-dialog-align-middle"
-          v-model="state.dialogVisible"
-          title="路由编辑" width="80vw"
-          :close-on-click-modal="false"
-          @closed="onClosed"
+<!--      <el-dialog-->
+<!--          custom-class="el-dialog-align-middle"-->
+<!--          v-model="state.dialogVisible"-->
+<!--          title="路由编辑" width="80vw"-->
+<!--          :close-on-click-modal="false"-->
+<!--          @closed="onClosed"-->
 
-          :lock-scroll="false"
-      >
+<!--          :lock-scroll="false"-->
+<!--      >-->
+      <template v-if="state.dialogVisible">
         <div :mode="widgetConfig.mode">
           <el-row class="a-space-mb-10">
             <el-button type="primary" @click="save">保存</el-button>
@@ -80,22 +81,23 @@
               :debug="false"
           >
             <template #plumb-layout-item-action-beforeend="scope">
-              <div style="width: 120px">
-                {{scope.item.name ? scope.item.name : scope.item.key}}
-              </div>
+<!--              <div style="width: 120px">-->
+<!--                {{scope.item.name ? scope.item.name : scope.item.key}}-->
+<!--              </div>-->
               <slot-com :defs="form_slot_content" :attrs="{}"
-                        :binds="{item: scope.item}" name="route-link-custom"></slot-com>
+                        :binds="{item: scope.item, dep: scope.dep, depData: getDepData(scope.dep)}" name="route-link-custom"></slot-com>
             </template>
           </ZLayoutEditor>
         </div>
-      </el-dialog>
+      </template>
+<!--      </el-dialog>-->
     </template>
   </div>
 </template>
 
 <script>
 import jsBeautify from 'js-beautify'
-import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils";
+import {CustomRenderControlMixin, defineCustomRender, CUSOM_RENDER_FROM_TYPES} from "@/plugins/form-render/utils";
 import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
 import {onBeforeUnmount} from "vue";
 import {clearPlumbLayoutStorage} from "@/plugins/PlumbLayout/mixin";
@@ -140,14 +142,19 @@ export default {
 
     let locks = true
     let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
-      handleValueInit(newVal) {
+      handleValueInit(newVal, from) {
         if (!newVal) {
           newVal = '{data: {links: [], deps: []}, posMap: {}}'
         }
         if (newVal) {
           obj = JSON5.parse(newVal)
         }
-        // openDialog()
+        if (from === CUSOM_RENDER_FROM_TYPES.init) {
+          setTimeout(() => {
+            console.log('openDialog')
+            openDialog()
+          }, 300)
+        }
         return newVal
       }
     })
@@ -369,6 +376,11 @@ export default {
       return eleTags
     }
 
+    function getDepData(dep) {
+      console.log('getDepData', dep)
+      return dep.data
+    }
+
     return {
       state,
       getXML,
@@ -385,6 +397,7 @@ export default {
       editorContent,
       toggleVisible,
       onPlumbUpdate,
+      getDepData,
       getXMLDisplay,
       handleList1,
       widgetConfig: props?.ui?.widgetConfig ?? {},
