@@ -75,7 +75,7 @@ export default defineComponent({
     })
 
     async function save() {
-      await page.dispatchRoot('SetStoreEvents', {
+      await page.dispatchRoot('SetStoreLocal', {
         storeName: pageStoreName,
         data: cachedPageControlModel
       })
