@@ -619,7 +619,7 @@ export default defineComponent({
       },
       ['preview']() {
         let url = getPreviewUrl()
-        let manager = ZY.BOM.createWindowManager({url: url, target: 'previewWin'})
+        let manager = ZY.BOM.createWindowManager({url: url, target: 'previewWin-' + global_pageStoreName})
         manager.open({
           left: window.innerWidth * .1,
           top: 50,
