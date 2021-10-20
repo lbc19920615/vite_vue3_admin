@@ -14,7 +14,9 @@ export default {
   },
   methods: {
    open() {
-     let manager = ZY.BOM.createWindowManager({url: this.url})
+     let manager = ZY.BOM.createWindowManager({
+       url: this.url, target: 'zWindow'
+     })
      let ClientRect = this.$el.getBoundingClientRect();
      // console.log(ClientRect)
       manager.open({
