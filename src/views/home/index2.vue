@@ -14,7 +14,7 @@
         <template #route-link-custom="scope">
           {{scope.depData.tagName}}
           <el-button><el-link type="primary" target="_blank"
-                              href="/about?page=show&storeName=111">测试</el-link></el-button>
+                              :href="getHref(scope)">编辑</el-link></el-button>
         </template>
       </HttpComponent>
     </template>
@@ -88,8 +88,13 @@ export default defineComponent({
       })
     }
 
+    function getHref(scope) {
+      return '/about?page=show&storeName=111'
+    }
+
     return {
       store: page.store,
+      getHref,
       page,
       allDef: page.defMap,
       save,
