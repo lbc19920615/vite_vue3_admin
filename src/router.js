@@ -103,6 +103,10 @@ export const constantRouterMap = [
   // }
 ];
 
+const constantRouterMapNames = constantRouterMap.map(v => {
+  return v.name
+})
+
 export let asyncRouterMap = [
   // {
   //   z_parent: 'main',
@@ -145,16 +149,30 @@ export function addRoute(args) {
   }
 }
 
+function appendConfigRouters(routes = []) {
+  asyncRouterMap = asyncRouterMap.concat(routes).filter(v => {
+    return v.path
+  })
+}
+
 export async function init_router_start() {
 
   let APP_MODEL =  await ZY_EXT.store.getItem(APP_STORE_NAME)
   try {
     let str = app_buildDeepTree(APP_MODEL.routers)
-    let obj = app_initRoutesFromJSON5(str)
-    asyncRouterMap = asyncRouterMap.concat(obj.children).filter(v => {
-      return v.path
+    let arr = app_initRoutesFromJSON5(str)
+    arr.forEach((obj) => {
+      if (!constantRouterMapNames.includes(obj.name)) {
+        let clone = ZY.JSON5.parse(ZY.JSON5.stringify(obj))
+        delete clone.children
+        console.log(clone)
+        appendConfigRouters([clone])
+      }
+      if (Array.isArray(obj.children)) {
+        appendConfigRouters(obj.children)
+      }
     })
-    // console.log(asyncRouterMap[0].component.toString())
+    console.log(asyncRouterMap)
   } catch (e) {
     console.log(e)
   }

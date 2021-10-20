@@ -380,6 +380,23 @@ function buildRootDeepTreeLink(curContext, context) {
 
   // console.log(rawData)
   let str = ''
+
+  let needStr = ''
+  if (rawData.attro) {
+    // ZY.lodash.each(rawData.attro, function (item, key) {
+    //   needStr = needStr + `${key}: ${item},\n`
+    // })
+    needStr = ZY.JSON5.stringify(rawData.attro)
+  }
+  if (needStr) {
+    needStr = needStr.slice(1)
+    needStr = needStr.slice(0, needStr.length - 1)
+    if (needStr) {
+
+      needStr = needStr  + ','
+    }
+  }
+
   if (rawData.tagName) {
     if (inners.length > 0) {
 
@@ -401,6 +418,7 @@ function buildRootDeepTreeLink(curContext, context) {
   children: [
 ${innerStr}
 ],
+${needStr}
   meta: ${metaStr}
 }`
     } else {
@@ -411,21 +429,7 @@ ${innerStr}
         loadComponentStr = `loadPage('${rawData.page}', '${rawData.storeName}')`
       }
       // console.log(Object.keys(rawData))
-     let needStr = ''
-      if (rawData.attro) {
-        // ZY.lodash.each(rawData.attro, function (item, key) {
-        //   needStr = needStr + `${key}: ${item},\n`
-        // })
-        needStr = ZY.JSON5.stringify(rawData.attro)
-      }
-      if (needStr) {
-        needStr = needStr.slice(1)
-        needStr = needStr.slice(0, needStr.length - 1)
-        if (needStr) {
 
-          needStr = needStr  + ','
-        }
-      }
       // console.log(needStr)
       str = `
 {
@@ -447,7 +451,7 @@ ${innerStr}
   return str
 }
 
-export function commonBuildDeepTree(startFun) {
+export function commonBuildDeepTree(startFun, {handleStr}) {
   return function (data) {
     let context = {}
     let { deps, links } = data
@@ -494,16 +498,25 @@ export function commonBuildDeepTree(startFun) {
     }
 
     let str = ''
+    let mutlis = []
 
 
     multiRoots.forEach((multiRoot) => {
-      str = str + startFun(context[multiRoot.id], context)
+      mutlis.push(startFun(context[multiRoot.id], context))
     })
+
+    str = handleStr(mutlis)
 
     return str
   }
 }
 
 export let buildDeepTree = commonBuildDeepTree(
-  buildRootDeepTreeLink
+  buildRootDeepTreeLink,
+  {
+    handleStr(mutlis) {
+      // console.log(mutlis)
+      return '[' + mutlis.join('\n,\n') + ']'
+    }
+  }
 )
