@@ -1,6 +1,7 @@
 <template>
   <div class="page-home" v-if="page.inited">
     <el-row class="a-space-mb-20">
+      <el-button type="primary" @click="page.callEvent('call:save:file')">保存文件</el-button>
       <el-button type="primary" @click="save">保存</el-button>
 <!--      <el-button><el-link type="primary" target="_blank"-->
 <!--                          href="/about?page=show&storeName=111">测试</el-link></el-button>-->
@@ -25,6 +26,7 @@ import '@/plugins/form-render/ext.js';
 import HttpComponent from "@/components/HttpComponent.vue";
 import {defineComponent} from "vue";
 import {extendControl2Page, PageControlMixin, useAppPageControl, useControl} from "@/mixins/framework";
+import {APP_STORE_NAME} from "@/vars";
 export default defineComponent({
   components: {HttpComponent},
   mixins: [
@@ -35,7 +37,7 @@ export default defineComponent({
     }
   },
   setup() {
-    const pageStoreName = 'home-index-store'
+    const pageStoreName = APP_STORE_NAME
     function onInited({storeControl}) {
       page.commonLoadStep(
           import('./EventEditorConfig.js'),
@@ -78,6 +80,11 @@ export default defineComponent({
           cachedPageControlModel = model
         }
       },
+      ['call:save:file'](e) {
+        if (cachedPageControlModel) {
+          ZY_EXT.saveDesignFile({fileName: cachedPageControlModel.name, data: cachedPageControlModel, prefix: 'app_'})
+        }
+      }
     })
 
     async function save() {

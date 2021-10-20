@@ -272,8 +272,8 @@ export default defineComponent({
     let global_pageStoreName
 
     function onInited({storeControl}) {
-      if (!currentRoute.query.page || !currentRoute.query.storeName) {
-        alert('缺少page 或 storeName')
+      if (!currentRoute.query.page) {
+        alert('缺少page')
       } else {
         global_pageStoreName = currentRoute.query.storeName ?? VARS_PAGE_MODEL_NAME
         page.commonLoadStep(

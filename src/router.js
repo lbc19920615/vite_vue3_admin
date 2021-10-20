@@ -4,7 +4,9 @@ import { createWebHistory, createRouter, createRouterMatcher } from "vue-router"
 import Layout from './views/layout/Layout.vue'
 import {loadPage} from "@/remote";
 import store from "@/store";
-import {VARS_PAGE_MODEL_NAME} from "@/vars";
+import {VARS_PAGE_MODEL_NAME, APP_STORE_NAME} from "@/vars";
+import {app_buildDeepTree, app_initRoutesFromJSON5} from "@/hooks/app";
+
 
 export const constantRouterMap = [
   {
@@ -102,17 +104,16 @@ export const constantRouterMap = [
 ];
 
 export const asyncRouterMap = [
-  // {
-  //   z_parent: 'main',
-  //   path: "show/:name",
-  //   name: "Show",
-  //   // hidden: true,
-  //   meta: {
-  //     title: 'Show',
-  //   },
-  //   component: () => loadPage('Show'),
-  //   uuid: 'sdsdsdsdsdsd'
-  // },
+  {
+    z_parent: 'main',
+    path: "name/:name",
+    name: "name",
+    // hidden: true,
+    meta: {
+      title: 'Name',
+    },
+    component: () => loadPage('Show'),
+  },
   // {
   //   z_parent: 'main',
   //   path: "form",
@@ -144,7 +145,16 @@ export function addRoute(args) {
   }
 }
 
-(async () => {
+export async function init_router_start() {
+
+  let APP_MODEL =  await ZY_EXT.store.getItem(APP_STORE_NAME)
+  try {
+    let str = app_buildDeepTree(APP_MODEL.routers)
+    let obj = app_initRoutesFromJSON5(str)
+    console.log(obj)
+  } catch (e) {
+    console.log(e)
+  }
 
   let routes = await store.dispatch('GenerateRoutes', {
     roles: ['admin']
@@ -153,7 +163,8 @@ export function addRoute(args) {
     // console.log(routeEntry)
     addRoute(routeEntry)
   })
-})()
+}
+
 
 // let metaCache = new Map()
 let locks = false

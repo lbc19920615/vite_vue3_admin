@@ -109,7 +109,7 @@ NodeDefMap.register(modalNodePlugin)
 import * as eleNodePlugin from '@/plugins/ComEditor/eleNode.plugin'
 NodeDefMap.register(eleNodePlugin)
 
-import router from './router'
+import router, {init_router_start} from './router'
 import store from './store'
 
 import icons from './icons/index'
@@ -135,6 +135,8 @@ initMathJax()
 globalThis.chinaAreaManager = await initChinaAreaManangerFromUrl(
     ZY.REMOTE_ORIGIN + '/public/area.json'
 )
+
+await init_router_start()
 
 window.startApp = function () {
 
