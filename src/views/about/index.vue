@@ -210,41 +210,41 @@ import {FormsLayout} from "@/plugins/z-frame/formsLayout";
 import 'ipinyinjs'
 import EwMathJax from "@/components/Ew/EwMathjax.vue";
 
-import CnChar from 'cnchar'
-import 'cnchar-poly'
-import 'cnchar-order'
+// import CnChar from 'cnchar'
+// import 'cnchar-poly'
+// import 'cnchar-order'
 import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 import ZEasyModal from "@/plugins/z-frame/ZEasyModal.vue";
 import ZCascader from "@/plugins/z-frame/components/ZCascader.vue";
 import {useRouter2} from "@/hooks/router";
 import {VARS_PAGE_MODEL_NAME} from "@/vars";
-globalThis.CnChar = CnChar
-
-globalThis.sortCnCharStroke = function (chars = []) {
-  return chars.sort(function (a, b) {
-    let ret =  CnChar.compareStroke(a, b)
-    if (ret === 'more') {
-      return 1
-    }
-    else if (ret === 'less') {
-      return -1
-    }
-    return 0
-  })
-}
-
-globalThis.sortCnCharSpell = function (chars = []) {
-  return chars.sort(function (a, b) {
-    let ret =  CnChar.compareSpell(a, b)
-    if (ret === 'more') {
-      return 1
-    }
-    else if (ret === 'less') {
-      return -1
-    }
-    return 0
-  })
-}
+// globalThis.CnChar = CnChar
+//
+// globalThis.sortCnCharStroke = function (chars = []) {
+//   return chars.sort(function (a, b) {
+//     let ret =  CnChar.compareStroke(a, b)
+//     if (ret === 'more') {
+//       return 1
+//     }
+//     else if (ret === 'less') {
+//       return -1
+//     }
+//     return 0
+//   })
+// }
+//
+// globalThis.sortCnCharSpell = function (chars = []) {
+//   return chars.sort(function (a, b) {
+//     let ret =  CnChar.compareSpell(a, b)
+//     if (ret === 'more') {
+//       return 1
+//     }
+//     else if (ret === 'less') {
+//       return -1
+//     }
+//     return 0
+//   })
+// }
 
 
 export default defineComponent({
