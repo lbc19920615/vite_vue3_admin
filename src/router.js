@@ -154,7 +154,7 @@ export async function init_router_start() {
     asyncRouterMap = asyncRouterMap.concat(obj.children).filter(v => {
       return v.path
     })
-    console.log(asyncRouterMap[0].component.toString())
+    // console.log(asyncRouterMap[0].component.toString())
   } catch (e) {
     console.log(e)
   }
