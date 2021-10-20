@@ -172,7 +172,7 @@ export async function init_router_start() {
         appendConfigRouters(obj.children)
       }
     })
-    console.log(asyncRouterMap)
+    // console.log(asyncRouterMap)
   } catch (e) {
     console.log(e)
   }
