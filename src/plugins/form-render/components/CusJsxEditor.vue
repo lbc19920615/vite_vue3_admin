@@ -121,7 +121,7 @@ export default {
     let storePrefix = ZY.rid(6);
 
     (async function () {
-      await cachedArrOperate(OPERATE_PREFIX (arr) => {
+      await cachedArrOperate(OPERATE_PREFIX, (arr) => {
 
         arr.forEach(cachedKey => {
           clearPlumbLayoutStorage(cachedKey)
@@ -153,7 +153,7 @@ export default {
     async function openDialog() {
       state.dialogVisible =true
 
-      await cachedArrOperate(OPERATE_PREFIX (arr) => {
+      await cachedArrOperate(OPERATE_PREFIX, (arr) => {
         return arr.concat([storePrefix])
       })
     }
