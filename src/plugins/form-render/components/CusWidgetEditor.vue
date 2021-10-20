@@ -314,7 +314,7 @@ export default {
         type: 'object',
         ui: {
           attrs: [
-            ['label-width', '100px']
+            ['label-width', '120px']
           ],
         },
         properties,
