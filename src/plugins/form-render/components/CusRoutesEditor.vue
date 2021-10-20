@@ -85,7 +85,7 @@
 <!--                {{scope.item.name ? scope.item.name : scope.item.key}}-->
 <!--              </div>-->
               <slot-com :defs="form_slot_content" :attrs="{}"
-                        :binds="{item: scope.item, dep: scope.dep, depData: getDepData(scope.dep)}" name="route-link-custom"></slot-com>
+                        :binds="{item: scope.item, dep: scope.dep}" name="route-link-custom"></slot-com>
             </template>
           </ZLayoutEditor>
         </div>
@@ -116,6 +116,8 @@ async function cachedArrOperate(key = '', fun = () => {} ) {
   await ZY_EXT.store.setItem(key, cachedKeys)
 }
 
+const OPERATE_PREFIX = 'routes-store-prefix'
+
 export default {
   name: 'CusRoutesEditor',
   components: {ZEasyModal, EwXmlShower, ZLayoutEditor},
@@ -130,7 +132,7 @@ export default {
     let storePrefix = ZY.rid(6);
 
     (async function () {
-      await cachedArrOperate('routes-store-prefix', (arr) => {
+      await cachedArrOperate(OPERATE_PREFIX, (arr) => {
 
         arr.forEach(cachedKey => {
           clearPlumbLayoutStorage(cachedKey)
@@ -153,7 +155,7 @@ export default {
           setTimeout(() => {
             console.log('openDialog')
             openDialog()
-          }, 300)
+          }, 600)
         }
         return newVal
       }
@@ -167,7 +169,7 @@ export default {
     async function openDialog() {
       state.dialogVisible =true
 
-      await cachedArrOperate('routes-store-prefix', (arr) => {
+      await cachedArrOperate(OPERATE_PREFIX, (arr) => {
         return arr.concat([storePrefix])
       })
     }
@@ -233,7 +235,7 @@ export default {
 
     onBeforeUnmount(() => {
       if (layoutRef) {
-
+        console.log('clearLayoutStorage')
         layoutRef.clearLayoutStorage()
       }
     })
@@ -376,10 +378,6 @@ export default {
       return eleTags
     }
 
-    function getDepData(dep) {
-      // console.log('getDepData', dep)
-      return dep?.data ?? {}
-    }
 
     return {
       state,
@@ -397,7 +395,6 @@ export default {
       editorContent,
       toggleVisible,
       onPlumbUpdate,
-      getDepData,
       getXMLDisplay,
       handleList1,
       widgetConfig: props?.ui?.widgetConfig ?? {},

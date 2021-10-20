@@ -96,6 +96,7 @@ import EwXmlShower from "@/components/Ew/EwXmlShower.vue";
 import {createEditorConfig} from "@/plugins/ComEditor/editorConfig";
 import ZEasyModal from "@/plugins/z-frame/ZEasyModal.vue";
 
+const OPERATE_PREFIX = 'jsx-store-prefix'
 
 async function cachedArrOperate(key = '', fun = () => {} ) {
   let cachedKeys = await ZY_EXT.store.getItem(key)
@@ -120,7 +121,7 @@ export default {
     let storePrefix = ZY.rid(6);
 
     (async function () {
-      await cachedArrOperate('layout-store-prefix', (arr) => {
+      await cachedArrOperate(OPERATE_PREFIX (arr) => {
 
         arr.forEach(cachedKey => {
           clearPlumbLayoutStorage(cachedKey)
@@ -152,7 +153,7 @@ export default {
     async function openDialog() {
       state.dialogVisible =true
 
-      await cachedArrOperate('layout-store-prefix', (arr) => {
+      await cachedArrOperate(OPERATE_PREFIX (arr) => {
         return arr.concat([storePrefix])
       })
     }

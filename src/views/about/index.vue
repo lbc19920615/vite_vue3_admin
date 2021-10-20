@@ -217,6 +217,7 @@ import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 import ZEasyModal from "@/plugins/z-frame/ZEasyModal.vue";
 import ZCascader from "@/plugins/z-frame/components/ZCascader.vue";
 import {useRouter2} from "@/hooks/router";
+import {VARS_PAGE_MODEL_NAME} from "@/vars";
 globalThis.CnChar = CnChar
 
 globalThis.sortCnCharStroke = function (chars = []) {
@@ -268,19 +269,22 @@ export default defineComponent({
     // ZY.PinYin.initDict()
     let { currentRoute } = useRouter2()
     // console.log(currentRoute)
-
+    let global_pageStoreName
 
     function onInited({storeControl}) {
       if (!currentRoute.query.page || !currentRoute.query.storeName) {
         alert('缺少page 或 storeName')
       } else {
+        global_pageStoreName = currentRoute.query.storeName ?? VARS_PAGE_MODEL_NAME
         page.commonLoadStep(
             import('./EventEditorConfig'),
             'textarea_step',
             {
               async onMounted(config) {
                 // console.log('commonLoadStep onMounted')
-                let eventModel = await page.dispatchRoot('GetStoreEvents')
+                let eventModel = await page.dispatchRoot('GetStoreEvents', {
+                  storeName: global_pageStoreName
+                })
                 page.setPartModel(config.name, 'form2', eventModel ?? {})
                 // console.log('eventModel', config, eventModel)
               }
@@ -368,7 +372,10 @@ export default defineComponent({
       async ['load:file'](e) {
         let obj = await ZY_EXT.fileOpenJSON5()
         if (obj.data) {
-          await page.dispatchRoot('SetStoreEvents', obj.data)
+          await page.dispatchRoot('SetStoreLocal', {
+            storeName: global_pageStoreName,
+            data: obj.data
+          })
           await ZY.sleep(300)
         }
         if (obj.layout) {

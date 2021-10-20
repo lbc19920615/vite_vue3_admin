@@ -122,6 +122,8 @@ async function cachedArrOperate(key = '', fun = () => {} ) {
   await ZY_EXT.store.setItem(key, cachedKeys)
 }
 
+const OPERATE_PREFIX = 'code-store-prefix'
+
 export default {
   name: 'CusCodeEditor',
   components: {EwXmlShower, ZLayoutEditor},
@@ -135,7 +137,7 @@ export default {
     let storePrefix = ZY.rid(6);
 
     (async function () {
-      await cachedArrOperate('code-store-prefix', (arr) => {
+      await cachedArrOperate(OPERATE_PREFIX, (arr) => {
 
         arr.forEach(cachedKey => {
           clearPlumbLayoutStorage(cachedKey)
@@ -167,7 +169,7 @@ export default {
     async function openDialog() {
       state.dialogVisible =true
 
-      await cachedArrOperate('code-store-prefix', (arr) => {
+      await cachedArrOperate(OPERATE_PREFIX, (arr) => {
         return arr.concat([storePrefix])
       })
     }

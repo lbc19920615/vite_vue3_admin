@@ -12,7 +12,6 @@
           :debug="false"
       >
         <template #route-link-custom="scope">
-          {{scope.depData.tagName}}
           <el-button><el-link type="primary" target="_blank"
                               :href="getHref(scope)">编辑</el-link></el-button>
         </template>
@@ -89,7 +88,12 @@ export default defineComponent({
     }
 
     function getHref(scope) {
-      return '/about?page=show&storeName=111'
+      let depData = scope.dep?.data ?? {}
+      // console.log(depData)
+      let params = new URLSearchParams()
+      params.append('page', depData.tagName ?? '')
+      params.append('storeName', depData.storeName ?? '')
+      return `/about?` + params.toString()
     }
 
     return {
