@@ -421,9 +421,12 @@ ${innerStr}
       if (needStr) {
         needStr = needStr.slice(1)
         needStr = needStr.slice(0, needStr.length - 1)
-        needStr = needStr  + ','
+        if (needStr) {
+
+          needStr = needStr  + ','
+        }
       }
-      // console.log(needStr)
+      console.log(needStr)
       str = `
 {
   name: '${rawData.tagName}',
