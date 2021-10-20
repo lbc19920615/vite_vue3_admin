@@ -251,7 +251,12 @@ export default {
             label: '标签名'
           },
         },
-
+        page: {
+          type: 'string',
+          ui: {
+            label: '页'
+          },
+        },
         storeName: {
           type: 'string',
           ui: {

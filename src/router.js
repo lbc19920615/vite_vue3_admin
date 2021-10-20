@@ -7,7 +7,7 @@ import store from "@/store";
 import {VARS_PAGE_MODEL_NAME, APP_STORE_NAME} from "@/vars";
 import {app_buildDeepTree, app_initRoutesFromJSON5} from "@/hooks/app";
 
-
+globalThis.loadPage = loadPage
 export const constantRouterMap = [
   {
     path: '/404',
@@ -103,17 +103,17 @@ export const constantRouterMap = [
   // }
 ];
 
-export const asyncRouterMap = [
-  {
-    z_parent: 'main',
-    path: "name/:name",
-    name: "name",
-    // hidden: true,
-    meta: {
-      title: 'Name',
-    },
-    component: () => loadPage('Show'),
-  },
+export let asyncRouterMap = [
+  // {
+  //   z_parent: 'main',
+  //   path: "name/:name",
+  //   name: "name",
+  //   // hidden: true,
+  //   meta: {
+  //     title: 'Name',
+  //   },
+  //   component: () => loadPage('Show'),
+  // },
   // {
   //   z_parent: 'main',
   //   path: "form",
@@ -151,7 +151,10 @@ export async function init_router_start() {
   try {
     let str = app_buildDeepTree(APP_MODEL.routers)
     let obj = app_initRoutesFromJSON5(str)
-    console.log(obj)
+    asyncRouterMap = asyncRouterMap.concat(obj.children).filter(v => {
+      return v.path
+    })
+    console.log(asyncRouterMap[0].component.toString())
   } catch (e) {
     console.log(e)
   }

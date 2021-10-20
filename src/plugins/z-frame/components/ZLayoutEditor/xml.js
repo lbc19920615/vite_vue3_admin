@@ -406,9 +406,9 @@ ${innerStr}
     } else {
       // str = `h('${rawData.tagName}', ${attrStr}, [${rawData.textContent ?? ''}])`
 
-      let loadComponentStr = `loadPage('${rawData.tagName}')`
+      let loadComponentStr = `loadPage('${rawData.page}')`
       if (rawData.storeName) {
-        loadComponentStr = `loadPage('${rawData.tagName}', '${rawData.storeName}')`
+        loadComponentStr = `loadPage('${rawData.page}', '${rawData.storeName}')`
       }
       // console.log(Object.keys(rawData))
      let needStr = ''
@@ -426,7 +426,7 @@ ${innerStr}
           needStr = needStr  + ','
         }
       }
-      console.log(needStr)
+      // console.log(needStr)
       str = `
 {
   name: '${rawData.tagName}',

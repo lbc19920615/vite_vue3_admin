@@ -13,7 +13,7 @@ export function app_buildDeepTree(data) {
 export function app_initRoutesFromJSON5(str) {
   let obj = ZY.JSON5.parse(str, function (k, v) {
     if (k === 'component') {
-      return new Function(v[0], v[1])
+      return new Function(v[0], `return ${v[1]}`)
     }
 
     return v

@@ -11,6 +11,7 @@ export function useRouter2() {
     currentRoute = router.currentRoute.value
   }
   return {
+    router,
     currentRoute
   }
 }

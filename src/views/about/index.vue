@@ -143,7 +143,7 @@
               <el-button type="primary" @click="page.callEvent('call:save', scope)">保存</el-button>
               <el-button type="primary" @click="page.callEvent('call:save:file', scope)">保存文件</el-button>
               <el-button type="primary" @click="page.callEvent('load:file')">加载文件</el-button>
-              <el-button ><el-link type="primary" href="/show/sdsds" target="_blank">打开预览</el-link></el-button>
+              <el-button type="primary" @click="page.callEvent('preview')">打开预览</el-button>
               <el-button ><router-link class="el-link" to="/form" >跳转Form</router-link></el-button>
             </el-space>
           </div>
@@ -267,7 +267,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     // ZY.PinYin.initDict()
-    let { currentRoute } = useRouter2()
+    let { currentRoute, router } = useRouter2()
     // console.log(currentRoute)
     let global_pageStoreName
 
@@ -362,6 +362,11 @@ export default defineComponent({
       }
       return null
     }
+
+    function getPreviewUrl() {
+      return `/name/sdsds`
+    }
+
 
     page.setEventHandler({
       ['add:arr:common'](e) {
@@ -612,6 +617,17 @@ export default defineComponent({
           cachedPageControlModel = model
         }
       },
+      ['preview']() {
+        let url = getPreviewUrl()
+        let manager = ZY.BOM.createWindowManager({url: url})
+        manager.open({
+          left: window.innerWidth * .1,
+          top: 50,
+          width: 1440,
+          height: 700
+        })
+        // router.push(url)
+      }
       // ['model:update'](e) {
       //   let { model, key, newVal, config } = e
       // }
@@ -669,6 +685,7 @@ export default defineComponent({
       store: page.store,
       onSaveLayout,
       formula,
+      getPreviewUrl,
       // jumpTo,
       page,
       allDef: page.defMap,
