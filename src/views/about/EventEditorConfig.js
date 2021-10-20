@@ -42,7 +42,7 @@ export default {
                             type: 'string',
                             wrap: 'em-props-item',
                             ui: {
-                                label: '页面名称',
+                                label: '文件名称',
                                 attrs: [
                                     ['scroll-control', 'page_name'],
                                 ],
