@@ -207,7 +207,7 @@ import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
 import FormsLayoutSelect from "@/plugins/z-frame/components/FormsLayoutSelect.vue";
 import {FormsLayout} from "@/plugins/z-frame/formsLayout";
 
-import 'ipinyinjs'
+// import 'ipinyinjs'
 import EwMathJax from "@/components/Ew/EwMathjax.vue";
 
 // import CnChar from 'cnchar'
