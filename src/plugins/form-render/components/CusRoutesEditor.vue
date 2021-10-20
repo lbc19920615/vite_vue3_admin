@@ -79,6 +79,7 @@
               :editor-content="editorContent"
               :handleList1="handleList1"
               :debug="false"
+              :open-panel="false"
           >
             <template #plumb-layout-item-action-beforeend="scope">
 <!--              <div style="width: 120px">-->
