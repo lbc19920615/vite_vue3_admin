@@ -626,6 +626,10 @@ export default defineComponent({
           width: 1440,
           height: 700
         })
+        setTimeout(() => {
+          let refernce = manager.getReference()
+          console.log(refernce, refernce.Z_PAGE_VERSION)
+        }, 1000)
         // router.push(url)
       }
       // ['model:update'](e) {
