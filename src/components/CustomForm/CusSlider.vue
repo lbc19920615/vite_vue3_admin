@@ -12,7 +12,8 @@
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender, PROPS_DEF} from "@/plugins/form-render/utils/index";
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
+import {createAbleProp} from "@/plugins/z-frame/CusBaseEditor";
 
 export default {
   name: 'CusSlider',
@@ -34,12 +35,24 @@ export default {
         max: {
           type: Number,
           ui: {
+            label: '最大',
+            widgetConfig: {
+              clearable: true
+            }
+          }
+        },
+        step: {
+          type: Number,
+          ui: {
             label: '步数',
             widgetConfig: {
               clearable: true
             }
           }
         },
+        showStops: createAbleProp({
+          label: '显示间断点'
+        }),
         enums: {
           type: String,
           ui: {
