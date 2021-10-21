@@ -32,26 +32,48 @@ class ClosureNode extends V1Node {
 }
 
 class LayoutNode extends V1Node {
-  constructor(id, items) {
+  constructor(id, items, jsonlikeobj) {
     super(id, items);
     this.editor =`
 ${rowEditorConfig({
-      form2: {}
+      form2: {
+        attrs: {},
+      }
     })}`
+    console.log(items, jsonlikeobj)
     this.items = items
+    if (!this.data) {
+      this.data = {
+        items,
+        attrs: {
+        },
+      }
+    }
+    let str_data = jsonlikeobj.str_data
+    if (str_data) {
+
+      try {
+        let obj = ZY.JSON5.parse(str_data)
+        if (obj.attrs) {
+          this.data.attrs = obj.attrs
+        }
+      } catch (e) {
+      console.log(e)
+      }
+    }
   }
 }
 
 export class ColumnNode extends LayoutNode {
-  constructor(id, items) {
-    super(id, items);
+  constructor(id, items, jsonlikeobj) {
+    super(id, items, jsonlikeobj);
     this.type = 'column'
   }
 }
 
 export class RowNode extends LayoutNode {
-  constructor(id, items) {
-    super(id, items);
+  constructor(id, items, jsonlikeobj) {
+    super(id, items, jsonlikeobj);
     this.type = 'row'
   }
 }
@@ -155,10 +177,10 @@ export function handleItemAppend(newItem, dep) {
 
 export function create(type, jsonlikeobj) {
   if (type === 'row') {
-    return new RowNode(jsonlikeobj.id, jsonlikeobj.items)
+    return new RowNode(jsonlikeobj.id, jsonlikeobj.items, jsonlikeobj)
   }
   else if (type === 'column') {
-    return new ColumnNode(jsonlikeobj.id, jsonlikeobj.items)
+    return new ColumnNode(jsonlikeobj.id, jsonlikeobj.items, jsonlikeobj)
   }
   else if (type === 'form')  {
     return new FormNode(jsonlikeobj.id, jsonlikeobj.data, jsonlikeobj.content, jsonlikeobj)
@@ -178,10 +200,10 @@ export function create(type, jsonlikeobj) {
 
 export function createFromJSON5(type, jsonlikeobj) {
   if (jsonlikeobj.type === 'row') {
-    return new RowNode(jsonlikeobj.id, jsonlikeobj.items)
+    return new RowNode(jsonlikeobj.id, jsonlikeobj.items, jsonlikeobj)
   }
   else if (jsonlikeobj.type === 'column') {
-    return new ColumnNode(jsonlikeobj.id, jsonlikeobj.items)
+    return new ColumnNode(jsonlikeobj.id, jsonlikeobj.items, jsonlikeobj)
   }
   else if (jsonlikeobj.type === 'form')  {
     return new FormNode(jsonlikeobj.id, jsonlikeobj.data, jsonlikeobj.content, jsonlikeobj)

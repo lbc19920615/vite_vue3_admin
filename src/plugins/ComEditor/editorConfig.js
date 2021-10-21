@@ -160,11 +160,25 @@ export let rowEditorConfig = function (defaultVal = {}) {
             ],
         },
         properties: {
-            name: {
-                type: 'string',
+            // name: {
+            //     type: 'string',
+            //     ui: {
+            //         label: '名称'
+            //     },
+            // },
+            attrs: {
+              type: 'object',
                 ui: {
-                    label: '名称'
+                    label: '属性'
                 },
+                properties:  {
+                    name: {
+                        type: 'string',
+                        ui: {
+                            label: '名称'
+                        },
+                    },
+                }
             },
             items: {
                 type: 'array',
