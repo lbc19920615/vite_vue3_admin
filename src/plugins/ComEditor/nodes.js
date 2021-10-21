@@ -40,7 +40,7 @@ ${rowEditorConfig({
         attrs: {},
       }
     })}`
-    console.log(items, jsonlikeobj)
+    // console.log(items, jsonlikeobj)
     this.items = items
     if (!this.data) {
       this.data = {

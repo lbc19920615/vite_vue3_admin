@@ -401,7 +401,7 @@ export default defineComponent({
 
         let { model, key, newVal, config } = e
         cachedDeepEditorModel = toRaw(model)
-        console.log(key, model, self.currentEditDep)
+        // console.log(key, model, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
           self.currentEditDep.data = toRaw(newVal)
           self.currentEditDep.str_data = ZY.JSON5.stringify(toRaw(newVal))
