@@ -268,6 +268,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     // ZY.PinYin.initDict()
+    let cachedPageControlModel = null
     let { currentRoute, router } = useRouter2()
     // console.log(currentRoute)
     let global_pageStoreName
@@ -288,13 +289,13 @@ export default defineComponent({
                 let eventModel = await page.dispatchRoot('GetStoreEvents', {
                   storeName: global_pageStoreName
                 })
+                cachedPageControlModel = eventModel
                 page.setPartModel(config.name, 'form2', eventModel ?? {})
                 // console.log('eventModel', config, eventModel)
               }
             }
         )
       }
-      console.log(global_pageStoreName)
     }
     let properties =  {
       textarea_step: {
@@ -318,7 +319,6 @@ export default defineComponent({
     let formsMana = useFormsMana();
 
     let currentFromDialog = null
-    let cachedPageControlModel = null
 
     globalThis.getPageCachedModel = function () {
       return cachedPageControlModel
@@ -589,7 +589,7 @@ export default defineComponent({
       async ['forms:select-event'](e) {
         let {value, scope} = e
         let { parts, partName, selfpath, process } = currentFromDialog
-        console.log('forms:select-form', e, currentFromDialog)
+        // console.log('forms:select-form', e, currentFromDialog)
         let appendData = value
         // // console.log(appendData)
         parts[partName].arrAppend(selfpath, appendData)
@@ -686,7 +686,7 @@ export default defineComponent({
 
       }
       console.log('onSaveLayout', cachedPageControlModel, e)
-      await ZY_EXT.store.setItem('current-data', e.currentData)
+      // await ZY_EXT.store.setItem('current-data', e.currentData)
       // sendChannelMessage(COMMAND.RELOAD)
       sendJSON5ChannelMessage({
         type: COMMAND.RELOAD,

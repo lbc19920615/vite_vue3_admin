@@ -403,7 +403,7 @@ export default defineComponent({
         // console.log(key, model, config, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
           self.currentEditDep.data = toRaw(newVal)
-          console.log(newVal, self.currentEditDep)
+          // console.log(newVal, self.currentEditDep)
           if (self.currentEditDep.type === 'form') {
             try {
               self.currentEditDep.content = buildFormDepContent(

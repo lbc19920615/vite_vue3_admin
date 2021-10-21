@@ -71,13 +71,13 @@ export function useRenderControl() {
     }
 
     async function detectChange() {
-        // let currentData2 = await ZY_EXT.store.getItem(STORE_NAME)
-        let currentData = await ZY_EXT.store.getItem('current-data')
+        let currentData2 = await ZY_EXT.store.getItem(STORE_NAME)
+        // let currentData = await ZY_EXT.store.getItem('current-data')
         // console.log(currentData2.layoutDesign, currentData)
-        // let currentData = currentData2.layoutDesign
+        let currentData = currentData2.layoutDesign
         // console.log(currentData)
         // console.log(interval)
-        if (currentData.uuid) {
+        if (currentData && currentData.uuid) {
             if (currentData.uuid !== state.uuid) {
                 state.refresh = false
                 // console.log('changed')
