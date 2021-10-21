@@ -176,9 +176,12 @@ window.startApp = function () {
   app.use(router)
   app.use(store)
   // import JsonViewer from "vue3-json-viewer";
-  // import("vue3-json-viewer").then(res => {
-  //   app.use(res.default)
-  // })
+  import("vue3-json-viewer").then(res => {
+    // app.use(res.default)
+    console.log(res)
+    let JsonViewer = res.JsonViewer
+    app.component('v-json-viewer',JsonViewer )
+  })
   // import * as highlightPlugin from '@/plugins/highlight'
   // import('@/plugins/highlight').then(highlightPlugin => {
   //   app.use(highlightPlugin)

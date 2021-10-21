@@ -48,7 +48,7 @@ export default {
           prop: 'value',
           label: 'VALUE',
           render(h, props) {
-            const jsonviewer = resolveComponent('json-viewer')
+            const jsonviewer = resolveComponent('v-json-viewer')
             const scope = props.scope
             // console.log(jsonviewer, props)
             let value = scope.row.value

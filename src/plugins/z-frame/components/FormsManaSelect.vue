@@ -47,7 +47,7 @@ export default {
           prop: 'value',
           label: 'VALUE',
           render(h, props) {
-            const jsonviewer = resolveComponent('json-viewer')
+            const jsonviewer = resolveComponent('v-json-viewer')
             const scope = props.scope
             // console.log(jsonviewer, props)
             let value = ZY.JSON5.parse( scope.row[scope.column.property])
