@@ -71,6 +71,9 @@ import '@/components/WebElements/index'
 
 // vant
 
+import UrlPattern from 'url-pattern';
+globalThis.ZUrlPattern = UrlPattern
+
 import * as ZY from '@expose/main.js'
 globalThis.ZY = ZY
 

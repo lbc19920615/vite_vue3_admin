@@ -270,6 +270,7 @@ export default defineComponent({
     let { currentRoute, router } = useRouter2()
     // console.log(currentRoute)
     let global_pageStoreName
+    let global_path = currentRoute.query.path
 
     function onInited({storeControl}) {
       if (!currentRoute.query.page) {
@@ -364,7 +365,13 @@ export default defineComponent({
     }
 
     function getPreviewUrl() {
-      return `/name/sdsds`
+      console.log(global_path)
+      var pattern = new ZUrlPattern(global_path);
+      let obj = {}
+      pattern.names.forEach(name => {
+        obj[name] = ZY.rid(6)
+      })
+      return pattern.stringify(obj)
     }
 
 
@@ -628,7 +635,7 @@ export default defineComponent({
         })
         setTimeout(() => {
           let refernce = manager.getReference()
-          console.log(refernce, refernce.Z_PAGE_VERSION)
+          // console.log(refernce, refernce.Z_PAGE_VERSION)
         }, 1000)
         // router.push(url)
       }
