@@ -368,7 +368,7 @@ export default defineComponent({
     }
 
     function getPreviewUrl() {
-      console.log(global_path)
+      // console.log(global_path)
       var pattern = new ZUrlPattern(global_path);
       let obj = {}
       pattern.names.forEach(name => {

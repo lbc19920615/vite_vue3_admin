@@ -351,7 +351,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     let self = getCurrentInstance().ctx
-
+    let cachedDeepEditorModel;
     function onInited({storeControl}) {
       // console.log('page inited')
     }
@@ -400,6 +400,7 @@ export default defineComponent({
         // let { model, key, newVal, config } = e
 
         let { model, key, newVal, config } = e
+        cachedDeepEditorModel = toRaw(model)
         // console.log(key, model, config, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
           self.currentEditDep.data = toRaw(newVal)
@@ -529,11 +530,11 @@ export default defineComponent({
     }
 
     function onDrawerClose(currentEditItem) {
-      // console.log('onDrawerClose', cachedDeepEditorModel, currentEditItem)
-      // if (cachedDeepEditorModel) {
+      console.log('onDrawerClose', cachedDeepEditorModel, currentEditItem)
+      if (cachedDeepEditorModel) {
       //
       //   currentEditItem.data = ZY.JSON5.stringify(cachedDeepEditorModel)
-      // }
+      }
     }
 
     return {

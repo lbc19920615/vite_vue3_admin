@@ -188,7 +188,7 @@ export let rowEditorConfig = function (defaultVal = {}) {
                             type: 'string',
                             ui: {
                                 label: '长度',
-                                // widget: 'unit-input',
+                                widget: 'unit-input',
                             },
                             rules: {
                                 type: 'any'
@@ -198,7 +198,7 @@ export let rowEditorConfig = function (defaultVal = {}) {
                             type: 'string',
                             ui: {
                                 label: '高度',
-                                // widget: 'unit-input',
+                                widget: 'unit-input',
                             },
                             rules: {
                                 type: 'any'

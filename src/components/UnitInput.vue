@@ -91,14 +91,16 @@ export default {
     changeItem() {
       let v = `${this.num}${this.unit}`
       // console.log('change item', v)
-      this.$emit('update:modelValue', v)
+      // this.$emit('update:modelValue', v)
       this.$emit('change', v)
+      this.$emit('fchange', v)
     },
     clearAll() {
       this.num = ''
       this.unit = ''
-      this.$emit('update:modelValue', '')
+      // this.$emit('update:modelValue', '')
       this.$emit('change', '')
+      this.$emit('fchange', v)
     }
   }
 }
