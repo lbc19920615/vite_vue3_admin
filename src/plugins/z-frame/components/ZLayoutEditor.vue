@@ -402,7 +402,8 @@ export default defineComponent({
         let { model, key, newVal, config } = e
         // console.log(key, model, config, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
-          self.currentEditDep.data = model
+          self.currentEditDep.data = toRaw(newVal)
+          console.log(newVal, self.currentEditDep)
           if (self.currentEditDep.type === 'form') {
             try {
               self.currentEditDep.content = buildFormDepContent(
@@ -464,7 +465,7 @@ export default defineComponent({
 
       page.setDef(config, function ({done}) {
         for (let [partName, partConfig] of Object.entries(config.defaultVal)) {
-          // console.log(partName, partConfig, self.currentEditDep)
+          console.log(partName, partConfig, self.currentEditDep)
           if (self.currentEditDep.data) {
             let keys = ZY.lodash.keys(self.currentEditDep.data)
             if (keys.length > 0) {

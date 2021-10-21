@@ -677,7 +677,7 @@ export default defineComponent({
 
         // await page.dispatchRoot('SetStoreEvents', cachedPageControlModel)
 
-        // cachedPageControlModel.layoutDesign = e.currentData
+        cachedPageControlModel.layoutDesign = e.currentData
 
         await page.dispatchRoot('SetStoreLocal', {
           storeName: global_pageStoreName,
