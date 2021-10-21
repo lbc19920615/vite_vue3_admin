@@ -96,7 +96,7 @@ export default defineComponent({
 
     function getHref(scope) {
       let depData = scope.dep?.data ?? {}
-      console.log(depData)
+      // console.log(depData)
       let params = new URLSearchParams()
       params.append('page', depData.tagName ?? '')
       params.append('storeName', depData.storeName ?? '')
