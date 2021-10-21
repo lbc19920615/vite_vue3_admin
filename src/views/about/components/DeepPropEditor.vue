@@ -355,8 +355,11 @@ export default {
 
         for (let [partName, data] of Object.entries(config.defaultVal)) {
           let defaultObj = ZY.JSON5.parse(ZY.JSON5.stringify(data))
+          let obj = ZY.lodash.merge(defaultObj, cached)
+          // console.log(obj)
+
            page.setPartModel( config.name, partName,
-               cached ? cached : defaultObj
+               obj ? obj : defaultObj
            )
         }
 

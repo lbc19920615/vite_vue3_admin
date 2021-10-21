@@ -1,3 +1,5 @@
+import {createbooleanWithClearableProp} from "@/hooks/formConfig";
+
 export default {
     name: 'process-step1',
     defaultVal: {
@@ -6,8 +8,11 @@ export default {
             ui: {
                 type: '',
                 label: '',
-                widget: '',
+                // widget: '',
                 widgetConfig: '{}',
+                form_item: {
+
+                }
             },
             rules: '{}'
         }
@@ -178,6 +183,20 @@ export default {
                                     computedProp: 'attrs_com',
                                     rules: {
                                         type: 'any'
+                                    }
+                                },
+                                form_item: {
+                                    // type: 'string',
+                                    properties: {
+                                        name: {
+                                            type: 'string',
+                                            ui: {
+                                                label: '标题'
+                                            }
+                                        },
+                                        required: createbooleanWithClearableProp({
+                                            label: '必要'
+                                        })
                                     }
                                 }
                             }
