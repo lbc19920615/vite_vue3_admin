@@ -186,7 +186,7 @@ export default {
                                     }
                                 },
                                 form_item: {
-                                    // type: 'string',
+                                    type: 'object',
                                     properties: {
                                         name: {
                                             type: 'string',

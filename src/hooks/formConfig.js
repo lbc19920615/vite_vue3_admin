@@ -1,6 +1,6 @@
 export function createbooleanWithClearableProp({label}) {
   return  {
-    type: Boolean,
+    type: 'boolean',
     ui: {
       label: label,
       widgetConfig:  {
