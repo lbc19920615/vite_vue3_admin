@@ -149,7 +149,7 @@ export default {
                                 attrs2: {
                                     type: 'array',
                                     ui: {
-                                        label: '属性',
+                                        label: 'PROP属性',
                                     },
                                     items: {
                                         type: 'object',
