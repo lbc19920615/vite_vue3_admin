@@ -404,6 +404,7 @@ export default defineComponent({
         // console.log(key, model, config, self.currentEditDep)
         if (config.process === page.store.model.editor_step) {
           self.currentEditDep.data = toRaw(newVal)
+          self.currentEditDep.str_data = ZY.JSON5.stringify(toRaw(newVal))
           // console.log(newVal, self.currentEditDep)
           if (self.currentEditDep.type === 'form') {
             try {
@@ -530,7 +531,7 @@ export default defineComponent({
     }
 
     function onDrawerClose(currentEditItem) {
-      console.log('onDrawerClose', cachedDeepEditorModel, currentEditItem)
+      // console.log('onDrawerClose', cachedDeepEditorModel, currentEditItem)
       if (cachedDeepEditorModel) {
       //
       //   currentEditItem.data = ZY.JSON5.stringify(cachedDeepEditorModel)
