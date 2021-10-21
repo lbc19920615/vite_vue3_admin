@@ -15,7 +15,7 @@ function createPage() {
   }
 }
 
-export async function loadPage(name, storeName = VARS_PAGE_MODEL_NAME) {
+export async function loadPage(comName, storeName = VARS_PAGE_MODEL_NAME) {
   return await loadComponent( async () => {
     let currentData = await ZY_EXT.store.getItem(storeName)
     // console.log(currentData)
@@ -27,12 +27,12 @@ export async function loadPage(name, storeName = VARS_PAGE_MODEL_NAME) {
     return fetchVueComponent(
       script
     )
-  }, name, {
+  }, comName, {
     handleScript(script) {
       // console.log('script', script)
 
       script = `
-globalThis.PAGE_STORE_NAME = '${storeName}'      
+globalThis.PAGE_STORE_NAME = '${storeName}';      
 const { buildFormDep } = globalThis.ZPageBuild;       
 const { extendControl2Page, useAppPageControl, useControl, extendCommonArrEventHandler } = globalThis.Framework;   
 const { useRenderControl, useGlobalEasy } = globalThis.ZPageHooks; 
