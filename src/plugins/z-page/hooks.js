@@ -27,13 +27,14 @@ export function useGlobalEasy(page) {
 }
 
 export function useRenderControl() {
+    let STORE_NAME = globalThis.PAGE_STORE_NAME ?? VARS_PAGE_MODEL_NAME
     let router = useRouter()
     let currentRoute = router.currentRoute
     let params = {}
     if (currentRoute && currentRoute.value) {
         params = currentRoute.value.params
     }
-    console.log('useRenderControl route params', params)
+    console.log('useRenderControl route params', STORE_NAME, params)
 
     let state = reactive({
         rootId: '',
@@ -70,8 +71,11 @@ export function useRenderControl() {
     }
 
     async function detectChange() {
+        // let currentData2 = await ZY_EXT.store.getItem(STORE_NAME)
         let currentData = await ZY_EXT.store.getItem('current-data')
-        // console.log(currentData.uuid)
+        // console.log(currentData2.layoutDesign, currentData)
+        // let currentData = currentData2.layoutDesign
+        // console.log(currentData)
         // console.log(interval)
         if (currentData.uuid) {
             if (currentData.uuid !== state.uuid) {
@@ -104,7 +108,7 @@ export function useRenderControl() {
 
     let detectEventChangeContext = {}
     async function detectEventChange(isFirst) {
-        let currentData = await ZY_EXT.store.getItem(VARS_PAGE_MODEL_NAME)
+        let currentData = await ZY_EXT.store.getItem(STORE_NAME)
         // console.log(currentData.uuid)
         // console.log(interval)
         // console.log('changed')

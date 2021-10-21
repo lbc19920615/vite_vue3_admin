@@ -66,6 +66,7 @@ const store = {
         let JSON5 = ZY.JSON5
         let cloned = JSON5.parse(JSON5.stringify(payload.data))
         ZY_EXT.store.setItem(storePrefix, cloned)
+        ZY_EXT.store.setItem(pageStoreName, cloned)
       }
       // commit('SET_EVENTS', payload)
     },

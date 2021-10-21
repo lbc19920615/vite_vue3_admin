@@ -12,7 +12,8 @@
           </render-layout>
         </template>
       </grid-column>
-      <grid-row :class="levelItemCls" v-else-if="curObj.type === 'row'"
+    <template v-else-if="curObj.type === 'row'">
+      <grid-row :class="levelItemCls"
                 :layout="curObj.items">
         <template v-slot:default="{item}">
           <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"
@@ -23,6 +24,8 @@
           </render-layout>
         </template>
       </grid-row>
+    </template>
+
       <template  v-else-if="curObj.type === 'tab'">
 <!--        {{curObj.items}}-->
         <render-tab :class="levelItemCls"
@@ -141,7 +144,7 @@ export default {
   },
   computed: {
     curObj() {
-      // console.log(this.map, this.id)
+      console.log(this.map, this.id)
       if (this.map[this.id]) {
         return this.map[this.id]
       }

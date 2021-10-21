@@ -105,6 +105,49 @@ import {buildFormDepContent} from "./ZLayoutEditor/build";
 import CustomElement from "@/components/CustomElement.vue";
 import {buildXml} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
 
+function findMultiRoots(deps = [], links = []) {
+  let eleDeps  = deps
+  let multiRoots = []
+  let linkFromPIDS = links.map((item) => item.fromPID)
+  let linkToPIDS = links.map((item) => item.toPID)
+  let linkFroms = links.map((item) => item.from)
+  let append = {
+    eleDeps,
+    linkToPIDS,
+    linkFroms,
+    links,
+    linkFromPIDS
+  }
+  if (linkToPIDS.length === 0 && linkFromPIDS.length === 0) {
+    if (eleDeps.length > 0) {
+      multiRoots.push(eleDeps[0])
+      let eleDep = eleDeps[0]
+      let id = eleDep.id
+      // context[id] = {
+      //   str: '',
+      //   id: eleDep.id,
+      //   append
+      // }
+    }
+  }
+  else {
+    eleDeps.forEach((eleDep) => {
+      let id = eleDep.id
+
+      if (linkFromPIDS.includes(id) && !linkToPIDS.includes(id)) {
+        multiRoots.push(eleDep)
+        // context[id] = {
+        //   str: '',
+        //   id: eleDep.id,
+        //   append
+        // }
+      }
+
+    })
+  }
+  return multiRoots
+}
+
 let depManagerMixin = {
   props: {
     editorContent: String
@@ -226,9 +269,12 @@ let plumbLayoutMixin = {
       NodeDefMap.handleItemAppend(newItem, dep)
     },
     async onSaveData({deps, links = []}) {
-      // console.log('onSaveData', deps, links)
+      // console.log(findMultiRoots(deps, links))
+      let multiRoots = findMultiRoots(deps, links)
+
+      let rootId = multiRoots[0].id
       let map = {
-        [this.rootId]: deps.find(v => v.id === this.rootId)
+        [rootId]: deps.find(v => v.id === rootId)
       }
       links.forEach(link => {
         let { toPID = '' } = link
@@ -239,6 +285,8 @@ let plumbLayoutMixin = {
           }
         }
       })
+
+      // console.log('onSaveData', map, rootId)
 
       let currentLayoutMap = JSON.parse(JSON.stringify(map))
       let currentLinks = JSON.parse(JSON.stringify(links))

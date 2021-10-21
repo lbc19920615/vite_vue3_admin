@@ -32,6 +32,7 @@ export async function loadPage(name, storeName = VARS_PAGE_MODEL_NAME) {
       // console.log('script', script)
 
       script = `
+globalThis.PAGE_STORE_NAME = '${storeName}'      
 const { buildFormDep } = globalThis.ZPageBuild;       
 const { extendControl2Page, useAppPageControl, useControl, extendCommonArrEventHandler } = globalThis.Framework;   
 const { useRenderControl, useGlobalEasy } = globalThis.ZPageHooks; 

@@ -4,7 +4,7 @@
 }
 
 .vue-row-item {
-  display: inline-flex;
+  //display: inline-flex;
 }
 
 $cls: "vue-grid-row-tools";

@@ -159,6 +159,7 @@
                   :ref="layoutRef"
                   :controls="false"
                   :open-panel="false"
+                  :store-prefix="layoutStorePrefix"
                   class="page-layout-editor"
                   @save-layout="onSaveLayout"></ZLayoutEditor>
             </z-easy-modal>
@@ -271,12 +272,13 @@ export default defineComponent({
     // console.log(currentRoute)
     let global_pageStoreName
     let global_path = currentRoute.query.path
+    global_pageStoreName = currentRoute.query.storeName ?? VARS_PAGE_MODEL_NAME
 
     function onInited({storeControl}) {
       if (!currentRoute.query.page) {
         alert('缺少page')
       } else {
-        global_pageStoreName = currentRoute.query.storeName ?? VARS_PAGE_MODEL_NAME
+
         page.commonLoadStep(
             import('./EventEditorConfig'),
             'textarea_step',
@@ -292,6 +294,7 @@ export default defineComponent({
             }
         )
       }
+      console.log(global_pageStoreName)
     }
     let properties =  {
       textarea_step: {
@@ -470,7 +473,7 @@ export default defineComponent({
           let data = await FormsLayout.readFile()
           let appendData = data[0].value
           let updatedPath = `${selfpath}`
-          console.log('sdsdsds', updatedPath,appendData)
+          // console.log('sdsdsds', updatedPath,appendData)
           parts[partName].setModelByPath(updatedPath, appendData)
         } catch (e) {
           //
@@ -672,7 +675,15 @@ export default defineComponent({
     async function onSaveLayout(e) {
       if (cachedPageControlModel) {
 
-        await page.dispatchRoot('SetStoreEvents', cachedPageControlModel)
+        // await page.dispatchRoot('SetStoreEvents', cachedPageControlModel)
+
+        // cachedPageControlModel.layoutDesign = e.currentData
+
+        await page.dispatchRoot('SetStoreLocal', {
+          storeName: global_pageStoreName,
+          data: cachedPageControlModel
+        })
+
       }
       console.log('onSaveLayout', cachedPageControlModel, e)
       await ZY_EXT.store.setItem('current-data', e.currentData)
@@ -691,12 +702,15 @@ export default defineComponent({
 
     let formula = `x^{y^z}=(1+{\\rm e}^x)^{-2xy^w}`
 
+    let layoutStorePrefix = global_pageStoreName + '-play'
+
     return {
       layoutRef,
       store: page.store,
       onSaveLayout,
       formula,
       getPreviewUrl,
+      layoutStorePrefix,
       // jumpTo,
       page,
       allDef: page.defMap,
