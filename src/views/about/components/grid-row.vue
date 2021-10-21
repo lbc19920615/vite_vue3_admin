@@ -48,14 +48,14 @@ $cls: "vue-grid-row-tools";
 </style>
 
 <template>
-  <div class="vue-grid-row-tools">
-    <div ref="row" class="vue-row-items" v-if="showEdit">
-      <div class="vue-row-item__tools" v-for="(item, index) in rowvItems"
-           :style="{width: item.style ? item.style.width : '', height: 'auto'}" >
-        <unit-input v-model="rowv2[index].w" @update:modelValue="changeItem"></unit-input>
-<!--        <button class="grid-column-handle"><i class="el-icon-rank"></i></button>-->
-      </div>
-    </div>
+<!--  <div class="vue-grid-row-tools">-->
+<!--    <div ref="row" class="vue-row-items" v-if="showEdit">-->
+<!--      <div class="vue-row-item__tools" v-for="(item, index) in rowvItems"-->
+<!--           :style="{width: item.style ? item.style.width : '', height: 'auto'}" >-->
+<!--        <unit-input v-model="rowv2[index].w" @update:modelValue="changeItem"></unit-input>-->
+<!--&lt;!&ndash;        <button class="grid-column-handle"><i class="el-icon-rank"></i></button>&ndash;&gt;-->
+<!--      </div>-->
+<!--    </div>-->
     <div  class="vue-grid-row"><div
         class="vue-row-item" v-for="(item, index) in rowv2"
                                    :style="item.style" >
@@ -63,7 +63,7 @@ $cls: "vue-grid-row-tools";
     </div></div>
 <!--    <div class="vue-grid-row-tools__action"><button-->
 <!--        @click="enableEdit"><i class="el-icon-edit"></i></button></div>-->
-  </div>
+<!--  </div>-->
 </template>
 
 <script>
