@@ -4,6 +4,10 @@
 
   }
 }
+
+.z-easy-dialog__popover {
+  max-width: var(--z-easy-dialog__popover-max-width, 700px);
+}
 </style>
 
 <template>
@@ -12,6 +16,7 @@
     <el-popover class="z-easy-dialog__dialog" v-bind="modelAttr"
                v-model="opened"
                 placement="top"
+                popper-class="z-easy-dialog__popover"
     >
       <template #reference> <el-button @click="openModal">{{title}}</el-button></template>
       <div class="z-easy-dialog__content">

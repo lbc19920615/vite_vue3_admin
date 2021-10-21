@@ -151,11 +151,11 @@ export default {
       }
     }
 
-    function test() {
-      instance.ctx.$refs.editorRef.insertText(`
-sdsds
-`)
-    }
+//     function test() {
+//       instance.ctx.$refs.editorRef.insertText(`
+// sdsds
+// `)
+//     }
 
     function onChange() {
       let newVal = instance.ctx.$refs.editorRef.getValue()
@@ -174,7 +174,7 @@ sdsds
 
     let modelAttr = {
       // modal: false
-      width: '50%'
+      width: '50%',
     }
 
     let elements = [
@@ -194,7 +194,7 @@ sdsds
       modelAttr,
       elements,
       selectQuickElement,
-      test,
+      // test,
       getSuggest,
       refMan,
       setRefMan
