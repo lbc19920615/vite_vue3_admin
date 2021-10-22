@@ -187,6 +187,9 @@ export default {
                                 },
                                 form_item: {
                                     type: 'object',
+                                    ui: {
+                                        label: "form元素属性"
+                                    },
                                     properties: {
                                         name: {
                                             type: 'string',
@@ -205,7 +208,6 @@ export default {
                             type: 'string',
                             ui: {
                                 label: '样式配置',
-
                                 widget: 'CusStyle'
                             }
                         },
