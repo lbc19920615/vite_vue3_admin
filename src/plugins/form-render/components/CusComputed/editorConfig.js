@@ -98,7 +98,7 @@ export default function ({insText =  [], insFun = [], insVars = [] } = {}) {
         computed: '{}',
         parts: [
           {
-            name: 'form_' + ZY.rid(6),
+            // name: 'form_' + ZY.rid(6),
           }
         ]
       }
