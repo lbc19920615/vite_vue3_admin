@@ -15,7 +15,13 @@
               :readonly="widgetConfig.mode === 'select'"
               v-model="state.value"
               @input="onChange">
+      <template v-if="widgetConfig.mode === 'select' && state.value" #prepend>
+        <el-space>
+          <div>{{getOptionWithValue(state.value)?.label }}</div>
+        </el-space>
+      </template>
       <template #append>
+
         <e-popover
             class="cus-suggest__popover"
             :placement="widgetConfig.placement"
@@ -25,7 +31,9 @@
             :teleportTo="getWidgetConfig('teleportTo')"
         >
           <template #reference>
-            <el-button class="cus-suggest__button" @click="setRefMan(true)">选择</el-button>
+            <el-space>
+              <el-button class="cus-suggest__button" @click="setRefMan(true)">选择</el-button>
+            </el-space>
           </template>
           <div class="cus-sugges__con">
             <SimpleList v-if="refMan.showed"
@@ -46,14 +54,13 @@
 <script>
 import {getCurrentInstance, resolveComponent} from 'vue'
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
-import DeepPropEditor from "@/views/about/components/DeepPropEditor.vue";
 import {useArrHandler, useReloadMan} from "@/views/home/hooks";
 import {EPopover} from "@/components/EPopover/index.js";
 // import SimpleList from "@/components/SimpleList.vue";
 
 export default {
   name: 'CusSuggest',
-  components: {EPopover, DeepPropEditor},
+  components: {EPopover},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -143,12 +150,21 @@ export default {
       }
     }
 
+    function getOptionWithValue(val) {
+      let options = getSuggest()
+      let option = options.find(v => v.value === val)
+      if (option) {
+        return option
+      }
+      return {}
+    }
 
     return {
       state,
       initSearch,
       extendColumn,
       searchSuggest,
+      getOptionWithValue,
       getSuggest,
       selectSuggest,
       refMan,

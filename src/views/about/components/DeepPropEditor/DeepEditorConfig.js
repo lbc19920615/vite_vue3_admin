@@ -41,6 +41,22 @@ export default {
                                 widgetConfig: {
                                     inputStyle: 'width: 350px',
                                     enums: "ROOT_STATE('tools.propTypes', [])",
+                                    mode: 'select',
+                                },
+                                events: {
+                                }
+                            },
+                        },
+                        sub_type: {
+                            type: 'string',
+                            ui: {
+                                label: '子类型',
+                                // widget: 'CusSelect',
+                                widget: 'CusSuggest',
+                                widgetConfig: {
+                                    inputStyle: 'width: 350px',
+                                    enums: "ROOT_GETTERS('subTypes', [MODEL('type', '')])",
+                                    mode: 'select',
                                 },
                                 events: {
                                 }

@@ -133,12 +133,16 @@ const store = {
     ],
     propTypes: [
       {
-        label: 'string',
+        label: '字符串',
         value: 'string',
       },
       {
-        label: 'number',
+        label: '数字',
         value: 'number',
+      },
+      {
+        label: '布尔',
+        value: 'boolean',
       },
     ],
     slotTypes,
@@ -170,6 +174,34 @@ const store = {
           return ret
         }
         return []
+      }
+    },
+    subTypes() {
+      return (type = '') => {
+        // console.log('dOptions', name)
+        if (type === 'number') {
+          return [
+            {
+              label: '整数',
+              value: 'integer',
+            },
+            {
+              label: '小数',
+              value: 'float',
+            }
+          ]
+        }
+        else if (type === 'string') {
+          return [
+            {
+              label: '日期(datetime)',
+              value: 'datetime',
+            },
+          ]
+        }
+        else {
+          return  []
+        }
       }
     }
   },
