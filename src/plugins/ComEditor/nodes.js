@@ -123,6 +123,7 @@ export class FormNode extends ClosureNode {
   constructor(id, data, defaultContent ) {
     super(id);
     this.type = 'form'
+    this.typeLabel = '部分'
     this.editor = `${formEditorConfig()}`
     this.data = data
     if (defaultContent) {

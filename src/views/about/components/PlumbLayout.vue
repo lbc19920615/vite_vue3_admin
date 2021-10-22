@@ -244,7 +244,7 @@ $sel: "." + $tag;
                    :id="dep.id + '-top'">
                 <div class="a-space-mb-10  plumb-layout__header-desc">
                   <el-space>
-                    <div>类型: {{dep.type}}</div>
+                    <div>类型: {{dep.typeLabel ? dep.typeLabel : dep.type}}</div>
                     <el-button size="mini" @click="editDep(dep)">
                       <el-icon><Edit></Edit></el-icon>
                     </el-button>
