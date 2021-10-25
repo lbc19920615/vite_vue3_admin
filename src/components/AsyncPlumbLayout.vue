@@ -76,7 +76,7 @@ $sel: "." + $tag;
               <slot name="actions" v-bind="{dep, item, key: item.key, index}"></slot>
             </div>
           </template>
-          <el-button size="small" v-if="dep.type === 'object'"
+          <el-button class="plumb__layout-plus" size="small" v-if="dep.type === 'object'"
                      @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
           <slot name="plumb__layout-beforeend" v-bind="{dep, appendItem: appendItemV2}"></slot>
         </template>

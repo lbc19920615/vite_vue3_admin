@@ -15,6 +15,11 @@
   }
 
 }
+.deep-editor {
+  .plumb__layout-plus {
+    display: none;
+  }
+}
 </style>
 
 <template>
@@ -46,13 +51,17 @@ class="deep-editor-dialog"
                      @click="inspect(scope)"><el-icon><Coffee></Coffee></el-icon></el-button>
         </template>
         <template #label="scope">
-          <el-popover    trigger="hover">
-            <div v-html="getContent(scope.data)"></div>
-            <template #reference><el-button style="padding: 0; border: none;"><z-text :ellipsisLength="10" :value="scope.key"></z-text></el-button></template>
-          </el-popover>
+<!--          <el-popover    trigger="hover">-->
+<!--            <el-space><div v-html="getContent(scope.data)"></div><z-text-->
+<!--                :ellipsisLength="10" :value="scope.key"></z-text></el-space>-->
+<!--            <template #reference><el-button style="padding: 0; border: none;"><z-text-->
+<!--                :ellipsisLength="10" :value="getContent(scope.data)"></z-text></el-button></template>-->
+<!--          </el-popover>-->
+          <z-text
+              :ellipsisLength="10" :value="getContent(scope.data)"></z-text>
         </template>
         <template #plumb__layout-beforeend="scope">
-          {{scope.dep}}
+<!--          {{scope.dep}}-->
           <el-button size="small"
                      v-if="scope.dep.type === 'object'"
                      @click="showQuickAppend(scope)"
@@ -124,6 +133,7 @@ import {extendControl2Page, useControl, useAppPageControl, extendCommonArrEventH
 import {Coffee, Plus} from "@element-plus/icons";
 import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 import {useStore} from "vuex";
+import {buildQuickWidget2, buildQuickItem} from "@/hooks/quickItem";
 
 let depManagerMixin = {
   data() {
@@ -464,15 +474,25 @@ export default {
     function quickAppendCom() {
       // console.log(dialogState.currrent)
       dialogState.currrent.appendItem(dialogState.currrent.dep, function (item) {
-        let obj = {
-          type:'string',
-          ui:{
-            type:'',label:'',widgetConfig:'{}',form_item:{},attrs:[],
-            widget2:"{data:{widget:'CusDateTimePicker',widgetConfig:{}}}"
-          },
-          rules:'[]',
-          rulesArr:[]
-        }
+        // let obj = {
+        //   type:'string',
+        //   ui:{
+        //     type:'',label:'',widgetConfig:'{}',form_item:{},attrs:[],
+        //     widget2:"{data:{widget:'CusDateTimePicker',widgetConfig:{}}}"
+        //   },
+        //   rules:'[]',
+        //   rulesArr:[]
+        // }
+        let obj = buildQuickItem({
+          type: 'string',
+          ui: {
+            widget2: ZY.JSON5.stringify(
+                buildQuickWidget2({
+                  widget: 'CusInput'
+                })
+            ),
+          }
+        })
         item.data = ZY.JSON5.stringify(obj)
         item.key = ZY.rid(6)
       })
