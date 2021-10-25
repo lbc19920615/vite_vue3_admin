@@ -91,13 +91,21 @@ export default {
                         },
                         wrap_start: {
                             type: 'string',
+                            wrap_start: '<el-row>',
                             ui: {
+                                styles:[
+                                  ['flex', 1]
+                                ],
                                 label: '前置标签'
                             }
                         },
                         wrap_end: {
                             type: 'string',
+                            wrap_end: '</el-row>',
                             ui: {
+                                styles:[
+                                    ['flex', 1]
+                                ],
                                 label: '后置标签'
                             }
                         },
