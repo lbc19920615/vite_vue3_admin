@@ -24,7 +24,24 @@
   .el-input-group {
     :deep(.el-input-group__prepend) {
       background-color: transparent;
+      //c
+      //min-width: 170px;
+      //position: relative;
+      //&:empty {
+      //  padding: 0;
+      //  border: none;
+      //  + .el-input__inner {
+      //    border-radius: 4px;
+      //  }
+      //}
     }
+    //.empty-trigger {
+    //  position: absolute;
+    //  left: 0;
+    //  top: 0;
+    //  width: 100%;
+    //  height: 100%;
+    //}
     width: 0;
     :deep(.el-input__inner) {
       padding: 0 !important;
@@ -49,9 +66,10 @@
             trigger="click"
             :append-to-body="true"
             :teleportTo="teleportTo"
+            v-model:visible="state.popoverVisible"
         >
           <template #reference>
-            <el-button class="cus-suggest__button" @click="setRefMan(true)">选择</el-button>
+            <el-button class="cus-suggest__button" @click="setRefMan(true)"><slot name="button-text">选择</slot></el-button>
           </template>
           <div  style="min-height: 200px; max-height: 400px; overflow:auto">
             <SimpleList v-if="refMan.showed"
@@ -93,7 +111,8 @@ export default  {
   },
   setup(props, ctx) {
     let state = reactive({
-      value: props.modelValue ?? ''
+      value: props.modelValue ?? '',
+      popoverVisible: false
     })
     function onChange() {
       ctx.emit('update:modelValue', state.value)
@@ -131,12 +150,18 @@ export default  {
       state.value = newVal
     })
 
+    function openPopver() {
+      state.popoverVisible = true
+      setRefMan(true)
+    }
+
     return {
       state,
       setRefMan,
       onBlur,
       getSuggest,
       onInput,
+      openPopver,
       selectSuggest,
       refMan,
     }

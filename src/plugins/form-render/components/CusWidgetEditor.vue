@@ -27,7 +27,7 @@
                   :column="column"
                   :no-input="true"
                   :use-prepend="true"
-                  :popover-open="true"
+                  :ref="getSuggestRef"
                   @value:change="onWidgetChange">
         <template #button-text>
           选择组件
@@ -41,9 +41,7 @@
               <i class="fa fa-book"></i>
             </z-window>
           </el-row>
-          <template v-else>
-            <div style="height: 100%;">&nbsp;</div>
-          </template>
+          <template v-else></template>
         </template>
       </ew-suggest>
     </div>
@@ -64,7 +62,7 @@
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
-import {getCurrentInstance, resolveComponent, toRaw} from "vue";
+import {getCurrentInstance, ref, resolveComponent, toRaw} from "vue";
 import ZHttpCom from "@/plugins/z-frame/components/ZHttpCom.vue";
 import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusWidgetEditor/createConfig";
 import {useReloadMan} from "@/views/home/hooks";
@@ -434,6 +432,16 @@ export default {
       return `https://element-plus.gitee.io/zh-CN/component/${cusName}.html`
     }
 
+    let suggestRef = ref(null)
+    function openPopover(scope) {
+      suggestRef.openPopver()
+    }
+
+
+    function getSuggestRef(v) {
+      suggestRef = v
+    }
+
     return {
       state,
       widgetConfig: props.ui.widgetConfig,
@@ -444,6 +452,8 @@ export default {
       onCommonChange,
       onWidgetChange,
       commonOptions,
+      openPopover,
+      getSuggestRef,
       getUrl,
       refMan,
       onBlur,
