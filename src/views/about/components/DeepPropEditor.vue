@@ -73,9 +73,17 @@ class="deep-editor-dialog"
     </el-dialog>
 
     <el-dialog v-model="dialogState.open" title="Warning" width="60vw"
-               append-to-body center>
+               append-to-body >
       <template #default>
-        <div @click="quickAppendCom('CusSelect')">快速select</div>
+        <section>
+          <header><h3>快速组件</h3></header>
+          <el-row :gutter="20">
+            <el-col style="cursor: pointer;" class="a-space-pv-20"
+                    :span="8" @click="quickAppendCom('CusSelect')">
+              <el-row justify="center" align="middle">快速select</el-row>
+            </el-col>
+          </el-row>
+        </section>
       </template>
     </el-dialog>
 

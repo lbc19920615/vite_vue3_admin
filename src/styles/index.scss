@@ -25,6 +25,13 @@
     .a-space-pt-#{$i} {
       padding-top: var(--z-size-#{$i});
     }
+    .a-space-pb-#{$i} {
+      padding-bottom: var(--z-size-#{$i});
+    }
+    .a-space-pv-#{$i} {
+      padding-top: var(--z-size-#{$i});
+      padding-bottom: var(--z-size-#{$i});
+    }
     .a-space-pl-#{$i} {
       padding-left: var(--z-size-#{$i});
     }
