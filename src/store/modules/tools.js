@@ -103,7 +103,16 @@ globalThis.ToolsDocs =  [
 @param defaultVal {null} 默认值
 `
   },
+  {
+    label: 'ROOT_GETTERS',
+    value: `### ROOT_GETTERS
+是一个用于获取app 底层状态的方法
 
+@param name {string} vuex.getters 名
+
+@param params {any[]} 参数
+`
+  },
 ]
 
 
