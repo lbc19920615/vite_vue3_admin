@@ -27,7 +27,11 @@
                   :column="column"
                   :no-input="true"
                   :use-prepend="true"
+                  :popover-open="true"
                   @value:change="onWidgetChange">
+        <template #button-text>
+          选择组件
+        </template>
         <template #prepend="scope">
           <el-row v-if="scope.value" style="flex-wrap: nowrap">
             <div>{{scope.value}}</div>
@@ -37,6 +41,9 @@
               <i class="fa fa-book"></i>
             </z-window>
           </el-row>
+          <template v-else>
+            <div style="height: 100%;">&nbsp;</div>
+          </template>
         </template>
       </ew-suggest>
     </div>
