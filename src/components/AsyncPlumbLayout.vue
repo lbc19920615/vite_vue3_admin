@@ -78,6 +78,7 @@ $sel: "." + $tag;
           </template>
           <el-button size="small" v-if="dep.type === 'object'"
                      @click="appendItem(dep)"><i class="el-icon-plus"></i></el-button>
+          <slot name="plumb__layout-beforeend" v-bind="{dep, appendItem: appendItemV2}"></slot>
         </template>
         <div v-show="dep.data" style="height: 150px; overflow: auto;">{{dep.data}}</div>
       </div>

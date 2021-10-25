@@ -17,6 +17,7 @@ export default {
   mixins: [
       CustomRenderControlMixin
   ],
+  CUS_TITLE: '时间选择',
   CUS_EDITOR: function () {
     return {
       props: {

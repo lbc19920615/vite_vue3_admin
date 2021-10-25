@@ -23,7 +23,7 @@
       <ew-suggest v-model="state.value.control.widget"
                   placement="top"
                   :suggest="state.suggest"
-                  :con-width="530"
+                  :con-width="570"
                   :column="column"
                   :no-input="true"
                   :use-prepend="true"
@@ -222,8 +222,7 @@ export default {
 
     const lifeTimes ={
       onReady() {
-        let app = globalThis.getAppContext()
-        let Prefix = ['El']
+        // let app = globalThis.getAppContext()
         // AppComponents = app.components
         // let arr = Object.entries(AppComponents).filter(v => {
         //   return Prefix.some(p => v[0].startsWith(p))
@@ -237,10 +236,15 @@ export default {
             })
         )
         BASE_SUGGEST = arr.map(v => {
-
+          // console.log(v)
+          let label = v[0]
+          if (v[1] && v[1].CUS_TITLE) {
+            label = v[1].CUS_TITLE
+          }
+          let value = v[0]
           return {
-            label: v[0],
-            value: v[0],
+            label: label,
+            value: value,
             labelTip: 'CUS_EDITOR'
           }
         })
@@ -379,7 +383,7 @@ export default {
         width: '250px',
         render(h, props) {
           const scope = props.scope
-          const cusName = getDocAddressName(scope.row.label)
+          const cusName = getDocAddressName(scope.row.value)
           let tooltip = resolveComponent('el-tooltip')
           let elLink = resolveComponent('z-window')
           let text = h('span', {}, scope.row.label)

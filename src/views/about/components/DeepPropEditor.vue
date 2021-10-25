@@ -51,9 +51,24 @@ class="deep-editor-dialog"
             <template #reference><el-button style="padding: 0; border: none;"><z-text :ellipsisLength="10" :value="scope.key"></z-text></el-button></template>
           </el-popover>
         </template>
+        <template #plumb__layout-beforeend="scope">
+          {{scope.dep}}
+          <el-button size="small"
+                     v-if="scope.dep.type === 'object'"
+                     @click="showQuickAppend(scope)"
+          >
+            <el-icon><Plus></Plus></el-icon>
+          </el-button>
+        </template>
       </AsyncPlumbLayout>
     </el-dialog>
 
+    <el-dialog v-model="dialogState.open" title="Warning" width="60vw"
+               append-to-body center>
+      <template #default>
+        <div @click="quickAppendCom('CusSelect')">快速select</div>
+      </template>
+    </el-dialog>
 
     <el-drawer
         title="属性"
@@ -104,9 +119,9 @@ class="deep-editor-dialog"
 
 <script>
 import AsyncPlumbLayout from "@/components/AsyncPlumbLayout.vue";
-import {getCurrentInstance, nextTick, toRaw, inject} from "vue";
+import {getCurrentInstance, nextTick, toRaw, inject, reactive} from "vue";
 import {extendControl2Page, useControl, useAppPageControl, extendCommonArrEventHandler} from "@/mixins/framework";
-import {Coffee} from "@element-plus/icons";
+import {Coffee, Plus} from "@element-plus/icons";
 import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 import {useStore} from "vuex";
 
@@ -246,7 +261,7 @@ let plumbLayoutMixin = {
 
 export default {
   name: "DeepPropEditor",
-  components: { AsyncPlumbLayout, Coffee},
+  components: { AsyncPlumbLayout, Coffee, Plus},
   props: {
     serviceName: String,
     height: {
@@ -383,7 +398,10 @@ export default {
     }
 
     function onDrawerClose(currentEditItem) {
-      console.log('onDrawerClose', cachedDeepEditorModel, currentEditItem)
+      // console.log('onDrawerClose', cachedDeepEditorModel, currentEditItem)
+      if (currentEditItem) {
+        console.log('currentEditItem', currentEditItem.data)
+      }
       if (cachedDeepEditorModel) {
 
         currentEditItem.data = ZY.JSON5.stringify(cachedDeepEditorModel)
@@ -433,12 +451,42 @@ export default {
       return ''
     }
 
+    let dialogState = reactive({
+      open: false,
+      currrent: {}
+    })
+    function showQuickAppend(scope) {
+      // alert('showQuickAppend')
+
+      dialogState.open = true
+      dialogState.currrent = scope
+    }
+    function quickAppendCom() {
+      // console.log(dialogState.currrent)
+      dialogState.currrent.appendItem(dialogState.currrent.dep, function (item) {
+        let obj = {
+          type:'string',
+          ui:{
+            type:'',label:'',widgetConfig:'{}',form_item:{},attrs:[],
+            widget2:"{data:{widget:'CusDateTimePicker',widgetConfig:{}}}"
+          },
+          rules:'[]',
+          rulesArr:[]
+        }
+        item.data = ZY.JSON5.stringify(obj)
+        item.key = ZY.rid(6)
+      })
+    }
+
     return {
       loadStepByContent,
       onBeforeClose,
       onDrawerClose,
       inspect,
       store: page.store,
+      dialogState,
+      showQuickAppend,
+      quickAppendCom,
       filter: page.filter,
       EVENT_NAMES,
       getContent,

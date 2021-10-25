@@ -172,6 +172,21 @@ export let plumbLayoutMixn = {
         anchors: ['Right']
       }, depId, 'Right')
     },
+    async appendItemV2(dep, handle = null) {
+      let opt = dep
+      let newItem = {
+        id: opt.id + '-' + ZY.rid(6),
+        key: '',
+        name: '',
+      }
+      if (handle) {
+        handle(newItem)
+      }
+      opt.items.push(newItem)
+      await this.$nextTick()
+      this.renderItem(newItem, dep.id)
+      this.instance.repaintEverything()
+    },
     /**
      * appendItem
      * @param dep
