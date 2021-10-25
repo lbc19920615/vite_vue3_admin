@@ -6,7 +6,7 @@
 <!--    <el-input v-model="state.value.control.widget"></el-input>-->
     <el-row align="middle" type="flex" class="a-space-mb-15">
       <div class="a-space-mr-10">描述</div>
-      <el-input v-model="state.value.data.common_desc"
+      <el-input type="textarea" v-model="state.value.data.common_desc"
       @change="onCommonChange" style="width: 350px"
       ></el-input>
     </el-row>

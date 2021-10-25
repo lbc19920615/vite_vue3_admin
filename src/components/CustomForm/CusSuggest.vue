@@ -73,8 +73,9 @@ export default {
     let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
       handleValueInit
     })
+    let widgetConfig = props?.ui?.widgetConfig ?? {}
     let state = data({
-      suggest: props.ui.widgetConfig.suggest ?? [],
+      suggest: widgetConfig.suggest ?? [],
       search: ''
     })
     init(props)

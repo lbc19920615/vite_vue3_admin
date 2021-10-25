@@ -9,7 +9,7 @@
 
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils";
-import {createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
+import {createAbleProp, createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
 
 export default {
   name: 'CusTimePicker',
@@ -19,7 +19,19 @@ export default {
   CUS_EDITOR: function () {
     return {
       props: {
-        ...createBaseCusCONFIG()
+        ...createBaseCusCONFIG(),
+        format: {
+          type: String,
+          ui: {
+            label: '格式化'
+          }
+        },
+        clearable: createAbleProp({
+          label: '清除'
+        }),
+        editable: createAbleProp({
+          label: '输入'
+        }),
       }
     }
   },

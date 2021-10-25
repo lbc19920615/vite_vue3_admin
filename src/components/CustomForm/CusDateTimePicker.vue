@@ -10,7 +10,7 @@
 
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils";
-import {createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
+import {createAbleProp, createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
 
 export default {
   name: 'CusDateTimePicker',
@@ -21,7 +21,39 @@ export default {
   CUS_EDITOR: function () {
     return {
       props: {
-        ...createBaseCusCONFIG()
+        ...createBaseCusCONFIG(),
+        type: {
+          type: String,
+          ui: {
+            label: '类型',
+            widget: 'CusSuggest',
+            widgetConfig: {
+              suggest: [
+                {
+                  label: '年',
+                  value: 'year'
+                },
+                {
+                  label: '月',
+                  value: 'month'
+                },
+                {
+                  label: '周',
+                  value: 'week'
+                }
+              ]
+            }
+          }
+        },
+        format: {
+          type: String,
+          ui: {
+            label: '格式化'
+          }
+        },
+        clearable: createAbleProp({
+          label: '清除'
+        }),
       }
     }
   },
