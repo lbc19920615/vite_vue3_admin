@@ -9,28 +9,11 @@
  <div class="code-js-editor">
 <!--   {{state}}-->
    <el-space class="a-space-mb-10"  align="middle">
-<!--     <el-popover-->
-<!--         placement="bottom"-->
-<!--         :width="700"-->
-<!--         trigger="click"-->
-<!--         v-model:visible="state.visible"-->
-<!--     >-->
-<!--       <template #reference>-->
-<!--         <el-button size="small" @click="setRefMan(true)">快捷代码</el-button>-->
-<!--       </template>-->
-<!--       <div  style="min-height: 200px">-->
-<!--         <SimpleList v-if="refMan.showed"-->
-<!--                     :column="state.column"-->
-<!--                     :suggest="getSuggest()"-->
-<!--                    @select-item="onSelect"-->
-<!--         ></SimpleList>-->
-<!--       </div>-->
-<!--     </el-popover>-->
      <z-easy-dialog title="快捷指令" :model-attr="modelAttr">
        <el-row style="height: 350px">
          <el-col :span="24">
            <el-row>
-             <el-col class="g-list-group-item" v-for="element in elements"
+             <el-col class="g-list-group-item" v-for="element in elements()"
                      :span="12"><div class="g-list-group-item__element"
              @click="selectQuickElement(element)"
              >{{element.label}}</div></el-col>
@@ -120,7 +103,8 @@ export default {
     let instance = getCurrentInstance()
     let [refMan, setRefMan] = useReloadMan({timeout: 500})
 
-    let suggest = props.ui.widgetConfig.suggest ?? []
+    let widgetConfig =  props?.ui?.widgetConfig ?? {}
+    let suggest = Array.isArray( widgetConfig.suggest) ?? []
 
     let state = reactive({
       column: [
@@ -151,12 +135,6 @@ export default {
       }
     }
 
-//     function test() {
-//       instance.ctx.$refs.editorRef.insertText(`
-// sdsds
-// `)
-//     }
-
     function onChange() {
       let newVal = instance.ctx.$refs.editorRef.getValue()
       // console.log('newVal', newVal, instance.ctx.content)
@@ -177,12 +155,9 @@ export default {
       width: '50%',
     }
 
-    let elements = [
-      {
-        label: '数组添加',
-        value: `G.数组添加(e)`
-      }
-    ]
+    let elements = function () {
+      return widgetConfig.suggests ?? []
+    }
 
     function selectQuickElement(element = {}) {
       onSelect(element.value ?? '')
@@ -194,7 +169,6 @@ export default {
       modelAttr,
       elements,
       selectQuickElement,
-      // test,
       getSuggest,
       refMan,
       setRefMan

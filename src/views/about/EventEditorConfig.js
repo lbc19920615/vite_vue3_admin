@@ -264,7 +264,12 @@ export default {
                                             label: '事件处理代码',
                                             widget: 'CodeJsEditor',
                                             widgetConfig: {
-
+                                                suggests: [
+                                                    {
+                                                        label: '数组添加',
+                                                        value: `G.数组添加(e)`
+                                                    }
+                                                ]
                                             }
                                         }
                                     },
