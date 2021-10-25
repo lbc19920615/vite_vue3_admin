@@ -54,6 +54,10 @@ export default defineComponent({
       return arr
     },
     ENUMS_AREA_GET_OPTS(v) {
+      /**
+       * ### MODEL
+       * 是一个用于获取当前表单 数据的方法
+       */
       return this.AREA_GET_OPTS(v)
     },
     getElementComponentTags() {
