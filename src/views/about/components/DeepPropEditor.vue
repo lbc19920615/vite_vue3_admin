@@ -418,7 +418,7 @@ export default {
     function onDrawerClose(currentEditItem) {
       // console.log('onDrawerClose', cachedDeepEditorModel, currentEditItem)
       if (currentEditItem) {
-        console.log('currentEditItem', currentEditItem.data)
+        // console.log('currentEditItem', currentEditItem.data)
       }
       if (cachedDeepEditorModel) {
 
