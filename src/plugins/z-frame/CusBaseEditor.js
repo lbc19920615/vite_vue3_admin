@@ -29,6 +29,9 @@ export function createBaseCusCONFIG() {
 }
 
 export function createBaseCusEnumsCONFIG() {
+  let app = getApp()
+  let APP_FUNS = Object.keys(app).filter(v => v.startsWith('ENUMS'))
+  // console.log(APP_FUNS)
   let constVarsKeys = Object.keys(constVars)
   // console.log('constVarsKeys', constVarsKeys)
   constVarsKeys = constVarsKeys.concat(
@@ -60,11 +63,13 @@ export function createBaseCusEnumsCONFIG() {
           insVars: [
             'constVars',
             'tools',
+            'A',
             ...constVarsKeys
           ],
           insFun: [
             'ROOT_GETTERS',
             'MODEL',
+            ...APP_FUNS,
             'ROOT_STATE',
           ]
         }

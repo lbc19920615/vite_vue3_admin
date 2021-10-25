@@ -53,6 +53,9 @@ export default defineComponent({
       }
       return arr
     },
+    ENUMS_AREA_GET_OPTS(v) {
+      return this.AREA_GET_OPTS(v)
+    },
     getElementComponentTags() {
       let appContext = getAppContext()
       return Object.keys(appContext.components)
