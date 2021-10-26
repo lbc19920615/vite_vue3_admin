@@ -1,7 +1,9 @@
 <template>
   <div class="render-layout" :class="['render-layout-level-' + level]">
       <grid-column :class="levelItemCls" v-if="curObj.type === 'column'"
-                :layout="curObj.items">
+                :layout="curObj.items"
+                :attrs="curObj.data.attrs"
+      >
         <template v-slot:default="{item}">
 <!--          {{getNext(item)}}-->
           <render-layout :level="level + 1" :map="map" :handle-next="handleNext"
@@ -14,7 +16,9 @@
       </grid-column>
     <template v-else-if="curObj.type === 'row'">
       <grid-row :class="levelItemCls"
-                :layout="curObj.items">
+                :layout="curObj.items"
+                :attrs="curObj.data.attrs"
+      >
         <template v-slot:default="{item}">
           <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"
                          :handle-def-map="handleDefMap"

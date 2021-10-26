@@ -56,7 +56,8 @@ $cls: "vue-grid-row-tools";
 <!--&lt;!&ndash;        <button class="grid-column-handle"><i class="el-icon-rank"></i></button>&ndash;&gt;-->
 <!--      </div>-->
 <!--    </div>-->
-    <div  class="vue-grid-row"><div
+  {{getAttrs('styles')}}
+    <div  class="vue-grid-row" :style="getAttrs('styles')"><div
         class="vue-row-item" v-for="(item, index) in rowv2"
                                    :style="item.style" >
       <slot v-bind="{item, index}"></slot>
@@ -70,12 +71,14 @@ $cls: "vue-grid-row-tools";
 import UnitInput from "@/components/UnitInput.vue";
 import GridRow from "@/views/about/mixins/GridRow";
 import GridRowControl from "@/views/about/mixins/GridRowControl";
+import {commonRenderMixin} from "@/views/about/mixins/CommonRender";
 
 export default {
   name: "grid-row",
   mixins: [
     GridRowControl,
     GridRow,
+    commonRenderMixin
   ],
   components: {UnitInput},
   data() {

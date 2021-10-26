@@ -178,7 +178,25 @@ export let rowEditorConfig = function (defaultVal = {}) {
                             label: '名称'
                         },
                     },
-                    style: {
+                    styles: {
+                        type: 'string',
+                        computedProp: 'ui2_styles',
+                        ui: {
+                            styles: [
+                                // ['height', 0],
+                                // ['overflow', 'hidden'],
+                            ],
+                            widgetConfig: {
+                                type: 'textarea',
+                                disabled: true
+                                // style: {height: '200px'}
+                            }
+                        },
+                        rules: {
+                            type: 'any'
+                        }
+                    },
+                    ui2: {
                         type: 'string',
                         ui: {
                             label: '样式配置',
@@ -243,7 +261,8 @@ export let rowEditorConfig = function (defaultVal = {}) {
             },
         }
     }, {
-        doubled: "MODEL('name', '') + ',s'"
+        doubled: "MODEL('name', '') + ',s'",
+        ui2_styles: `A.get_ui2_styles(MODEL('attrs.ui2'))`,
     },
         {
             defaultVal: defaultVal
