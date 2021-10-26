@@ -44,7 +44,9 @@ export default {
         if (newVal) {
           try {
             obj = JSON5.parse(newVal)
-            state.control = obj
+            state.control = {
+              styles: obj
+            }
           } catch (e) {
             //
           }
@@ -61,7 +63,7 @@ export default {
 
     function onChange() {
       let clonedValue = JSON5.parse(JSON5.stringify(state.value))
-      let str =JSON5.stringify(clonedValue)
+      let str =JSON5.stringify(clonedValue.styles)
       methods.on_change(str)
     }
 

@@ -56,8 +56,7 @@ $cls: "vue-grid-row-tools";
 <!--&lt;!&ndash;        <button class="grid-column-handle"><i class="el-icon-rank"></i></button>&ndash;&gt;-->
 <!--      </div>-->
 <!--    </div>-->
-  {{getAttrs('styles')}}
-    <div  class="vue-grid-row" :style="getAttrs('styles')"><div
+    <div  class="vue-grid-row" v-bind="getAttrs('attrs')" :style="getAttrs('styles')" ><div
         class="vue-row-item" v-for="(item, index) in rowv2"
                                    :style="item.style" >
       <slot v-bind="{item, index}"></slot>
