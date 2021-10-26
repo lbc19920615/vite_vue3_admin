@@ -78,9 +78,12 @@ class="deep-editor-dialog"
         <section>
           <header><h3>快速组件</h3></header>
           <el-row :gutter="20">
-            <el-col style="cursor: pointer;" class="a-space-pv-20"
-                    :span="8" @click="quickAppendCom('CusSelect')">
-              <el-row justify="center" align="middle">快速select</el-row>
+
+            <el-col
+                v-for="component in getComponents()"
+                style="cursor: pointer;" class="a-space-pv-20"
+                    :span="8" @click="quickAppendCom(component)">
+              <el-row justify="center" align="middle">{{component.label}}</el-row>
             </el-col>
           </el-row>
         </section>
@@ -479,7 +482,7 @@ export default {
       dialogState.open = true
       dialogState.currrent = scope
     }
-    function quickAppendCom() {
+    function quickAppendCom(component) {
       // console.log(dialogState.currrent)
       dialogState.currrent.appendItem(dialogState.currrent.dep, function (item) {
         // let obj = {
@@ -506,6 +509,10 @@ export default {
       })
     }
 
+    function getComponents() {
+      return getApp().get_custom_components()
+    }
+
     return {
       loadStepByContent,
       onBeforeClose,
@@ -516,6 +523,7 @@ export default {
       showQuickAppend,
       quickAppendCom,
       filter: page.filter,
+      getComponents,
       EVENT_NAMES,
       getContent,
       allDef: page.defMap,
