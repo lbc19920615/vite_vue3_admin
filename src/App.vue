@@ -53,6 +53,29 @@ export default defineComponent({
       }
       return arr
     },
+    get_custom_components() {
+      let AppComponents = CustomVueComponent.components
+      let arr = []
+      arr = arr.concat(
+          Object.entries(AppComponents).filter(([comName, comDef]) => {
+            return comDef.CUS_EDITOR
+          })
+      )
+      let BASE_SUGGEST = arr.map(v => {
+        // console.log(v)
+        let label = v[0]
+        if (v[1] && v[1].CUS_TITLE) {
+          label = v[1].CUS_TITLE
+        }
+        let value = v[0]
+        return {
+          label: label,
+          value: value,
+          labelTip: 'CUS_EDITOR'
+        }
+      })
+      return BASE_SUGGEST
+    },
     ENUMS_AREA_GET_OPTS(v) {
       /**
        * ### MODEL
