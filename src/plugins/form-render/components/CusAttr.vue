@@ -7,11 +7,12 @@
 <!--    {{state}}-->
     <template v-if="state.control">
       <section  class="a-space-mb-10">
-        <ZStyles
+        <ZAttrs
             style="flex: 1"
-            @inited="onStylesInited"
-            :value="state.control.styles" @form:input:blur="onBlur"
-            @props-change="onStylesChange"></ZStyles>
+            :value="state.control.styles"
+            @form:input:blur="onBlur"
+            @props-change="onStylesChange"
+        ></ZAttrs>
       </section>
     </template>
   </template>
@@ -23,10 +24,11 @@ import EwSuggest from "@/components/Ew/EwSuggest.vue";
 import ZProps from "@/plugins/z-frame/components/ZProps.vue";
 import ZStyles from "@/plugins/z-frame/components/ZStyles.vue";
 import {onMounted, watch} from "vue";
+import ZAttrs from "@/plugins/z-frame/components/ZAttrs.vue";
 
 export default {
-  name: 'CusStyle',
-  components: {ZStyles, ZProps, EwSuggest},
+  name: 'CusAttr',
+  components: {ZAttrs, ZStyles, ZProps, EwSuggest},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -35,11 +37,10 @@ export default {
     let widgetConfig = props?.ui?.widgetConfig ?? {}
     let obj;
     let JSON5 = ZY.JSON5;
-    let needInited = false
-    let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
+    let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx, {
       handleValueInit(newVal, from) {
         // console.log(from)
-        console.log('CusStyle', newVal, typeof  newVal)
+        console.log('CusAttr', newVal, typeof  newVal)
         if (newVal) {
           try {
             obj = JSON5.parse(newVal)
@@ -49,12 +50,6 @@ export default {
           }
         } else {
           state.control.styles = []
-          // console.log('sdsdsds')
-        }
-        if (styleInitData) {
-          // styleInitData(state.control.styles)
-        } else {
-          // needInited = true
         }
         return {}
       }
@@ -62,7 +57,6 @@ export default {
     let state = data({
       value: {},
       control: {},
-      chushi: false
     })
 
     function onChange() {
@@ -98,13 +92,6 @@ export default {
         init(props)
       }
     })
-
-    watch(() => props.modelValue, (newVal) => {
-
-    }, {
-      // immediate: true
-    })
-
 
     return {
       state,

@@ -188,6 +188,16 @@ export let rowEditorConfig = function (defaultVal = {}) {
                             }
                         }
                     },
+                    attrs: {
+                        type: 'string',
+                        ui: {
+                            label: '属性配置',
+                            widget: 'CusAttr',
+                            widgetConfig: {
+                                mounted: true
+                            }
+                        }
+                    },
                 }
             },
             items: {
