@@ -493,20 +493,20 @@ export default {
     }
     function quickAppendCom(component) {
       console.log(dialogState.currrent, component)
-      // dialogState.currrent.appendItem(dialogState.currrent.dep, function (item) {
-      //   let obj = buildQuickItem({
-      //     type: 'string',
-      //     ui: {
-      //       widget2: ZY.JSON5.stringify(
-      //           buildQuickWidget2({
-      //             widget: 'CusInput'
-      //           })
-      //       ),
-      //     }
-      //   })
-      //   item.data = ZY.JSON5.stringify(obj)
-      //   item.key = ZY.rid(6)
-      // })
+      dialogState.currrent.appendItem(dialogState.currrent.dep, function (item) {
+        let obj = buildQuickItem({
+          type: 'string',
+          ui: {
+            widget2: ZY.JSON5.stringify(
+                buildQuickWidget2({
+                  widget: component.value
+                })
+            ),
+          }
+        })
+        item.data = ZY.JSON5.stringify(obj)
+        item.key = ZY.rid(6)
+      })
     }
 
     function getComponents() {
