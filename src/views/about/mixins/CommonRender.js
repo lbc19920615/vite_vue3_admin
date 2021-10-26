@@ -26,7 +26,7 @@ export let commonRenderMixin = {
         }
         if (k === 'attrs') {
           // console.log(typeof o)
-          
+
           return attrsToObjAttr(ZY.JSON5.parse(o))
         }
       }
