@@ -41,8 +41,18 @@ class CustomVueComponent {
   static register(ctx, name = ctx.name) {
     this.component(name, ctx)
   }
+  static resolve(str) {
+    let components = getAppContext().components
+    let comName = ZY.lodash.upperFirst(ZY.lodash.camelCase(str))
+    if (components[comName]) {
+      return components[comName]
+    }
+    return str
+  }
 }
 globalThis.CustomVueComponent = CustomVueComponent
+
+
 
 import * as Vue from 'vue/dist/vue.cjs'
 globalThis.Vue = Vue

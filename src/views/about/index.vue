@@ -31,6 +31,8 @@
 <!--       </el-space>-->
 <!--      </el-card>-->
 <!--    </my-fixed>-->
+    <z-drag-xml></z-drag-xml>
+
     <CustomElement is="my-vue-dialog" name="form-event-dialog"
                    :params="{sstyle: 'width: 60vw; min-width: 720px;'}">
       <template #default="scope">
@@ -219,6 +221,7 @@ import ZEasyModal from "@/plugins/z-frame/ZEasyModal.vue";
 import ZCascader from "@/plugins/z-frame/components/ZCascader.vue";
 import {useRouter2} from "@/hooks/router";
 import {VARS_PAGE_MODEL_NAME} from "@/vars";
+import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
 // globalThis.CnChar = CnChar
 //
 // globalThis.sortCnCharStroke = function (chars = []) {
@@ -257,6 +260,7 @@ export default defineComponent({
     }
   },
   components: {
+    ZDragXml,
     ZCascader,
     ZEasyModal,
     EwMathJax,
