@@ -41,14 +41,14 @@ export default {
   ],
   setup(props, ctx) {
 
-    let widgetConfig = props.ui.widgetConfig
+    let widgetConfig = props?.ui?.widgetConfig ?? {}
     let obj;
     let JSON5 = ZY.JSON5;
     let needInited = false
     let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
       handleValueInit(newVal, from) {
         // console.log(from)
-        // console.log('CusStyle', newVal, typeof  newVal)
+        console.log('CusStyle', newVal, typeof  newVal)
         if (newVal) {
           try {
             obj = JSON5.parse(newVal)
@@ -103,7 +103,9 @@ export default {
     }
 
     onMounted(() => {
-      // init(props)
+      if (widgetConfig.mounted) {
+        init(props)
+      }
     })
 
     watch(() => props.modelValue, (newVal) => {

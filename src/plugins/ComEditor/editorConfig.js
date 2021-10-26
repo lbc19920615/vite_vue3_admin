@@ -178,6 +178,16 @@ export let rowEditorConfig = function (defaultVal = {}) {
                             label: '名称'
                         },
                     },
+                    style: {
+                        type: 'string',
+                        ui: {
+                            label: '样式配置',
+                            widget: 'CusStyle',
+                            widgetConfig: {
+                                mounted: true
+                            }
+                        }
+                    },
                 }
             },
             items: {

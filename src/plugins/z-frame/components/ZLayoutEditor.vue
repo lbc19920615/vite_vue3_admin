@@ -43,6 +43,7 @@
 
         <el-drawer
             title="属性"
+            size="900px"
             :size="drawerWidth"
             v-model="renderFormDesigner"
             :lock-scroll="false"
