@@ -428,8 +428,9 @@ export default {
     ]
 
     function getUrl(value) {
-      let cusName = getDocAddressName(value)
-      return `https://element-plus.gitee.io/zh-CN/component/${cusName}.html`
+      // let cusName = getDocAddressName(value)
+      // return `https://element-plus.gitee.io/zh-CN/component/${cusName}.html`
+      return getApp().get_elememt_doc_url(value)
     }
 
     let suggestRef = ref(null)

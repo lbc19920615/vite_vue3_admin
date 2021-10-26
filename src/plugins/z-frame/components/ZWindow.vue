@@ -10,12 +10,16 @@ import {reactive} from "vue";
 export default {
   name: 'ZWindow',
   props: {
-    url: String
+    url: String,
+    target: {
+      type: String,
+      default: 'ZWindow'
+    }
   },
   methods: {
    open() {
      let manager = ZY.BOM.createWindowManager({
-       url: this.url, target: 'zWindow'
+       url: this.url, target: this.target
      })
      let ClientRect = this.$el.getBoundingClientRect();
      // console.log(ClientRect)

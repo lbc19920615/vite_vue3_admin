@@ -72,18 +72,26 @@ class="deep-editor-dialog"
       </AsyncPlumbLayout>
     </el-dialog>
 
-    <el-dialog v-model="dialogState.open" title="Warning" width="60vw"
+    <el-dialog v-model="dialogState.open" title="快速组件" width="60vw"
                append-to-body >
       <template #default>
         <section>
-          <header><h3>快速组件</h3></header>
+          <header></header>
           <el-row :gutter="20">
 
             <el-col
                 v-for="component in getComponents()"
                 style="cursor: pointer;" class="a-space-pv-20"
-                    :span="8" @click="quickAppendCom(component)">
-              <el-row justify="center" align="middle">{{component.label}}</el-row>
+                    :span="8" >
+              <el-row justify="center" align="middle">
+                <el-button size="small" @click="quickAppendCom(component)">{{component.label}}</el-button>
+                <z-window  class="a-space-ml-5"
+                           :url="getUrl(component.value)"
+                           target="deepWindow"
+                >
+                  <i class="fa fa-book"></i>
+                </z-window>
+              </el-row>
             </el-col>
           </el-row>
         </section>
@@ -145,6 +153,7 @@ import {Coffee, Plus} from "@element-plus/icons";
 import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 import {useStore} from "vuex";
 import {buildQuickWidget2, buildQuickItem} from "@/hooks/quickItem";
+import ZWindow from "@/plugins/z-frame/components/ZWindow.vue";
 
 let depManagerMixin = {
   data() {
@@ -282,7 +291,7 @@ let plumbLayoutMixin = {
 
 export default {
   name: "DeepPropEditor",
-  components: { AsyncPlumbLayout, Coffee, Plus},
+  components: {ZWindow, AsyncPlumbLayout, Coffee, Plus},
   props: {
     serviceName: String,
     height: {
@@ -483,35 +492,31 @@ export default {
       dialogState.currrent = scope
     }
     function quickAppendCom(component) {
-      // console.log(dialogState.currrent)
-      dialogState.currrent.appendItem(dialogState.currrent.dep, function (item) {
-        // let obj = {
-        //   type:'string',
-        //   ui:{
-        //     type:'',label:'',widgetConfig:'{}',form_item:{},attrs:[],
-        //     widget2:"{data:{widget:'CusDateTimePicker',widgetConfig:{}}}"
-        //   },
-        //   rules:'[]',
-        //   rulesArr:[]
-        // }
-        let obj = buildQuickItem({
-          type: 'string',
-          ui: {
-            widget2: ZY.JSON5.stringify(
-                buildQuickWidget2({
-                  widget: 'CusInput'
-                })
-            ),
-          }
-        })
-        item.data = ZY.JSON5.stringify(obj)
-        item.key = ZY.rid(6)
-      })
+      console.log(dialogState.currrent, component)
+      // dialogState.currrent.appendItem(dialogState.currrent.dep, function (item) {
+      //   let obj = buildQuickItem({
+      //     type: 'string',
+      //     ui: {
+      //       widget2: ZY.JSON5.stringify(
+      //           buildQuickWidget2({
+      //             widget: 'CusInput'
+      //           })
+      //       ),
+      //     }
+      //   })
+      //   item.data = ZY.JSON5.stringify(obj)
+      //   item.key = ZY.rid(6)
+      // })
     }
 
     function getComponents() {
       return getApp().get_custom_components()
     }
+
+    function getUrl(value) {
+      return getApp().get_elememt_doc_url(value)
+    }
+
 
     return {
       loadStepByContent,
@@ -524,6 +529,7 @@ export default {
       quickAppendCom,
       filter: page.filter,
       getComponents,
+      getUrl,
       EVENT_NAMES,
       getContent,
       allDef: page.defMap,

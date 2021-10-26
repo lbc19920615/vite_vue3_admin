@@ -53,6 +53,17 @@ export default defineComponent({
       }
       return arr
     },
+    get_elememt_doc_url(value) {
+      let cusName = this.getDocAddressName(value)
+      return `https://element-plus.gitee.io/zh-CN/component/${cusName}.html`
+    },
+    getDocAddressName(v = '') {
+      let s =  ZY.lodash.kebabCase( v.replace('Cus', ''))
+      if (s === 'date-time-picker') {
+        s = 'date-picker'
+      }
+      return s
+    },
     get_custom_components() {
       let AppComponents = CustomVueComponent.components
       let arr = []
