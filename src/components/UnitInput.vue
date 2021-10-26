@@ -83,9 +83,15 @@ export default {
       if (!Number.isNaN(v)) {
         this.num = v
       }
-      // console.log(this.num)
+      // console.log(newVal, typeof newVal)
+      if (newVal === 'undefined') {
+        this.unit = ''
+        return
+      }
       if (newVal && newVal.replace) {
         this.unit = newVal.replace(this.num, '')
+      } else {
+        this.unit = ''
       }
     },
     changeItem() {
