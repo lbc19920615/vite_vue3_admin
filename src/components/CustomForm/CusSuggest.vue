@@ -89,11 +89,14 @@ export default {
           let tooltip = resolveComponent('el-tooltip')
           let text = h('span', {}, scope.row.label)
           let icon = h('i', {class: 'el-icon-info a-space-ml-10'})
-          let tip =  h(tooltip, {
-            content: scope.row.labelTip,
-            placement: 'right'
-          }, [icon])
-          return h('div', {}, [text, tip])
+          if (scope.row.labelTip) {
+            let tip =  h(tooltip, {
+              content: scope.row.labelTip,
+              placement: 'right'
+            }, [icon])
+            return h('div', {}, [text, tip])
+          }
+          return h('div', {}, [text])
         }
       }
     ]
