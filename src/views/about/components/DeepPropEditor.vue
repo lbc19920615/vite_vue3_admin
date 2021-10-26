@@ -45,10 +45,10 @@ class="deep-editor-dialog"
           :custom-label="true"
       >
         <template #actions="scope">
-          <el-button size="mini"
-                     style="padding: 6px  10px"
-                     type="primary"
-                     @click="inspect(scope)"><el-icon><Coffee></Coffee></el-icon></el-button>
+<!--          <el-button size="mini"-->
+<!--                     style="padding: 6px  10px"-->
+<!--                     type="primary"-->
+<!--                     @click="inspect(scope)"><el-icon><Coffee></Coffee></el-icon></el-button>-->
         </template>
         <template #label="scope">
 <!--          <el-popover    trigger="hover">-->
