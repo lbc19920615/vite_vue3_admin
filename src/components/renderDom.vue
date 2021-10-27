@@ -1,5 +1,5 @@
 <script lang="jsx">
-import {defineComponent, h, provide} from "vue";
+import {defineComponent, h} from "vue";
 
 class ChildDom {
   constructor() {
@@ -53,7 +53,7 @@ export default defineComponent( {
 
 
     return () => {
-      return h('div', {}, root.children)
+      return root.children
     }
   }
 })
