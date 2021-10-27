@@ -134,13 +134,13 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods, listeners, init, parsedWidgetConfig, curFormCon, dxValueEval, selfpath } = defineCustomRender(props, ctx)
+    let { data, methods, listeners, init, parsedWidgetConfig, curFormCon, dxValueEval, selfpath, widgetConfig2 } = defineCustomRender(props, ctx)
     let state = data()
     init(props)
 
     // console.log('selfpath', selfpath)
 
-    let options = dxValueEval(props.ui.widgetConfig.enums)
+    let options = dxValueEval(widgetConfig2.enums)
     if (!options) {
       options = []
     } else {

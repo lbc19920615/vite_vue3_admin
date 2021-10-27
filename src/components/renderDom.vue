@@ -52,7 +52,7 @@ export default defineComponent( {
 
 
     watch(props.render, (newVal) => {
-      console.log('props change', newVal)
+      // console.log('props change', newVal)
       // root.children =  []
       // props.render.forEach((renderItem) => {
       //   // console.log(renderItem)
