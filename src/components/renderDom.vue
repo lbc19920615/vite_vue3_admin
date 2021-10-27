@@ -1,5 +1,5 @@
 <script lang="jsx">
-import {defineComponent, h} from "vue";
+import {defineComponent, h, reactive, watch} from "vue";
 
 class ChildDom {
   constructor() {
@@ -44,16 +44,27 @@ export default defineComponent( {
   },
   setup(props, ctx) {
     let root = new ChildDom()
-
-    // console.log(props.render)
-    props.render.forEach((renderItem) => {
-      // console.log(renderItem)
-      root.push( renderItem)
+    let state = reactive({
+      child: []
     })
 
+    // console.log(props.render)
+
+
+    watch(props.render, (newVal) => {
+      console.log('props change', newVal)
+      // root.children =  []
+      // props.render.forEach((renderItem) => {
+      //   // console.log(renderItem)
+      //   root.push( renderItem)
+      // })
+      // root.push( newVal)
+      root.children = newVal
+      state.child = newVal
+    })
 
     return () => {
-      return root.children
+      return state.child
     }
   }
 })
