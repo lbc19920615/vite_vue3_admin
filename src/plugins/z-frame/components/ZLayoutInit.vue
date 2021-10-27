@@ -17,7 +17,7 @@ import RenderDom from "@/components/renderDom.vue";
 import {h, reactive} from "vue";
 import {useReloadMan} from "@/views/home/hooks";
 
-const DATA_UUID_KEY = 'data-uuid'
+const DATA_UUID_KEY = 'data-uuid___'
 
 export default {
   name: "ZLayoutInit",
@@ -31,22 +31,41 @@ export default {
       dom1: [],
       dom2: []
     })
+
+    function findUUIDfromClassList(trueDom) {
+      let uuid_cls =  Array.of(...trueDom.classList).find(v => {
+        return v.startsWith(DATA_UUID_KEY)
+      })
+      let uuid = null
+      if (uuid_cls) {
+        uuid = uuid_cls.replace(DATA_UUID_KEY, '')
+      }
+      return uuid
+    }
+
     function buildAppend(type) {
       return function append(com, trueDom) {
         let child = state[type]
         let instanse =   h(com, {
-          class: 'render-dom-item',
-          [DATA_UUID_KEY]: ZY.rid()
+          class: [
+            'render-dom-item',
+            DATA_UUID_KEY + ZY.rid()
+          ],
+          // [DATA_UUID_KEY]: ZY.rid()
         }, Date.now())
         if (child.length < 1) {
           child.push(instanse)
         } else {
-          if (trueDom && trueDom.hasAttribute(DATA_UUID_KEY)) {
+          // console.log(trueDom.hasAttribute(DATA_UUID_KEY))
+          if (trueDom) {
             let parentChild = Array.of(...trueDom.parentElement.children)
-            let uuid =  trueDom.getAttribute(DATA_UUID_KEY)
-            let index  =  parentChild.findIndex(v => {
-              return v.getAttribute(DATA_UUID_KEY) === uuid
+            let trueDom_uuid = findUUIDfromClassList(trueDom)
+            console.log(trueDom_uuid)
+            let index  =  parentChild.findIndex(ele => {
+              let uuid = findUUIDfromClassList(ele)
+              return uuid === trueDom_uuid
             })
+            console.log(index)
             if (!Number.isNaN(index)) {
               if (index < 0) {
                 child.push(instanse)

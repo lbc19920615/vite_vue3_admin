@@ -9,6 +9,8 @@ test-com {
 [current-to-move] {
    /*background-color: #0d84ff;*/
   border: 1px dashed #0d84ff;
+  /*border-bottom: 2px solid;*/
+  /*border-bottom-color: #0d84ff;*/
   pointer-events: none;
 }
 [test-play] * {
@@ -22,39 +24,38 @@ test-com {
   <div class="z-drag-xml" >
 <!--    {{state}}-->
     <el-row>
-      <el-col :span="6">
+      <el-col :span="8" >
         <div draggable="true" >draggable</div>
-        <draggable
-            class="dragArea g-list-group"
-            v-model="state.list"
-            @start="onDropStart"
-            @end="onDropEnd"
-            :move="onDragMove"
-            :group="{ name: 'people', pull: 'clone', put: false }"
-            :sort="false"
-            item-key="id"
-            tag="el-row"
-            style="align-items: flex-start; flex-wrap: wrap;"
-        >
-          <template #item="{element}">
-            <el-col class="g-list-group-item"
-                    :class="list1ItemCls(element)"
-                    :span="12"
-                    :data-name="element.name"
-            ><div
-                class="g-list-group-item__element">{{element.label ? element.label : element.name}}</div></el-col>
-          </template>
-        </draggable>
+        <el-scrollbar height="60vh">
+          <draggable
+              class="dragArea g-list-group"
+              v-model="state.list"
+              @start="onDropStart"
+              @end="onDropEnd"
+              :move="onDragMove"
+              :group="{ name: 'people', pull: 'clone', put: false }"
+              :sort="false"
+              item-key="id"
+              tag="el-row"
+              style="align-items: flex-start; flex-wrap: wrap;"
+          >
+            <template #item="{element}">
+              <el-col class="g-list-group-item"
+                      :class="list1ItemCls(element)"
+                      :span="12"
+                      :data-name="element.name"
+              ><div
+                  class="g-list-group-item__element">{{element.label ? element.label : element.name}}</div></el-col>
+            </template>
+          </draggable>
+        </el-scrollbar>
       </el-col>
       <el-col id="playground"
               style="border: 1px solid #eee;"
-              data-index="-1" test-play :span="18"
+              data-index="-1" test-play :span="16"
               @dragover="onDragMove" @mouseover="onMouseMove" >
         <z-layout-init :drag-enter="onLayoutDragEnter"></z-layout-init>
 
-        <template v-if="refMan.showed" >
-          <render-dom :render="state.renderDom"  ></render-dom>
-        </template>
       </el-col>
     </el-row>
     <div id="test"></div>
@@ -69,22 +70,6 @@ import JsxRender from "@/components/jsxrender.vue";
 import {useReloadMan} from "@/views/home/hooks";
 import RenderDom from "@/components/renderDom.vue";
 import ZLayoutInit from "@/plugins/z-frame/components/ZLayoutInit.vue";
-
-class ChildDom {
-  constructor() {
-    this.children = []
-  }
-  push(v) {
-
-    this.children.push(
-      v
-    )
-  }
-  getChild() {
-    return this.children
-  }
-
-}
 
 export default {
   name: 'ZDragXml',
@@ -118,7 +103,9 @@ export default {
       return document.elementFromPoint(x, y)
     }
 
-    state.list = getXmlData()
+    state.list = getXmlData().filter(v => {
+      return v.name.startsWith('el-')
+    })
 
     function list1ItemCls(element) {
       let filted = !element.name.includes(state.filterList)
@@ -136,14 +123,13 @@ export default {
 
 
       let containers = new Map()
-    containers.set('root', new ChildDom())
     let currentDragEnterContext = null
 
     function onDropEnd(e) {
       let playground = document.getElementById('playground')
       state.isDragging = false
       originalEvent = e.originalEvent
-      console.log('onDropEnd', originalEvent)
+      // console.log('onDropEnd', originalEvent)
 
       let dataset = e?.item?.dataset ?? {}
       currentToTarget = fromPoint(originalEvent.pageX, originalEvent.pageY)
@@ -154,7 +140,7 @@ export default {
       }
 
 
-      console.log(currentToTarget, trueDom)
+      // console.log(currentToTarget, trueDom)
 
       let root = containers.get('root')
       let com = CustomVueComponent.resolve(dataset.name)
@@ -215,13 +201,16 @@ export default {
         let computedStyle = getComputedStyle(trueDom)
         // console.log(computedStyle.marginBottom)
         let marginBottom = parseFloat(computedStyle.marginBottom)
+        let marginTop = parseFloat(computedStyle.marginTop)
         let client = trueDom.getBoundingClientRect()
         // console.log(clone, client)
         clone.style.position = 'fixed'
         clone.style.left = client.left + 'px'
         clone.style.top = ( client.top + client.height + marginBottom) + 'px'
+        // clone.style.top = (client.top - marginBottom) + 'px'
         clone.style.width = client.width + 'px'
         clone.style.height = 1 + 'px'
+        // clone.style.height = (client.height + marginTop + marginBottom + 1) + 'px'
         clone.setAttribute('current-to-move', 1)
         let test = document.getElementById('test')
         test.innerHTML = ''
@@ -242,7 +231,7 @@ export default {
     }
 
     function onLayoutDragEnter(e) {
-      console.log('onLayoutDragEnter', e)
+      // console.log('onLayoutDragEnter', e)
       currentDragEnterContext  = e
     }
 
