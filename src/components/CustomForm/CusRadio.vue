@@ -48,13 +48,13 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods, listeners, init } = defineCustomRender(props, ctx)
+    let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx)
     let state = data()
     init(props)
 
     return {
       state,
-      widgetConfig: props.ui.widgetConfig,
+      widgetConfig: widgetConfig2,
       methods,
       listeners,
     }
