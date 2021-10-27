@@ -28,7 +28,6 @@ test-com {
 <!--    {{state}}-->
     <el-row>
       <el-col :span="8" >
-        <div draggable="true" >draggable</div>
         <el-scrollbar height="60vh">
           <draggable
               class="dragArea g-list-group"
@@ -107,9 +106,25 @@ export default {
       return document.elementFromPoint(x, y)
     }
 
-    state.list = getXmlData().filter(v => {
-      return v.name.startsWith('el-')
-    })
+    // state.list = getXmlData().filter(v => {
+    //   return v.name.startsWith('el-')
+    // })
+
+    let app = getApp()
+    state.list = [
+      ...app.get_custom_components().map(v => {
+        return {
+          name: v.value,
+          label: v.label
+        }
+      }),
+      {
+        name: 'el-card'
+      },
+      {
+        name: 'el-alert'
+      }
+    ]
 
     function list1ItemCls(element) {
       let filted = !element.name.includes(state.filterList)
