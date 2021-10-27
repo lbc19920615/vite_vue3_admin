@@ -1,15 +1,18 @@
-<template>
-<div style="display: flex" >
+<style>
+.z-drag-layout__item {
+  min-height: 10px;
+  flex: 1;
+}
+</style>
 
-  <div style="flex: 1" @dragenter="onDragEnter('dom1', $event)">1
-    <render-dom :render="state.dom1"  ></render-dom>
-  </div>
-  <div style="flex: 1"  @dragenter="onDragEnter('dom2', $event)">1
-<!--    <template v-if="refMan.showed" >-->
-      <render-dom :render="state.dom2"  ></render-dom>
-<!--    </template>-->
-  </div>
-</div>
+<template>
+<el-row class="z-drag-layout" layout-dom="layout-dom">
+  <template v-for="(item, index) in len">
+    <el-col class="z-drag-layout__item" @dragenter.prevent="onDragEnter(index, $event)">
+      <render-dom :render="state.doms[index]"  ></render-dom>
+    </el-col>
+  </template>
+</el-row>
 </template>
 
 <script>
@@ -23,13 +26,29 @@ export default {
   name: "ZLayoutInit",
   components: {RenderDom},
   props: {
-    dragEnter: null
+    dragEnter: null,
+    len: {
+      type: Number,
+      default: 1
+    }
   },
   setup(props, ctx) {
     let [refMan, setRefMan] = useReloadMan({timeout: 30})
     let state = reactive({
-      dom1: [],
-      dom2: []
+      doms: [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+      ]
     })
 
     function findUUIDfromClassList(trueDom) {
@@ -45,7 +64,7 @@ export default {
 
     function buildAppend(type) {
       return function append(com, trueDom) {
-        let child = state[type]
+        let child = state.doms[type]
         let instanse =   h(com, {
           class: [
             'render-dom-item',

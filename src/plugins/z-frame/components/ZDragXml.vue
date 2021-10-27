@@ -13,6 +13,9 @@ test-com {
   /*border-bottom-color: #0d84ff;*/
   pointer-events: none;
 }
+[current-to-move=line] {
+  border-top: none;
+}
 [test-play] * {
   /*border: 20px solid blue*/
   /*margin-top: 20px;*/
@@ -55,7 +58,8 @@ test-com {
               data-index="-1" test-play :span="16"
               @dragover="onDragMove" @mouseover="onMouseMove" >
         <z-layout-init :drag-enter="onLayoutDragEnter"></z-layout-init>
-
+        <h3>two</h3>
+        <z-layout-init :len="2" :drag-enter="onLayoutDragEnter"></z-layout-init>
       </el-col>
     </el-row>
     <div id="test"></div>
@@ -189,7 +193,15 @@ export default {
       return null
     }
 
-    function inspcetDom(e) {
+    function clearTool(clone) {
+      let test = document.getElementById('test')
+      test.innerHTML = ''
+      if (clone) {
+        test.appendChild(clone)
+      }
+    }
+
+    function inspcetDom(e, type = 'line') {
       let playground = document.getElementById('playground')
       currentToMove = fromPoint(e.pageX, e.pageY)
       let trueDom = null
@@ -204,25 +216,29 @@ export default {
         let marginTop = parseFloat(computedStyle.marginTop)
         let client = trueDom.getBoundingClientRect()
         // console.log(clone, client)
+        clone.setAttribute('data-type', type)
         clone.style.position = 'fixed'
         clone.style.left = client.left + 'px'
-        clone.style.top = ( client.top + client.height + marginBottom) + 'px'
         // clone.style.top = (client.top - marginBottom) + 'px'
         clone.style.width = client.width + 'px'
-        clone.style.height = 1 + 'px'
-        // clone.style.height = (client.height + marginTop + marginBottom + 1) + 'px'
-        clone.setAttribute('current-to-move', 1)
-        let test = document.getElementById('test')
-        test.innerHTML = ''
-        test.appendChild(clone)
+        if (type === 'line') {
+          clone.style.top = ( client.top + client.height + marginBottom) + 'px'
+          clone.style.height = 1 + 'px'
+        }
+        else if (type === 'rect') {
+          clone.style.top = (client.top - marginBottom) + 'px'
+          clone.style.height = (client.height + marginTop + marginBottom + 1) + 'px'
+        }
+        clone.setAttribute('current-to-move', type)
+        clearTool(clone)
       }  else {
-        let test = document.getElementById('test')
-        test.innerHTML = ''
+        clearTool()
       }
     }
 
     function onMouseMove(e) {
-      inspcetDom(e)
+      inspcetDom(e,'rect')
+      // clearTool()
     }
 
     function onDragMove(e) {
