@@ -48,7 +48,10 @@ test-com {
       </el-col>
       <el-col id="playground"
               style="border: 1px solid #eee;"
-              data-index="-1" test-play :span="18" @dragover="onDragMove" @mousemove="onMouseMove" >
+              data-index="-1" test-play :span="18"
+              @dragover="onDragMove" @mouseover="onMouseMove" >
+        <z-layout-init :drag-enter="onLayoutDragEnter"></z-layout-init>
+
         <template v-if="refMan.showed" >
           <render-dom :render="state.renderDom"  ></render-dom>
         </template>
@@ -65,6 +68,7 @@ import draggable from 'vuedraggable'
 import JsxRender from "@/components/jsxrender.vue";
 import {useReloadMan} from "@/views/home/hooks";
 import RenderDom from "@/components/renderDom.vue";
+import ZLayoutInit from "@/plugins/z-frame/components/ZLayoutInit.vue";
 
 class ChildDom {
   constructor() {
@@ -85,6 +89,7 @@ class ChildDom {
 export default {
   name: 'ZDragXml',
   components: {
+    ZLayoutInit,
     RenderDom,
     JsxRender,
     draggable,
@@ -130,14 +135,16 @@ export default {
 
 
 
-  let containers = new Map()
+      let containers = new Map()
     containers.set('root', new ChildDom())
+    let currentDragEnterContext = null
 
     function onDropEnd(e) {
       let playground = document.getElementById('playground')
       state.isDragging = false
       originalEvent = e.originalEvent
-      // console.log('onDropEnd', e.item.dataset)
+      console.log('onDropEnd', originalEvent)
+
       let dataset = e?.item?.dataset ?? {}
       currentToTarget = fromPoint(originalEvent.pageX, originalEvent.pageY)
 
@@ -147,34 +154,39 @@ export default {
       }
 
 
+      console.log(currentToTarget, trueDom)
 
-      console.log(trueDom)
       let root = containers.get('root')
       let com = CustomVueComponent.resolve(dataset.name)
 
-      if (root.children.length < 1) {
-        root.children.push(com)
-      } else {
-        if (trueDom && trueDom.hasAttribute('data-index')) {
-          let movedatasetIndex = trueDom.getAttribute('data-index')
-          let index  = parseInt(movedatasetIndex )
-          console.log(trueDom, movedatasetIndex)
-          if (!Number.isNaN(index)) {
-            if (index < 0) {
-              root.children.push(com)
-            } else {
-              index = index + 1
-              root.children.splice(index, 0, com)
-            }
-          }
-        } else {
-          console.log(trueDom)
-        }
+      if (currentDragEnterContext) {
+        currentDragEnterContext.append(com, trueDom)
       }
 
-
-      state.renderDom = root.getChild()
-      setRefMan(true)
+      //
+      // if (root.children.length < 1) {
+      //   root.children.push(com)
+      // } else {
+      //   if (trueDom && trueDom.hasAttribute('data-index')) {
+      //     let movedatasetIndex = trueDom.getAttribute('data-index')
+      //     let index  = parseInt(movedatasetIndex )
+      //     console.log(trueDom, movedatasetIndex)
+      //     if (!Number.isNaN(index)) {
+      //       if (index < 0) {
+      //         root.children.push(com)
+      //       } else {
+      //         index = index + 1
+      //         root.children.splice(index, 0, com)
+      //       }
+      //     }
+      //   } else {
+      //     console.log(trueDom)
+      //   }
+      // }
+      //
+      //
+      // state.renderDom = root.getChild()
+      // setRefMan(true)
       // let test = document.getElementById('test')
       // test.innerHTML = ''
       // console.log(domRef)
@@ -214,6 +226,9 @@ export default {
         let test = document.getElementById('test')
         test.innerHTML = ''
         test.appendChild(clone)
+      }  else {
+        let test = document.getElementById('test')
+        test.innerHTML = ''
       }
     }
 
@@ -226,6 +241,11 @@ export default {
       inspcetDom(e)
     }
 
+    function onLayoutDragEnter(e) {
+      console.log('onLayoutDragEnter', e)
+      currentDragEnterContext  = e
+    }
+
 
     return {
       list1ItemCls,
@@ -234,6 +254,7 @@ export default {
       onDropStart,
       refMan,
       onDragMove,
+      onLayoutDragEnter,
       onDropEnd,
       onMouseMove
     }
