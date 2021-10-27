@@ -17,7 +17,7 @@
 </style>
 
 <template>
-<el-row class="z-drag-layout" :ref="getRef" layout-dom="layout-dom">
+<el-row class="z-drag-layout" :z-layout-uuid="layoutUUID" :ref="getRef" layout-dom="layout-dom">
   <template v-for="(item, index) in len">
     <el-col class="z-drag-layout__item"
             @dragleave="onDragLeave"
@@ -165,6 +165,8 @@ export default {
         }
         // console.log( dom.map(v => v.itemUUID))
         // console.log( uuid, index)
+      } else {
+        console.log(uuid, layout_item_uuid)
       }
     }
 

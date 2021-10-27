@@ -253,6 +253,27 @@ export default {
     let test2Tool = clearTool('test2')
 
     function createInspect(trueDom, type) {
+      function handleButtonClick() {
+        // console.log(trueDom)
+        if (trueDom.hasAttribute('z-layout-uuid')) {
+          let layout_uuid = trueDom.getAttribute('z-layout-uuid')
+          let context = state.layoutRefs[layout_uuid]
+          console.log(layout_uuid, context)
+          if (context) {
+          }
+        }
+        else {
+          let trueDom_uuid = app.findUUIDfromClassList(trueDom)
+          let layout_uuid = app.findUUIDfromClassList(trueDom, DATA_LAYOUT_UUID_KEY)
+          let layout_item_uuid = app.findUUIDfromClassList(trueDom, DATA_LAYOUT_ITEM_UUID_KEY)
+          // console.log(layout_uuid, trueDom_uuid)
+          let context = state.layoutRefs[layout_uuid]
+          if (context) {
+            context.findCom(trueDom_uuid, layout_item_uuid)
+          }
+        }
+      }
+
       let clone = document.createElement('div')
       let computedStyle = getComputedStyle(trueDom)
       // console.log(computedStyle.marginBottom)
@@ -275,17 +296,7 @@ export default {
 
         let button = document.createElement('button')
         button.textContent = '编辑'
-        button.addEventListener('click', function () {
-          // console.log(state.layoutRefs)
-          let trueDom_uuid = app.findUUIDfromClassList(trueDom)
-          let layout_uuid = app.findUUIDfromClassList(trueDom, DATA_LAYOUT_UUID_KEY)
-          let layout_item_uuid = app.findUUIDfromClassList(trueDom, DATA_LAYOUT_ITEM_UUID_KEY)
-          // console.log(layout_uuid, trueDom_uuid)
-          let context = state.layoutRefs[layout_uuid]
-          if (context) {
-            context.findCom(trueDom_uuid, layout_item_uuid)
-          }
-        })
+        button.addEventListener('click', handleButtonClick)
         clone.appendChild(button)
       }
       clone.setAttribute('current-to-move', type)
