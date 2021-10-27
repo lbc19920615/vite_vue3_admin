@@ -1,24 +1,23 @@
 <script lang="jsx">
 import {defineComponent, h, reactive, watch} from "vue";
 
-class ChildDom {
-  constructor() {
-    this.children = []
-  }
-  push(type) {
-
-    this.children.push(
-        h(type, {
-          class: 'render-dom-item',
-          ['data-index']: this.children.length
-        }, Date.now())
-    )
-  }
-  getChild() {
-    return this.children
-  }
-
-}
+// class ChildDom {
+//   constructor() {
+//     this.children = []
+//   }
+//   push(type) {
+//     this.children.push(
+//         h(type, {
+//           class: 'render-dom-item',
+//           ['data-index']: this.children.length
+//         }, Date.now())
+//     )
+//   }
+//   getChild() {
+//     return this.children
+//   }
+//
+// }
 
 export default defineComponent( {
   name: 'RenderDom',
@@ -43,7 +42,7 @@ export default defineComponent( {
     render: null
   },
   setup(props, ctx) {
-    let root = new ChildDom()
+    // let root = new ChildDom()
     let state = reactive({
       child: []
     })
@@ -59,7 +58,7 @@ export default defineComponent( {
       //   root.push( renderItem)
       // })
       // root.push( newVal)
-      root.children = newVal
+      // root.children = newVal
       state.child = newVal
     })
 

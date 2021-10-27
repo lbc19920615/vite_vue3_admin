@@ -22,6 +22,7 @@
 
 <script>
 import {defineComponent, inject, provide} from "vue";
+import {DATA_UUID_KEY} from "@/vars";
 import {createRefManager} from "@/hooks/ref";
 import {useRouter} from "vue-router";
 import {fetchTwigComponent} from "@/hooks/remote.js";
@@ -63,6 +64,16 @@ export default defineComponent({
         s = 'date-picker'
       }
       return s
+    },
+     findUUIDfromClassList(trueDom, startStr = DATA_UUID_KEY) {
+      let uuid_cls =  Array.of(...trueDom.classList).find(v => {
+        return v.startsWith(startStr)
+      })
+      let uuid = null
+      if (uuid_cls) {
+        uuid = uuid_cls.replace(startStr, '')
+      }
+      return uuid
     },
     get_custom_components() {
       let AppComponents = CustomVueComponent.components

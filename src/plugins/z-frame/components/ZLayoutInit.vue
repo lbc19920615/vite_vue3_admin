@@ -19,7 +19,9 @@
 <template>
 <el-row class="z-drag-layout" :ref="getRef" layout-dom="layout-dom">
   <template v-for="(item, index) in len">
-    <el-col class="z-drag-layout__item" @dragleave="onDragLeave" @dragenter.prevent="onDragEnter(index, $event)">
+    <el-col class="z-drag-layout__item"
+            @dragleave="onDragLeave"
+            @dragenter.prevent="onDragEnter(index, $event)">
       <render-dom :render="state.doms[index]"  ></render-dom>
     </el-col>
   </template>
@@ -29,9 +31,7 @@
 <script>
 import RenderDom from "@/components/renderDom.vue";
 import {h, reactive} from "vue";
-import {useReloadMan} from "@/views/home/hooks";
-
-const DATA_UUID_KEY = 'data-uuid___'
+import {DATA_UUID_KEY, DATA_LAYOUT_UUID_KEY, DATA_LAYOUT_ITEM_UUID_KEY} from "@/vars";
 
 export default {
   name: "ZLayoutInit",
@@ -44,6 +44,8 @@ export default {
     },
   },
   setup(props, ctx) {
+    let app = getApp()
+    let layoutUUID = ZY.rid()
     let state = reactive({
       doms: [
         [],
@@ -59,6 +61,20 @@ export default {
         [],
         [],
       ],
+      defs: [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+      ]
     })
 
     let domRef = null
@@ -66,46 +82,49 @@ export default {
       domRef = v
     }
 
-    function findUUIDfromClassList(trueDom) {
-      let uuid_cls =  Array.of(...trueDom.classList).find(v => {
-        return v.startsWith(DATA_UUID_KEY)
-      })
-      let uuid = null
-      if (uuid_cls) {
-        uuid = uuid_cls.replace(DATA_UUID_KEY, '')
-      }
-      return uuid
-    }
-
     function buildAppend(type) {
       return function append(com, trueDom) {
         let child = state.doms[type]
-        let instanse =   h(com, {
+        let def = state.defs[type]
+        let itemUUID =  ZY.rid()
+        let instanse = h(com, {
           class: [
             'render-dom-item',
-            DATA_UUID_KEY + ZY.rid()
+            DATA_LAYOUT_UUID_KEY + layoutUUID,
+            DATA_LAYOUT_ITEM_UUID_KEY + type,
+            DATA_UUID_KEY + itemUUID,
           ],
-          // [DATA_UUID_KEY]: ZY.rid()
         }, Date.now())
+        let cachedDef = {
+          layoutUUID,
+          attrs: {
+            test: 1,
+          },
+          itemUUID,
+          instanse,
+        }
         if (child.length < 1) {
           child.push(instanse)
+          def.push(cachedDef)
         } else {
           // console.log(trueDom.hasAttribute(DATA_UUID_KEY))
           if (trueDom) {
             let parentChild = Array.of(...trueDom.parentElement.children)
-            let trueDom_uuid = findUUIDfromClassList(trueDom)
+            let trueDom_uuid = app.findUUIDfromClassList(trueDom)
             // console.log(trueDom_uuid)
             let index  =  parentChild.findIndex(ele => {
-              let uuid = findUUIDfromClassList(ele)
+              let uuid = app.findUUIDfromClassList(ele)
               return uuid === trueDom_uuid
             })
             // console.log(index)
             if (!Number.isNaN(index)) {
               if (index < 0) {
                 child.push(instanse)
+                def.push(cachedDef)
               } else {
                 index = index + 1
                 child.splice(index, 0, instanse)
+                def.splice(index, 0, cachedDef)
               }
             }
           } else {
@@ -115,12 +134,14 @@ export default {
         // setRefMan(true)
       }
     }
+
     function onDragEnter(type, e) {
       // console.log('onDragEnter', e)
       e.target.setAttribute('dragenter', 1)
       if (props.dragEnter) {
         props.dragEnter({
           append: buildAppend(type),
+          index: type,
           domRef
         })
       }
@@ -129,10 +150,30 @@ export default {
     function onDragLeave(e) {
       e.target.removeAttribute('dragenter')
     }
+
+    function findCom(uuid, layout_item_uuid) {
+      // console.log('layout_item_uuid', layout_item_uuid)
+      let com = state.doms[layout_item_uuid]
+      let dom = state.defs[layout_item_uuid]
+      if (dom) {
+        let index = dom.findIndex(v => {
+          return v.itemUUID === uuid
+        })
+        if (index > -1) {
+          let def = dom[index]
+          console.log(def, index)
+        }
+        // console.log( dom.map(v => v.itemUUID))
+        // console.log( uuid, index)
+      }
+    }
+
     return {
       state,
+      layoutUUID,
       onDragEnter,
       onDragLeave,
+      findCom,
       getRef
     }
   }

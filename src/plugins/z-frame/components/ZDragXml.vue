@@ -76,6 +76,7 @@ test-com {
             v-for="(item, index) in state.layouts"
             :key="item.uuid"
             :len="2"
+            :ref="el => { if (el) state.layoutRefs[el.layoutUUID] = el }"
             @dragenter.prevent="onLayoutSelfDragEnter"
             :drag-enter="onLayoutDragEnter"></z-layout-init>
       </el-col>
@@ -93,6 +94,7 @@ import JsxRender from "@/components/jsxrender.vue";
 import {useReloadMan} from "@/views/home/hooks";
 import RenderDom from "@/components/renderDom.vue";
 import ZLayoutInit from "@/plugins/z-frame/components/ZLayoutInit.vue";
+import {DATA_LAYOUT_ITEM_UUID_KEY, DATA_LAYOUT_UUID_KEY} from "@/vars";
 
 export default {
   name: 'ZDragXml',
@@ -115,7 +117,8 @@ export default {
       disableDrag: false,
       tree: [],
       renderDom: [],
-      layouts: []
+      layouts: [],
+      layoutRefs: {}
     })
 
     let domRef = null
@@ -272,6 +275,17 @@ export default {
 
         let button = document.createElement('button')
         button.textContent = '编辑'
+        button.addEventListener('click', function () {
+          // console.log(state.layoutRefs)
+          let trueDom_uuid = app.findUUIDfromClassList(trueDom)
+          let layout_uuid = app.findUUIDfromClassList(trueDom, DATA_LAYOUT_UUID_KEY)
+          let layout_item_uuid = app.findUUIDfromClassList(trueDom, DATA_LAYOUT_ITEM_UUID_KEY)
+          // console.log(layout_uuid, trueDom_uuid)
+          let context = state.layoutRefs[layout_uuid]
+          if (context) {
+            context.findCom(trueDom_uuid, layout_item_uuid)
+          }
+        })
         clone.appendChild(button)
       }
       clone.setAttribute('current-to-move', type)
