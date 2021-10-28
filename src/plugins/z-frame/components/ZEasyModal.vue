@@ -52,6 +52,9 @@ export default {
     openModal() {
       this.opened = !this.opened
     },
+    hide() {
+      this.opened = false
+    },
     getStyle() {
       if (this.opened ) {
         return {
@@ -62,7 +65,7 @@ export default {
       }
     },
     fireEvent(name) {
-      this.$emit(name)
+      this.$emit(name, this)
     }
   }
 }

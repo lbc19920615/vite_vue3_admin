@@ -73,6 +73,9 @@
            <el-button size="small" @click="appendOption(option)">
              <el-icon><Plus></Plus></el-icon>
            </el-button>
+           <el-button size="small" @click="selectOption(option)">
+             选择
+           </el-button>
            <el-popconfirm title="确定删除吗？" @confirm="deleteItem(state.options, option.id)">
              <template #reference>
                <el-button type="danger" size="small"><el-icon><Remove></Remove></el-icon></el-button>
@@ -108,38 +111,9 @@ class FormsOptions extends createStaticFormCls() {
 export default {
   name: 'ZOptionsManager',
   components: {ZCellItem, ZEasyModal, draggable, Plus, Rank, Remove},
-  setup() {
+  setup(props, ctx) {
     let state = reactive({
       options: [
-        // {
-        //   name: 'test1',
-        //   arr: [
-        //     {
-        //       id: ZY.rid(),
-        //       name: ZY.rid(),
-        //       data: {
-        //         label: '',
-        //         value: '',
-        //       },
-        //     },
-        //     {
-        //       id: ZY.rid(),
-        //       name: ZY.rid(),
-        //       data: {
-        //         label: '',
-        //         value: '',
-        //       },
-        //     },
-        //     {
-        //       id: ZY.rid(),
-        //       name: ZY.rid(),
-        //       data: {
-        //         label: '',
-        //         value: '',
-        //       },
-        //     }
-        //   ]
-        // }
       ]
     })
 
@@ -162,8 +136,14 @@ export default {
     onMounted(() => {
     })
 
-    function onOpened() {
+    let dialogContext = null
+    function onOpened(context) {
       load()
+      dialogContext = context
+    }
+
+    function hide() {
+      dialogContext.hide()
     }
 
     function appendOption(option) {
@@ -177,6 +157,12 @@ export default {
             },
           }
       )
+    }
+
+    function selectOption(option) {
+      console.log(option)
+      ctx.emit('select-item', toRaw(option))
+      hide()
     }
 
     function appendGroup() {
@@ -233,6 +219,7 @@ export default {
 
     return {
       appendOption,
+      selectOption,
       save,
       appendGroup,
       deleteItem,

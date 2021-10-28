@@ -9,7 +9,7 @@
     >
       <template   v-if="parsedWidgetConfig.template">
         <el-option vs-for="(option, key) in options"
-                   v-for="(option, key) in dxValueTemplate(widgetConfig.enums)"
+                   v-for="(option, key) in buildOptions()"
                    :label="option.label" :value="option.value"
         >
           <jsx-render :render="dom(option)" ></jsx-render>
@@ -17,7 +17,7 @@
       </template>
       <template v-else>
         <el-option vs-for="(option, key) in options"
-                   v-for="(option, key) in dxValueTemplate(widgetConfig.enums)"
+                   v-for="(option, key) in buildOptions()"
                    :label="option.label" :value="option.value"
         >
         </el-option>
@@ -141,23 +141,37 @@ export default {
 
     // console.log('selfpath', selfpath)
 
-    let options = dxValueEval(widgetConfig2.enums)
-    if (!options) {
-      options = []
-    } else {
-      options = ZY.JSON5.parse(ZY.JSON5.stringify(options))
+    console.log(widgetConfig2)
+
+    function buildOptions() {
+      let options = dxValueEval(widgetConfig2.enums)
+      if (!options) {
+        options = []
+      } else {
+        options = ZY.JSON5.parse(ZY.JSON5.stringify(options))
+      }
+
+      if (widgetConfig2.options2) {
+        try {
+          let opt = ZY.JSON5.parse(widgetConfig2.options2)
+          options = options.concat(opt)
+        } catch (e) {
+          //
+        }
+      }
+      return options
     }
 
     function onSelectChange(e) {
       let defs = toRaw(props.defs)
-  let sendObj =         {
-    defs: defs,
-    selfpath,
-    context: defs.context,
-    value: state.value,
-    model: curFormCon,
-    options
-  }
+      let sendObj =         {
+        defs: defs,
+        selfpath,
+        context: defs.context,
+        value: state.value,
+        model: curFormCon,
+        options: buildOptions()
+      }
       curFormCon.callPageEvent('CUS_SELECT:CHANGE',sendObj, e)
       curFormCon.callPageEvent(`CUS_SELECT:CHANGE(${selfpath})`,sendObj, e)
     }
@@ -173,9 +187,9 @@ export default {
     }
 
     return {
+      buildOptions,
       state,
       widgetConfig: props?.ui?.widgetConfig ?? {},
-      options,
       onSelectChange,
       parsedWidgetConfig,
       methods,

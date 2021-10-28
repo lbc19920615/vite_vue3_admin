@@ -263,7 +263,7 @@ let plumbLayoutMixin = {
       }
     },
     handleDep(dep) {
-      console.log('handleDep', dep)
+      // console.log('handleDep', dep)
       if (dep.type === 'form') {
         dep.content = ''
         dep.config.closure = true
@@ -410,7 +410,7 @@ export default {
           cached = ZY.JSON5.parse(item.data)
         }
 
-        // console.log('cached', cached)
+        console.log('cached', cached)
 
         for (let [partName, data] of Object.entries(config.defaultVal)) {
           let defaultObj = ZY.JSON5.parse(ZY.JSON5.stringify(data))
@@ -507,7 +507,7 @@ export default {
         let o = ZY.JSON5.parse(v)
         // console.log('getUILabel', o)
         let ui = o?.ui ?? {}
-        console.log(ui)
+        // console.log(ui)
         return ZY.lodash.get(ui, path)
       } catch (e) {
         console.log(e)
@@ -525,7 +525,7 @@ export default {
             r.widget = o.data.widget
             let widgetDef = CustomVueComponent.resolve( o.data.widget)
             if (widgetDef) {
-              console.log(widgetDef)
+              // console.log(widgetDef)
               r.CUS_TITLE = widgetDef.CUS_TITLE
             }
           }

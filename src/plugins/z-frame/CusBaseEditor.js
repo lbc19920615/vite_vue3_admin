@@ -40,6 +40,16 @@ export function createBaseCusEnumsCONFIG() {
     })
   )
   let ret = {
+    options2: {
+      type: String,
+      ui: {
+        label: '选项',
+        widget: 'CusOptManager',
+        widgetConfig: {
+          mounted: true
+        }
+      }
+    },
     enums: {
       type: String,
       ui: {
