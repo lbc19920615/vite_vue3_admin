@@ -49,24 +49,29 @@ class="deep-editor-dialog"
         </template>
         <template #actions="scope">
           <el-button size="mini"
-                     style="padding: 6px  10px"
+                     style="padding: 6px  10px; margin-left: 5px;"
                      type="primary"
                      @click="inspect(scope)"><el-icon><Coffee></Coffee></el-icon></el-button>
         </template>
         <template #label="scope">
 <!--          <el-popover    trigger="hover">-->
-<!--            <el-space><div v-html="getContent(scope.data)"></div><z-text-->
+<!--            <el-space><div v-html="getUILabel(scope.data)"></div><z-text-->
 <!--                :ellipsisLength="10" :value="scope.key"></z-text></el-space>-->
 <!--            <template #reference><el-button style="padding: 0; border: none;"><z-text-->
-<!--                :ellipsisLength="10" :value="getContent(scope.data)"></z-text></el-button></template>-->
+<!--                :ellipsisLength="10" :value="getUILabel(scope.data)"></z-text></el-button></template>-->
 <!--          </el-popover>-->
-          <z-text
-              :ellipsisLength="10" :value="getContent(scope.data)"></z-text>
+          <el-input  size="mini"
+                     v-model="scope.item.ZLABEL"
+                     @change="quickSetUILabel(scope, $event)"
+                     placeholder="请填写标题"></el-input>
+<!--          <z-text-->
+<!--              :ellipsisLength="10" :value="getUILabel(scope.item.data)"></z-text>-->
         </template>
         <template #plumb__layout-beforeend="scope">
 <!--          {{scope.dep}}-->
           <el-button size="small"
                      v-if="scope.dep.type === 'object'"
+                     style=""
                      @click="showQuickAppend(scope)"
           >
             <el-icon><Plus></Plus></el-icon>
@@ -81,7 +86,6 @@ class="deep-editor-dialog"
         <section>
           <header></header>
           <el-row :gutter="20">
-
             <el-col
                 v-for="component in getComponents()"
                 style="cursor: pointer;" class="a-space-pv-20"
@@ -486,19 +490,31 @@ export default {
     }
 
     /**
-     *
+     * 获取UI label
      * @param v
      * @returns {string|*|string}
      */
-    function getContent(v = '') {
+    function getUILabel(v = '') {
       try {
         let o = ZY.JSON5.parse(v)
-        // console.log('getContent', o)
+        // console.log('getUILabel', o)
         return o?.ui?.label ?? ''
       } catch (e) {
       //
       }
       return ''
+    }
+
+    function quickSetUILabel(scope, e) {
+      console.log('quickSetUILabel',scope, e)
+      try {
+        let o = ZY.JSON5.parse(scope.item.data)
+        o.ui.label = e
+        scope.item.data = ZY.JSON5.stringify(o)
+        console.log('getUILabel', o)
+      } catch (e) {
+        //
+      }
     }
 
     let dialogState = reactive({
@@ -557,7 +573,8 @@ export default {
       getComponents,
       getUrl,
       EVENT_NAMES,
-      getContent,
+      getUILabel,
+      quickSetUILabel,
       allDef: page.defMap,
       getArrItemBeforeKey,
       page,
