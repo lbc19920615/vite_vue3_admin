@@ -12,13 +12,18 @@ export function createStaticFormCls() {
           // formsMap[item.name] = item.value
           self.formsMap.set(item.name, item.value)
         })
-        console.log(self.formsMap)
       }
       return ZY_EXT.store.setItem(self.STORAGE_KEY, {
         date: Date.now(),
         version: ZY.rid(),
         data: self.formsMap
       })
+    }
+
+
+    static clear() {
+      let self = this
+      self.formsMap.clear()
     }
 
     static async saveCache2File(cached = null, {fileName = ZY.rid(6)} = {}) {

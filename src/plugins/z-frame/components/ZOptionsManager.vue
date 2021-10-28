@@ -19,7 +19,7 @@
  <z-easy-modal title="枚举值管理" @opened="onOpened">
    <template #button-content>枚举值管理</template>
    <div class="z-opt-man-group">
-     <!--    {{state}}-->
+<!--         {{state}}-->
      <div class="z-opt-man-group__header a-space-mb-10">
        <!--      <el-button type="primary" @click="loadFile">加载</el-button>-->
        <el-button size="small" type="primary" @click="save">保存</el-button>
@@ -52,7 +52,14 @@
                    <el-input v-model="element.data.value"></el-input>
                  </el-col>
                  <el-col :span="4">
-                   <div class="drag-handle"><el-icon size="30"><Rank></Rank></el-icon></div>
+                  <el-space>
+                    <div class="drag-handle"><el-icon size="30"><Rank></Rank></el-icon></div>
+                    <el-popconfirm title="确定删除吗？" @confirm="deleteItem(option.arr, element.id)">
+                      <template #reference>
+                        <el-button type="danger" size="small"><el-icon><Remove></Remove></el-icon></el-button>
+                      </template>
+                    </el-popconfirm>
+                  </el-space>
                  </el-col>
                </el-row>
              </el-col>
@@ -62,6 +69,11 @@
            <el-button size="small" @click="appendOption(option)">
              <el-icon><Plus></Plus></el-icon>
            </el-button>
+           <el-popconfirm title="确定删除吗？" @confirm="deleteItem(state.options, option.id)">
+             <template #reference>
+               <el-button type="danger" size="small"><el-icon><Remove></Remove></el-icon></el-button>
+             </template>
+           </el-popconfirm>
          </div>
        </div>
      </el-scrollbar>
@@ -79,7 +91,7 @@ import ZEasyModal from "@/plugins/z-frame/components/ZEasyModal.vue";
 import {createStaticFormCls} from "@/plugins/z-frame/BaseForm";
 import draggable from 'vuedraggable'
 import {onMounted, reactive, toRaw} from "vue";
-import {Plus, Rank} from "@element-plus/icons";
+import {Plus, Rank, Remove} from "@element-plus/icons";
 import ZCellItem from "@/plugins/z-frame/components/ZCellItem.vue";
 
 class FormsOptions extends createStaticFormCls() {
@@ -91,7 +103,7 @@ class FormsOptions extends createStaticFormCls() {
 
 export default {
   name: 'ZOptionsManager',
-  components: {ZCellItem, ZEasyModal, draggable, Plus, Rank},
+  components: {ZCellItem, ZEasyModal, draggable, Plus, Rank, Remove},
   setup() {
     let state = reactive({
       options: [
@@ -165,9 +177,19 @@ export default {
 
     function appendGroup() {
       state.options.push({
+        id: ZY.rid(),
         name: "",
         arr: []
       })
+    }
+
+    function deleteItem(options, id) {
+      let findIndex = options.findIndex(v => {
+        return v.id === id
+      })
+      if (findIndex > -1) {
+        options.splice(findIndex, 1)
+      }
     }
 
     function getSavedOptions() {
@@ -180,6 +202,7 @@ export default {
     }
 
     async function save() {
+      FormsOptions.clear()
       await FormsOptions.setStorage(
           getSavedOptions()
       )
@@ -195,6 +218,7 @@ export default {
       appendOption,
       save,
       appendGroup,
+      deleteItem,
       exportFile,
       state,
       onOpened
