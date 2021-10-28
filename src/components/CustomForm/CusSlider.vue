@@ -20,6 +20,7 @@ export default {
   mixins: [
     CustomRenderControlMixin
   ],
+  CUS_TITLE: '滑块',
   CUS_EDITOR: function () {
     return {
       props: {

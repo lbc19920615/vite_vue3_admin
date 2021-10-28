@@ -19,6 +19,9 @@
   .plumb__layout-plus {
     display: none;
   }
+  .item-key-input {
+    width: 120px;
+  }
 }
 </style>
 
@@ -55,17 +58,21 @@ class="deep-editor-dialog"
         </template>
         <template #label="scope">
 <!--          <el-popover    trigger="hover">-->
-<!--            <el-space><div v-html="getUILabel(scope.data)"></div><z-text-->
+<!--            <el-space><div v-html="getUIData(scope.data)"></div><z-text-->
 <!--                :ellipsisLength="10" :value="scope.key"></z-text></el-space>-->
 <!--            <template #reference><el-button style="padding: 0; border: none;"><z-text-->
-<!--                :ellipsisLength="10" :value="getUILabel(scope.data)"></z-text></el-button></template>-->
+<!--                :ellipsisLength="10" :value="getUIData(scope.data)"></z-text></el-button></template>-->
 <!--          </el-popover>-->
-          <el-input  size="mini"
-                     v-model="scope.item.ZLABEL"
-                     @change="quickSetUILabel(scope, $event)"
-                     placeholder="请填写标题"></el-input>
+          <el-row class="a-space-mt-10" align="middle">
+            <div>{{getUIWidget2(scope.item.data).CUS_TITLE}}</div>
+            <el-input  class="a-space-ml-10" size="mini"
+                       v-model="scope.item.ZLABEL"
+                       style="width: 120px;"
+                       @change="quickSetUILabel(scope, $event)"
+                       placeholder="请填写标题"></el-input>
+          </el-row>
 <!--          <z-text-->
-<!--              :ellipsisLength="10" :value="getUILabel(scope.item.data)"></z-text>-->
+<!--              :ellipsisLength="10" :value="getUIData(scope.item.data)"></z-text>-->
         </template>
         <template #plumb__layout-beforeend="scope">
 <!--          {{scope.dep}}-->
@@ -492,17 +499,41 @@ export default {
     /**
      * 获取UI label
      * @param v
+     * @param path
      * @returns {string|*|string}
      */
-    function getUILabel(v = '') {
+    function getUIData(v = '', path = '') {
       try {
         let o = ZY.JSON5.parse(v)
         // console.log('getUILabel', o)
-        return o?.ui?.label ?? ''
+        let ui = o?.ui ?? {}
+        console.log(ui)
+        return ZY.lodash.get(ui, path)
       } catch (e) {
-      //
+        console.log(e)
       }
       return ''
+    }
+
+    function getUIWidget2(v) {
+      let w = getUIData(v, 'widget2')
+      let r = {}
+      try {
+        if (w) {
+          let o = ZY.JSON5.parse(w)
+          if (o.data) {
+            r.widget = o.data.widget
+            let widgetDef = CustomVueComponent.resolve( o.data.widget)
+            if (widgetDef) {
+              console.log(widgetDef)
+              r.CUS_TITLE = widgetDef.CUS_TITLE
+            }
+          }
+        }
+      } catch (e) {
+        console.log(e)
+      }
+      return r
     }
 
     function quickSetUILabel(scope, e) {
@@ -511,7 +542,7 @@ export default {
         let o = ZY.JSON5.parse(scope.item.data)
         o.ui.label = e
         scope.item.data = ZY.JSON5.stringify(o)
-        console.log('getUILabel', o)
+        // console.log('getUILabel', o)
       } catch (e) {
         //
       }
@@ -573,7 +604,8 @@ export default {
       getComponents,
       getUrl,
       EVENT_NAMES,
-      getUILabel,
+      getUIData,
+      getUIWidget2,
       quickSetUILabel,
       allDef: page.defMap,
       getArrItemBeforeKey,

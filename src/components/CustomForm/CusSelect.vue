@@ -39,6 +39,7 @@ export default {
   mixins: [
       CustomRenderControlMixin
   ],
+  CUS_TITLE: '下拉',
   CUS_EDITOR: function () {
     return {
       props: {

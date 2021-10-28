@@ -20,6 +20,7 @@ export default {
   mixins: [
       CustomRenderControlMixin
   ],
+  CUS_TITLE: '分数',
   CUS_EDITOR: function () {
     return {
       props: {

@@ -19,6 +19,7 @@ export default {
   mixins: [
     CustomRenderControlMixin
   ],
+  CUS_TITLE: '数字',
   CUS_EDITOR: function () {
     return {
       props: {

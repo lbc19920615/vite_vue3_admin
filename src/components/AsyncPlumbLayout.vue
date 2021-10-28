@@ -52,33 +52,39 @@ $sel: "." + $tag;
           <template v-for="(item, index) in ZINDEX_ITEMS(dep.items)" :key="item.id">
             <div :id="item.id" :data-pid="dep.id" class="item content-item">
 <!--              {{item.id}}-->
-              <div class="a-space-mr-5">
+              <div>
                 <template v-if="customLabel"><slot name="label"
                                                    v-bind="{item}"></slot></template>
-                <template v-if="dep.type !== 'array'">
-                  <el-input  size="mini"
-                             v-model="item.key" placeholder="请填写key"></el-input>
-                </template>
-                <div v-else>{{item.key}}</div>
               </div>
-              <div class="a-space-mr-5">
-                <el-input  type="number" size="mini"
-                          v-model="item.ZINDEX_TEMP"
-                           style="width: 90px;"
-                           @blur="ON_CHANGE_ZINDEX(item.ZINDEX_TEMP, item, dep)"
-                           placeholder="排序"></el-input>
-              </div>
-<!--              <template v-if="dep.type === 'array' || dep.type === 'object'">-->
-<!--              </template>-->
-              <el-button size="mini"
-                         style="padding: 6px 10px"
-                         type="danger"
-                         @click="deleteItem(dep, item, index)"><el-icon><Remove></Remove></el-icon></el-button>
-              <el-button size="mini"
-                         style="padding: 6px  10px; margin-left: 5px;"
-                         type="primary"
-                         @click="editDep(dep, item)"><el-icon><Edit></Edit></el-icon></el-button>
-              <slot name="actions" v-bind="{dep, item, key: item.key, index}"></slot>
+
+              <el-row align="middle">
+                <div class="a-space-mr-5">
+                  <template v-if="dep.type !== 'array'">
+                    <el-input  size="mini"
+                               class="item-key-input"
+                               v-model="item.key" placeholder="请填写key"></el-input>
+                  </template>
+                  <div v-else>{{item.key}}</div>
+                </div>
+                <div class="a-space-mr-5">
+                  <el-input  type="number" size="mini"
+                             v-model="item.ZINDEX_TEMP"
+                             style="width: 90px;"
+                             @blur="ON_CHANGE_ZINDEX(item.ZINDEX_TEMP, item, dep)"
+                             placeholder="排序"></el-input>
+                </div>
+                <!--              <template v-if="dep.type === 'array' || dep.type === 'object'">-->
+                <!--              </template>-->
+                <el-button size="mini"
+                           style="padding: 6px 10px"
+                           type="danger"
+                           @click="deleteItem(dep, item, index)"><el-icon><Remove></Remove></el-icon></el-button>
+                <el-button size="mini"
+                           style="padding: 6px  10px; margin-left: 5px;"
+                           type="primary"
+                           @click="editDep(dep, item)"><el-icon><Edit></Edit></el-icon></el-button>
+                <slot name="actions" v-bind="{dep, item, key: item.key, index}"></slot>
+              </el-row>
             </div>
           </template>
           <el-button class="plumb__layout-plus" size="small" v-if="dep.type === 'object'"

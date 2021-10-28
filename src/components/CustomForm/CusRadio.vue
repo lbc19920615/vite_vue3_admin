@@ -23,6 +23,7 @@ export default {
   mixins: [
       CustomRenderControlMixin
   ],
+  CUS_TITLE: '单选',
   CUS_EDITOR: function () {
     return {
       props: {
