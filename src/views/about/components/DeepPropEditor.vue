@@ -22,6 +22,9 @@
   .item-key-input {
     width: 120px;
   }
+  .content-item {
+    padding-bottom: 10px;
+  }
 }
 </style>
 
@@ -63,7 +66,7 @@ class="deep-editor-dialog"
 <!--            <template #reference><el-button style="padding: 0; border: none;"><z-text-->
 <!--                :ellipsisLength="10" :value="getUIData(scope.data)"></z-text></el-button></template>-->
 <!--          </el-popover>-->
-          <el-row class="a-space-mt-10" align="middle">
+          <el-row class="a-space-mt-10 " align="middle">
             <div>{{getUIWidget2(scope.item.data).CUS_TITLE}}</div>
             <el-input  class="a-space-ml-10" size="mini"
                        v-model="scope.item.ZLABEL"
