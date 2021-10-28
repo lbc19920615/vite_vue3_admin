@@ -44,11 +44,14 @@ class="deep-editor-dialog"
           :style="{height}"
           :custom-label="true"
       >
+        <template #button-group>
+          <el-button size="small"  @click="clearInspect">清除调试框</el-button>
+        </template>
         <template #actions="scope">
-<!--          <el-button size="mini"-->
-<!--                     style="padding: 6px  10px"-->
-<!--                     type="primary"-->
-<!--                     @click="inspect(scope)"><el-icon><Coffee></Coffee></el-icon></el-button>-->
+          <el-button size="mini"
+                     style="padding: 6px  10px"
+                     type="primary"
+                     @click="inspect(scope)"><el-icon><Coffee></Coffee></el-icon></el-button>
         </template>
         <template #label="scope">
 <!--          <el-popover    trigger="hover">-->
@@ -396,7 +399,7 @@ export default {
           cached = ZY.JSON5.parse(item.data)
         }
 
-        console.log('cached', cached)
+        // console.log('cached', cached)
 
         for (let [partName, data] of Object.entries(config.defaultVal)) {
           let defaultObj = ZY.JSON5.parse(ZY.JSON5.stringify(data))
@@ -423,6 +426,7 @@ export default {
 
     function onBeforeClose(done) {
       self.layoutContext.save()
+      clearInspect()
       // console.log('onBeforeClose', self.layoutContext)
       done()
     }
@@ -459,8 +463,7 @@ export default {
 
     /**
      * 视察某个元素
-     * @param dep
-     * @param item
+     * @param e
      */
     function inspect(e) {
       // console.log('inspect', e)
@@ -470,6 +473,23 @@ export default {
       })
     }
 
+    /**
+     * 视察某个元素
+     * @param e
+     */
+    function clearInspect(e) {
+      // console.log('inspect', e)
+      sendJSON5ChannelMessage({
+        type: COMMAND.CLEAR_INSPECT,
+        e
+      })
+    }
+
+    /**
+     *
+     * @param v
+     * @returns {string|*|string}
+     */
     function getContent(v = '') {
       try {
         let o = ZY.JSON5.parse(v)
@@ -485,14 +505,19 @@ export default {
       open: false,
       currrent: {}
     })
+
     function showQuickAppend(scope) {
       // alert('showQuickAppend')
-
       dialogState.open = true
       dialogState.currrent = scope
     }
+
+    /**
+     * 快速添加组件
+     * @param component
+     */
     function quickAppendCom(component) {
-      console.log(dialogState.currrent, component)
+      // console.log(dialogState.currrent, component)
       dialogState.currrent.appendItem(dialogState.currrent.dep, function (item) {
         let obj = buildQuickItem({
           type: 'string',
@@ -523,6 +548,7 @@ export default {
       onBeforeClose,
       onDrawerClose,
       inspect,
+      clearInspect,
       store: page.store,
       dialogState,
       showQuickAppend,

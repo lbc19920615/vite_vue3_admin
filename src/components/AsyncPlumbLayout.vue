@@ -14,9 +14,13 @@ $sel: "." + $tag;
 <template>
   <div :id="comId"   class="async-plumb-layout auto-init-layout">
 <!--    {{deps}}-->
-    <el-button size="small" type="primary" @click="save">保存</el-button>
-    <el-button size="small" @click="addDep('array')">添加Array</el-button>
-    <el-button size="small" @click="addDep('object')">添加Object</el-button>
+    <el-space>
+      <el-button size="small" type="primary" @click="save">保存</el-button>
+      <el-button size="small" @click="addDep('array')">添加Array</el-button>
+      <el-button size="small" @click="addDep('object')">添加Object</el-button>
+      <slot name="button-group"></slot>
+    </el-space>
+
 
     <div :id="containerId" ref="container" class="container">
       <div :id="dep.id" class="abs section"

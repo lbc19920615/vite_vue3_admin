@@ -41,5 +41,6 @@ export function setCommandHandler(COMMAND_TYPE, onCallback, eventName = ZY.rid()
 
 export const COMMAND = {
   RELOAD: 'BC:RELOAD',
+  CLEAR_INSPECT: 'BC:CLEAR_INSPECT',
   INSPECT: 'BC:INSPECT',
 }

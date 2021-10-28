@@ -2,6 +2,7 @@ import {reactive,  toRaw} from "vue";
 import {VARS_PAGE_MODEL_NAME} from "@/vars";
 import {useRouter} from 'vue-router';
 import {COMMAND, setCommandHandler, setMessageHandler} from "@/channel";
+import {createDebugTool, inspectDOM} from "@/hooks/tools";
 
 export function useGlobalEasy(page) {
     class G {
@@ -27,6 +28,7 @@ export function useGlobalEasy(page) {
 }
 
 export function useRenderControl() {
+    let debugTool = createDebugTool()
     let STORE_NAME = globalThis.PAGE_STORE_NAME ?? VARS_PAGE_MODEL_NAME
     let router = useRouter()
     let currentRoute = router.currentRoute
@@ -161,12 +163,17 @@ export function useRenderControl() {
             let itemData = ZY.JSON5.parse(e.item.data)
             let dep_item = document.querySelector(`[tools_dep_item_id=${e.item.id}]`)
             if (dep_item) {
-
-                dep_item.classList.toggle('prop-selected')
+                // dep_item.classList.toggle('prop-selected')
+                let clone = inspectDOM(dep_item)
+                debugTool.refresh(clone)
             }
         } catch (e) {
         //
         }
+    })
+
+    setCommandHandler(COMMAND.CLEAR_INSPECT, function (e) {
+        debugTool.refresh()
     })
 
     return {
