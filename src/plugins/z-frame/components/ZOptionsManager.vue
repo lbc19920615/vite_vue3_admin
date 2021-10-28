@@ -21,7 +21,7 @@
    <div class="z-opt-man-group">
 <!--         {{state}}-->
      <el-row align="middle"  class="z-opt-man-group__header a-space-mb-10">
-       <!--      <el-button type="primary" @click="loadFile">加载</el-button>-->
+       <el-button  size="small" type="primary" @click="loadFile">加载</el-button>
        <el-button size="small" type="primary" @click="save">保存</el-button>
        <el-button size="small" type="primary" @click="exportFile">导出到本地</el-button>
        <el-space class="a-space-ml-10">
@@ -217,11 +217,17 @@ export default {
       })
     }
 
+    async function loadFile() {
+      await FormsOptions.loadFile();
+      await load()
+    }
+
     return {
       appendOption,
       selectOption,
       save,
       appendGroup,
+      loadFile,
       deleteItem,
       exportFile,
       filterOptions,
