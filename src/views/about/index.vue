@@ -74,6 +74,8 @@
 
 <!--    <z-cascader></z-cascader>-->
 
+    <z-options-manager></z-options-manager>
+
     <template v-if="store.model.textarea_step">
       <!--      {{store.computedModel}}-->
       <HttpComponent
@@ -222,6 +224,7 @@ import ZCascader from "@/plugins/z-frame/components/ZCascader.vue";
 import {useRouter2} from "@/hooks/router";
 import {VARS_PAGE_MODEL_NAME} from "@/vars";
 import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
+import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
 // globalThis.CnChar = CnChar
 //
 // globalThis.sortCnCharStroke = function (chars = []) {
@@ -260,6 +263,7 @@ export default defineComponent({
     }
   },
   components: {
+    ZOptionsManager,
     ZDragXml,
     ZCascader,
     ZEasyModal,

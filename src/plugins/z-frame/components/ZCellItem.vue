@@ -20,7 +20,7 @@
 </style>
 
 <template>
-  <el-row class="z-cell-item" :class="{'has-label': label}" type="flex">
+  <el-row align="middle" class="z-cell-item" :class="{'has-label': label}" type="flex">
     <div class="z-cell-item__label">{{label}}</div>
     <div class="z-cell-item__content"><slot></slot></div>
   </el-row>

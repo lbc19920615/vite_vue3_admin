@@ -8,11 +8,11 @@ export function createStaticFormCls() {
     static async setStorage(v = null) {
       let self = this
       if (Array.isArray(v)) {
-        console.log(v)
         v.forEach((item) => {
           // formsMap[item.name] = item.value
           self.formsMap.set(item.name, item.value)
         })
+        console.log(self.formsMap)
       }
       return ZY_EXT.store.setItem(self.STORAGE_KEY, {
         date: Date.now(),
@@ -61,6 +61,7 @@ export function createStaticFormCls() {
       self.formsMap.forEach((value, key) => {
         v.push({
           label: key,
+          name: key,
           value
         })
       })
