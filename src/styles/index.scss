@@ -25,6 +25,10 @@
       margin-left: var(--z-size-#{$i});
       margin-right: var(--z-size-#{$i});
     }
+    .a-space-mv-#{$i} {
+      margin-top: var(--z-size-#{$i});
+      margin-bottom: var(--z-size-#{$i});
+    }
     .a-space-pt-#{$i} {
       padding-top: var(--z-size-#{$i});
     }
