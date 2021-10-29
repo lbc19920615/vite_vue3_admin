@@ -378,7 +378,7 @@ export function extendCommonArrEventHandler(page) {
       // console.log('sdsdsdsdsdsds', e)
       let { parts, partName, fromPath, indexKey } = e
 
-      console.log(e.pathArr, e)
+      // console.log(e.pathArr, e)
       let s_path = fromPath
       if (Array.isArray(e.pathArr)) {
         // console.log('add:events', e, model)
