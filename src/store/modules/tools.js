@@ -118,6 +118,16 @@ globalThis.ToolsDocs =  [
 
 let dynimcalOptions = new Map()
 
+globalThis._set_dynimcalOptions = function (name, value) {
+  if (typeof name !== undefined) {
+    dynimcalOptions.set(name, value)
+  }
+}
+
+globalThis._get_dynimcalOptions = function () {
+  return dynimcalOptions
+}
+
 const store = {
   // namespaced: true,
   state: () => ({

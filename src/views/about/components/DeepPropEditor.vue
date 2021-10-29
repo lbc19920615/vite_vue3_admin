@@ -334,6 +334,7 @@ export default {
   },
   setup(props) {
     const rootStore = useStore()
+    // console.log(rootStore)
     let CusFormExpose = inject('CusFormExpose')
     let self = getCurrentInstance().ctx
     let page = useControl({

@@ -29,6 +29,9 @@ import {fetchTwigComponent} from "@/hooks/remote.js";
 import {getDeepConfigFromLinksAndDeps} from "@/views/about/components/DeepPropEditor/utils";
 import {buildObjAttrs, buildXml, buildJsx, buildDeepTree} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
 import {parseFormAttrToObj, parseRulesArrToStr, parseEventsToStr} from "@/plugins/form-render/utils/CusFormAttr";
+import {useStore} from "vuex";
+
+const rootStore = useStore()
 
 export default defineComponent({
   mounted() {
@@ -97,6 +100,11 @@ export default defineComponent({
         }
       })
       return BASE_SUGGEST
+    },
+    SET_DYM_OPTIONS(name, value) {
+      if (globalThis._set_dynimcalOptions) {
+        globalThis._set_dynimcalOptions(name, value)
+      }
     },
     ENUMS_AREA_GET_OPTS(v) {
       /**
