@@ -74,7 +74,9 @@
 
 <!--    <z-cascader></z-cascader>-->
 
-    <z-options-manager></z-options-manager>
+<!--    <z-options-manager></z-options-manager>-->
+
+   <z-echarts-easy></z-echarts-easy>
 
     <template v-if="store.model.textarea_step">
       <!--      {{store.computedModel}}-->
@@ -225,6 +227,7 @@ import {useRouter2} from "@/hooks/router";
 import {VARS_PAGE_MODEL_NAME} from "@/vars";
 import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
 import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
+import ZEchartsEasy from "@/plugins/z-frame/components/ZEchartsEasy.vue";
 // globalThis.CnChar = CnChar
 //
 // globalThis.sortCnCharStroke = function (chars = []) {
@@ -263,6 +266,7 @@ export default defineComponent({
     }
   },
   components: {
+    ZEchartsEasy,
     ZOptionsManager,
     ZDragXml,
     ZCascader,
@@ -388,9 +392,10 @@ export default defineComponent({
 
     page.setEventHandler({
       ['add:arr:common'](e) {
-        let { parts, partName, selfpath, process } = e
+        let { parts, partName, pathArr, process } = e
         // console.log('add:events', e, model)
-        parts[partName].arrAppend(selfpath)
+        let s_path = ZY.getObjPathFromPathArr(pathArr)
+        parts[partName].arrAppend(s_path)
       },
       async ['load:file'](e) {
         let obj = await ZY_EXT.fileOpenJSON5()

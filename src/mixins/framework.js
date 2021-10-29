@@ -361,8 +361,15 @@ export function extendCommonArrEventHandler(page) {
   page.setEventHandler({
     [EVENT_NAMES.ARR_APPEND_COMMON](e) {
       let { parts, partName, selfpath, process } = e
-      // console.log('add:events', e, model)
-      parts[partName].arrAppend(selfpath);
+      // console.log('add:events', e, e.pathArr)
+
+      let s_path = selfpath
+      if (Array.isArray(e.pathArr)) {
+        // console.log('add:events', e, model)
+        s_path = ZY.getObjPathFromPathArr(e.pathArr)
+      } else {
+      }
+      parts[partName].arrAppend(s_path);
       if (_bindFun) {
         _bindFun(EVENT_NAMES.ARR_APPEND_COMMON, e)
       }
@@ -370,7 +377,16 @@ export function extendCommonArrEventHandler(page) {
     [EVENT_NAMES.ARR_REMOVE_COMMON](e) {
       // console.log('sdsdsdsdsdsds', e)
       let { parts, partName, fromPath, indexKey } = e
-      parts[partName].appSplice(fromPath, indexKey)
+
+      console.log(e.pathArr, e)
+      let s_path = fromPath
+      if (Array.isArray(e.pathArr)) {
+        // console.log('add:events', e, model)
+        s_path = ZY.getObjPathFromPathArr(e.pathArr)
+      } else {
+      }
+
+      parts[partName].appSplice(s_path, indexKey)
       if (_bindFun) {
         _bindFun(EVENT_NAMES.ARR_REMOVE_COMMON, e)
       }
