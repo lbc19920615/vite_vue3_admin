@@ -16,6 +16,7 @@ export default {
   mixins: [
       CustomRenderControlMixin
   ],
+  CUS_TITLE: '上传',
   CUS_EDITOR: function () {
     return {
       props: {
