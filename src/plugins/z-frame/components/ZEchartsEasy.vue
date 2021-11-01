@@ -17,6 +17,9 @@
           >销毁{{ bindData.scope.label }}</el-button>
         </el-space>
       </template>
+      <template #prop_label_beforeend="bindData">
+<!--        {{bindData.scope}}-->
+      </template>
     </z-http-com>
   </el-col>
   <el-col :span="14">

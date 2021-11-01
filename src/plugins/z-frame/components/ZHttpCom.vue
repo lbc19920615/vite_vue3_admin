@@ -5,6 +5,7 @@
 <template>
   <div class="z-http-com" v-if="page.inited">
 <!--    {{valueConfig}}-->
+<!--    {{store.model}}-->
     <HttpComponent
         :defs="page.defMap"
         :is="store.model.editor_step"
@@ -25,9 +26,10 @@
             <i class="fa fa-book"></i>
           </z-window>
 
+          <slot name="prop_label_beforeend" v-bind="{cached: store.model.cached, scope}"></slot>
+
           <z-window v-if="scope.config.noticeFun"
-                    :target="scope.config.noticeTarget"
-                    :url="getZWindowUrl(scope.config.noticeFun, scope)"
+                    :ref="getNoticeFunRef(scope)"
           >
             <i class="fa fa-book"></i>
           </z-window>
@@ -91,6 +93,12 @@ export default {
       editor_step: {
         type: String,
       },
+      cached: {
+        type: null
+      },
+      refreshed: {
+        type: Boolean
+      }
     }
     let computed = {}
     function onInited({storeControl}) {
@@ -116,6 +124,11 @@ export default {
       ['model:update:all'](e) {
         // console.log('sdsdsds', locks)
         cachedModel = toRaw(e.model)
+        page.setByPath('cached', cachedModel)
+        page.setByPath('refreshed', false)
+        setTimeout(() => {
+          page.setByPath('refreshed', true)
+        }, 300)
         if (!locks) {
           ctx.emit('http:model:change', e)
         }
@@ -169,10 +182,22 @@ export default {
       })
     }
 
+    let _getNoticeFunRef = null
+    function getNoticeFunRef(scope) {
+      // getZWindowUrl(scope.config.noticeFun, scope)
+      return function (v) {
+        _getNoticeFunRef = v
+        // console.log(scope, v)
+        _getNoticeFunRef.address = getZWindowUrl(scope.config.noticeFun, scope)
+      }
+    }
+
     return {
       EVENT_NAMES,
       getZWindowUrl,
+      getNoticeFunRef,
       page,
+      cachedModel,
       store: page.store
     }
 

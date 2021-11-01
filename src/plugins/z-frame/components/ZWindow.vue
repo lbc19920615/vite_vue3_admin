@@ -16,10 +16,22 @@ export default {
       default: 'ZWindow'
     }
   },
+  watch: {
+    url(newVal) {
+      console.log('url change', newVal)
+    }
+  },
+  data() {
+    return {
+      address: this.url
+    }
+  },
   methods: {
    open() {
+     console.log(this.address)
+     let url = this.address
      let manager = ZY.BOM.createWindowManager({
-       url: this.url, target: this.target
+       url: url, target:  this.target
      })
      let ClientRect = this.$el.getBoundingClientRect();
      // console.log(ClientRect)
