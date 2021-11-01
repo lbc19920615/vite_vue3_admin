@@ -369,7 +369,7 @@ export function extendCommonArrEventHandler(page) {
       if (Array.isArray(pathArr)) {
         s_path = ZY.getObjPathFromPathArr(pathArr)
       }
-      console.log(s_path, e)
+      // console.log(s_path, e)
       if (s_path) {
         parts[partName].setModelByPath(s_path, null)
       }
