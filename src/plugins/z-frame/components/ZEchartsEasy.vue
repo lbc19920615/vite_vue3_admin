@@ -42,6 +42,7 @@ import {EXTEND_FRAME_EVENT_NAMES} from "@/mixins/framework";
 import {createEchartTooltip} from "@/plugins/z-frame/components/ZEchartsEasy/configs/tooltip";
 import {createEchartTitle} from "@/plugins/z-frame/components/ZEchartsEasy/configs/title";
 import {createEchartLegend} from "@/plugins/z-frame/components/ZEchartsEasy/configs/legend";
+import {createEchartGrid} from "@/plugins/z-frame/components/ZEchartsEasy/configs/grid";
 
 export default {
   name: "ZEchartsEasy",
@@ -107,6 +108,7 @@ export default {
         tooltip: createEchartTooltip(),
         title: createEchartTitle(),
         legend: createEchartLegend(),
+        grid: createEchartGrid(),
         config: {
           type: 'string',
           ui: {

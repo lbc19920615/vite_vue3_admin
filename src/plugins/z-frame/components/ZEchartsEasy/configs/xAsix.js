@@ -39,6 +39,12 @@ export function createEchartXAxis() {
           }
         }
       },
+      boundaryGap: {
+        type: 'boolean',
+        rules: {
+          type: 'boolean'
+        }
+      },
       data: {
         type: 'array',
         tag: 'my-vue-tab',
