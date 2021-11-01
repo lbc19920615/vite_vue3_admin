@@ -13,8 +13,10 @@ export function createDataProps() {
       ],
       conAttrs: [
         {
-          prefixValue: '"数据"+',
-          handler: ['c', 'return [":name", c.indexKey]']
+          // prefixValue: '"数据"+',
+          prefixValue: '"数据" + (handleAttrVal(',
+          handler: ['c', 'return [":name", c.indexKey ]'],
+          suffixValue: ') + 1)'
         }
       ],
       conClass: [
@@ -31,6 +33,14 @@ export function createDataProps() {
             },
           }
         },
+        name: {
+          type: 'string',
+          ui: {
+            form_item: {
+              ['label-width']: '90px'
+            },
+          }
+        }
       }
     }
   }

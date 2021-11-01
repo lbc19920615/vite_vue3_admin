@@ -188,7 +188,9 @@ export default {
       return function (v) {
         _getNoticeFunRef = v
         // console.log(scope, v)
-        _getNoticeFunRef.address = getZWindowUrl(scope.config.noticeFun, scope)
+        if (_getNoticeFunRef) {
+          _getNoticeFunRef.address = getZWindowUrl(scope.config.noticeFun, scope)
+        }
       }
     }
 

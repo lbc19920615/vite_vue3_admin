@@ -169,7 +169,8 @@ export default {
     let objActionKeys = ['areaStyle']
     function needObjAction({scope} = {}) {
       // console.log(scope)
-      return objActionKeys.includes(scope.key)
+      // return objActionKeys.includes(scope.key)
+      return true
     }
 
     return {

@@ -27,6 +27,10 @@ export function createEchartSeries() {
                   label: '柱状图',
                   value: 'bar',
                 },
+                {
+                  label: '饼状图',
+                  value: 'pie',
+                },
               ]
             }
           }
