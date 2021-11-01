@@ -1,8 +1,10 @@
 <template>
 <div class="z-echarts-easy" v-if="state.inited">
   <el-button @click="runPart">执行</el-button>
+  <el-button @click="exportFile">导出</el-button>
+  <el-button @click="loadFile">加载</el-button>
 <el-row>
-  <el-col :span="10">
+  <el-col :span="10" v-if="state.reload">
     <z-http-com :value="state.cachedValue"
                 :debug="true"
                 :resolve-config="resolveConfig"
@@ -52,7 +54,8 @@ export default {
     let JSON5 = ZY.JSON5
     let state = reactive({
       inited: false,
-      cachedValue: {}
+      cachedValue: {},
+      reload: false
     })
     let widgetFormLocks = true
 
@@ -86,10 +89,9 @@ export default {
       myChart.setOption(option);
     }
 
-    onMounted(async () => {
-      // render()
-      state.inited = true
-      let o = await ZY_EXT.store.getItem('test-echart')
+
+    function renderData(o) {
+      state.reload = false
       let base = {
         xAxis: {},
         yAxis: {},
@@ -97,6 +99,16 @@ export default {
         tooltip: {},
       }
       state.cachedValue = Object.assign(base, o)
+      setTimeout(() => {
+        state.reload = true
+      }, 100)
+    }
+
+    onMounted(async () => {
+      // render()
+      state.inited = true
+      let o = await ZY_EXT.store.getItem('test-echart')
+      renderData(o)
     })
 
     async function resolveConfig() {
@@ -182,12 +194,30 @@ export default {
       return true
     }
 
+    function exportFile() {
+      ZY_EXT.saveDesignFile({
+        fileName: 'test_echarts',
+        data: cachedModel,
+        prefix: 'echarts_'
+      })
+    }
+
+    async function loadFile() {
+      let obj = await ZY_EXT.fileOpenJSON5()
+      if (obj.data) {
+        console.log(obj.data)
+        renderData(obj.data)
+      }
+    }
+
     return {
       resolveConfig,
       state,
       runPart,
       iniObj,
       needObjAction,
+      loadFile,
+      exportFile,
       desObj,
       onModelChange,
     }
