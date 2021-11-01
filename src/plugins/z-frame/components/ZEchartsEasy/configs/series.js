@@ -44,6 +44,15 @@ export function createEchartSeries() {
           properties: {
             color: {
               type: 'string',
+              noticeFun: [
+                'options', `
+                let pathArr = options.pathArr;
+                let p = pathArr.slice(0,2);
+                let m = options.getData(p);
+                let type = m?.type ?? 'line' 
+      
+                return 'https://echarts.apache.org/zh/option.html#series-'+type+'.areaStyle.color'`
+              ],
               ui: {
                 widget: 'CusColorPicker',
                 widgetConfig: {

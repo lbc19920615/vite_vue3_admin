@@ -24,6 +24,13 @@
                     :url="scope.config.noticeIframe">
             <i class="fa fa-book"></i>
           </z-window>
+
+          <z-window v-if="scope.config.noticeFun"
+                    :target="scope.config.noticeTarget"
+                    :url="getZWindowUrl(scope.config.noticeFun, scope)"
+          >
+            <i class="fa fa-book"></i>
+          </z-window>
           <z-tooltip trigger="click"
                      v-if="scope.config.ui && scope.config.ui.notice"
                      :tooltip="scope.config.ui ? scope.config.ui.notice : ''"></z-tooltip>
@@ -59,9 +66,10 @@ import HttpComponent from "@/components/HttpComponent.vue";
 import {extendControl2Page, useControl, extendCommonArrEventHandler} from "@/mixins/framework";
 import {onBeforeUnmount, onMounted, toRaw} from "vue";
 import ZTooltip from "@/plugins/z-frame/components/ZTooltip.vue";
+import ZWindow from "@/plugins/z-frame/components/ZWindow.vue";
 export default {
   name: 'ZHttpCom',
-  components: {ZTooltip, HttpComponent},
+  components: {ZWindow, ZTooltip, HttpComponent},
   emits: [
     'http:model:change',
     'form:input:blur'
@@ -78,6 +86,7 @@ export default {
   },
   setup(props, ctx) {
     let locks = true
+    let cachedModel = {}
     let properties =  {
       editor_step: {
         type: String,
@@ -106,6 +115,7 @@ export default {
     page.setEventHandler({
       ['model:update:all'](e) {
         // console.log('sdsdsds', locks)
+        cachedModel = toRaw(e.model)
         if (!locks) {
           ctx.emit('http:model:change', e)
         }
@@ -143,8 +153,25 @@ export default {
       )
     })
 
+    function getZWindowUrl(funArr, scope) {
+      let fun = new Function(funArr[0], funArr[1])
+      // console.log(scope)
+      let {parts, partName, pathArr} = scope
+
+      function getData(pathArr) {
+        return parts[partName].getModelByPathArr(pathArr)
+      }
+
+      return fun({
+        pathArr,
+        getData,
+        model: cachedModel
+      })
+    }
+
     return {
       EVENT_NAMES,
+      getZWindowUrl,
       page,
       store: page.store
     }
