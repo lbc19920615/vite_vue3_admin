@@ -16,7 +16,9 @@
 
       <template #prop_label_beforeend="scope">
         <template v-if="scope.config">
-          <z-window v-if="scope.config.noticeIframe" :url="scope.config.noticeIframe">
+          <z-window v-if="scope.config.noticeIframe"
+                    :target="scope.config.noticeTarget"
+                    :url="scope.config.noticeIframe">
             <i class="fa fa-book"></i>
           </z-window>
           <z-tooltip trigger="click"
@@ -27,17 +29,22 @@
       <template #array_con_afterbegin="scope">
 <!--        <el-divider></el-divider>-->
       </template>
+      <template #array_beforebegin="scope">
+        <div>
+          <h3>{{ scope.label }}</h3>
+          <el-button type="primary" size="small"
+                     @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)"
+          >添加{{ scope.label }}</el-button>
+        </div>
+      </template>
       <template #array_afterbegin="scope">
-       <div>
-         <h3>{{ scope.label }}</h3>
-         <el-button type="primary" size="small"
-             @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加</el-button>
-       </div>
+
       </template>
       <template #array_con_beforeend="scope">
         <div>
           <el-button type="danger" size="small"
-              @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除</el-button>
+              @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)"
+          >删除{{ scope.label }}</el-button>
         </div>
       </template>
     </HttpComponent>

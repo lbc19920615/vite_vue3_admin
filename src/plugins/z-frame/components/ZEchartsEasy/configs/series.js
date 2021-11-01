@@ -1,6 +1,9 @@
 export function createEchartSeries() {
   return {
     type: 'array',
+    ui: {
+      label: '系列'
+    },
     items: {
       type: 'object',
       properties: {
@@ -23,11 +26,23 @@ export function createEchartSeries() {
         // data
         data: {
           type: 'array',
-          tag: 'el-scrollbar',
+          tag: 'my-vue-tab',
+          con_tag: 'my-vue-tab-pane',
           ui: {
-            label: 'DATA',
+            label: '数据',
             attrs: [
               [':height', '300'],
+            ],
+            class: [
+              'a-space-mb-10'
+            ],
+            conAttrs: [
+              {
+                prefixValue: '"数据"+',
+                handler: ['c', 'return [":name", c.indexKey]']
+              }
+            ],
+            conClass: [
             ]
           },
           items: {

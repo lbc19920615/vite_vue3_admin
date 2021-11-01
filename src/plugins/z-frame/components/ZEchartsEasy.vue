@@ -4,7 +4,7 @@
 <el-row>
   <el-col :span="10">
     <z-http-com :value="state.cachedValue"
-                :debug="true"
+                :debug="false"
                 :resolve-config="resolveConfig"
                 @http:model:change="onModelChange"></z-http-com>
   </el-col>

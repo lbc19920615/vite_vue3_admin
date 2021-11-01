@@ -1,25 +1,28 @@
 <style lang="scss">
 .my-vue-tab {
-  > .my-vue-tab__tabs {
-    --my-vue-tab--tabs-mb: var(--z-size-20);
+  //.el-scrollbar {
+  //  &::after {
+  //
+  //    content: "";
+  //    position: absolute;
+  //    left: 0;
+  //    bottom: 0;
+  //    width: 100%;
+  //    height: 2px;
+  //    background-color: var(--el-border-color-light);
+  //    z-index: 0;
+  //  }
+  //}
+  .my-vue-tab__tabs {
+    --my-vue-tab--tabs-mb: var(--z-size-10);
     margin-bottom: var(--my-vue-tab--tabs-mb);
     position: relative;
     display: flex;
     align-items: center;
-    &::after {
-
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 2px;
-      background-color: var(--el-border-color-light);
-      z-index: 0;
-    }
     > .my-vue-tab__tab {
       padding: var(--my-vue-tab-padding, 10px 20px);
       cursor: pointer;
+      flex-shrink: 0;
     }
     > .my-vue-tab--actived {
       color:#409EFF;
@@ -44,20 +47,21 @@
 
 <template>
 <div class="my-vue-tab">
-  <div class="my-vue-tab__tabs">
-    <div class="my-vue-tab__active-bar" :style="activeBarStyle"></div>
-<!--    <div class="my-vue-tab__tab" -->
-<!--         :my-vue-tab-name="tab.name" -->
-<!--         :class="classObj(tab)"-->
-<!--         @click="selectTab(tab.name)"-->
-<!--         v-for="tab in tabs">{{tab.name}}</div>-->
-
-    <div class="my-vue-tab__tab"
-         :my-vue-tab-name="tab[1].name"
-         :class="classObj(tab[1])"
-         @click="selectTab(tab[1].name)"
-         v-for="tab in tabs">{{tab[1].name}}</div>
-  </div>
+  <el-scrollbar>
+    <div class="my-vue-tab__tabs">
+      <div class="my-vue-tab__active-bar" :style="activeBarStyle"></div>
+      <!--    <div class="my-vue-tab__tab" -->
+      <!--         :my-vue-tab-name="tab.name" -->
+      <!--         :class="classObj(tab)"-->
+      <!--         @click="selectTab(tab.name)"-->
+      <!--         v-for="tab in tabs">{{tab.name}}</div>-->
+      <div class="my-vue-tab__tab"
+           :my-vue-tab-name="tab[1].name"
+           :class="classObj(tab[1])"
+           @click="selectTab(tab[1].name)"
+           v-for="tab in tabs">{{tab[1].name}}</div>
+    </div>
+  </el-scrollbar>
   <div class="my-vue-tab__content">
     <slot></slot>
   </div>
