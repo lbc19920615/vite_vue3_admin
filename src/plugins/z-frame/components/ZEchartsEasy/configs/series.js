@@ -9,6 +9,12 @@ export function createEchartSeries() {
     items: {
       type: 'object',
       properties: {
+        name: {
+          type: 'string'
+        },
+        radius: {
+          type: 'string'
+        },
         // type
         type: {
           type: 'string',

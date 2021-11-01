@@ -39,6 +39,9 @@ import {createEchartXAxis} from "@/plugins/z-frame/components/ZEchartsEasy/confi
 import {createEchartYAxis} from "@/plugins/z-frame/components/ZEchartsEasy/configs/yAsix";
 import {createEchartSeries} from "@/plugins/z-frame/components/ZEchartsEasy/configs/series";
 import {EXTEND_FRAME_EVENT_NAMES} from "@/mixins/framework";
+import {createEchartTooltip} from "@/plugins/z-frame/components/ZEchartsEasy/configs/tooltip";
+import {createEchartTitle} from "@/plugins/z-frame/components/ZEchartsEasy/configs/title";
+import {createEchartLegend} from "@/plugins/z-frame/components/ZEchartsEasy/configs/legend";
 
 export default {
   name: "ZEchartsEasy",
@@ -89,7 +92,8 @@ export default {
       let base = {
         xAxis: {},
         yAxis: {},
-        series: []
+        series: [],
+        tooltip: {},
       }
       state.cachedValue = Object.assign(base, o)
     })
@@ -100,6 +104,9 @@ export default {
         series: createEchartSeries(),
         xAxis: createEchartXAxis(),
         yAxis: createEchartYAxis(),
+        tooltip: createEchartTooltip(),
+        title: createEchartTitle(),
+        legend: createEchartLegend(),
         config: {
           type: 'string',
           ui: {
