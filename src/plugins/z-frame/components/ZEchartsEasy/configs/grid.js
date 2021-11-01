@@ -9,6 +9,21 @@ export function createEchartGrid() {
         type: 'string',
         noticeIframe: 'https://echarts.apache.org/zh/option.html#grid'
       },
+      right: {
+        type: 'string',
+        noticeIframe: 'https://echarts.apache.org/zh/option.html#grid'
+      },
+      bottom: {
+        type: 'string',
+        noticeIframe: 'https://echarts.apache.org/zh/option.html#grid'
+      },
+      containLabel: {
+        type: 'boolean',
+        noticeIframe: 'https://echarts.apache.org/zh/option.html#grid',
+        rules: {
+          type: 'any'
+        }
+      },
     }
   }
 }
