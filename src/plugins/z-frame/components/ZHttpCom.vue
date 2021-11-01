@@ -11,7 +11,10 @@
         :debug="debug"
     >
       <template #object_beforebegin="scope">
-        <h3>{{scope.label}}</h3>
+        <div>
+         <h3>{{scope.label}}</h3>
+         <slot name="z_http_com-object_beforebegin" v-bind="{scope, page}"></slot>
+        </div>
       </template>
 
       <template #prop_label_beforeend="scope">

@@ -349,16 +349,42 @@ export function useControl({properties, computed, filters}, {onInited, extendCon
   }
 }
 
+export let EXTEND_FRAME_EVENT_NAMES = {
+  ARR_APPEND_COMMON: 'ARR_APPEND_COMMON',
+  ARR_REMOVE_COMMON: 'ARR_REMOVE_COMMON',
+  OBJ_INIT_COMMON: 'OBJ_INIT_COMMON',
+  OBJ_DESTORY_COMMON: 'OBJ_DESTORY_COMMON',
+}
+
 export function extendCommonArrEventHandler(page) {
-  let EVENT_NAMES = {
-    ARR_APPEND_COMMON: 'ARR_APPEND_COMMON',
-    ARR_REMOVE_COMMON: 'ARR_REMOVE_COMMON'
-  }
+  let EVENT_NAMES = EXTEND_FRAME_EVENT_NAMES
   let _bindFun = null
   function onChange(v) {
     _bindFun = v
   }
   page.setEventHandler({
+    [EVENT_NAMES.OBJ_DESTORY_COMMON](e) {
+      let { parts, partName, pathArr } = e
+      let s_path = ''
+      if (Array.isArray(pathArr)) {
+        s_path = ZY.getObjPathFromPathArr(pathArr)
+      }
+      console.log(s_path, e)
+      if (s_path) {
+        parts[partName].setModelByPath(s_path, null)
+      }
+    },
+    [EVENT_NAMES.OBJ_INIT_COMMON](e) {
+      let { parts, partName, pathArr } = e
+      let s_path = ''
+      if (Array.isArray(pathArr)) {
+        s_path = ZY.getObjPathFromPathArr(pathArr)
+      }
+      // console.log(s_path, e)
+      if (s_path) {
+        parts[partName].setModelByPath(s_path, {})
+      }
+    },
     [EVENT_NAMES.ARR_APPEND_COMMON](e) {
       let { parts, partName, selfpath, process } = e
       // console.log('add:events', e, e.pathArr)

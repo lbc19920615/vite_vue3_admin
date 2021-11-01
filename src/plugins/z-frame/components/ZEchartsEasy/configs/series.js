@@ -1,8 +1,10 @@
+import {createDataProps} from "@/plugins/z-frame/components/ZEchartsEasy/configs/common/data";
+
 export function createEchartSeries() {
   return {
     type: 'array',
     ui: {
-      label: '系列'
+      label: '系列',
     },
     items: {
       type: 'object',
@@ -10,52 +12,44 @@ export function createEchartSeries() {
         // type
         type: {
           type: 'string',
+          noticeIframe: 'https://echarts.apache.org/examples/zh/index.html',
           ui: {
             label: '系列类型',
             widget: 'CusSuggest',
             widgetConfig: {
+              mode: 'select',
               suggest: [
                 {
-                  label: 'line',
+                  label: '折线图',
                   value: 'line',
+                },
+                {
+                  label: '柱状图',
+                  value: 'bar',
                 },
               ]
             }
           }
         },
         // data
-        data: {
-          type: 'array',
-          tag: 'my-vue-tab',
-          con_tag: 'my-vue-tab-pane',
-          ui: {
-            label: '数据',
-            attrs: [
-              [':height', '300'],
-            ],
-            class: [
-              'a-space-mb-10'
-            ],
-            conAttrs: [
-              {
-                prefixValue: '"数据"+',
-                handler: ['c', 'return [":name", c.indexKey]']
+        data: createDataProps(),
+        smooth: {
+          type: 'boolean',
+          rules: {
+            type: 'any'
+          }
+        },
+        areaStyle: {
+          type: 'object',
+          properties: {
+            color: {
+              type: 'string',
+              ui: {
+                widget: 'CusColorPicker',
+                widgetConfig: {
+                  showAlpha: true
+                },
               }
-            ],
-            conClass: [
-            ]
-          },
-          items: {
-            type: 'object',
-            properties: {
-              value: {
-                type: 'string',
-                ui: {
-                  form_item: {
-                    ['label-width']: '90px'
-                  },
-                }
-              },
             }
           }
         }

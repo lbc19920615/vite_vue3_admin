@@ -4,9 +4,20 @@
 <el-row>
   <el-col :span="10">
     <z-http-com :value="state.cachedValue"
-                :debug="false"
+                :debug="true"
                 :resolve-config="resolveConfig"
-                @http:model:change="onModelChange"></z-http-com>
+                @http:model:change="onModelChange">
+      <template #z_http_com-object_beforebegin="bindData">
+        <el-space>
+          <el-button  size="small"
+                     @click="iniObj(bindData)"
+          >初始化{{ bindData.scope.label }}</el-button>
+          <el-button  size="small"
+                     @click="desObj(bindData)"
+          >销毁{{ bindData.scope.label }}</el-button>
+        </el-space>
+      </template>
+    </z-http-com>
   </el-col>
   <el-col :span="14">
     <div style="width: 600px; height: 400px;" id="echart-con"></div>
@@ -24,6 +35,7 @@ import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusW
 import {createEchartXAxis} from "@/plugins/z-frame/components/ZEchartsEasy/configs/xAsix";
 import {createEchartYAxis} from "@/plugins/z-frame/components/ZEchartsEasy/configs/yAsix";
 import {createEchartSeries} from "@/plugins/z-frame/components/ZEchartsEasy/configs/series";
+import {EXTEND_FRAME_EVENT_NAMES} from "@/mixins/framework";
 
 export default {
   name: "ZEchartsEasy",
@@ -143,10 +155,20 @@ export default {
       }
     }
 
+    function iniObj({scope, page} = {}) {
+      page.callEvent(EXTEND_FRAME_EVENT_NAMES.OBJ_INIT_COMMON,scope)
+    }
+
+    function desObj({scope, page} = {}) {
+      page.callEvent(EXTEND_FRAME_EVENT_NAMES.OBJ_DESTORY_COMMON,scope)
+    }
+
     return {
       resolveConfig,
       state,
       runPart,
+      iniObj,
+      desObj,
       onModelChange,
     }
   }
