@@ -8,7 +8,7 @@
                 :resolve-config="resolveConfig"
                 @http:model:change="onModelChange">
       <template #z_http_com-object_beforebegin="bindData">
-        <el-space>
+        <el-space v-if="needObjAction(bindData)">
           <el-button  size="small"
                      @click="iniObj(bindData)"
           >初始化{{ bindData.scope.label }}</el-button>
@@ -163,11 +163,18 @@ export default {
       page.callEvent(EXTEND_FRAME_EVENT_NAMES.OBJ_DESTORY_COMMON,scope)
     }
 
+    let objActionKeys = ['areaStyle']
+    function needObjAction({scope} = {}) {
+      // console.log(scope)
+      return objActionKeys.includes(scope.key)
+    }
+
     return {
       resolveConfig,
       state,
       runPart,
       iniObj,
+      needObjAction,
       desObj,
       onModelChange,
     }
