@@ -1,7 +1,9 @@
 
 
 <template>
-<div class="my-vue-tab-pane" :style="styleObj">
+<div class="my-vue-tab-pane"
+     :class="{'my-vue-tab-pane--loaded': load}"
+     :style="styleObj">
   <template v-if="load"><slot></slot></template>
 </div>
 </template>
