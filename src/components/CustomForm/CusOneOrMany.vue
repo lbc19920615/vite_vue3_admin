@@ -4,14 +4,20 @@
 <!--    CusOneOrMany-->
     {{state.items}}
     <div>
-      <div v-for="item in state.items" >
-        <template v-if="widgetConfig.type === 'number'">
-          <el-input @change="onChange" v-model.number="item.value" type="number" />
-        </template>
-        <template v-else>
-          <el-input @change="onChange" v-model="item.value" />
-        </template>
-      </div>
+      <el-row align="middle" v-for="(item, index) in state.items" :key="index">
+        <el-col :span="18">
+          <template v-if="widgetConfig.type === 'number'">
+            <el-input @change="onChange" v-model.number="item.value" type="number" />
+          </template>
+          <template v-else>
+            <el-input @change="onChange" v-model="item.value" />
+          </template>
+        </el-col>
+        <el-col :span="6">
+          <el-button type="danger" size="small"
+                     @click="removeItem(index)">delete</el-button>
+        </el-col>
+      </el-row>
       <el-button size="small" @click="appendItem">appendItem</el-button>
     </div>
   </template>
@@ -29,7 +35,7 @@ export default {
   setup(props, ctx) {
     let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
-        console.log(newVal)
+        // console.log(newVal)
         if (typeof newVal !== undefined) {
           if (Array.isArray(newVal)) {
             state.items = newVal.map(v => {
@@ -56,6 +62,10 @@ export default {
       state.items.push({
         value: null
       })
+    }
+
+    function removeItem(index) {
+      state.items.splice(index, 1)
     }
 
     function onChange() {

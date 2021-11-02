@@ -8,6 +8,36 @@ export function createSuggestSelectWidget(enums = []) {
   }
 }
 
+export function createBorderProps() {
+  return {
+    borderColor: {
+      type: 'string',
+      ui: {
+        widget: 'CusColorPicker',
+        widgetConfig: {}
+      }
+    },
+    borderWidth: {
+      type: 'number',
+      rules: {
+        type: 'any'
+      }
+    },
+    borderRadius: {
+      type: 'string',
+      ui: {
+        widget: 'CusOneOrMany',
+        widgetConfig: {
+          type: 'number'
+        }
+      },
+      rules: {
+        type: 'any'
+      }
+    },
+  }
+}
+
 export function createTextBorderProps() {
   return {
     textBorderColor: {
@@ -69,6 +99,36 @@ export function createTextShadowProps() {
       }
     },
     textShadowOffsetY: {
+      type: 'number',
+      rules: {
+        type: 'any'
+      }
+    },
+  }
+}
+
+export function createShadowProps() {
+  return {
+    shadowColor: {
+      type: 'string',
+      ui: {
+        widget: 'CusColorPicker',
+        widgetConfig: {}
+      }
+    },
+    shadowBlur: {
+      type: 'number',
+      rules: {
+        type: 'any'
+      }
+    },
+    shadowOffsetX: {
+      type: 'number',
+      rules: {
+        type: 'any'
+      }
+    },
+    shadowOffsetY: {
       type: 'number',
       rules: {
         type: 'any'

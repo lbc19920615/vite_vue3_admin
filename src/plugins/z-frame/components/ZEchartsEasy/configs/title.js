@@ -1,5 +1,6 @@
 import {
-  createFontCommonProps,
+  createBorderProps,
+  createFontCommonProps, createShadowProps,
   createSuggestSelectWidget, createTextBorderProps, createTextShadowProps
 } from "@/plugins/z-frame/components/ZEchartsEasy/configs/common";
 
@@ -10,18 +11,6 @@ export function createEchartTitle() {
       label: 'title'
     },
     properties: {
-      padding: {
-        type: 'string',
-        ui: {
-          widget: 'CusOneOrMany',
-          widgetConfig: {
-            type: 'number'
-          }
-        },
-        rules: {
-          type: 'any'
-        }
-      },
       text: {
         type: 'string',
         noticeIframe: 'https://echarts.apache.org/zh/option.html#title.text'
@@ -33,6 +22,24 @@ export function createEchartTitle() {
       left: {
         type: 'string',
         noticeIframe: 'https://echarts.apache.org/zh/option.html#title.left'
+      },
+      top: {
+        type: 'string',
+      },
+      right: {
+        type: 'string',
+      },
+      bottom: {
+        type: 'string',
+      },
+      backgroundColor: {
+        type: 'string',
+        ui: {
+          widget: 'CusColorPicker',
+          widgetConfig: {
+            showAlpha: true
+          }
+        }
       },
       textAlign: {
         type: 'string',
@@ -84,12 +91,32 @@ export function createEchartTitle() {
           )
         }
       },
+      padding: {
+        type: 'string',
+        ui: {
+          widget: 'CusOneOrMany',
+          widgetConfig: {
+            type: 'number'
+          }
+        },
+        rules: {
+          type: 'any'
+        }
+      },
       itemGap: {
         type: 'number',
         rules: {
           type: 'any'
         }
       },
+      zlevel: {
+        type: 'number',
+        rules: {
+          type: 'any'
+        }
+      },
+      ...createBorderProps(),
+      ...createShadowProps(),
       textStyle: {
         type: 'object',
         properties: {
