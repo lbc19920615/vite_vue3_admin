@@ -45,6 +45,7 @@ import {createEchartTooltip} from "@/plugins/z-frame/components/ZEchartsEasy/con
 import {createEchartTitle} from "@/plugins/z-frame/components/ZEchartsEasy/configs/title";
 import {createEchartLegend} from "@/plugins/z-frame/components/ZEchartsEasy/configs/legend";
 import {createEchartGrid} from "@/plugins/z-frame/components/ZEchartsEasy/configs/grid";
+import {createEchartToolbox} from "@/plugins/z-frame/components/ZEchartsEasy/configs/toolbox";
 
 export default {
   name: "ZEchartsEasy",
@@ -121,6 +122,7 @@ export default {
         title: createEchartTitle(),
         legend: createEchartLegend(),
         grid: createEchartGrid(),
+        toolbox: createEchartToolbox(),
         config: {
           type: 'string',
           ui: {

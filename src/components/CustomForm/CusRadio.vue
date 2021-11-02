@@ -1,4 +1,4 @@
-<template>
+\<template>
   <template v-if="inited">
 <!--    {{widgetConfig.enums}}-->
     <el-radio-group

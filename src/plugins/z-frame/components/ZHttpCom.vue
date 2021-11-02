@@ -139,6 +139,10 @@ export default {
       }
     })
 
+    function getForm2Config(config) {
+      return config.init.def.parts[0].def
+    }
+
     onMounted(function () {
 
       let loaded =  async function () {
@@ -155,7 +159,8 @@ export default {
           'editor_step',
           {
             async onMounted(config, {setPartModel}) {
-              // console.log('formEditorConfig', cached)
+              let form2Config = getForm2Config(config)
+
               if (props.value) {
                 setPartModel(config.name, 'form2', props.value)
               }

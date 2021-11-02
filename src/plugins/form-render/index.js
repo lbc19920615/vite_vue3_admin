@@ -11,6 +11,7 @@ import CusColorPicker from "@/components/CustomForm/CusColorPicker.vue";
 import CusInputNumber from "@/components/CustomForm/CusInputNumber.vue";
 import CusInput from "@/components/CustomForm/CusInput.vue";
 import CusSwitch from "@/components/CustomForm/CusSwitch.vue";
+import CusOneOrMany from "@/components/CustomForm/CusOneOrMany.vue";
 import CusProps from "@/components/CustomForm/CusProps.vue";
 import CusForm from "@/components/CustomForm/CusForm.vue";
 import CusSuggest from "@/components/CustomForm/CusSuggest.vue";
@@ -53,6 +54,7 @@ const plugin = {
         CustomVueComponent.register(CusSwitch)
         CustomVueComponent.register(CusInputNumber)
         CustomVueComponent.register(CusInput)
+        CustomVueComponent.register(CusOneOrMany)
 
         CustomVueComponent.register(MyVueTab)
         CustomVueComponent.register(MyVueTabPane)

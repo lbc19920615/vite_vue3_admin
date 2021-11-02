@@ -141,7 +141,7 @@ export default {
 
     // console.log('selfpath', selfpath)
 
-    console.log(widgetConfig2)
+    // console.log(widgetConfig2)
 
     function buildOptions() {
       let options = dxValueEval(widgetConfig2.enums)
