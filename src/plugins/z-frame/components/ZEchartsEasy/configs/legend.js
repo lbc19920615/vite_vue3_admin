@@ -1,7 +1,7 @@
 import {
-  createBorderProps,
+  createBorderProps, createFontCommonProps,
   createShadowProps,
-  createSuggestSelectWidget
+  createSuggestSelectWidget, createTextBorderProps, createTextShadowProps
 } from "@/plugins/z-frame/components/ZEchartsEasy/configs/common";
 
 export function createEchartLegend() {
@@ -129,6 +129,120 @@ export function createEchartLegend() {
           },
         }
       }
+    },
+    lineStyle: {
+      type: 'object',
+      properties: {
+        color: {
+          type: 'string',
+          ui: {
+            widget: 'CusColorPicker',
+            widgetConfig: {}
+          }
+        },
+        width: {
+          type: 'number',
+          rules: {
+            type: 'any'
+          }
+        },
+        type: {
+          type: 'string',
+          ui: {
+            ...createSuggestSelectWidget(
+              [
+                {
+                  label: 'solid',
+                  value: 'solid',
+                },
+                {
+                  label: 'dashed',
+                  value: 'dashed',
+                },
+                {
+                  label: 'dotted',
+                  value: 'dotted',
+                },
+              ]
+            )
+          }
+        },
+        ...createShadowProps(),
+        opacity: {
+          type: 'number',
+          ui: {
+            widget: 'CusInputNumber',
+            widgetConfig: {
+              precision: 2
+            }
+          },
+          rules: {
+            type: 'any'
+          }
+        },
+      }
+    },
+    textStyle: {
+      type: 'object',
+      properties: {
+        color: {
+          type: 'string',
+          ui: {
+            widget: 'CusColorPicker',
+            widgetConfig: {}
+          }
+        },
+        ...createFontCommonProps(),
+        lineHeight: {
+          type: 'number',
+          ui: {
+            widget: 'CusInputNumber',
+            widgetConfig: {
+              precision: 2
+            }
+          },
+          rules: {
+            type: 'any'
+          }
+        },
+        ...createBorderProps(),
+        padding: {
+          type: 'string',
+          ui: {
+            widget: 'CusOneOrMany',
+            widgetConfig: {
+              type: 'number'
+            }
+          },
+          rules: {
+            type: 'any'
+          }
+        },
+        ...createShadowProps(),
+        ...createTextBorderProps(),
+        ...createTextShadowProps(),
+        overflow: {
+          type: 'string',
+          ui: {
+            ...createSuggestSelectWidget(
+              [
+                {
+                  label: '截断',
+                  value: 'truncate',
+                },
+                {
+                  label: '换行',
+                  value: 'break',
+                },
+                {
+                  label: 'breakAll',
+                  value: 'breakAll',
+                },
+              ]
+            )
+          }
+        },
+      },
     }
   }
 }

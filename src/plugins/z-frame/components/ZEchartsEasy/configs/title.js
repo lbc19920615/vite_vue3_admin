@@ -120,6 +120,18 @@ export function createEchartTitle() {
       textStyle: {
         type: 'object',
         properties: {
+          width: {
+            type: 'number',
+            rules: {
+              type: 'any'
+            }
+          },
+          height: {
+            type: 'number',
+            rules: {
+              type: 'any'
+            }
+          },
           ...createFontCommonProps(),
           lineHeight: {
             type: 'number',
@@ -129,18 +141,6 @@ export function createEchartTitle() {
                 precision: 2
               }
             },
-            rules: {
-              type: 'any'
-            }
-          },
-          width: {
-            type: 'number',
-            rules: {
-              type: 'any'
-            }
-          },
-          height: {
-            type: 'number',
             rules: {
               type: 'any'
             }

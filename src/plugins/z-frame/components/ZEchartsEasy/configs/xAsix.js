@@ -1,3 +1,6 @@
+import {createSuggestSelectWidget} from "@/plugins/z-frame/components/ZEchartsEasy/configs/common";
+import {QuickBoolean, QuickEnums, QuickNumber} from "@/hooks/props";
+
 export function createEchartXAxis() {
   return {
     type: 'object',
@@ -11,6 +14,37 @@ export function createEchartXAxis() {
           label: '坐标轴名称'
         }
       },
+      show: {
+        type: 'boolean',
+        rules: {
+          type: 'any'
+        }
+      },
+      position: {
+        type: 'string',
+        ui: {
+          ...createSuggestSelectWidget([
+            {
+              label: 'top',
+              value: 'top',
+            },
+            {
+              label: 'bottom',
+              value: 'bottom',
+            }
+          ])
+        }
+      },
+      offset: QuickNumber(),
+      realtimeSort: QuickBoolean(),
+      sortSeriesIndex: QuickNumber(),
+      nameLocation: QuickEnums(
+        [
+          ['start', 'start'],
+          ['middle', 'middle'],
+          ['end', 'end'],
+        ]
+      ),
       type: {
         type: 'string',
         noticeIframe: 'https://echarts.apache.org/zh/option.html#xAxis.type',

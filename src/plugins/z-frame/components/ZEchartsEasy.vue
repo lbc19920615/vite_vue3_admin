@@ -25,7 +25,7 @@
     </z-http-com>
   </el-col>
   <el-col :span="14">
-    <div style="width: 600px; height: 400px;" id="echart-con"></div>
+    <div style="width: 600px; height: 400px;" :id="chartId"></div>
   </el-col>
 </el-row>
 </div>
@@ -59,6 +59,7 @@ export default {
       reload: false
     })
     let widgetFormLocks = true
+    let chartId = 'echart_' + ZY.rid(6)
 
     let chartDom;
     let myChart;
@@ -68,7 +69,7 @@ export default {
 
     function render(config = {}) {
       // console.log(chartDom)
-      chartDom = document.getElementById('echart-con');
+      chartDom = document.getElementById(chartId);
       myChart = echarts.init(chartDom);
       // option = {
       //   xAxis: {
@@ -85,7 +86,7 @@ export default {
       //     }
       //   ]
       // };
-      console.log('render', config)
+      console.log('render', config, chartDom)
       option = config
       myChart.setOption(option);
     }
@@ -218,6 +219,7 @@ export default {
       runPart,
       iniObj,
       needObjAction,
+      chartId,
       loadFile,
       exportFile,
       desObj,
