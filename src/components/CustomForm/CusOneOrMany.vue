@@ -84,6 +84,7 @@ export default {
     return {
       state,
       widgetConfig: widgetConfig2,
+      removeItem,
       appendItem,
       onChange,
       methods,

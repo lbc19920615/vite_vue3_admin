@@ -92,3 +92,18 @@ export function QuickTextarea() {
   }
 }
 
+export function QuickOneOrMany(type = 'string') {
+  return {
+    type: 'string',
+    ui: {
+      widget: 'CusOneOrMany',
+      widgetConfig: {
+        type: type
+      }
+    },
+    rules: {
+      type: 'any'
+    }
+  }
+}
+

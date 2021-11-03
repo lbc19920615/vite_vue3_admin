@@ -1,7 +1,8 @@
 <template>
 <div class="z-echarts-easy" v-if="state.inited">
   <el-button @click="runPart">执行</el-button>
-  <el-button @click="exportFile">导出</el-button>
+<!--  <el-button @click="exportFile">导出</el-button>-->
+  <export-dialog style="display: inline-block" @exported="exportFile"></export-dialog>
   <el-button @click="loadFile">加载</el-button>
 <el-row>
   <el-col :span="10" v-if="state.reload">
@@ -46,10 +47,12 @@ import {createEchartTitle} from "@/plugins/z-frame/components/ZEchartsEasy/confi
 import {createEchartLegend} from "@/plugins/z-frame/components/ZEchartsEasy/configs/legend";
 import {createEchartGrid} from "@/plugins/z-frame/components/ZEchartsEasy/configs/grid";
 import {createEchartToolbox} from "@/plugins/z-frame/components/ZEchartsEasy/configs/toolbox";
+import {createEchartPolar} from "@/plugins/z-frame/components/ZEchartsEasy/configs/polar";
+import ExportDialog from "@/components/ExportDialog.vue";
 
 export default {
   name: "ZEchartsEasy",
-  components: {ZHttpCom, HttpComponent},
+  components: {ExportDialog, ZHttpCom, HttpComponent},
   setup() {
 
     let JSON5 = ZY.JSON5
@@ -134,6 +137,7 @@ export default {
         legend: createEchartLegend(),
         grid: createEchartGrid(),
         toolbox: createEchartToolbox(),
+        polar: createEchartPolar(),
         config: {
           type: 'string',
           ui: {
@@ -211,12 +215,14 @@ export default {
       return true
     }
 
-    function exportFile() {
+    function exportFile(form) {
       ZY_EXT.saveDesignFile({
         fileName: 'test_echarts',
         data: cachedModel,
-        prefix: 'echarts_'
+        prefix: 'echarts_',
+        ...form
       })
+      // console.log('sdsdsds')
     }
 
     async function loadFile() {
