@@ -1,8 +1,8 @@
-import {QuickBoolean, QuickColor, QuickNumber, QuickOneOrMany} from "@/hooks/props";
+import {QuickBoolean, QuickColor, QuickEnums, QuickNumber, QuickOneOrMany, QuickTextarea} from "@/hooks/props";
 import {
   createBorderProps,
   createFontCommonProps,
-  createSizeProps
+  createSizeProps, createTextBorderProps, createTextShadowProps, createTextStyleCommonProps
 } from "@/plugins/z-frame/components/ZEchartsEasy/configs/common";
 
 export function createEchartTooltip() {
@@ -35,11 +35,16 @@ export function createEchartTooltip() {
       textStyle: {
         type: 'object',
         properties: {
-          ...createFontCommonProps(),
-          lineHeight: QuickNumber(),
-          ...createSizeProps(),
+          ...createTextStyleCommonProps()
         }
-      }
+      },
+      extraCssText: QuickTextarea(),
+      order: QuickEnums([
+        ['seriesAsc', 'seriesAsc'],
+        ['seriesDesc', 'seriesDesc'],
+        ['valueAsc', 'valueAsc'],
+        ['valueDesc', 'valueDesc'],
+      ])
     }
   }
 }

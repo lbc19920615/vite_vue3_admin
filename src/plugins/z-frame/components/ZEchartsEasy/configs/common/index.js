@@ -214,6 +214,30 @@ export function createFontCommonProps() {
   return obj
 }
 
+export function createTextStyleCommonProps() {
+  return {
+    ...createFontCommonProps(),
+    lineHeight: QuickNumber(),
+    ...createSizeProps(),
+    ...createTextBorderProps(),
+    ...createTextShadowProps(),
+    overflow: QuickEnums([
+      {
+        label: '截断',
+        value: 'truncate',
+      },
+      {
+        label: '换行',
+        value: 'break',
+      },
+      {
+        label: 'breakAll',
+        value: 'breakAll',
+      },
+    ]),
+  }
+}
+
 
 export function createAlignProps() {
   return {
