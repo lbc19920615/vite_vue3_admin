@@ -1,8 +1,8 @@
 export function createDataProps() {
   return {
     type: 'array',
-    tag: 'my-vue-tab',
-    con_tag: 'my-vue-tab-pane',
+    // tag: 'my-vue-tab',
+    // con_tag: 'my-vue-tab-pane',
     ui: {
       label: '数据',
       attrs: [
