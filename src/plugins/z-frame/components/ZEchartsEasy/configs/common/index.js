@@ -1,3 +1,5 @@
+import {QuickEnums, QuickNumber} from "@/hooks/props";
+
 export function createSuggestSelectWidget(enums = []) {
   return {
     widget: 'CusSuggest',
@@ -107,6 +109,13 @@ export function createTextShadowProps() {
   }
 }
 
+export function createSizeProps() {
+  return {
+    width: QuickNumber(),
+    height: QuickNumber(),
+  }
+}
+
 export function createShadowProps() {
   return {
     shadowColor: {
@@ -203,4 +212,24 @@ export function createFontCommonProps() {
     },
   }
   return obj
+}
+
+
+export function createAlignProps() {
+  return {
+    align: QuickEnums(
+      [
+        ['left', 'left'],
+        ['center', 'center'],
+        ['right', 'right'],
+      ]
+    ),
+    verticalAlign: QuickEnums(
+      [
+        ['top', 'top'],
+        ['middle', 'middle'],
+        ['bottom', 'bottom'],
+      ]
+    ),
+  }
 }

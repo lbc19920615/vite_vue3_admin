@@ -1,3 +1,11 @@
+import {QuickBoolean, QuickColor, QuickEnums, QuickNumber, QuickTextarea} from "@/hooks/props";
+import deepMerge from 'deepmerge'
+import {
+  createAlignProps,
+  createBorderProps,
+  createFontCommonProps, createShadowProps, createSizeProps, createTextBorderProps, createTextShadowProps
+} from "@/plugins/z-frame/components/ZEchartsEasy/configs/common";
+
 export function createEchartYAxis() {
   return {
     type: 'object',
@@ -8,34 +16,131 @@ export function createEchartYAxis() {
           label: '坐标轴名称'
         }
       },
-      type: {
-        type: 'string',
-        noticeIframe: 'https://echarts.apache.org/zh/option.html#xAxis.type',
-        ui: {
-          label: '坐标轴类型',
-          widget: 'CusSuggest',
-          widgetConfig: {
-            suggest: [
-              {
-                label: 'value',
-                value: 'value',
-              },
-              {
-                label: 'category',
-                value: 'category',
-              },
-              {
-                label: 'time',
-                value: 'time',
-              },
-              {
-                label: 'log',
-                value: 'log',
-              }
-            ]
+      type: deepMerge(
+        QuickEnums(
+          [
+            {
+              label: 'value',
+              value: 'value',
+            },
+            {
+              label: 'category',
+              value: 'category',
+            },
+            {
+              label: 'time',
+              value: 'time',
+            },
+            {
+              label: 'log',
+              value: 'log',
+            }
+          ]
+        ),
+        {
+          noticeIframe: 'https://echarts.apache.org/zh/option.html#yAxis.type',
+          ui: {
+            label: '坐标轴类型',
           }
         }
+      ),
+      show: QuickBoolean(),
+      position: QuickEnums([
+        {
+          label: 'left',
+          value: 'left',
+        },
+        {
+          label: 'right',
+          value: 'right',
+        }
+      ]),
+      offset: QuickNumber(),
+      realtimeSort: QuickBoolean(),
+      sortSeriesIndex: QuickNumber(),
+      nameLocation: QuickEnums(
+        [
+          ['start', 'start'],
+          ['middle', 'middle'],
+          ['end', 'end'],
+        ]
+      ),
+      nameTextStyle: {
+        type: 'object',
+        properties: {
+          ...createFontCommonProps(),
+          ...createAlignProps(),
+          lineHeight: QuickNumber(),
+          backgroundColor: QuickColor(),
+          ...createBorderProps(),
+          padding: {
+            type: 'string',
+            ui: {
+              widget: 'CusOneOrMany',
+              widgetConfig: {
+                type: 'number'
+              }
+            },
+            rules: {
+              type: 'any'
+            }
+          },
+          ...createShadowProps(),
+          ...createSizeProps(),
+          ...createTextBorderProps(),
+          ...createTextShadowProps(),
+          overflow: QuickEnums([
+            {
+              label: '截断',
+              value: 'truncate',
+            },
+            {
+              label: '换行',
+              value: 'break',
+            },
+            {
+              label: 'breakAll',
+              value: 'breakAll',
+            },
+          ]),
+        }
       },
+      nameGap: QuickNumber(),
+      nameRotate: QuickNumber(),
+      inverse: QuickBoolean(),
+      boundaryGap: QuickBoolean(),
+      min: QuickTextarea(),
+      max:  QuickTextarea(),
+      scale: QuickBoolean(),
+      splitNumber: QuickNumber(),
+      minInterval: QuickNumber(),
+      maxInterval: QuickNumber(),
+      interval: QuickNumber(),
+      logBase: QuickNumber(),
+      silent: QuickBoolean(),
+      axisLabel: {
+        type: 'object',
+        properties: {
+          show: QuickBoolean(),
+          inside: QuickBoolean(),
+          rotate: QuickNumber(),
+          margin: QuickNumber(),
+          formatter: QuickTextarea(),
+          showMinLabel: QuickBoolean(),
+          showMaxLabel: QuickBoolean(),
+          hideOverlap: QuickBoolean(),
+          ...createFontCommonProps(),
+          ...createAlignProps(),
+          lineHeight: QuickNumber(),
+          backgroundColor: QuickColor(),
+          ...createBorderProps(),
+          ...createShadowProps(),
+          ...createSizeProps(),
+          ...createTextBorderProps(),
+          ...createTextShadowProps(),
+        }
+      },
+      zlevel: QuickNumber(),
       data: {
         type: 'array',
         tag: 'my-vue-tab',

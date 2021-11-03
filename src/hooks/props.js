@@ -17,6 +17,11 @@ function createSuggestSelectWidget(enums = []) {
   }
 }
 
+/**
+ *
+ * @returns {{rules: {type: string}, type: string}}
+ * @constructor
+ */
 export function QuickNumber() {
   return {
     type: 'number',
@@ -26,6 +31,11 @@ export function QuickNumber() {
   }
 }
 
+/**
+ *
+ * @returns {{rules: {type: string}, type: string}}
+ * @constructor
+ */
 export function QuickBoolean() {
   return {
     type: 'boolean',
@@ -35,6 +45,13 @@ export function QuickBoolean() {
   }
 }
 
+/**
+ * QuickEnums
+ * @param enums
+ * @param type
+ * @returns {{ui: {widget: string, widgetConfig: {mode: string, suggest: ({label: *, value: *}|*)[]}}, type: string}}
+ * @constructor
+ */
 export function QuickEnums(enums = [], {type = 'string'} = {}) {
   return {
     type,
@@ -43,3 +60,35 @@ export function QuickEnums(enums = [], {type = 'string'} = {}) {
     }
   }
 }
+
+/**
+ * 颜色选择快捷
+ * @returns {{ui: {widget: string, widgetConfig: {}}, type: string}}
+ * @constructor
+ */
+export function QuickColor() {
+  return  {
+    type: 'string',
+    ui: {
+      widget: 'CusColorPicker',
+      widgetConfig: {}
+    }
+  }
+}
+
+/**
+ *
+ * @returns {{rules: {type: string}, type: string}}
+ * @constructor
+ */
+export function QuickTextarea() {
+  return {
+    type: 'string',
+    ui: {
+      widgetConfig: {
+        type: 'textarea'
+      }
+    }
+  }
+}
+

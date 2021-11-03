@@ -1,5 +1,11 @@
-import {createSuggestSelectWidget} from "@/plugins/z-frame/components/ZEchartsEasy/configs/common";
-import {QuickBoolean, QuickEnums, QuickNumber} from "@/hooks/props";
+import {
+  createAlignProps,
+  createBorderProps,
+  createFontCommonProps, createShadowProps, createSizeProps,
+  createSuggestSelectWidget, createTextBorderProps, createTextShadowProps
+} from "@/plugins/z-frame/components/ZEchartsEasy/configs/common";
+import {QuickBoolean, QuickColor, QuickEnums, QuickNumber, QuickTextarea} from "@/hooks/props";
+import deepMerge from 'deepmerge'
 
 export function createEchartXAxis() {
   return {
@@ -8,6 +14,34 @@ export function createEchartXAxis() {
       label: 'X轴'
     },
     properties: {
+      type: deepMerge(
+        QuickEnums(
+          [
+            {
+              label: 'value',
+              value: 'value',
+            },
+            {
+              label: 'category',
+              value: 'category',
+            },
+            {
+              label: 'time',
+              value: 'time',
+            },
+            {
+              label: 'log',
+              value: 'log',
+            }
+          ]
+        ),
+        {
+          noticeIframe: 'https://echarts.apache.org/zh/option.html#xAxis.type',
+          ui: {
+            label: '坐标轴类型',
+          }
+        }
+      ),
       name: {
         type: 'string',
         ui: {
@@ -45,44 +79,87 @@ export function createEchartXAxis() {
           ['end', 'end'],
         ]
       ),
-      type: {
-        type: 'string',
-        noticeIframe: 'https://echarts.apache.org/zh/option.html#xAxis.type',
-        ui: {
-          label: '坐标轴类型',
-          widget: 'CusSuggest',
-          widgetConfig: {
-            suggest: [
-              {
-                label: 'value',
-                value: 'value',
-              },
-              {
-                label: 'category',
-                value: 'category',
-              },
-              {
-                label: 'time',
-                value: 'time',
-              },
-              {
-                label: 'log',
-                value: 'log',
+      nameTextStyle: {
+        type: 'object',
+        properties: {
+          ...createFontCommonProps(),
+          ...createAlignProps(),
+          lineHeight: QuickNumber(),
+          backgroundColor: QuickColor(),
+          ...createBorderProps(),
+          padding: {
+            type: 'string',
+            ui: {
+              widget: 'CusOneOrMany',
+              widgetConfig: {
+                type: 'number'
               }
-            ]
-          }
+            },
+            rules: {
+              type: 'any'
+            }
+          },
+          ...createShadowProps(),
+          ...createSizeProps(),
+          ...createTextBorderProps(),
+          ...createTextShadowProps(),
+          overflow: QuickEnums([
+            {
+              label: '截断',
+              value: 'truncate',
+            },
+            {
+              label: '换行',
+              value: 'break',
+            },
+            {
+              label: 'breakAll',
+              value: 'breakAll',
+            },
+          ]),
         }
       },
-      boundaryGap: {
-        type: 'boolean',
-        rules: {
-          type: 'boolean'
+      nameGap: QuickNumber(),
+      nameRotate: QuickNumber(),
+      inverse: QuickBoolean(),
+      min: QuickTextarea(),
+      max:  QuickTextarea(),
+      scale: QuickBoolean(),
+      splitNumber: QuickNumber(),
+      minInterval: QuickNumber(),
+      maxInterval: QuickNumber(),
+      interval: QuickNumber(),
+      logBase: QuickNumber(),
+      silent: QuickBoolean(),
+      axisLabel: {
+        type: 'object',
+        properties: {
+          show: QuickBoolean(),
+          inside: QuickBoolean(),
+          rotate: QuickNumber(),
+          margin: QuickNumber(),
+          formatter: QuickTextarea(),
+          showMinLabel: QuickBoolean(),
+          showMaxLabel: QuickBoolean(),
+          hideOverlap: QuickBoolean(),
+          ...createFontCommonProps(),
+          ...createAlignProps(),
+          lineHeight: QuickNumber(),
+          backgroundColor: QuickColor(),
+          ...createBorderProps(),
+          ...createShadowProps(),
+          ...createSizeProps(),
+          ...createTextBorderProps(),
+          ...createTextShadowProps(),
         }
       },
+      zlevel: QuickNumber(),
+      boundaryGap: QuickBoolean(),
       data: {
         type: 'array',
-        tag: 'my-vue-tab',
-        con_tag: 'my-vue-tab-pane',
+        // tag: 'my-vue-tab',
+        // con_tag: 'my-vue-tab-pane',
+        tag: 'el-scrollbar',
         ui: {
           label: '数据',
           attrs: [

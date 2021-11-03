@@ -33,7 +33,7 @@
 
 <script>
 import * as echarts from 'echarts';
-import {getCurrentInstance, onMounted, reactive, toRaw} from "vue";
+import {getCurrentInstance, nextTick, onMounted, reactive, toRaw} from "vue";
 import HttpComponent from "@/components/HttpComponent.vue";
 import ZHttpCom from "@/plugins/z-frame/components/ZHttpCom.vue";
 import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusWidgetEditor/createConfig";
@@ -69,8 +69,10 @@ export default {
 
     function render(config = {}) {
       // console.log(chartDom)
-      chartDom = document.getElementById(chartId);
-      myChart = echarts.init(chartDom);
+      if (!myChart) {
+        chartDom = document.getElementById(chartId);
+        myChart = echarts.init(chartDom);
+      }
       // option = {
       //   xAxis: {
       //     type: 'category',
@@ -86,9 +88,17 @@ export default {
       //     }
       //   ]
       // };
-      console.log('render', config, chartDom)
+      // console.log('render', config, chartDom)
       option = config
-      myChart.setOption(option);
+      // myChart.clear()
+      if (myChart) {
+        myChart.clear()
+      }
+      nextTick(() => {
+        setTimeout(() => {
+          myChart.setOption(option);
+        }, 500)
+      })
     }
 
 
@@ -167,11 +177,15 @@ export default {
       return o
     }
 
+    async function saveModel(v) {
+      await ZY_EXT.store.setItem('test-echart', v)
+    }
+
     async function runPart() {
       let model = JSON5.parse(JSON5.stringify(cachedModel))
       Reflect.deleteProperty(model, "config")
-      console.log(model)
-      await ZY_EXT.store.setItem('test-echart', cachedModel)
+      // console.log(model)
+      saveModel(cachedModel)
       try {
         let extend = ZY.JSON5.parse(cachedModel.config)
         let o = ZY.lodash.merge({}, extend, model)
@@ -209,6 +223,7 @@ export default {
       let obj = await ZY_EXT.fileOpenJSON5()
       if (obj.data) {
         console.log(obj.data)
+        saveModel(obj.data)
         renderData(obj.data)
       }
     }
