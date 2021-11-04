@@ -1,7 +1,15 @@
 <template>
   <div class="z-jump-scroll">
     <div>
-<!--      {{state.items}}-->
+<!--      {{state.selected}}-->
+<!--      {{cmap}}-->
+      <el-select v-model="state.selected" filterable @change="onSelectedChange">
+        <el-option v-for="(item, key) in cmap"
+          :key="item.value"
+          :value="item.value"
+          :label="item.label"
+        ></el-option>
+      </el-select>
     </div>
     <el-scrollbar height="60vh">
       <slot></slot>
@@ -21,7 +29,8 @@ export default {
     // console.log(props.binds)
     let s_path = ZY.getObjPathFromPathArr(props.binds.pathArr)
     let state = reactive({
-      items: []
+      items: [],
+      selected: null
     })
     let map = new Map()
 
@@ -44,7 +53,15 @@ export default {
       }
     }
     let cmap = computed(() => {
-      return map
+      if (!Array.isArray(state.items)) {
+        return []
+      }
+      return state.items.map(v => {
+        return {
+          label: v[0],
+          value: v[0]
+        }
+      })
     })
     let keys = computed(() => {
       if (!Array.isArray(state.items)) {
@@ -55,10 +72,20 @@ export default {
       })
     })
     ret.cmap = cmap
+
+    function onSelectedChange(v) {
+      let dom = document.getElementById(v)
+      if (dom) {
+        dom.scrollIntoView(true)
+        console.log(dom)
+      }
+    }
+
     provide('ZJumpScrollContext', ret)
     return {
       state,
       keys,
+      onSelectedChange,
       cmap
     }
   }
