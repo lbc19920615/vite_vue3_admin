@@ -1,4 +1,12 @@
-import {QuickEnums, QuickNumber} from "@/hooks/props";
+import {
+  QuickBoolean,
+  QuickColor,
+  QuickEnums,
+  QuickFloat,
+  QuickNumber,
+  QuickOneOrMany,
+  QuickTextarea
+} from "@/hooks/props";
 
 export function createSuggestSelectWidget(enums = []) {
   return {
@@ -258,6 +266,9 @@ export function createTextStyleCommonProps() {
         value: 'breakAll',
       },
     ]),
+    lineOverflow: {
+      type: 'string'
+    }
   }
 }
 
@@ -278,5 +289,97 @@ export function createAlignProps() {
         ['bottom', 'bottom'],
       ]
     ),
+  }
+}
+
+export function createSymbolProps() {
+  return {
+    symbol: QuickTextarea(),
+    symbolSize: QuickNumber(),
+    symbolRotate: QuickNumber(),
+    symbolKeepAspect: QuickBoolean(),
+    symbolOffset: QuickOneOrMany(),
+  }
+}
+
+export function createAnimationProps() {
+  return {
+    animation: QuickBoolean(),
+    animationThreshold: QuickNumber(),
+    animationDuration: QuickNumber(),
+    animationEasing: {
+      type: 'string'
+    },
+    animationDelay: QuickNumber(),
+    animationDurationUpdate: QuickNumber(),
+    animationEasingUpdate: {
+      type: 'string'
+    },
+    animationDelayUpdate: QuickNumber(),
+  }
+}
+
+/**
+ * https://echarts.apache.org/zh/option.html#series-line.emphasis.itemStyle
+ * @returns {{shadowOffsetX: {rules: {type: string}, type: string}, borderColor: {ui: {widget: string, widgetConfig: {}}, type: string}, shadowOffsetY: {rules: {type: string}, type: string}, color: {ui: {widget: string, widgetConfig: {}}, type: string}, borderRadius: {ui: {widget: string, widgetConfig: {type: string}}, rules: {type: string}, type: string}, shadowBlur: {rules: {type: string}, type: string}, borderWidth: {rules: {type: string}, type: string}, opacity: {ui: {widget: string, widgetConfig: {precision: number}}, rules: {type: string}, type: string}, shadowColor: {ui: {widget: string, widgetConfig: {}}, type: string}}}
+ */
+export function createItemStylePartProps() {
+  return {
+    color: QuickColor(),
+    ...createBorderProps(),
+    ...createShadowProps(),
+    ...createBorderExt1Props('border'),
+    opacity: QuickFloat(),
+  }
+}
+
+/**
+ * https://echarts.apache.org/zh/option.html#series-line.emphasis.lineStyle
+ * @returns {{shadowOffsetX: {rules: {type: string}, type: string}, shadowOffsetY: {rules: {type: string}, type: string}, color: {ui: {widget: string, widgetConfig: {}}, type: string}, shadowBlur: {rules: {type: string}, type: string}, width: {rules: {type: string}, type: string}, type: {ui: {widget: string, widgetConfig: {mode: string, suggest: ({label: *, value: *}|*)[]}}, type: string}, opacity: {ui: {widget: string, widgetConfig: {precision: number}}, rules: {type: string}, type: string}, shadowColor: {ui: {widget: string, widgetConfig: {}}, type: string}}}
+ */
+export function createLineStylePartProps() {
+  return {
+    color: QuickColor(),
+    width: QuickNumber(),
+    type: QuickEnums([
+      ['solid', 'solid'],
+      ['dashed', 'dashed'],
+      ['dotted', 'dotted'],
+    ]),
+    ...createBorderExt1Props(),
+    ...createShadowProps(),
+    opacity: QuickFloat(),
+  }
+}
+
+/**
+ * https://echarts.apache.org/zh/option.html#series-line.emphasis.endLabel
+ * @returns {{rotate: {rules: {type: string}, type: string}, textBorderWidth: {rules: {type: string}, type: string}, padding: {ui: {widget: string, widgetConfig: {type: string}}, rules: {type: string}, type: string}, distance: {rules: {type: string}, type: string}, offset: {ui: {widget: string, widgetConfig: {type: string}}, rules: {type: string}, type: string}, color: {ui: {widget: string, widgetConfig: {}}, type: string}, show: {rules: {type: string}, type: string}, textShadowColor: {ui: {widget: string, widgetConfig: {}}, type: string}, fontStyle: {ui: {widget: string, widgetConfig: {mode: string, suggest: *[]}}, type: string}, lineOverflow: {type: string}, fontFamily: {type: string}, overflow: {ui: {widget: string, widgetConfig: {mode: string, suggest: ({label: *, value: *}|*)[]}}, type: string}, width: {rules: {type: string}, type: string}, fontSize: {rules: {type: string}, type: string}, lineHeight: {rules: {type: string}, type: string}, textShadowOffsetX: {rules: {type: string}, type: string}, position: {ui: {widget: string, widgetConfig: {type: string}}, rules: {type: string}, type: string}, textShadowOffsetY: {rules: {type: string}, type: string}, textBorderType: {ui: {widget: string, widgetConfig: {mode: string, suggest: *[]}}, type: string}, fontWeight: {ui: {widget: string, widgetConfig: {mode: string, suggest: *[]}}, type: string}, height: {rules: {type: string}, type: string}, textBorderColor: {ui: {widget: string, widgetConfig: {}}, type: string}, textShadowBlur: {rules: {type: string}, type: string}}}
+ */
+export function createEndLabelPartProps() {
+  return {
+    show: QuickBoolean(),
+    position: QuickOneOrMany(),
+    distance: QuickNumber(),
+    rotate: QuickNumber(),
+    offset: QuickOneOrMany('number'),
+    ...createTextStyleCommonProps(),
+    padding: QuickOneOrMany('number')
+  }
+}
+
+/**
+ * https://echarts.apache.org/zh/option.html#series-line.markPoint.label
+ * @returns {{rotate: {rules: {type: string}, type: string}, textBorderWidth: {rules: {type: string}, type: string}, padding: {ui: {widget: string, widgetConfig: {type: string}}, rules: {type: string}, type: string}, distance: {rules: {type: string}, type: string}, offset: {ui: {widget: string, widgetConfig: {type: string}}, rules: {type: string}, type: string}, color: {ui: {widget: string, widgetConfig: {}}, type: string}, show: {rules: {type: string}, type: string}, textShadowColor: {ui: {widget: string, widgetConfig: {}}, type: string}, fontStyle: {ui: {widget: string, widgetConfig: {mode: string, suggest: *[]}}, type: string}, lineOverflow: {type: string}, fontFamily: {type: string}, overflow: {ui: {widget: string, widgetConfig: {mode: string, suggest: ({label: *, value: *}|*)[]}}, type: string}, width: {rules: {type: string}, type: string}, fontSize: {rules: {type: string}, type: string}, lineHeight: {rules: {type: string}, type: string}, textShadowOffsetX: {rules: {type: string}, type: string}, position: {ui: {widget: string, widgetConfig: {type: string}}, rules: {type: string}, type: string}, textShadowOffsetY: {rules: {type: string}, type: string}, textBorderType: {ui: {widget: string, widgetConfig: {mode: string, suggest: *[]}}, type: string}, fontWeight: {ui: {widget: string, widgetConfig: {mode: string, suggest: *[]}}, type: string}, height: {rules: {type: string}, type: string}, textBorderColor: {ui: {widget: string, widgetConfig: {}}, type: string}, textShadowBlur: {rules: {type: string}, type: string}}}
+ */
+export function createLabelPartProps() {
+  return {
+    show: QuickBoolean(),
+    position: QuickOneOrMany(),
+    distance: QuickNumber(),
+    rotate: QuickNumber(),
+    offset: QuickOneOrMany('number'),
+    ...createTextStyleCommonProps(),
+    padding: QuickOneOrMany('number')
   }
 }

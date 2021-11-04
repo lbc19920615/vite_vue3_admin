@@ -1,8 +1,9 @@
 import {
-  createBorderProps, createFontCommonProps,
+  createBorderProps, createFontCommonProps, createItemStylePartProps,
   createShadowProps,
   createSuggestSelectWidget, createTextBorderProps, createTextShadowProps
 } from "@/plugins/z-frame/components/ZEchartsEasy/configs/common";
+import {QuickColor, QuickFloat} from "@/hooks/props";
 
 export function createEchartLegend() {
   return {
@@ -106,27 +107,7 @@ export function createEchartLegend() {
       itemStyle: {
         type: 'object',
         properties: {
-          color: {
-            type: 'string',
-            ui: {
-              widget: 'CusColorPicker',
-              widgetConfig: {}
-            }
-          },
-          ...createBorderProps(),
-          ...createShadowProps(),
-          opacity: {
-            type: 'number',
-            ui: {
-              widget: 'CusInputNumber',
-              widgetConfig: {
-                precision: 2
-              }
-            },
-            rules: {
-              type: 'any'
-            }
-          },
+          ...createItemStylePartProps()
         }
       }
     },

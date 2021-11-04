@@ -1,9 +1,16 @@
 function createSuggestSelectWidget(enums = []) {
   let suggest = enums.map(v => {
     if (Array.isArray(v)) {
+      // console.log(v)
+      if (v.length > 1) {
+        return {
+          label: v[0],
+          value: v[1]
+        }
+      }
       return {
-        label: v.label,
-        value: v.value
+        label: v[0],
+        value: v[0]
       }
     }
     return v

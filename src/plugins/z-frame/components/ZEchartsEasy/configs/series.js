@@ -9,9 +9,16 @@ import {
   QuickTextarea
 } from "@/hooks/props";
 import {
-  createAlignProps, createBorderExt1Props, createBorderProps,
+  createAlignProps, createAnimationProps,
+  createBorderExt1Props,
+  createBorderProps,
+  createEndLabelPartProps,
+  createItemStylePartProps, createLabelPartProps,
+  createLineStylePartProps,
   createShadowProps,
-  createSizeProps,
+  createSizeProps, createSymbolProps,
+  createTextBorderProps,
+  createTextShadowProps,
   createTextStyleCommonProps
 } from "@/plugins/z-frame/components/ZEchartsEasy/configs/common";
 import deepMerge from 'deepmerge'
@@ -59,11 +66,7 @@ export function createEchartSeries() {
         xAxisIndex: QuickNumber(),
         yAxisIndex: QuickNumber(),
         polarIndex: QuickNumber(),
-        symbol: QuickTextarea(),
-        symbolSize: QuickNumber(),
-        symbolRotate: QuickNumber(),
-        symbolKeepAspect: QuickBoolean(),
-        symbolOffset: QuickOneOrMany(),
+        ...createSymbolProps(),
         showSymbol: QuickBoolean(),
         legendHoverLink: QuickBoolean(),
         stack: {
@@ -79,25 +82,13 @@ export function createEchartSeries() {
         label: {
           type: 'object',
           properties: {
-            show: QuickBoolean(),
-            position: QuickOneOrMany(),
-            distance: QuickNumber(),
-            rotate: QuickNumber(),
-            offset: QuickOneOrMany('number'),
-            ...createTextStyleCommonProps(),
-            padding: QuickOneOrMany('number')
+            ...createLabelPartProps(),
           }
         },
         endLabel: {
           type: 'object',
           properties: {
-            show: QuickBoolean(),
-            position: QuickOneOrMany(),
-            distance: QuickNumber(),
-            rotate: QuickNumber(),
-            offset: QuickOneOrMany('number'),
-            ...createTextStyleCommonProps(),
-            padding: QuickOneOrMany('number')
+            ...createEndLabelPartProps(),
           }
         },
         labelLine: {
@@ -109,26 +100,10 @@ export function createEchartSeries() {
             smooth: QuickBoolean(),
             minTurnAngle: QuickNumber(),
             lineStyle: {
-              color: QuickColor(),
-              width: QuickNumber(),
-              type: QuickEnums([
-                ['solid', 'solid'],
-                ['dashed', 'dashed'],
-                ['dotted', 'dotted'],
-              ]),
-              cap: QuickEnums([
-                ['butt', 'butt'],
-                ['round', 'round'],
-                ['square', 'square'],
-              ]),
-              join: QuickEnums([
-                ['bevel', 'bevel'],
-                ['round', 'round'],
-                ['miter', 'miter'],
-              ]),
-              miterLimit: QuickNumber(),
-              ...createShadowProps(),
-              opacity: QuickFloat(),
+              type: 'object',
+              properties: {
+                ...createLineStylePartProps(),
+              }
             }
           }
         },
@@ -158,11 +133,7 @@ export function createEchartSeries() {
         itemStyle: {
           type: 'object',
           properties: {
-            color: QuickColor(),
-            ...createBorderProps(),
-            ...createBorderExt1Props('border'),
-            ...createShadowProps(),
-            opacity: QuickFloat(),
+            ...createItemStylePartProps()
           }
         },
         lineStyle: {
@@ -194,24 +165,9 @@ export function createEchartSeries() {
         areaStyle: {
           type: 'object',
           properties: {
-            color: {
-              type: 'string',
-              noticeFun: [
-                'options', `
-                let pathArr = options.pathArr;
-                let p = pathArr.slice(0,2);
-                let m = options.getData(p);
-                let type = m?.type ?? 'line' 
-      
-                return 'https://echarts.apache.org/zh/option.html#series-'+type+'.areaStyle.color'`
-              ],
-              ui: {
-                widget: 'CusColorPicker',
-                widgetConfig: {
-                  showAlpha: true
-                },
-              }
-            },
+            color: QuickColor(),
+            ...createShadowProps(),
+            opacity: QuickFloat(),
             origin: QuickEnums(
               [
                 {
@@ -228,10 +184,122 @@ export function createEchartSeries() {
                 },
               ]
             ),
-            ...createShadowProps(),
-            opacity: QuickFloat(),
           }
-        }
+        },
+        emphasis: {
+          type: 'object',
+          properties: {
+            scale: QuickBoolean(),
+            focus: QuickEnums(
+              [
+                ['none', 'none'],
+                ['self', 'self'],
+                ['series', 'series'],
+              ]
+            ),
+            blurScope: QuickEnums(
+              [
+                ['coordinateSystem', 'coordinateSystem'],
+                ['series', 'series'],
+                ['global', 'global'],
+              ]
+            ),
+            label: {
+              type: 'object',
+              properties: {
+                show: QuickBoolean(),
+                position: QuickOneOrMany(),
+                distance: QuickNumber(),
+                rotate: QuickNumber(),
+                offset: QuickOneOrMany('number'),
+                ...createTextStyleCommonProps(),
+                ...createAlignProps(),
+                ...createBorderProps(),
+                ...createShadowProps(),
+              }
+            },
+            itemStyle: {
+              type: 'object',
+              properties: {
+                ...createItemStylePartProps()
+              }
+            },
+            lineStyle: {
+              type: 'object',
+              properties: {
+                ...createLineStylePartProps(),
+              }
+            },
+            areaStyle: {
+              type: 'object',
+              properties: {
+                color: QuickColor(),
+                ...createShadowProps(),
+                opacity: QuickFloat(),
+              }
+            },
+            endLabel: {
+              type: 'object',
+              properties: {
+                ...createEndLabelPartProps(),
+
+              }
+            },
+          }
+        },
+        smoothMonotone: QuickEnums([
+          ['x'], ['y']
+        ]),
+        sampling: QuickEnums([
+          ['lttb'], ['average'],['max'], ['min'], ['sum'],
+        ]),
+        seriesLayoutBy : QuickEnums([
+          ['column'], ['row']
+        ]),
+        datasetIndex: QuickNumber(),
+        dataGroupId: {
+          type: 'string'
+        },
+        markPoint: {
+          type: 'object',
+          properties: {
+            ...createSymbolProps(),
+            slient: QuickBoolean(),
+            label: {
+              type: 'object',
+              properties: {
+                ...createLabelPartProps(),
+              }
+            },
+            itemStyle: {
+              type: 'object',
+              properties: {
+                ...createItemStylePartProps()
+              }
+            },
+            emphasis: {
+              type: 'object',
+              properties: {
+                label: {
+                  type: 'object',
+                  properties: {
+                    ...createLabelPartProps(),
+                  }
+                },
+                itemStyle: {
+                  type: 'object',
+                  properties: {
+                    ...createItemStylePartProps()
+                  }
+                },
+              }
+            },
+            ...createAnimationProps()
+          }
+        },
+        zlevel: QuickNumber(),
+        slient: QuickBoolean(),
+        ...createAnimationProps(),
       }
     }
   }
