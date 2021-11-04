@@ -78,13 +78,17 @@ export default defineComponent({
       }
       return uuid
     },
-    get_custom_components() {
+    get_custom_components(filter) {
+      let filterFun = function ([comName, comDef]) {
+        return comDef.CUS_EDITOR
+      }
+      if (filter) {
+        filterFun = filter
+      }
       let AppComponents = CustomVueComponent.components
       let arr = []
       arr = arr.concat(
-          Object.entries(AppComponents).filter(([comName, comDef]) => {
-            return comDef.CUS_EDITOR
-          })
+          Object.entries(AppComponents).filter(filterFun)
       )
       let BASE_SUGGEST = arr.map(v => {
         // console.log(v)

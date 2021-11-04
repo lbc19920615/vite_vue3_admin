@@ -6,6 +6,7 @@
   <el-button @click="loadFile">加载</el-button>
 <el-row>
   <el-col :span="10" v-if="state.reload">
+    <v-json-viewer :value="state.config"></v-json-viewer>
     <z-http-com :value="state.cachedValue"
                 :debug="true"
                 :resolve-config="resolveConfig"
@@ -64,7 +65,8 @@ export default {
     let state = reactive({
       inited: false,
       cachedValue: {},
-      reload: false
+      reload: false,
+      config: null
     })
     let widgetFormLocks = true
     let chartId = 'echart_' + ZY.rid(6)
@@ -179,14 +181,6 @@ export default {
       }
     }
 
-    function deepMerge(model, extend) {
-      let o = {}
-      ZY.lodash.each(model, function (item, key) {
-        o[key] = ZY.lodash.merge({}, item, extend[key])
-      })
-      return o
-    }
-
     async function saveModel(v) {
       await ZY_EXT.store.setItem('test-echart', v)
     }
@@ -200,6 +194,7 @@ export default {
         let extend = ZY.JSON5.parse(cachedModel.config)
         let o = ZY.lodash.merge({}, extend, model)
         // let o = deepMerge(model, extend)
+        state.config = o
         render(o)
       } catch (e) {
         console.log(e)
@@ -234,7 +229,7 @@ export default {
     async function loadFile() {
       let obj = await ZY_EXT.fileOpenJSON5()
       if (obj.data) {
-        console.log(obj.data)
+        // console.log(obj.data)
         saveModel(obj.data)
         renderData(obj.data)
       }

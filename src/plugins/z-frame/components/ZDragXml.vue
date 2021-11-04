@@ -75,8 +75,8 @@ test-com {
             :z-uuid="item.uuid"
             v-for="(item, index) in state.layouts"
             :key="item.uuid"
-            :len="2"
-            :ref="el => { if (el) state.layoutRefs[el.layoutUUID] = el }"
+            :len="1"
+            :ref="initRef(item)"
             @dragenter.prevent="onLayoutSelfDragEnter"
             :drag-enter="onLayoutDragEnter"></z-layout-init>
       </el-col>
@@ -87,7 +87,7 @@ test-com {
 </template>
 
 <script>
-import {reactive, h, resolveComponent} from "vue";
+import {reactive, h, resolveComponent, nextTick} from "vue";
 import {getXmlData} from "@/views/about/components/PlumbLayout/xmlData";
 import draggable from 'vuedraggable'
 import JsxRender from "@/components/jsxrender.vue";
@@ -118,6 +118,7 @@ export default {
       tree: [],
       renderDom: [],
       layouts: [],
+      layoutsMap: {},
       layoutRefs: {}
     })
 
@@ -136,7 +137,11 @@ export default {
 
     let app = getApp()
     state.list = [
-      ...app.get_custom_components().map(v => {
+      ...app.get_custom_components(
+          function ([comName, comDef]) {
+            return comDef.ZDragXmlCom
+          }
+      ).map(v => {
         return {
           name: v.value,
           label: v.label
@@ -162,11 +167,15 @@ export default {
       state.disableDrag = true
     }
 
-
-
-
-    let containers = new Map()
     let currentDragEnterContext = null
+    function initLayoutRefs(item) {
+      // console.log(uuid, state.layoutsMap)
+      let context = state.layoutsMap[item.uuid]
+      if (context && context.el) {
+        let com = CustomVueComponent.resolve(item.dataset.name)
+        context.el.initGrid(com)
+      }
+    }
 
     function onDropEnd(e) {
       let playground = document.getElementById('playground')
@@ -183,8 +192,14 @@ export default {
 
       if (playground.isEqualNode(currentToTarget)) {
         // console.log('playground')
-        state.layouts.push({
-          uuid: ZY.rid()
+        let uuid = ZY.rid()
+        let item = {
+          uuid,
+          dataset
+        }
+        state.layouts.push(item)
+        nextTick(() => {
+          initLayoutRefs(item)
         })
         return;
       }
@@ -195,7 +210,7 @@ export default {
           return v.getAttribute('z-uuid') === uuid
         })
         let newUUID = ZY.rid()
-        console.log(uuid, index, newUUID)
+        // console.log(uuid, index, newUUID)
         if (index > -1) {
           let newIndex = index + 1
           state.layouts.splice(newIndex, 0, {
@@ -258,7 +273,7 @@ export default {
         if (trueDom.hasAttribute('z-layout-uuid')) {
           let layout_uuid = trueDom.getAttribute('z-layout-uuid')
           let context = state.layoutRefs[layout_uuid]
-          console.log(layout_uuid, context)
+          // console.log(layout_uuid, context)
           if (context) {
           }
         }
@@ -352,12 +367,25 @@ export default {
       // console.log(e.target)
     }
 
+    function initRef(item) {
+      // console.log('item', item)
+      return function (el) {
+        if (el) {
+          state.layoutsMap[item.uuid] = {
+            el
+          }
+          state.layoutRefs[el.layoutUUID] = el
+        }
+      }
+    }
+
     return {
       list1ItemCls,
       state,
       getRef,
       onDropStart,
       refMan,
+      initRef,
       onDragMove,
       onLayoutSelfDragEnter,
       onLayoutDragEnter,

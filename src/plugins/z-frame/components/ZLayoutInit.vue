@@ -18,7 +18,7 @@
 
 <template>
 <el-row class="z-drag-layout" :z-layout-uuid="layoutUUID" :ref="getRef" layout-dom="layout-dom">
-  <template v-for="(item, index) in len">
+  <template v-for="(item, index) in state.len">
     <el-col class="z-drag-layout__item"
             @dragleave="onDragLeave"
             @dragenter.prevent="onDragEnter(index, $event)">
@@ -26,6 +26,7 @@
     </el-col>
   </template>
 </el-row>
+<!--<el-button @click="appendColumn">appendColumn</el-button>-->
 </template>
 
 <script>
@@ -74,7 +75,8 @@ export default {
         [],
         [],
         [],
-      ]
+      ],
+      len: props.len
     })
 
     let domRef = null
@@ -82,8 +84,14 @@ export default {
       domRef = v
     }
 
+    /**
+     *
+     * @param type {number}
+     * @returns {(function(*=, *=): void)|*}
+     */
     function buildAppend(type) {
       return function append(com, trueDom) {
+        // console.log(trueDom)
         let child = state.doms[type]
         let def = state.defs[type]
         let itemUUID =  ZY.rid()
@@ -147,6 +155,12 @@ export default {
       }
     }
 
+    function initGrid(com) {
+      console.log('initGrid',com)
+      let append = buildAppend(0)
+      append(com)
+    }
+
     function onDragLeave(e) {
       e.target.removeAttribute('dragenter')
     }
@@ -170,11 +184,17 @@ export default {
       }
     }
 
+    function appendColumn() {
+      state.len = state.len + 1
+    }
+
     return {
       state,
       layoutUUID,
       onDragEnter,
+      appendColumn,
       onDragLeave,
+      initGrid,
       findCom,
       getRef
     }
