@@ -9,6 +9,10 @@ import {
 export function createEchartYAxis() {
   return {
     type: 'object',
+    wrap: 'xy-tab-content',
+    wrapAttrs: [
+      ['label','yAxis']
+    ],
     properties: {
       name: {
         type: 'string',

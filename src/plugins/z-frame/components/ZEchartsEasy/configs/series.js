@@ -29,6 +29,10 @@ export function createEchartSeries() {
     ui: {
       label: '系列',
     },
+    wrap: 'xy-tab-content',
+    wrapAttrs: [
+      ['label','series']
+    ],
     items: {
       type: 'object',
       properties: {

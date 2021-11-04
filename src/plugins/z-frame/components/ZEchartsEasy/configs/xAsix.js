@@ -13,6 +13,10 @@ export function createEchartXAxis() {
     ui: {
       label: 'X轴'
     },
+    wrap: 'xy-tab-content',
+    wrapAttrs: [
+      ['label','xAxis']
+    ],
     properties: {
       type: deepMerge(
         QuickEnums(

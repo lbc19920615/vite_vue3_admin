@@ -155,6 +155,7 @@ export default {
             ['label-width', '150px']
           ],
         },
+        tag: 'xy-tab',
         properties,
       }
       // console.log('sdsdsdsds')

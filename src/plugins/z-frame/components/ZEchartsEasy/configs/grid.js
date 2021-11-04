@@ -2,8 +2,12 @@ export function createEchartGrid() {
   return {
     type: 'object',
     ui: {
-      label: 'grid'
+      label: 'grid',
     },
+    wrap: 'xy-tab-content',
+    wrapAttrs: [
+      ['label','grid']
+    ],
     properties: {
       left: {
         type: 'string',

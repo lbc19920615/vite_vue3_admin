@@ -11,6 +11,10 @@ export function createEchartTooltip() {
     ui: {
       label: 'tooltip'
     },
+    wrap: 'xy-tab-content',
+    wrapAttrs: [
+      ['label','tooltip']
+    ],
     properties: {
       show: QuickBoolean(),
       trigger: {

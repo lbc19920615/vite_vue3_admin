@@ -11,6 +11,10 @@ export function createEchartLegend() {
     ui: {
       label: 'legend'
     },
+    wrap: 'xy-tab-content',
+    wrapAttrs: [
+      ['label','legend']
+    ],
     properties: {
       orient: {
         type: 'string',

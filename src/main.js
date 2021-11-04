@@ -75,6 +75,7 @@ import locale from 'element-plus/lib/locale/lang/zh-cn'
 
 import 'xy-ui/components/xy-text';
 import 'xy-ui/components/xy-tips';
+import 'xy-ui/components/xy-tab';
 import '@alenaksu/json-viewer';
 
 import '@/components/WebElements/index'

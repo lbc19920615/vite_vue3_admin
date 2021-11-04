@@ -10,6 +10,10 @@ export function createEchartTitle() {
     ui: {
       label: 'title'
     },
+    wrap: 'xy-tab-content',
+    wrapAttrs: [
+      ['label','title']
+    ],
     properties: {
       text: {
         type: 'string',

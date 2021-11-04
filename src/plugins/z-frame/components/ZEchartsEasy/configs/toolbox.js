@@ -4,6 +4,10 @@ export function createEchartToolbox() {
     ui: {
       label: 'toolbox'
     },
+    wrap: 'xy-tab-content',
+    wrapAttrs: [
+      ['label','toolbox']
+    ],
     properties: {
       feature: {
         type: 'object',
