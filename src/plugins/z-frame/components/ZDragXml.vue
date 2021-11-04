@@ -147,12 +147,12 @@ export default {
           label: v.label
         }
       }),
-      {
-        name: 'el-card'
-      },
-      {
-        name: 'el-alert'
-      }
+      // {
+      //   name: 'el-card'
+      // },
+      // {
+      //   name: 'el-alert'
+      // }
     ]
 
     function list1ItemCls(element) {
@@ -177,6 +177,18 @@ export default {
       }
     }
 
+    /**
+     * 创建layout item
+     */
+    function createLayoutItem(dataset) {
+      let uuid = ZY.rid()
+      let item = {
+        uuid,
+        dataset
+      }
+      return item
+    }
+
     function onDropEnd(e) {
       let playground = document.getElementById('playground')
       state.isDragging = false
@@ -192,11 +204,8 @@ export default {
 
       if (playground.isEqualNode(currentToTarget)) {
         // console.log('playground')
-        let uuid = ZY.rid()
-        let item = {
-          uuid,
-          dataset
-        }
+
+        let item = createLayoutItem(dataset)
         state.layouts.push(item)
         nextTick(() => {
           initLayoutRefs(item)
@@ -209,12 +218,14 @@ export default {
         let index = Array.of(...playground.children).findIndex(v => {
           return v.getAttribute('z-uuid') === uuid
         })
-        let newUUID = ZY.rid()
+        // let newUUID = ZY.rid()
+        let item = createLayoutItem(dataset)
         // console.log(uuid, index, newUUID)
         if (index > -1) {
           let newIndex = index + 1
-          state.layouts.splice(newIndex, 0, {
-            uuid: newUUID
+          state.layouts.splice(newIndex, 0, item)
+          nextTick(() => {
+            initLayoutRefs(item)
           })
         }
         return;
