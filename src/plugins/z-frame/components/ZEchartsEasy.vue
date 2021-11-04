@@ -128,7 +128,6 @@ export default {
 
     async function resolveConfig() {
       let properties = {
-
         series: createEchartSeries(),
         xAxis: createEchartXAxis(),
         yAxis: createEchartYAxis(),
@@ -138,26 +137,27 @@ export default {
         grid: createEchartGrid(),
         toolbox: createEchartToolbox(),
         polar: createEchartPolar(),
-        config: {
-          type: 'string',
-          ui: {
-            widgetConfig: {
-              type: 'textarea',
-              rows: 3
-            }
-          }
-        },
+        // config: {
+        //   type: 'string',
+        //   ui: {
+        //     widgetConfig: {
+        //       type: 'textarea',
+        //       rows: 3
+        //     }
+        //   }
+        // },
       }
       let computed = {}
       let formDef = {
         type: 'object',
         ui: {
           attrs: [
-            ['label-width', '120px']
+            ['label-width', '150px']
           ],
         },
         properties,
       }
+      // console.log('sdsdsdsds')
       return {
         default: createCusWidgetEditorConfig(formDef,
             computed

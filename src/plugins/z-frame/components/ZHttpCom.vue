@@ -154,21 +154,26 @@ export default {
           default: config
         }
       }
-      page.commonLoadStep(
-          loaded(),
-          'editor_step',
-          {
-            async onMounted(config, {setPartModel}) {
-              let form2Config = getForm2Config(config)
+      try {
+        let promisedConfig =  loaded()
+        page.commonLoadStep(
+            promisedConfig,
+            'editor_step',
+            {
+              async onMounted(config, {setPartModel}) {
+                let form2Config = getForm2Config(config)
 
-              if (props.value) {
-                setPartModel(config.name, 'form2', props.value)
+                if (props.value) {
+                  setPartModel(config.name, 'form2', props.value)
+                }
+                locks = false
+                // console.log('eventModel', config, page.defMap)
               }
-              locks = false
-              // console.log('eventModel', config, page.defMap)
             }
-          }
-      )
+        )
+      } catch (e) {
+        console.error(e)
+      }
     })
 
     function getZWindowUrl(funArr, scope) {

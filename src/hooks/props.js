@@ -107,3 +107,18 @@ export function QuickOneOrMany(type = 'string') {
   }
 }
 
+export function QuickFloat(precision = 2) {
+  return {
+    type: 'number',
+    ui: {
+      widget: 'CusInputNumber',
+      widgetConfig: {
+        precision: precision
+      }
+    },
+    rules: {
+      type: 'any'
+    }
+  }
+}
+

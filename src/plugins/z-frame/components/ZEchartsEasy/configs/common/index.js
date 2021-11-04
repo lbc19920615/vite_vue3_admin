@@ -10,6 +10,29 @@ export function createSuggestSelectWidget(enums = []) {
   }
 }
 
+function getExt1Name(prefix = '', v) {
+  if (prefix) {
+    return prefix + ZY.lodash.upperFirst('v')
+  }
+  return v
+}
+
+export function createBorderExt1Props(prefix = '') {
+  return {
+    [getExt1Name('cap')]: QuickEnums([
+      ['butt', 'butt'],
+      ['round', 'round'],
+      ['square', 'square'],
+    ]),
+    [getExt1Name('join')]: QuickEnums([
+      ['bevel', 'bevel'],
+      ['round', 'round'],
+      ['miter', 'miter'],
+    ]),
+    [getExt1Name('miterLimit')]: QuickNumber()
+  }
+}
+
 export function createBorderProps() {
   return {
     borderColor: {
