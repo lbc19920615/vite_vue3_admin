@@ -26,8 +26,11 @@ import deepMerge from 'deepmerge'
 export function createEchartSeries() {
   return {
     type: 'array',
+    con_tag: 'z-jump-scroll',
     ui: {
       label: '系列',
+      conAttrs: [
+      ]
     },
     wrap: 'xy-tab-content',
     wrapAttrs: [

@@ -23,6 +23,11 @@
       <template #prop_label_beforeend="bindData">
 <!--        {{bindData.scope}}-->
       </template>
+      <template #prop_afterbegin="bindData">
+<!--        {{pathArrToID(bindData.scope.pathArr)}} -->
+        <z-jump-scroll-holder style="height: 1px" :binds="bindData.scope"
+                              :id="pathArrToID(bindData.scope.pathArr)">&nbsp;</z-jump-scroll-holder>
+      </template>
     </z-http-com>
   </el-col>
   <el-col :span="14">
@@ -235,6 +240,10 @@ export default {
       }
     }
 
+    function pathArrToID(pathArr) {
+      return 'ZECHART__' + pathArr.join('__')
+    }
+
     return {
       resolveConfig,
       state,
@@ -245,6 +254,7 @@ export default {
       loadFile,
       exportFile,
       desObj,
+      pathArrToID,
       onModelChange,
     }
   }

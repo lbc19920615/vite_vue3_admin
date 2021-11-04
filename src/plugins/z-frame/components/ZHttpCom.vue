@@ -17,7 +17,9 @@
          <slot name="z_http_com-object_beforebegin" v-bind="{scope, page}"></slot>
         </div>
       </template>
-
+      <template #prop_afterbegin="scope">
+        <slot name="prop_afterbegin" v-bind="{cached: store.model.cached, scope}"></slot>
+      </template>
       <template #prop_label_beforeend="scope">
         <template v-if="scope.config">
           <z-window v-if="scope.config.noticeIframe"

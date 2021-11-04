@@ -5,6 +5,8 @@ import SimpleList from "@/plugins/z-frame/components/SimpleList.vue";
 import ZCellItem from "@/plugins/z-frame/components/ZCellItem.vue";
 import ZIframe from "@/plugins/z-frame/components/ZIframe.vue";
 import ZText from "@/plugins/z-frame/components/ZText.vue";
+import ZJumpScroll from "@/plugins/z-frame/components/ZJumpScroll.vue";
+import ZJumpScrollHolder from "@/plugins/z-frame/components/ZJumpScrollHolder.vue";
 import ZWindow from "@/plugins/z-frame/components/ZWindow.vue";
 import ZProps from "@/plugins/z-frame/components/ZProps.vue";
 
@@ -16,6 +18,8 @@ export function install(app) {
   CustomVueComponent.register(ZProps)
   CustomVueComponent.register(ZText)
   CustomVueComponent.register(ZWindow)
+  CustomVueComponent.register(ZJumpScroll)
+  CustomVueComponent.register(ZJumpScrollHolder)
   CustomVueComponent.register(ZCellItem)
   CustomVueComponent.register(FormsEventSelect)
   CustomVueComponent.register(CusUpload)
