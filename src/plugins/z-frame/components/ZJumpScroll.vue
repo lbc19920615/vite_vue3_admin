@@ -1,6 +1,12 @@
+<style>
+.z-jump-scroll {
+  overflow: hidden;
+}
+</style>
+
 <template>
   <div class="z-jump-scroll">
-    <div>
+    <div style="height: 60px;">
 <!--      {{state.selected}}-->
 <!--      {{cmap}}-->
       <el-select v-model="state.selected" filterable @change="onSelectedChange">
