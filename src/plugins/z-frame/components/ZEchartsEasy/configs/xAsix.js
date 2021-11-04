@@ -11,6 +11,7 @@ import {createDataProps} from "@/plugins/z-frame/components/ZEchartsEasy/configs
 export function createEchartXAxis() {
   return {
     type: 'object',
+    tag: 'z-jump-scroll',
     ui: {
       label: 'X轴'
     },

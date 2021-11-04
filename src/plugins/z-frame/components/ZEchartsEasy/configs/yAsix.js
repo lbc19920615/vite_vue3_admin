@@ -10,6 +10,7 @@ import {createDataProps} from "@/plugins/z-frame/components/ZEchartsEasy/configs
 export function createEchartYAxis() {
   return {
     type: 'object',
+    tag: 'z-jump-scroll',
     wrap: 'xy-tab-content',
     wrapAttrs: [
       ['label','yAxis']
