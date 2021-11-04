@@ -5,6 +5,7 @@ import {
   createBorderProps,
   createFontCommonProps, createShadowProps, createSizeProps, createTextBorderProps, createTextShadowProps
 } from "@/plugins/z-frame/components/ZEchartsEasy/configs/common";
+import {createDataProps} from "@/plugins/z-frame/components/ZEchartsEasy/configs/common/data";
 
 export function createEchartYAxis() {
   return {
@@ -114,7 +115,7 @@ export function createEchartYAxis() {
       inverse: QuickBoolean(),
       boundaryGap: QuickBoolean(),
       min: QuickTextarea(),
-      max:  QuickTextarea(),
+      max: QuickTextarea(),
       scale: QuickBoolean(),
       splitNumber: QuickNumber(),
       minInterval: QuickNumber(),
@@ -145,41 +146,7 @@ export function createEchartYAxis() {
         }
       },
       zlevel: QuickNumber(),
-      data: {
-        type: 'array',
-        tag: 'my-vue-tab',
-        con_tag: 'my-vue-tab-pane',
-        ui: {
-          label: '数据',
-          attrs: [
-            [':height', '300'],
-          ],
-          class: [
-            'a-space-mb-10'
-          ],
-          conAttrs: [
-            {
-              prefixValue: '"数据"+',
-              handler: ['c', 'return [":name", c.indexKey]']
-            }
-          ],
-          conClass: [
-          ]
-        },
-        items: {
-          type: 'object',
-          properties: {
-            value: {
-              type: 'string',
-              ui: {
-                form_item: {
-                  ['label-width']: '90px'
-                },
-              }
-            },
-          }
-        }
-      }
+      data: createDataProps(),
     }
   }
 }

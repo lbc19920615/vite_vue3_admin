@@ -6,6 +6,7 @@ import {
 } from "@/plugins/z-frame/components/ZEchartsEasy/configs/common";
 import {QuickBoolean, QuickColor, QuickEnums, QuickNumber, QuickTextarea} from "@/hooks/props";
 import deepMerge from 'deepmerge'
+import {createDataProps} from "@/plugins/z-frame/components/ZEchartsEasy/configs/common/data";
 
 export function createEchartXAxis() {
   return {
@@ -159,42 +160,7 @@ export function createEchartXAxis() {
       },
       zlevel: QuickNumber(),
       boundaryGap: QuickBoolean(),
-      data: {
-        type: 'array',
-        // tag: 'my-vue-tab',
-        // con_tag: 'my-vue-tab-pane',
-        tag: 'el-scrollbar',
-        ui: {
-          label: '数据',
-          attrs: [
-            [':height', '300'],
-          ],
-          class: [
-            'a-space-mb-10'
-          ],
-          conAttrs: [
-            {
-              prefixValue: '"数据"+',
-              handler: ['c', 'return [":name", c.indexKey]']
-            }
-          ],
-          conClass: [
-          ]
-        },
-        items: {
-          type: 'object',
-          properties: {
-            value: {
-              type: 'string',
-              ui: {
-                form_item: {
-                  ['label-width']: '90px'
-                },
-              }
-            },
-          }
-        }
-      }
+      data: createDataProps(),
     }
   }
 }
