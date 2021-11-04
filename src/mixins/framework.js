@@ -358,6 +358,7 @@ export let EXTEND_FRAME_EVENT_NAMES = {
 
 export function extendCommonArrEventHandler(page) {
   let EVENT_NAMES = EXTEND_FRAME_EVENT_NAMES
+  let lodash = ZY.lodash
   let _bindFun = null
   function onChange(v) {
     _bindFun = v
@@ -375,14 +376,37 @@ export function extendCommonArrEventHandler(page) {
       }
     },
     [EVENT_NAMES.OBJ_INIT_COMMON](e) {
-      let { parts, partName, pathArr } = e
+      let { parts, partName, pathArr, model } = e
       let s_path = ''
       if (Array.isArray(pathArr)) {
         s_path = ZY.getObjPathFromPathArr(pathArr)
       }
       // console.log(s_path, e)
+      let part = parts[partName]
       if (s_path) {
-        parts[partName].setModelByPath(s_path, {})
+        part.setModelByPath(s_path, {})
+      } else {
+        let model = part.getModel()
+        // let obj =  part.fromDef()
+        lodash.each(model, function (item, key) {
+          let r = model[key]
+          if (Array.isArray(r)) {
+            r.splice(0, r.length )
+          }
+          else if (typeof r === 'object') {
+            console.log('r', r)
+            if (r) {
+              let keys = Object.keys(r)
+              keys.forEach(key => {
+                Reflect.deleteProperty(r, key)
+              })
+            }
+          } else {
+            r = undefined
+          }
+        })
+
+        console.log(model)
       }
     },
     [EVENT_NAMES.ARR_APPEND_COMMON](e) {
