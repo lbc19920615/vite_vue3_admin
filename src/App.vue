@@ -100,7 +100,8 @@ export default defineComponent({
         return {
           label: label,
           value: value,
-          labelTip: 'CUS_EDITOR'
+          labelTip: 'CUS_EDITOR',
+          origin: v[1]
         }
       })
       return BASE_SUGGEST

@@ -1,5 +1,5 @@
 <script lang="jsx">
-import {defineComponent, h, reactive, watch} from "vue";
+import {defineComponent, getCurrentInstance, Fragment, nextTick, reactive, watch} from "vue";
 
 // class ChildDom {
 //   constructor() {
@@ -19,8 +19,12 @@ import {defineComponent, h, reactive, watch} from "vue";
 //
 // }
 
+
 export default defineComponent( {
   name: 'RenderDom',
+  emits: [
+    'loaded'
+  ],
   props: {
     // defs: null,
     // attrs: {
@@ -42,12 +46,15 @@ export default defineComponent( {
     render: null
   },
   setup(props, ctx) {
+    let instanse = getCurrentInstance()
     // let root = new ChildDom()
     let state = reactive({
       child: []
     })
 
     // console.log(props.render)
+
+
 
 
     watch(props.render, (newVal) => {
@@ -60,6 +67,9 @@ export default defineComponent( {
       // root.push( newVal)
       // root.children = newVal
       state.child = newVal
+      nextTick(() => {
+        ctx.emit('loaded')
+      })
     })
 
     return () => {

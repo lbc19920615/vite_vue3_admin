@@ -55,8 +55,9 @@ test-com {
                       :class="list1ItemCls(element)"
                       :span="12"
                       :data-name="element.name"
+                      :data-column-max="element.columnMax"
               ><div
-                  class="g-list-group-item__element">{{element.label ? element.label : element.name}}</div></el-col>
+                  class="g-list-group-item__element">{{element}}{{element.label ? element.label : element.name}}</div></el-col>
             </template>
           </draggable>
         </el-scrollbar>
@@ -75,10 +76,14 @@ test-com {
             :z-uuid="item.uuid"
             v-for="(item, index) in state.layouts"
             :key="item.uuid"
-            :len="1"
+            :column="1"
             :ref="initRef(item)"
+            :column-max="item.columnMax"
             @dragenter.prevent="onLayoutSelfDragEnter"
-            :drag-enter="onLayoutDragEnter"></z-layout-init>
+            :drag-enter="onLayoutDragEnter"
+            @clear-index="onClearIndex"
+            @column-max-err="onClearIndex"
+        ></z-layout-init>
       </el-col>
     </el-row>
     <div id="test1"></div>
@@ -131,9 +136,19 @@ export default {
       return document.elementFromPoint(x, y)
     }
 
-    // state.list = getXmlData().filter(v => {
-    //   return v.name.startsWith('el-')
-    // })
+
+    function clearTool(id = 'test1') {
+      return function (clone) {
+        let tool = document.getElementById(id)
+        tool.innerHTML = ''
+        if (clone) {
+          tool.appendChild(clone)
+        }
+      }
+    }
+
+    let test1Tool = clearTool()
+    let test2Tool = clearTool('test2')
 
     let app = getApp()
     state.list = [
@@ -142,10 +157,18 @@ export default {
             return comDef.ZDragXmlCom
           }
       ).map(v => {
-        return {
-          name: v.value,
-          label: v.label
+        // console.log(v)
+        let extDataset = {}
+        if (v.origin && v.origin.DRAG_DATASET) {
+          extDataset = v.origin.DRAG_DATASET()
         }
+        let ret = {
+          name: v.value,
+          label: v.label,
+          ...extDataset
+        }
+        // console.log(ret)
+        return ret
       }),
       // {
       //   name: 'el-card'
@@ -182,10 +205,16 @@ export default {
      */
     function createLayoutItem(dataset) {
       let uuid = ZY.rid()
+      let columnMax = parseFloat(dataset.columnMax)
+      if (!Number.isNaN(columnMax)) {
+        dataset.columnMax = columnMax
+      }
       let item = {
         uuid,
-        dataset
+        columnMax,
+        dataset,
       }
+      console.log('createLayoutItem', columnMax,item)
       return item
     }
 
@@ -208,6 +237,7 @@ export default {
         let item = createLayoutItem(dataset)
         state.layouts.push(item)
         nextTick(() => {
+          test2Tool()
           initLayoutRefs(item)
         })
         return;
@@ -225,6 +255,7 @@ export default {
           let newIndex = index + 1
           state.layouts.splice(newIndex, 0, item)
           nextTick(() => {
+            test2Tool()
             initLayoutRefs(item)
           })
         }
@@ -265,18 +296,6 @@ export default {
       return null
     }
 
-    function clearTool(id = 'test1') {
-      return function (clone) {
-        let tool = document.getElementById(id)
-        tool.innerHTML = ''
-        if (clone) {
-          tool.appendChild(clone)
-        }
-      }
-    }
-
-    let test1Tool = clearTool()
-    let test2Tool = clearTool('test2')
 
     function createInspect(trueDom, type) {
       function handleButtonClick() {
@@ -347,11 +366,11 @@ export default {
     }
 
     function onMouseMove(e) {
-      inspcetDom(e,'rect')
-      inspcetDom(e,'rect', {
-        actionFun: test2Tool,
-        findDom: getLayoutRenderDom
-      })
+      // inspcetDom(e,'rect')
+      // inspcetDom(e,'rect', {
+      //   actionFun: test2Tool,
+      //   findDom: getLayoutRenderDom
+      // })
       // clearTool()
     }
 
@@ -367,11 +386,6 @@ export default {
     function onLayoutDragEnter(e) {
       // console.log('onLayoutDragEnter', e)
       currentDragEnterContext  = e
-      // if (e.domRef && e.domRef.$el)  {
-      //   console.log(e.domRef.$el)
-      //   let clone = createInspect(e.domRef.$el, 'rect')
-      //   test2Tool(clone)
-      // }
     }
 
     function onLayoutSelfDragEnter(e) {
@@ -390,6 +404,10 @@ export default {
       }
     }
 
+    function onClearIndex() {
+      test1Tool()
+    }
+
     return {
       list1ItemCls,
       state,
@@ -400,6 +418,7 @@ export default {
       onDragMove,
       onLayoutSelfDragEnter,
       onLayoutDragEnter,
+      onClearIndex,
       onDropEnd,
       onMouseMove
     }

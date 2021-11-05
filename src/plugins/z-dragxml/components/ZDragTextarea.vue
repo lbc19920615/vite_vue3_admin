@@ -1,6 +1,6 @@
 <template>
   <div class="z-dragxml-com">
-    <z-cell-item label="sdsdsd">
+    <z-cell-item :label="id">
       <cus-input :ui="ui"></cus-input>
     </z-cell-item>
   </div>
@@ -17,8 +17,14 @@ export default {
   mixins: [
       ZDragCommonMixin
   ],
+  DRAG_DATASET() {
+    return {
+      columnMax: 12
+    }
+  },
   data() {
     return {
+      id: ZY.rid(6),
       ui: {
         widgetConfig: {
           type: 'textarea'
