@@ -57,7 +57,7 @@ test-com {
                       :data-name="element.name"
                       :data-column-max="element.columnMax"
               ><div
-                  class="g-list-group-item__element">{{element}}{{element.label ? element.label : element.name}}</div></el-col>
+                  class="g-list-group-item__element" v-html="element.label"></div></el-col>
             </template>
           </draggable>
         </el-scrollbar>
@@ -74,6 +74,7 @@ test-com {
 <!--        <h3>OTH</h3>-->
         <z-layout-init
             :z-uuid="item.uuid"
+            :uuid="item.uuid"
             v-for="(item, index) in state.layouts"
             :key="item.uuid"
             :column="1"
@@ -99,7 +100,10 @@ import JsxRender from "@/components/jsxrender.vue";
 import {useReloadMan} from "@/views/home/hooks";
 import RenderDom from "@/components/renderDom.vue";
 import ZLayoutInit from "@/plugins/z-frame/components/ZLayoutInit.vue";
-import {DATA_LAYOUT_ITEM_UUID_KEY, DATA_LAYOUT_UUID_KEY} from "@/vars";
+import {DATA_LAYOUT_ITEM_UUID_KEY, DATA_LAYOUT_UUID_KEY, DATA_UUID_KEY} from "@/vars";
+import Sortable from 'sortablejs';
+
+
 
 export default {
   name: 'ZDragXml',
@@ -110,7 +114,8 @@ export default {
     draggable,
   },
   setup() {
-    let [refMan, setRefMan] = useReloadMan({timeout: 30})
+    const Z_UUID_KEY = 'z-uuid'
+    let JSON5 = ZY.JSON5
     let originalEvent = {
     }
     let currentToTarget = null
@@ -124,7 +129,8 @@ export default {
       renderDom: [],
       layouts: [],
       layoutsMap: {},
-      layoutRefs: {}
+      layoutRefs: {},
+      uuids: []
     })
 
     let domRef = null
@@ -162,9 +168,13 @@ export default {
         if (v.origin && v.origin.DRAG_DATASET) {
           extDataset = v.origin.DRAG_DATASET()
         }
+        let label = v.label ?? ''
+        if (v.origin && v.origin.DRAG_LABEL_XML) {
+          label = v.origin.DRAG_LABEL_XML()
+        }
         let ret = {
           name: v.value,
-          label: v.label,
+          label: label,
           ...extDataset
         }
         // console.log(ret)
@@ -214,12 +224,65 @@ export default {
         columnMax,
         dataset,
       }
-      console.log('createLayoutItem', columnMax,item)
+      // console.log('createLayoutItem', columnMax,item)
       return item
     }
 
+    function buildUUIDS() {
+      let el = getPlaygroundDOM()
+      if (el) {
+        let zs = Array.of(...el.children)
+        let uuids = zs.map(dom => {
+          return dom.getAttribute(Z_UUID_KEY)
+        })
+        // console.log(uuids)
+        state.uuids = uuids
+        return uuids
+      }
+      return []
+    }
+
+    function rebuildSortable() {
+      let el = getPlaygroundDOM()
+      let sortable = new Sortable(el, {
+        group: "drag-level1",
+        onEnd: function (/**Event*/evt) {
+          test1Tool()
+          test2Tool()
+          let uuids = buildUUIDS()
+          // console.log(uuids, state.layouts)
+
+          let dlayouts = JSON5.parse(JSON5.stringify( state.layouts))
+
+          let layouts = []
+          uuids.forEach(uuid => {
+            let index = dlayouts.findIndex(layout => {
+              return layout.uuid === uuid
+            })
+            if (index > -1) {
+              layouts.push(dlayouts[index])
+            }
+            // console.log(uuid, index)
+          })
+          state.layouts = layouts
+          // console.log(layouts.map(v => v.uuid))
+        }
+      })
+    }
+
+    function getPlaygroundDOM() {
+      return  document.getElementById('playground')
+    }
+
+    function onDropEndItemsChanged(item) {
+      test2Tool()
+      initLayoutRefs(item)
+      rebuildSortable()
+      buildUUIDS()
+    }
+
     function onDropEnd(e) {
-      let playground = document.getElementById('playground')
+      let playground = getPlaygroundDOM()
       state.isDragging = false
       originalEvent = e.originalEvent
       // console.log('onDropEnd', originalEvent)
@@ -232,22 +295,23 @@ export default {
       }
 
       if (playground.isEqualNode(currentToTarget)) {
-        // console.log('playground')
-
         let item = createLayoutItem(dataset)
         state.layouts.push(item)
         nextTick(() => {
-          test2Tool()
-          initLayoutRefs(item)
+          onDropEndItemsChanged(item)
         })
         return;
       }
 
-      if (currentToTarget.hasAttribute('z-uuid')) {
-        let uuid = currentToTarget.getAttribute('z-uuid')
-        let index = Array.of(...playground.children).findIndex(v => {
-          return v.getAttribute('z-uuid') === uuid
-        })
+
+      if (currentToTarget.hasAttribute(Z_UUID_KEY)) {
+        let uuid = currentToTarget.getAttribute(Z_UUID_KEY)
+        // let index = Array.of(...playground.children).findIndex(v => {
+        //   return v.getAttribute(Z_UUID_KEY) === uuid
+        // })
+
+        let index = state.uuids.findIndex((v) => v === uuid)
+        // console.log(index, uuid)
         // let newUUID = ZY.rid()
         let item = createLayoutItem(dataset)
         // console.log(uuid, index, newUUID)
@@ -255,8 +319,7 @@ export default {
           let newIndex = index + 1
           state.layouts.splice(newIndex, 0, item)
           nextTick(() => {
-            test2Tool()
-            initLayoutRefs(item)
+            onDropEndItemsChanged(item)
           })
         }
         return;
@@ -351,7 +414,7 @@ export default {
     function inspcetDom(e, type = 'line', {
       actionFun = test1Tool, findDom = getNestRenderDom
     } = {}) {
-      let playground = document.getElementById('playground')
+      let playground = getPlaygroundDOM()
       currentToMove = fromPoint(e.pageX, e.pageY)
       let trueDom = null
       if (currentToMove && playground.contains(currentToMove)) {
@@ -413,7 +476,6 @@ export default {
       state,
       getRef,
       onDropStart,
-      refMan,
       initRef,
       onDragMove,
       onLayoutSelfDragEnter,

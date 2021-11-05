@@ -43,10 +43,16 @@ export default defineComponent( {
     //     return {}
     //   }
     // },
+    uuids: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
     render: null
   },
   setup(props, ctx) {
-    let instanse = getCurrentInstance()
+    // let instanse = getCurrentInstance()
     // let root = new ChildDom()
     let state = reactive({
       child: []
@@ -54,11 +60,32 @@ export default defineComponent( {
 
     // console.log(props.render)
 
+    function reload(newVal, cb) {
+      // console.log('props change', newVal.map(v => v.props.class), state.child.map(v => v.props.class))
+      state.child = newVal
+      nextTick(() => {
+        if (cb) {
+          cb()
+        }
+      })
+    }
 
+    function load() {
+      let ret = []
+      let arr = ZY.JSON5.parse(props.uuids.str)
+      let uuids = arr.map(v => {
+        return v
+      })
+      let render = props.render
+      uuids.map(uuid => {
+        ret.push(render[uuid])
+      })
+      // console.log(render, uuids)
+      state.child = ret
+    }
 
-
-    watch(props.render, (newVal) => {
-      // console.log('props change', newVal)
+    watch(props.uuids, (newVal) => {
+      console.log('props change', newVal)
       // root.children =  []
       // props.render.forEach((renderItem) => {
       //   // console.log(renderItem)
@@ -66,9 +93,12 @@ export default defineComponent( {
       // })
       // root.push( newVal)
       // root.children = newVal
-      state.child = newVal
+      // state.child = newVal
+      load()
       nextTick(() => {
-        ctx.emit('loaded')
+        ctx.emit('loaded', {
+          reload
+        })
       })
     })
 

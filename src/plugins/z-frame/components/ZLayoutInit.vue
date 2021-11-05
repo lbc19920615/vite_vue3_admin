@@ -7,9 +7,9 @@
   min-height: 10px;
   flex: 1;
   border: 1px solid #eee;
-  &[dragenter] {
-    border-color: #0d84ff;
-  }
+  //&[dragenter] {
+  //  border-color: #0d84ff;
+  //}
   //&:hover {
   //  border: 1px solid #eee;
   //}
@@ -45,7 +45,9 @@
             @dragenter.prevent="onDragEnter(index, $event)"
             :id="getColumnID(index)"
     >
-      <render-dom :render="state.doms[index]" @loaded="onLoaded(index, $event)" ></render-dom>
+<!--      {{state.uuids[index]}}-->
+      <render-dom :render="state.doms[index]" :uuids="state.uuids[index]"
+                  @loaded="onLoaded(index, $event)" ></render-dom>
     </el-col>
   </template>
 </el-row>
@@ -55,8 +57,8 @@
 <script>
 import RenderDom from "@/components/renderDom.vue";
 import draggable from 'vuedraggable'
-import {computed, h, nextTick, reactive} from "vue";
-import {DATA_UUID_KEY, DATA_LAYOUT_UUID_KEY, DATA_LAYOUT_ITEM_UUID_KEY} from "@/vars";
+import {h, nextTick, reactive} from "vue";
+import {DATA_LAYOUT_ITEM_UUID_KEY, DATA_LAYOUT_UUID_KEY, DATA_UUID_KEY} from "@/vars";
 import Sortable from 'sortablejs';
 
 export default {
@@ -75,12 +77,15 @@ export default {
     columnMax: {
       type: Number,
       default: 1
-    }
+    },
+    uuid: String
   },
   setup(props, ctx) {
     const RENDER_DOM_CLS = 'render-dom-item'
     const DRAGENTER_ATTR = 'dragenter'
-    console.log(props.columnMax)
+
+    let JSON5 = ZY.JSON5
+    // console.log(props.columnMax)
 
     function initData() {
       let ret = []
@@ -90,39 +95,157 @@ export default {
       return ret
     }
 
+    function initMaps() {
+      let ret = []
+      for (let i = 0; i < props.columnLen; i++) {
+        ret.push({})
+      }
+      return ret
+    }
+
+
+    let columnContext = initData()
+
+
     let app = getApp()
     let layoutUUID = ZY.rid()
     let state = reactive({
-      doms: initData(),
+      doms: initMaps(),
       defs: initData(),
-      uuids: initData(),
+      uuids: initMaps(),
       column: props.column,
-      items: [
-      ]
+      // items: initData()
     })
 
-    function getColumnID(index = 0) {
-      return 'zdrag'
+    function buildInstanse(com, itemUUID, columnIndex) {
+      return h(com, {
+        class: [
+          RENDER_DOM_CLS,
+          DATA_LAYOUT_UUID_KEY + layoutUUID,
+          DATA_LAYOUT_ITEM_UUID_KEY + columnIndex,
+          DATA_UUID_KEY + itemUUID,
+        ],
+      }, Date.now())
     }
 
-    function buildItems()  {
-      state.items= state.doms[0].map((v, index) => {
-        return {
-          index: index,
-          id: ZY.rid()
+
+    function getColumnDom(columnIndex) {
+      return  document.getElementById(getColumnID(columnIndex))
+    }
+
+    function rebuildSortAble(columnIndex) {
+      let el = getColumnDom(columnIndex)
+      var sortable = new Sortable(el, {
+        name: 'layoutinit_' + ZY.rid(),
+        onEnd: function (/**Event*/evt) {
+          // let el = document.getElementById(getColumnID())
+          // let zs = Array.of(... el.children)
+          // let uuids = zs.map(dom => {
+          //   let layout_item_uuid = app.findUUIDfromClassList(dom, DATA_UUID_KEY)
+          //   return layout_item_uuid
+          // })
+          // state.uuids[columnIndex] = uuids
+          nextTick(() => {
+            let uuids = buildUUIDS()
+            // console.log(uuids)
+           rebuildDefs(uuids, columnIndex)
+
+           ctx.emit('clear-index')
+         })
+          // console.log('evt', el, uuids)
         }
       })
     }
 
+    function getColumnID(index = 0) {
+      return 'zdrag__' + props.uuid
+    }
+
+    // function buildItems(columnIndex = 0)  {
+    //   state.items[columnIndex] = state.doms[columnIndex].map((v, index) => {
+    //     return {
+    //       index: index,
+    //       id: ZY.rid()
+    //     }
+    //   })
+    // }
+
+    function rebuildDefs(uuids = [], columnIndex = 0) {
+      // console.log('call rebuildLayouts')
+      // let suuids =    state.doms[columnIndex].map(layout => {
+      //   let dom = layout.el
+      //   return app.findUUIDfromClassList(dom)
+      // })
+      // console.log(uuids, suuids)
+      let dlayouts = state.defs[columnIndex]
+      let dlayouts_uuids = dlayouts.map(layout => {
+        return layout.itemUUID
+      })
+
+      let layouts = []
+      uuids.forEach(uuid => {
+        let index = dlayouts_uuids.findIndex(dom_uuid => {
+          // console.log(dom_uuid, uuid)
+          return dom_uuid === uuid
+        })
+        if (index > -1) {
+          layouts.push(dlayouts[index])
+        }
+        // console.log(uuid, index)
+      })
+      state.defs[columnIndex] = layouts
+
+      nextTick(() => {
+        genUUIDS(columnIndex, layouts.map(v => v.itemUUID))
+      })
+      // let doms = layouts.map(v => {
+      //   // return v.buildInstanse(v.itemUUID)
+      //   return buildInstanse(v.com, v.itemUUID, columnIndex)
+      // })
+
+      // let el = getColumnDom(columnIndex)
+      // let children = Array.of(...el.children)
+      // layouts.map((v,index)=> {
+      //   // return v.buildInstanse(v.itemUUID)
+      //   console.log(children, state.doms[columnIndex][index])
+      //   state.doms[columnIndex][index].el = children[index]
+      // })
+
+
+      // state.doms[columnIndex] = doms
+      // console.log(uuids, doms)
+      // columnContext[columnIndex].reload(doms, function () {
+      //   let el = getColumnDom(columnIndex)
+      //   clearDragIndex(el)
+      //   console.log('after reload')
+      // })
+
+    }
+
+    function genUUIDS(columnIndex = 0, obj) {
+      // state.uuids[columnIndex] = state.defs[columnIndex].map(v => {
+      //   return v.itemUUID
+      // })
+      let arr = state.defs[columnIndex].map(v => {
+        return v.itemUUID
+      })
+      if (obj) {
+        arr = obj
+      }
+      // state.uuids[columnIndex].value = arr
+      state.uuids[columnIndex].str = ZY.JSON5.stringify(arr)
+      // console.log(state.uuids[columnIndex])
+    }
+
     function buildUUIDS(columnIndex = 0) {
       // console.log('buildUUIDS', columnIndex)
-      let el = document.getElementById(getColumnID(columnIndex))
+      let el = getColumnDom(columnIndex)
       let zs = Array.of(...el.children)
       let uuids = zs.map(dom => {
-        let layout_item_uuid = app.findUUIDfromClassList(dom, DATA_UUID_KEY)
-        return layout_item_uuid
+        return app.findUUIDfromClassList(dom, DATA_UUID_KEY)
       })
-      state.uuids[columnIndex] = uuids
+      // state.uuids[columnIndex] = uuids
+      return uuids
     }
 
     // let domRef = null
@@ -136,31 +259,30 @@ export default {
      * @returns {(function(*=, *=): void)|*}
      */
     function buildAppend(columnIndex) {
+
+
       return function append(com, trueDom) {
         // console.log(trueDom)
         let child = state.doms[columnIndex]
         let def = state.defs[columnIndex]
         if (def.length < props.columnMax) {
           let itemUUID =  ZY.rid()
-          let instanse = h(com, {
-            class: [
-              RENDER_DOM_CLS,
-              DATA_LAYOUT_UUID_KEY + layoutUUID,
-              DATA_LAYOUT_ITEM_UUID_KEY + columnIndex,
-              DATA_UUID_KEY + itemUUID,
-            ],
-          }, Date.now())
+          let instanse = buildInstanse(com, itemUUID, columnIndex)
           let cachedDef = {
             layoutUUID,
             attrs: {
               // test: 1,
             },
             itemUUID,
-            instanse,
+            com,
+            // instanse,
+            // buildInstanse
           }
-          if (child.length < 1) {
-            child.push(instanse)
+          // let keys = Object.keys(child)
+          if (def.length < 1) {
+            // child.push(instanse)
             def.push(cachedDef)
+            child[itemUUID] = instanse
           } else {
             // console.log(trueDom.hasAttribute(DATA_UUID_KEY))
             if (trueDom) {
@@ -174,23 +296,26 @@ export default {
               // console.log(index)
               if (!Number.isNaN(index)) {
                 if (index < 0) {
-                  child.push(instanse)
+                  // child.push(instanse)
                   def.push(cachedDef)
                 } else {
                   index = index + 1
-                  child.splice(index, 0, instanse)
+                  // child.splice(index, 0, instanse)
                   def.splice(index, 0, cachedDef)
                 }
               }
-
+              child[itemUUID] = instanse
             } else {
               console.log(trueDom)
             }
           }
+          // console.log(child)
           // setRefMan(true)
           nextTick(() => {
-            buildItems()
-            buildUUIDS(columnIndex)
+            // buildItems(columnIndex)
+            genUUIDS(columnIndex)
+            rebuildSortAble(columnIndex)
+            // let uuids = buildUUIDS(columnIndex)
           })
         } else {
           console.warn('超出限制', props.columnMax)
@@ -201,7 +326,7 @@ export default {
 
     function onDragEnter(columnIndex, e) {
       // console.log('onDragEnter', e)
-      e.target.setAttribute(DRAGENTER_ATTR, 1)
+      // e.target.setAttribute(DRAGENTER_ATTR, 1)
       if (props.dragEnter) {
         props.dragEnter({
           append: buildAppend(columnIndex),
@@ -223,7 +348,7 @@ export default {
 
     function findCom(uuid, layout_item_uuid) {
       // console.log('layout_item_uuid', layout_item_uuid)
-      let com = state.doms[layout_item_uuid]
+      // let com = state.doms[layout_item_uuid]
       let dom = state.defs[layout_item_uuid]
       if (dom) {
         let index = dom.findIndex(v => {
@@ -253,23 +378,27 @@ export default {
       ctx.emit('clear-index')
     }
 
-    function onLoaded(columnIndex) {
-      let el = document.getElementById(getColumnID(columnIndex))
-      var sortable = new Sortable(el, {
-        onEnd: function (/**Event*/evt) {
-          // let el = document.getElementById(getColumnID())
-          // let zs = Array.of(... el.children)
-          // let uuids = zs.map(dom => {
-          //   let layout_item_uuid = app.findUUIDfromClassList(dom, DATA_UUID_KEY)
-          //   return layout_item_uuid
-          // })
-          // state.uuids[columnIndex] = uuids
-          buildUUIDS()
-          // console.log('evt', el, uuids)
-        }
-      })
+    function onLoaded(columnIndex, e) {
+
+      // state.defs[columnIndex].map(v => {
+      //   v.context = e
+      //   return v
+      // })
+      columnContext[columnIndex] = e
+      let el = getColumnDom(columnIndex)
+      rebuildSortAble(columnIndex)
       clearDragIndex(el)
       // console.log(sortable, el)
+    }
+
+    function getUUIDS(columnIndex) {
+      console.log(state.defs[columnIndex])
+      if (Array.isArray(state.defs[columnIndex])) {
+        return state.defs[columnIndex].map(v => {
+          return v.itemUUID
+        })
+      }
+      return []
     }
 
     return {
@@ -278,6 +407,7 @@ export default {
       onDragEnter,
       appendColumn,
       getColumnID,
+      getUUIDS,
       onLoaded,
       onDragLeave,
       initGrid,
