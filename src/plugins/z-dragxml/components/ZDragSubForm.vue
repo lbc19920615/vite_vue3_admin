@@ -1,6 +1,6 @@
 <template>
   <div class="z-dragxml-com">
-    <div>子表头</div>
+    <div>子表单</div>
   </div>
 </template>
 
