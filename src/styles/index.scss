@@ -206,11 +206,17 @@ $first-last-with: $element-list-item-g * $row-item-length - $element-list-item-x
 
 .g-list-group-item {
   &:nth-child(2n+1) {
+    .g-list-group-item__element {
+      margin-left: $element-list-item-x;
+    }
     .element-list-item {
       margin-left: $element-list-item-x;
     }
   }
   &:nth-child(2n) {
+    .g-list-group-item__element {
+      margin-left: $element-list-item-x - $first-last-with;
+    }
     .element-list-item {
       margin-left: $element-list-item-x - $first-last-with;
     }

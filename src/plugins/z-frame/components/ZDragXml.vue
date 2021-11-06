@@ -62,16 +62,12 @@ test-com {
           </draggable>
         </el-scrollbar>
       </el-col>
-      <el-col id="playground"
+      <el-col :id="playgroundId"
               style="border: 1px solid #eee;"
               data-index="-1" test-play :span="16"
               @dragover="onDragMove" @mouseover="onMouseMove"
 
       >
-<!--        <z-layout-init :drag-enter="onLayoutDragEnter"></z-layout-init>-->
-<!--        <h3>two</h3>-->
-<!--        <z-layout-init :len="2" :drag-enter="onLayoutDragEnter"></z-layout-init>-->
-<!--        <h3>OTH</h3>-->
         <z-layout-init
             :z-uuid="item.uuid"
             :uuid="item.uuid"
@@ -115,6 +111,7 @@ export default {
   },
   setup() {
     const Z_UUID_KEY = 'z-uuid'
+    const PLAY_ID = 'playground__' + ZY.rid(6)
     let JSON5 = ZY.JSON5
     let originalEvent = {
     }
@@ -271,7 +268,7 @@ export default {
     }
 
     function getPlaygroundDOM() {
-      return  document.getElementById('playground')
+      return  document.getElementById(PLAY_ID)
     }
 
     function onDropEndItemsChanged(item) {
@@ -475,6 +472,7 @@ export default {
       list1ItemCls,
       state,
       getRef,
+      playgroundId: PLAY_ID,
       onDropStart,
       initRef,
       onDragMove,

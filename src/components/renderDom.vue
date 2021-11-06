@@ -31,16 +31,7 @@ export default defineComponent( {
       oldUUIDS: []
     })
 
-    // console.log(props.render)
-
     function reload(newVal, cb) {
-      // console.log('props change', newVal.map(v => v.props.class), state.child.map(v => v.props.class))
-      // state.child = newVal
-      // nextTick(() => {
-      //   if (cb) {
-      //     cb()
-      //   }
-      // })
     }
 
     function load() {
@@ -67,7 +58,7 @@ export default defineComponent( {
     }
 
     watch(props.uuids, (newVal) => {
-      console.log('props change', newVal)
+      // console.log('props change', newVal)
       // root.children =  []
       // props.render.forEach((renderItem) => {
       //   // console.log(renderItem)
