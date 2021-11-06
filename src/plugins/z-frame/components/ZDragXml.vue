@@ -25,11 +25,11 @@ test-com {
 [current-to-move=line] {
   border-top: none;
 }
-#test2 {
-[current-to-move] {
-  border-color: #00bb00;
-  border-width: 3px;
-}
+.debug-tool2 {
+  [current-to-move] {
+    border-color: #00bb00;
+    border-width: 1px;
+  }
 }
 </style>
 
@@ -38,6 +38,7 @@ test-com {
 <!--    {{state}}-->
     <el-row>
       <el-col :span="8" >
+        <div>tree</div>
         <el-scrollbar height="60vh">
           <draggable
               class="dragArea g-list-group"
@@ -64,7 +65,7 @@ test-com {
       </el-col>
       <el-col :id="playgroundId"
               style="border: 1px solid #eee;"
-              data-index="-1" test-play :span="16"
+              data-index="-1" test-play :span="10"
               @dragover="onDragMove" @mouseover="onMouseMove"
 
       >
@@ -82,9 +83,12 @@ test-com {
             @column-max-err="onClearIndex"
         ></z-layout-init>
       </el-col>
+      <el-col :span="6">
+        sdsdsds
+      </el-col>
     </el-row>
-    <div id="test1"></div>
-    <div id="test2"></div>
+    <div class="debug-tool1" :id="testId1"></div>
+    <div class="debug-tool2" :id="testId2"></div>
   </div>
 </template>
 
@@ -112,6 +116,8 @@ export default {
   setup() {
     const Z_UUID_KEY = 'z-uuid'
     const PLAY_ID = 'playground__' + ZY.rid(6)
+    const TEST1_ID = 'test1__' + ZY.rid(6)
+    const TEST2_ID = 'test2__' + ZY.rid(6)
     let JSON5 = ZY.JSON5
     let originalEvent = {
     }
@@ -140,7 +146,7 @@ export default {
     }
 
 
-    function clearTool(id = 'test1') {
+    function clearTool(id = TEST1_ID) {
       return function (clone) {
         let tool = document.getElementById(id)
         tool.innerHTML = ''
@@ -151,7 +157,7 @@ export default {
     }
 
     let test1Tool = clearTool()
-    let test2Tool = clearTool('test2')
+    let test2Tool = clearTool(TEST2_ID)
 
     let app = getApp()
     state.list = [
@@ -479,6 +485,8 @@ export default {
       onLayoutSelfDragEnter,
       onLayoutDragEnter,
       onClearIndex,
+      testId1: TEST1_ID,
+      testId2: TEST2_ID,
       onDropEnd,
       onMouseMove
     }

@@ -1,12 +1,13 @@
 <style lang="scss">
 .z-drag-layout {
-  border: 1px solid;
-  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 5px;
 }
-.z-drag-layout__item {
+.z-drag-layout__column {
+  box-sizing: border-box;
   min-height: 10px;
   flex: 1;
-  border: 1px solid #eee;
+  border: 1px solid transparent;
   //&[dragenter] {
   //  border-color: #0d84ff;
   //}
@@ -40,7 +41,7 @@
 <el-row class="z-drag-layout" :z-layout-uuid="layoutUUID"  layout-dom="layout-dom">
   <template v-for="(item, index) in state.column">
 <!--   <div> {{state.uuids[index]}}</div>-->
-    <el-col class="z-drag-layout__item"
+    <el-col class="z-drag-layout__item z-drag-layout__column"
             @dragleave="onDragLeave"
             @dragenter.prevent="onDragEnter(index, $event)"
             :id="getColumnID(index)"

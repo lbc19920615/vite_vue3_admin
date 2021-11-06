@@ -2,6 +2,9 @@
  * {
    pointer-events: none;
  }
+
+  margin-top: var(--dragxml-com-mt, 10px);
+  margin-bottom: var(--dragxml-com-mb, 10px);
 }
 
 .z-dragxml-row {
