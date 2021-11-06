@@ -119,7 +119,7 @@
         ></z-layout-init>
       </el-col>
       <el-col :span="6">
-        sdsdsds
+        {{treeState.current}}
       </el-col>
     </el-row>
     <div class="debug-tool1" :id="testId1"></div>
@@ -173,7 +173,8 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'label',
-      }
+      },
+      current: {}
     })
 
     let domRef = null
@@ -653,6 +654,9 @@ export default {
 
     function handleNodeClick(e) {
       console.log('handleNodeClick', e)
+      treeState.current = {
+        origin: e
+      }
     }
 
     onMounted(() => {
