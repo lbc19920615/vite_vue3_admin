@@ -1,5 +1,14 @@
 <style lang="scss">
 .z-cell-item {
+  &[vertical] {
+    display: block;
+    &.has-label {
+      .z-cell-item__label {
+        text-align: var(--z-cell-item__vertical-text-align, left);
+        padding-bottom: var(--z-cell-item__vertical-padding-bottom, 10px);
+      }
+    }
+  }
   &.has-label {
     .z-cell-item__label {
       width: var(--z-cell-item-label-width, 100px);
@@ -20,7 +29,7 @@
 </style>
 
 <template>
-  <el-row align="middle" class="z-cell-item" :class="{'has-label': label}" type="flex">
+  <el-row :vertical="vertical" align="middle" class="z-cell-item" :class="{'has-label': label}" type="flex">
     <div class="z-cell-item__label">{{label}}</div>
     <div class="z-cell-item__content"><slot></slot></div>
   </el-row>
@@ -30,7 +39,8 @@
 export default {
   name: 'ZCellItem',
   props: {
-    label: String
+    label: String,
+    vertical: Boolean
   }
 }
 </script>

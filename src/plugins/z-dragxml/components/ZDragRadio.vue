@@ -1,6 +1,6 @@
 <template>
   <div class="z-dragxml-com">
-    <z-cell-item :label="id">
+    <z-cell-item :vertical="true" :label="id">
       <cus-radio :ui="ui"></cus-radio>
     </z-cell-item>
   </div>
