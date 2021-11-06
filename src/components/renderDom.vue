@@ -1,48 +1,20 @@
-<script lang="jsx">
-import {defineComponent, getCurrentInstance, Fragment, nextTick, reactive, watch} from "vue";
+<template>
+  <template v-for="item in state.child" :key="item.uuid">
+    <render-jsx :render="item.data"></render-jsx>
+  </template>
+</template>
 
-// class ChildDom {
-//   constructor() {
-//     this.children = []
-//   }
-//   push(type) {
-//     this.children.push(
-//         h(type, {
-//           class: 'render-dom-item',
-//           ['data-index']: this.children.length
-//         }, Date.now())
-//     )
-//   }
-//   getChild() {
-//     return this.children
-//   }
-//
-// }
-
+<script>
+import {defineComponent,  nextTick, reactive, watch} from "vue";
+import RenderJsx from "@/components/renderJsx.vue";
 
 export default defineComponent( {
   name: 'RenderDom',
+  components: {RenderJsx},
   emits: [
     'loaded'
   ],
   props: {
-    // defs: null,
-    // attrs: {
-    //   type: Object,
-    //   default() {
-    //     return {}
-    //   }
-    // },
-    // name: {
-    //   type: String,
-    //   default: "default"
-    // },
-    // binds:{
-    //   type: Object,
-    //   default() {
-    //     return {}
-    //   }
-    // },
     uuids: {
       type: Array,
       default() {
@@ -55,32 +27,42 @@ export default defineComponent( {
     // let instanse = getCurrentInstance()
     // let root = new ChildDom()
     let state = reactive({
-      child: []
+      child: [],
+      oldUUIDS: []
     })
 
     // console.log(props.render)
 
     function reload(newVal, cb) {
       // console.log('props change', newVal.map(v => v.props.class), state.child.map(v => v.props.class))
-      state.child = newVal
-      nextTick(() => {
-        if (cb) {
-          cb()
-        }
-      })
+      // state.child = newVal
+      // nextTick(() => {
+      //   if (cb) {
+      //     cb()
+      //   }
+      // })
     }
 
     function load() {
+      // let obj = []
       let ret = []
       let arr = ZY.JSON5.parse(props.uuids.str)
       let uuids = arr.map(v => {
         return v
       })
+
+      // let diffed = ZY.diff(state.oldUUIDS, uuids)
+      // console.log(diffed)
+
       let render = props.render
       uuids.map(uuid => {
-        ret.push(render[uuid])
+        ret.push({
+          uuid: uuid,
+          data: render[uuid]
+        })
+        // obj.push(render[uuid].props.class)
       })
-      // console.log(render, uuids)
+      // console.log(ret, obj)
       state.child = ret
     }
 
@@ -102,8 +84,8 @@ export default defineComponent( {
       })
     })
 
-    return () => {
-      return state.child
+    return {
+      state
     }
   }
 })

@@ -85,6 +85,7 @@ export default {
     const DRAGENTER_ATTR = 'dragenter'
 
     let JSON5 = ZY.JSON5
+    let sortable = null
     // console.log(props.columnMax)
 
     function initData() {
@@ -128,47 +129,38 @@ export default {
       }, Date.now())
     }
 
-
-    function getColumnDom(columnIndex) {
-      return  document.getElementById(getColumnID(columnIndex))
-    }
-
-    function rebuildSortAble(columnIndex) {
-      let el = getColumnDom(columnIndex)
-      var sortable = new Sortable(el, {
-        name: 'layoutinit_' + ZY.rid(),
-        onEnd: function (/**Event*/evt) {
-          // let el = document.getElementById(getColumnID())
-          // let zs = Array.of(... el.children)
-          // let uuids = zs.map(dom => {
-          //   let layout_item_uuid = app.findUUIDfromClassList(dom, DATA_UUID_KEY)
-          //   return layout_item_uuid
-          // })
-          // state.uuids[columnIndex] = uuids
-          nextTick(() => {
-            let uuids = buildUUIDS()
-            // console.log(uuids)
-           rebuildDefs(uuids, columnIndex)
-
-           ctx.emit('clear-index')
-         })
-          // console.log('evt', el, uuids)
-        }
-      })
-    }
-
     function getColumnID(index = 0) {
       return 'zdrag__' + props.uuid
     }
 
-    // function buildItems(columnIndex = 0)  {
-    //   state.items[columnIndex] = state.doms[columnIndex].map((v, index) => {
-    //     return {
-    //       index: index,
-    //       id: ZY.rid()
-    //     }
-    //   })
-    // }
+    /**
+     * 获取column dom
+     * @param columnIndex
+     * @returns {HTMLElement}
+     */
+    function getColumnDom(columnIndex) {
+      return  document.getElementById(getColumnID(columnIndex))
+    }
+
+    /**
+     *
+     * @param columnIndex
+     */
+    function rebuildSortAble(columnIndex) {
+      let el = getColumnDom(columnIndex)
+       sortable = new Sortable(el, {
+        name: 'layoutinit_' + ZY.rid(),
+        onEnd: function (/**Event*/evt) {
+          nextTick(() => {
+            let uuids = buildUUIDS()
+            // console.log(uuids)
+            rebuildDefs(uuids, columnIndex)
+            ctx.emit('clear-index')
+          })
+          // console.log('evt', el, uuids)
+        }
+      })
+    }
 
     function rebuildDefs(uuids = [], columnIndex = 0) {
       // console.log('call rebuildLayouts')
@@ -219,7 +211,6 @@ export default {
       //   clearDragIndex(el)
       //   console.log('after reload')
       // })
-
     }
 
     function genUUIDS(columnIndex = 0, obj) {
@@ -259,8 +250,6 @@ export default {
      * @returns {(function(*=, *=): void)|*}
      */
     function buildAppend(columnIndex) {
-
-
       return function append(com, trueDom) {
         // console.log(trueDom)
         let child = state.doms[columnIndex]
@@ -293,7 +282,7 @@ export default {
                 let uuid = app.findUUIDfromClassList(ele)
                 return uuid === trueDom_uuid
               })
-              // console.log(index)
+              // console.log(index, state.defs[columnIndex].map(v => v.itemUUID))
               if (!Number.isNaN(index)) {
                 if (index < 0) {
                   // child.push(instanse)
@@ -379,7 +368,6 @@ export default {
     }
 
     function onLoaded(columnIndex, e) {
-
       // state.defs[columnIndex].map(v => {
       //   v.context = e
       //   return v
@@ -392,7 +380,7 @@ export default {
     }
 
     function getUUIDS(columnIndex) {
-      console.log(state.defs[columnIndex])
+      // console.log(state.defs[columnIndex])
       if (Array.isArray(state.defs[columnIndex])) {
         return state.defs[columnIndex].map(v => {
           return v.itemUUID
