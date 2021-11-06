@@ -13,7 +13,7 @@ export let ZDragCommonMixin = {
   computed: {
     ui_config() {
       let config = this.ui_config_editor ?? {}
-      console.log('config', config)
+      // console.log('config', config)
       return {
        ...this.ui ?? {},
          ...config,
@@ -22,7 +22,7 @@ export let ZDragCommonMixin = {
   },
   methods: {
     onConfigChanged(e) {
-      console.log('onConfigChanged', e)
+      // console.log('onConfigChanged', e)
       this.ui_config_editor = this.dragxml.getConfig(this.uuid)
     }
   },

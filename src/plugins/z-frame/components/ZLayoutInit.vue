@@ -277,6 +277,10 @@ export default {
               // test: 1,
             },
             itemUUID,
+            /**
+             * 容器uuid
+             */
+            con_uuid: props.uuid,
             com,
             config
             // instanse,
@@ -361,7 +365,8 @@ export default {
         })
         if (index > -1) {
           let def = dom[index]
-          console.log(def, index)
+          // console.log(def, index)
+          return def
         }
         // console.log( dom.map(v => v.itemUUID))
         // console.log( uuid, index)

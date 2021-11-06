@@ -7,6 +7,22 @@
 //  /*width: 50px;*/
 //  height: 50px;
 //}
+
+.custom-tree {
+  :deep(.el-tree-node__content) {
+    height: initial;
+  }
+  .el-tree-node__content {
+    height: initial;
+  }
+}
+
+.custom-tree-node {
+  width: 100%;
+  box-sizing: border-box;
+  height: 36px;
+}
+
 [z-drag-start] {
   border-bottom: 1px dashed transparent;
   //&:hover {
@@ -79,11 +95,26 @@
           </xy-tab-content>
           <xy-tab-content label="结构">
             <el-scrollbar height="30vh">
-              <el-tree default-expand-all
+              <el-tree default-expand-all class="custom-tree"
                        :data="treeState.data" :props="treeState.defaultProps"
                        @node-click="handleNodeClick"
               :expand-on-click-node="false"
-              />
+              >
+                <template #default="{ node, data }">
+                  <el-row justify="space-between"
+                          class="custom-tree-node"
+
+                  >
+                    <el-row align="middle">{{ node.label }}</el-row>
+                    <el-row align="middle">
+                      <el-button size="mini"
+                                 type="danger"
+                                 @click.stop="removeTreeNode(node, data)"> 删除 </el-button>
+                    </el-row>
+                  </el-row>
+                </template>
+
+              </el-tree>
             </el-scrollbar>
           </xy-tab-content>
         </xy-tab>
@@ -169,7 +200,7 @@ export default {
       isDragging: false,
       disableDrag: false,
       tree: [],
-      renderDom: [],
+      // renderDom: [],
       layouts: [],
       layoutsMap: {},
       layoutRefs: {},
@@ -194,6 +225,9 @@ export default {
       },
       getConfig(key) {
         return dragConfig.get(key)
+      },
+      delConfig(key) {
+        dragConfig.delete(key)
       },
       register(key, value) {
         DRAG_CONTEXT.set(key, value)
@@ -482,6 +516,8 @@ export default {
       return null
     }
 
+    let currentInspectContext = null
+
     /**
      * 创建观察
      * @param trueDom
@@ -491,12 +527,9 @@ export default {
     function createInspect(trueDom, type) {
       function handleButtonClick() {
         // console.log(trueDom)
-        if (trueDom.hasAttribute('z-layout-uuid')) {
-          let layout_uuid = trueDom.getAttribute('z-layout-uuid')
-          let context = state.layoutRefs[layout_uuid]
-          // console.log(layout_uuid, context)
-          if (context) {
-          }
+        if (trueDom.hasAttribute('z-uuid')) {
+          let layout_uuid = trueDom.getAttribute('z-uuid')
+          removeLayout(layout_uuid)
         }
         else {
           let trueDom_uuid = app.findUUIDfromClassList(trueDom)
@@ -505,7 +538,18 @@ export default {
           // console.log(layout_uuid, trueDom_uuid)
           let context = state.layoutRefs[layout_uuid]
           if (context) {
-            context.findCom(trueDom_uuid, layout_item_uuid)
+            currentInspectContext = context.findCom(trueDom_uuid, layout_item_uuid)
+            if (currentInspectContext.con_uuid) {
+              console.log(state.layouts.map(v => v.uuid), currentInspectContext.con_uuid)
+              // let index = state.layouts.findIndex(v => {
+              //   return v.uuid === currentInspectContext.con_uuid
+              // })
+              // if (index > -1) {
+              //   console.log(state.layouts[index])
+              // }
+              removeLayout(currentInspectContext.con_uuid)
+            }
+            // console.log(currentInspectContext, context, state.layouts)
           }
         }
       }
@@ -555,9 +599,9 @@ export default {
       if (currentToMove && playground.contains(currentToMove)) {
         trueDom = findDom(currentToMove)
       }
-      if (currentToMove.hasAttribute('z-drag-start')) {
-        trueDom = currentToMove
-      }
+      // if (currentToMove.hasAttribute('z-drag-start')) {
+      //   trueDom = currentToMove
+      // }
       if (trueDom) {
         let clone = createInspect(trueDom, type)
         actionFun(clone)
@@ -593,12 +637,31 @@ export default {
       // console.log(e.target)
     }
 
+    function removeLayout(uuid) {
+      let index = state.layouts.findIndex(v => {
+        return v.uuid === uuid
+      })
+      if (index > -1) {
+        let layout = state.layouts[index]
+        let layouMapItem = state.layoutsMap[uuid]
+        let layoutUUID = layouMapItem.layoutUUID
+        let layoutRef = state.layoutRefs[layoutUUID]
+        // Reflect.deleteProperty(state.layoutRefs, layoutUUID)
+        // Reflect.deleteProperty(state.layoutsMap, uuid)
+        // state.layouts.splice(index, 1)
+        // buildUUIDS()
+        // console.log(state.uuids)
+        console.log(layout, layouMapItem, layoutRef)
+      }
+    }
+
     function initRef(item) {
       // console.log('item', item)
       return function (el) {
         if (el) {
           state.layoutsMap[item.uuid] = {
-            el
+            el,
+            layoutUUID: el.layoutUUID
           }
           state.layoutRefs[el.layoutUUID] = el
         }
@@ -607,6 +670,10 @@ export default {
 
     function onClearIndex() {
       test1Tool()
+    }
+
+    function removeTreeNode(node, data) {
+      console.log('removeTreeNode', node, data)
     }
 
     function buildTreeChild(child = []) {
@@ -744,6 +811,7 @@ export default {
       onDropEnd,
       onMouseMove,
       treeState,
+      removeTreeNode,
       changeConfig,
       handleNodeClick,
     }
