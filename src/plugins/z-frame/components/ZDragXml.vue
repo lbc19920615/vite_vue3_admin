@@ -248,6 +248,80 @@ export default {
       current: {}
     })
 
+    function buildTreeChild(child = []) {
+      return child.map(item => {
+        item.label = item.com.name
+        return item
+      })
+    }
+
+    function buildTree() {
+      if (Array.isArray(state.layouts)) {
+        // console.log(state.layouts)
+        let result = state.layouts.map(layout => {
+          // console.log(layout, state.layoutsMap)
+          let ret = {
+            label: 'item',
+            children: []
+          }
+          let context =state.layoutsMap[layout.uuid]?.el
+          if (context) {
+            // console.log(context)
+            let columns = context.getChildren()
+            // console.log(columns)
+
+            if (columns.length  > 0) {
+              let child = columns.map(function (column) {
+                let child = column.children
+                let res = []
+                if (Array.isArray(child) && child.length > 0) {
+                  let first = child[0]
+                  // console.log(child)
+                  if (first && first.com && first.com.DRAG_SUB_FORM) {
+                    let arr = buildTreeChild(child.slice(1))
+                    res =  {
+                      ...first,
+                      label: first.com.name,
+                      children: arr
+                    }
+                  } else {
+                    res = buildTreeChild(child)
+                  }
+                }
+                column.children = res
+                // console.log('res', res)
+                return column
+              })
+              ret = {
+                label: 'row',
+                children: child
+              }
+              if (child.length === 1) {
+                // 单个组件
+                if (Array.isArray(child[0].children)) {
+                  ret = child[0].children[0]
+                } else {
+                  ret = child[0].children
+                }
+              } else {
+                // console.log(child)
+              }
+            }
+
+          }
+          return ret
+        })
+        // console.log(result)
+        return result
+      }  else {
+        return []
+      }
+    }
+
+    function reloadTree() {
+      treeState.data = buildTree()
+    }
+
     let domRef = null
     function getRef(v) {
       domRef = v
@@ -410,7 +484,7 @@ export default {
           reloadLayoutsSort()
 
           nextTick(() => {
-            treeState.data = buildTree()
+            reloadTree()
           })
         }
       })
@@ -528,8 +602,8 @@ export default {
       function handleButtonClick() {
         // console.log(trueDom)
         if (trueDom.hasAttribute('z-uuid')) {
-          let layout_uuid = trueDom.getAttribute('z-uuid')
-          removeLayout(layout_uuid)
+          let uuid = trueDom.getAttribute('z-uuid')
+          removeLayout(uuid)
         }
         else {
           let trueDom_uuid = app.findUUIDfromClassList(trueDom)
@@ -646,11 +720,12 @@ export default {
         let layouMapItem = state.layoutsMap[uuid]
         let layoutUUID = layouMapItem.layoutUUID
         let layoutRef = state.layoutRefs[layoutUUID]
-        // Reflect.deleteProperty(state.layoutRefs, layoutUUID)
-        // Reflect.deleteProperty(state.layoutsMap, uuid)
-        // state.layouts.splice(index, 1)
-        // buildUUIDS()
-        // console.log(state.uuids)
+        Reflect.deleteProperty(state.layoutRefs, layoutUUID)
+        Reflect.deleteProperty(state.layoutsMap, uuid)
+        state.layouts.splice(index, 1)
+        buildUUIDS()
+        reloadTree()
+        console.log(state.uuids)
         console.log(layout, layouMapItem, layoutRef)
       }
     }
@@ -674,88 +749,21 @@ export default {
 
     function removeTreeNode(node, data) {
       console.log('removeTreeNode', node, data)
+      removeLayout(data.con_uuid)
     }
 
-    function buildTreeChild(child = []) {
-      return child.map(item => {
-        item.label = item.com.name
-        return item
-      })
-    }
 
-    function buildTree() {
-      if (Array.isArray(state.layouts)) {
-        // console.log(state.layouts)
-        let result = state.layouts.map(layout => {
-          // console.log(layout, state.layoutsMap)
-          let ret = {
-            label: 'item',
-            children: []
-          }
-          let context =state.layoutsMap[layout.uuid]?.el
-          if (context) {
-            // console.log(context)
-            let columns = context.getChildren()
-            // console.log(columns)
-
-            if (columns.length  > 0) {
-              let child = columns.map(function (column) {
-                let child = column.children
-                let res = []
-                if (Array.isArray(child) && child.length > 0) {
-                  let first = child[0]
-                  // console.log(child)
-                  if (first && first.com && first.com.DRAG_SUB_FORM) {
-                    let arr = buildTreeChild(child.slice(1))
-                    res =  {
-                      ...first,
-                      label: first.com.name,
-                      children: arr
-                    }
-                  } else {
-                    res = buildTreeChild(child)
-                  }
-                }
-                column.children = res
-                // console.log('res', res)
-                return column
-              })
-              ret = {
-                label: 'row',
-                children: child
-              }
-              if (child.length === 1) {
-                // 单个组件
-                if (Array.isArray(child[0].children)) {
-                  ret = child[0].children[0]
-                } else {
-                  ret = child[0].children
-                }
-              } else {
-                // console.log(child)
-              }
-            }
-
-          }
-          return ret
-        })
-        // console.log(result)
-        return result
-      }  else {
-        return []
-      }
-    }
 
 
     function onChangedLayout() {
-      treeState.data = buildTree()
+      reloadTree()
     }
 
     /**
      * 当子表单内部拖动结束后
      */
     function onDragEnd() {
-      treeState.data = buildTree()
+      reloadTree()
     }
 
     function handleNodeClick(e) {
