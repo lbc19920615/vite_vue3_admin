@@ -1,5 +1,6 @@
 <template>
   <div class="z-dragxml-com">
+    {{ui_config}}
     <z-cell-item :vertical="true" :label="id">
       <cus-input :ui="ui"></cus-input>
     </z-cell-item>

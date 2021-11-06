@@ -120,7 +120,10 @@
         ></z-layout-init>
       </el-col>
       <el-col :span="6">
-        {{treeState.current}}
+        <template v-if="treeState.current && treeState.current.uuid">
+          <el-button @click="changeConfig(treeState.current)">修改</el-button>
+        </template>
+<!--        {{treeState.current}}-->
       </el-col>
     </el-row>
     <div class="debug-tool1" :id="testId1"></div>
@@ -129,13 +132,14 @@
 </template>
 
 <script>
-import {computed, nextTick, onMounted, reactive} from "vue";
+import {computed, nextTick, onMounted, reactive, provide} from "vue";
 import draggable from 'vuedraggable'
 import JsxRender from "@/components/jsxrender.vue";
 import RenderDom from "@/components/renderDom.vue";
 import ZLayoutInit from "@/plugins/z-frame/components/ZLayoutInit.vue";
 import {DATA_LAYOUT_ITEM_UUID_KEY, DATA_LAYOUT_UUID_KEY} from "@/vars";
 import Sortable from 'sortablejs';
+import mitt from "mitt";
 
 
 export default {
@@ -168,6 +172,35 @@ export default {
       layoutRefs: {},
       uuids: []
     })
+
+    let dragConfig = new Map()
+    let emitter = mitt()
+    let DRAG_EVENTS = {
+      CHANGED: 'CHANGED'
+    }
+    let DRAG_CONTEXT = new Map()
+    let DRAG_INSTANSE = {
+      EVENTS:DRAG_EVENTS,
+      dragConfig,
+      setConfig(key, value) {
+        dragConfig.set(key, value)
+        emitter.emit(DRAG_EVENTS.CHANGED, {
+          key,
+          value,
+        })
+      },
+      getConfig(key) {
+        return dragConfig.get(key)
+      },
+      register(key, value) {
+        DRAG_CONTEXT.set(key, value)
+      },
+      unRegister(key) {
+        DRAG_CONTEXT.delete(key)
+      },
+      emitter
+    }
+    provide('dragxml', DRAG_INSTANSE)
 
     let treeState = reactive({
       data: [],
@@ -659,7 +692,8 @@ export default {
       // console.log('handleNodeClick', e)
       let {config = {}} = e
       treeState.current = {
-        origin: e
+        origin: e,
+        uuid: e.itemUUID
       }
       if (config.com) {
         let def = CustomVueComponent.resolve(config.com)
@@ -667,6 +701,13 @@ export default {
       }
       console.log(treeState.current)
 
+    }
+
+    function changeConfig(current) {
+      console.log('changeConfig', current)
+      DRAG_INSTANSE.setConfig(current.uuid, {
+        test: 1
+      })
     }
 
     onMounted(() => {
@@ -700,6 +741,7 @@ export default {
       onDropEnd,
       onMouseMove,
       treeState,
+      changeConfig,
       handleNodeClick,
     }
   }

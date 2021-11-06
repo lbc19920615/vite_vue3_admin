@@ -135,6 +135,8 @@ export default {
           DATA_LAYOUT_ITEM_UUID_KEY + columnIndex,
           DATA_UUID_KEY + itemUUID,
         ],
+        layout_uuid: layoutUUID,
+        uuid: itemUUID,
       }, Date.now())
     }
 
