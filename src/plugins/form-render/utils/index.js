@@ -78,7 +78,10 @@ export let CustomRenderControlMixin = {
         },
         dxValueTemplate(v) {
             // console.log('context', this.context, v)
-            return this.curFormCon.dxValue(this.context, v)
+            if (this.curFormCon && this.this.curFormCon.dxValue) {
+                return this.curFormCon.dxValue(this.context, v)
+            }
+            return []
         }
     }
 }
@@ -210,16 +213,43 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     }
 
     function dxValueEval(template) {
-        return curFormCon.dxValue(props.context, template)
+        if (curFormCon) {
+            return curFormCon.dxValue(props.context, template)
+        }
+        return null
     }
 
     let selfpath = props?.defs?.selfpath ?? ''
 
     let widgetConfig2 = props?.ui?.widgetConfig ?? {}
 
+
+    function buildOptions() {
+        console.log(widgetConfig2)
+        let options = dxValueEval(widgetConfig2.enums)
+        if (!options) {
+            options = []
+        } else {
+            options = ZY.JSON5.parse(ZY.JSON5.stringify(options))
+        }
+
+
+        if (widgetConfig2.options2) {
+            try {
+                let opt = ZY.JSON5.parse(widgetConfig2.options2)
+                options = options.concat(opt)
+            } catch (e) {
+                //
+            }
+        }
+        return options
+    }
+
+
     return {
         data,
         curFormCon,
+        buildOptions,
         FROM_TYPES,
         widgetConfig2,
         parsedWidgetConfig,

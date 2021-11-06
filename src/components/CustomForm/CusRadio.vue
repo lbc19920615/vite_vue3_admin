@@ -6,7 +6,7 @@
         v-bind="widgetConfig"
         v-on="listeners"
     >
-      <el-radio v-for="(option, key) in dxValueTemplate(widgetConfig.enums)"
+      <el-radio v-for="(option, key) in buildOptions()"
                 :label="option.value"
       ><span v-html="option.label"></span></el-radio>
     </el-radio-group>
@@ -49,13 +49,14 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx)
+    let { data, methods, listeners, init, widgetConfig2, buildOptions } = defineCustomRender(props, ctx)
     let state = data()
     init(props)
 
     return {
       state,
       widgetConfig: widgetConfig2,
+      buildOptions,
       methods,
       listeners,
     }

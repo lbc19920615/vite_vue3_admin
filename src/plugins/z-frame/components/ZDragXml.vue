@@ -1,10 +1,23 @@
 <style lang="scss">
-test-com {
-  display: block;
-  border: 1px solid;
-  /*background-color: #00bb00;*/
-  /*width: 50px;*/
-  height: 50px;
+
+//test-com {
+//  display: block;
+//  border: 1px solid;
+//  /*background-color: #00bb00;*/
+//  /*width: 50px;*/
+//  height: 50px;
+//}
+[z-drag-start] {
+  //border-bottom: 1px dashed transparent;
+  //&:hover {
+  //  border-bottom-color: #0d84ff;
+  //}
+}
+.form-first-item {
+  height: 3px;
+  padding: 1px;
+  border: none;
+  //pointer-events: none;
 }
 [current-to-move] {
    /*background-color: #0d84ff;*/
@@ -38,11 +51,14 @@ test-com {
 <!--    {{state}}-->
     <el-row>
       <el-col :span="8" >
-        <div>tree</div>
+        <div>
+          <el-tree default-expand-all
+              :data="treeState.data" :props="treeState.defaultProps" @node-click="handleNodeClick" />
+        </div>
         <el-scrollbar height="60vh">
           <draggable
               class="dragArea g-list-group"
-              v-model="state.list"
+              v-model="state.components"
               @start="onDropStart"
               @end="onDropEnd"
               :group="{ name: 'people', pull: 'clone', put: false }"
@@ -69,6 +85,15 @@ test-com {
               @dragover="onDragMove" @mouseover="onMouseMove"
 
       >
+        <div style="height: 5px" z-drag-start>&nbsp;</div>
+<!--        <z-layout-init-->
+<!--            :z-uuid="121111111111"-->
+<!--            :uuid="121111111111"-->
+<!--            :column="1"-->
+<!--            :column-max="1"-->
+<!--            @dragenter.prevent="onLayoutSelfDragEnter"-->
+<!--            :drag-enter="onLayoutDragEnter"-->
+<!--        ></z-layout-init>-->
         <z-layout-init
             :z-uuid="item.uuid"
             :uuid="item.uuid"
@@ -81,6 +106,10 @@ test-com {
             :drag-enter="onLayoutDragEnter"
             @clear-index="onClearIndex"
             @column-max-err="onClearIndex"
+            @changed="onChangedLayout(item, $event)"
+            @drag-end="onDragEnd(item, $event)"
+            :style="item.style"
+            :class="item.class"
         ></z-layout-init>
       </el-col>
       <el-col :span="6">
@@ -93,16 +122,13 @@ test-com {
 </template>
 
 <script>
-import {reactive, h, resolveComponent, nextTick} from "vue";
-import {getXmlData} from "@/views/about/components/PlumbLayout/xmlData";
+import {computed, nextTick, onMounted, reactive} from "vue";
 import draggable from 'vuedraggable'
 import JsxRender from "@/components/jsxrender.vue";
-import {useReloadMan} from "@/views/home/hooks";
 import RenderDom from "@/components/renderDom.vue";
 import ZLayoutInit from "@/plugins/z-frame/components/ZLayoutInit.vue";
-import {DATA_LAYOUT_ITEM_UUID_KEY, DATA_LAYOUT_UUID_KEY, DATA_UUID_KEY} from "@/vars";
+import {DATA_LAYOUT_ITEM_UUID_KEY, DATA_LAYOUT_UUID_KEY} from "@/vars";
 import Sortable from 'sortablejs';
-
 
 
 export default {
@@ -124,7 +150,7 @@ export default {
     let currentToTarget = null
     let currentToMove = null
     let state = reactive({
-      list: [],
+      components: [],
       filterList: '',
       isDragging: false,
       disableDrag: false,
@@ -134,6 +160,14 @@ export default {
       layoutsMap: {},
       layoutRefs: {},
       uuids: []
+    })
+
+    let treeState = reactive({
+      data: [],
+      defaultProps: {
+        children: 'children',
+        label: 'label',
+      }
     })
 
     let domRef = null
@@ -160,7 +194,12 @@ export default {
     let test2Tool = clearTool(TEST2_ID)
 
     let app = getApp()
-    state.list = [
+
+    /**
+     * 初始化拖拽组件
+     * @type {{name, label: string}[]}
+     */
+    state.components = [
       ...app.get_custom_components(
           function ([comName, comDef]) {
             return comDef.ZDragXmlCom
@@ -175,20 +214,13 @@ export default {
         if (v.origin && v.origin.DRAG_LABEL_XML) {
           label = v.origin.DRAG_LABEL_XML()
         }
-        let ret = {
+        // console.log(ret)
+        return {
           name: v.value,
           label: label,
           ...extDataset
         }
-        // console.log(ret)
-        return ret
       }),
-      // {
-      //   name: 'el-card'
-      // },
-      // {
-      //   name: 'el-alert'
-      // }
     ]
 
     function list1ItemCls(element) {
@@ -217,6 +249,7 @@ export default {
      * 创建layout item
      */
     function createLayoutItem(dataset) {
+      let com = CustomVueComponent.resolve(dataset.name)
       let uuid = ZY.rid()
       let columnMax = parseFloat(dataset.columnMax)
       if (!Number.isNaN(columnMax)) {
@@ -225,12 +258,26 @@ export default {
       let item = {
         uuid,
         columnMax,
+        comName: dataset.name,
         dataset,
+        com,
       }
       // console.log('createLayoutItem', columnMax,item)
       return item
     }
 
+    function appendLayout(dataset, {style = '', className = {}} = {}) {
+      let item = createLayoutItem(dataset)
+      item.style = style
+      item.class = className
+      state.layouts.push(item)
+    }
+
+
+    /**
+     *
+     * @returns {*[]|*[]}
+     */
     function buildUUIDS() {
       let el = getPlaygroundDOM()
       if (el) {
@@ -245,30 +292,41 @@ export default {
       return []
     }
 
+    function reloadLayoutsSort() {
+      let uuids = buildUUIDS()
+      // console.log(uuids, state.layouts)
+
+      let dlayouts = JSON5.parse(JSON5.stringify( state.layouts))
+
+      let layouts = []
+      uuids.forEach(uuid => {
+        let index = dlayouts.findIndex(layout => {
+          return layout.uuid === uuid
+        })
+        if (index > -1) {
+          layouts.push(dlayouts[index])
+        }
+        // console.log(uuid, index)
+      })
+      state.layouts = layouts
+    }
+
+    let sortable;
+    /**
+     *
+     */
     function rebuildSortable() {
       let el = getPlaygroundDOM()
-      let sortable = new Sortable(el, {
+      sortable = new Sortable(el, {
         group: "drag-level1",
         onEnd: function (/**Event*/evt) {
           test1Tool()
           test2Tool()
-          let uuids = buildUUIDS()
-          // console.log(uuids, state.layouts)
+          reloadLayoutsSort()
 
-          let dlayouts = JSON5.parse(JSON5.stringify( state.layouts))
-
-          let layouts = []
-          uuids.forEach(uuid => {
-            let index = dlayouts.findIndex(layout => {
-              return layout.uuid === uuid
-            })
-            if (index > -1) {
-              layouts.push(dlayouts[index])
-            }
-            // console.log(uuid, index)
+          nextTick(() => {
+            treeState.data = buildTree()
           })
-          state.layouts = layouts
-          // console.log(layouts.map(v => v.uuid))
         }
       })
     }
@@ -293,12 +351,27 @@ export default {
       let dataset = e?.item?.dataset ?? {}
       currentToTarget = fromPoint(originalEvent.pageX, originalEvent.pageY)
 
+      // console.log(currentToTarget)
       if (!currentToTarget) {
         return;
       }
 
+      /**
+       * 获取组件定义
+       * @type {*}
+       */
+      let com = CustomVueComponent.resolve(dataset.name)
+      let item = createLayoutItem(dataset)
+
+      if (currentToTarget.hasAttribute('z-drag-start')) {
+        state.layouts.unshift(item);
+        nextTick(() => {
+          onDropEndItemsChanged(item)
+        })
+        return;
+      }
+
       if (playground.isEqualNode(currentToTarget)) {
-        let item = createLayoutItem(dataset)
         state.layouts.push(item)
         nextTick(() => {
           onDropEndItemsChanged(item)
@@ -316,7 +389,6 @@ export default {
         let index = state.uuids.findIndex((v) => v === uuid)
         // console.log(index, uuid)
         // let newUUID = ZY.rid()
-        let item = createLayoutItem(dataset)
         // console.log(uuid, index, newUUID)
         if (index > -1) {
           let newIndex = index + 1
@@ -333,13 +405,10 @@ export default {
         trueDom = getNestRenderDom(currentToTarget)
       }
 
-      let com = CustomVueComponent.resolve(dataset.name)
 
       if (currentDragEnterContext) {
         currentDragEnterContext.append(com, trueDom)
       }
-
-
     }
 
     function getNestRenderDom(dom) {
@@ -362,7 +431,12 @@ export default {
       return null
     }
 
-
+    /**
+     * 创建观察
+     * @param trueDom
+     * @param type
+     * @returns {HTMLElement | HTMLDivElement | any}
+     */
     function createInspect(trueDom, type) {
       function handleButtonClick() {
         // console.log(trueDom)
@@ -414,6 +488,13 @@ export default {
       return clone
     }
 
+    /**
+     * 观察DOM
+     * @param e
+     * @param type
+     * @param actionFun
+     * @param findDom
+     */
     function inspcetDom(e, type = 'line', {
       actionFun = test1Tool, findDom = getNestRenderDom
     } = {}) {
@@ -422,6 +503,9 @@ export default {
       let trueDom = null
       if (currentToMove && playground.contains(currentToMove)) {
         trueDom = findDom(currentToMove)
+      }
+      if (currentToMove.hasAttribute('z-drag-start')) {
+        trueDom = currentToMove
       }
       if (trueDom) {
         let clone = createInspect(trueDom, type)
@@ -474,6 +558,103 @@ export default {
       test1Tool()
     }
 
+    function buildTreeChild(child = []) {
+      return child.map(item => {
+        item.label = item.com.name
+        return item
+      })
+    }
+
+    function buildTree() {
+      if (Array.isArray(state.layouts)) {
+        // console.log(state.layouts)
+        return state.layouts.map(layout => {
+          // console.log(layout, state.layoutsMap)
+          let ret = {
+            label: 'item',
+            children: []
+          }
+          let context =state.layoutsMap[layout.uuid]?.el
+          if (context) {
+            // console.log(context)
+            let columns = context.getChildren()
+            // console.log(columns)
+
+            if (columns.length  > 0) {
+              let child = columns.map(function (column) {
+                let child = column.children
+                let res = []
+                if (Array.isArray(child) && child.length > 0) {
+                  let first = child[0]
+                  // console.log(child)
+                  if (first && first.com && first.com.DRAG_SUB_FORM) {
+                    let arr = buildTreeChild(child.slice(1))
+                    res =  {
+                      ...first,
+                      label: first.com.name,
+                      children: arr
+                    }
+                  } else {
+                    res = buildTreeChild(child)
+                  }
+                }
+                column.children = res
+                // console.log('res', res)
+                return column
+              })
+              ret = {
+                label: 'row',
+                children: child
+              }
+              if (child.length === 1) {
+                // 单个组件
+                if (Array.isArray(child[0].children)) {
+                  ret = child[0].children[0]
+                } else {
+                  ret = child[0].children
+                }
+              } else {
+                // console.log(child)
+              }
+            }
+
+          }
+          return ret
+        })
+      }  else {
+        return []
+      }
+    }
+
+
+    function onChangedLayout() {
+      treeState.data = buildTree()
+    }
+
+    /**
+     * 当子表单内部拖动结束后
+     */
+    function onDragEnd() {
+      treeState.data = buildTree()
+    }
+
+    function handleNodeClick(e) {
+      console.log('handleNodeClick', e)
+    }
+
+    onMounted(() => {
+      // appendLayout({
+      //   name: 'ZDragFormStart'
+      // }, {
+      //   style: {
+      //     // height: 0
+      //   },
+      //   className: {
+      //     'form-first-item': true
+      //   }
+      // })
+    })
+
     return {
       list1ItemCls,
       state,
@@ -484,11 +665,15 @@ export default {
       onDragMove,
       onLayoutSelfDragEnter,
       onLayoutDragEnter,
+      onChangedLayout,
+      onDragEnd,
       onClearIndex,
       testId1: TEST1_ID,
       testId2: TEST2_ID,
       onDropEnd,
-      onMouseMove
+      onMouseMove,
+      treeState,
+      handleNodeClick,
     }
   }
 }

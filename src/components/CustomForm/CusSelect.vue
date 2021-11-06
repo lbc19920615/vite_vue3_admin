@@ -135,7 +135,7 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods, listeners, init, parsedWidgetConfig, curFormCon, dxValueEval, selfpath, widgetConfig2 } = defineCustomRender(props, ctx)
+    let { data, methods, listeners, init, parsedWidgetConfig, buildOptions, curFormCon, dxValueEval, selfpath, widgetConfig2 } = defineCustomRender(props, ctx)
     let state = data()
     init(props)
 
@@ -143,24 +143,6 @@ export default {
 
     // console.log(widgetConfig2)
 
-    function buildOptions() {
-      let options = dxValueEval(widgetConfig2.enums)
-      if (!options) {
-        options = []
-      } else {
-        options = ZY.JSON5.parse(ZY.JSON5.stringify(options))
-      }
-
-      if (widgetConfig2.options2) {
-        try {
-          let opt = ZY.JSON5.parse(widgetConfig2.options2)
-          options = options.concat(opt)
-        } catch (e) {
-          //
-        }
-      }
-      return options
-    }
 
     function onSelectChange(e) {
       let defs = toRaw(props.defs)

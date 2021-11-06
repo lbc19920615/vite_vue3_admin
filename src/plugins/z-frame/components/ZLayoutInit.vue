@@ -1,7 +1,7 @@
 <style lang="scss">
 .z-drag-layout {
   border-bottom: 1px solid #e0e0e0;
-  padding: 5px;
+  padding: 10px;
 }
 .z-drag-layout__column {
   box-sizing: border-box;
@@ -58,7 +58,7 @@
 <script>
 import RenderDom from "@/components/renderDom.vue";
 import draggable from 'vuedraggable'
-import {h, nextTick, reactive} from "vue";
+import {h, nextTick, reactive, toRaw} from "vue";
 import {DATA_LAYOUT_ITEM_UUID_KEY, DATA_LAYOUT_UUID_KEY, DATA_UUID_KEY} from "@/vars";
 import Sortable from 'sortablejs';
 
@@ -157,6 +157,9 @@ export default {
             // console.log(uuids)
             rebuildDefs(uuids, columnIndex)
             ctx.emit('clear-index')
+            ctx.emit('drag-end', {
+              columnIndex
+            })
           })
           // console.log('evt', el, uuids)
         }
@@ -305,6 +308,7 @@ export default {
             // buildItems(columnIndex)
             genUUIDS(columnIndex)
             rebuildSortAble(columnIndex)
+            ctx.emit('changed')
             // let uuids = buildUUIDS(columnIndex)
           })
         } else {
@@ -390,6 +394,19 @@ export default {
       return []
     }
 
+    function getChildren() {
+      let defs = toRaw(state.defs).filter(v => {
+        return v.length > 0
+      }).map((column, columnIndex) => {
+        return {
+          label: 'column' + columnIndex,
+          children: column
+        }
+      })
+      // console.log('sdsdsdsdsdsds', defs)
+      return defs
+    }
+
     return {
       state,
       layoutUUID,
@@ -398,6 +415,7 @@ export default {
       getColumnID,
       getUUIDS,
       onLoaded,
+      getChildren,
       onDragLeave,
       initGrid,
       findCom,

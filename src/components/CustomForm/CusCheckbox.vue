@@ -6,7 +6,7 @@
                        v-bind="widgetConfig"
                        v-on="listeners"
     >
-      <el-checkbox v-for="(option, key) in dxValueTemplate(widgetConfig.enums)"
+      <el-checkbox v-for="(option, key) in buildOptions()"
                  :label="option.value"
       ></el-checkbox>
     </el-checkbox-group>
@@ -63,7 +63,7 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx, {
+    let { data, methods, listeners, init, widgetConfig2, buildOptions } = defineCustomRender(props, ctx, {
       handleValueInit(v) {
         if (!Array.isArray(v)) {
           return []
@@ -80,6 +80,7 @@ export default {
     return {
       state,
       widgetConfig,
+      buildOptions,
       methods,
       listeners,
     }
