@@ -225,7 +225,7 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
 
 
     function buildOptions() {
-        console.log(widgetConfig2)
+        // console.log(widgetConfig2)
         let options = dxValueEval(widgetConfig2.enums)
         if (!options) {
             options = []

@@ -1,6 +1,13 @@
 <style lang="scss">
 .z-drag-layout {
-  border-bottom: 1px solid #e0e0e0;
+  //border-bottom: 1px solid #e0e0e0;
+  &::after {
+    content: '';
+    display: block;
+    height: 1px;
+    background-color: #e0e0e0;
+    width: 100%;
+  }
   padding: 10px;
 }
 .z-drag-layout__column {

@@ -195,7 +195,7 @@ $first-last-with: $element-list-item-g * $row-item-length - $element-list-item-x
   width: calc(100% - #{$element-list-item-g * 2} - 2px);
 
   margin-bottom: 15px;
-  border: 1px solid #eeeeee;
+  border: 1px solid #d1dbe5;
   border-radius: 4px;
   font-size: 13px;
   line-height:  var(--element-list-item-h);

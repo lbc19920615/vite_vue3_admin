@@ -8,7 +8,7 @@
 //  height: 50px;
 //}
 [z-drag-start] {
-  //border-bottom: 1px dashed transparent;
+  border-bottom: 1px dashed transparent;
   //&:hover {
   //  border-bottom-color: #0d84ff;
   //}
@@ -51,33 +51,39 @@
 <!--    {{state}}-->
     <el-row>
       <el-col :span="8" >
-        <div>
-          <el-tree default-expand-all
-              :data="treeState.data" :props="treeState.defaultProps" @node-click="handleNodeClick" />
-        </div>
-        <el-scrollbar height="60vh">
-          <draggable
-              class="dragArea g-list-group"
-              v-model="state.components"
-              @start="onDropStart"
-              @end="onDropEnd"
-              :group="{ name: 'people', pull: 'clone', put: false }"
-              :sort="false"
-              item-key="id"
-              tag="el-row"
-              style="align-items: flex-start; flex-wrap: wrap;"
-          >
-            <template #item="{element}">
-              <el-col class="g-list-group-item"
-                      :class="list1ItemCls(element)"
-                      :span="12"
-                      :data-name="element.name"
-                      :data-column-max="element.columnMax"
-              ><div
-                  class="g-list-group-item__element" v-html="element.label"></div></el-col>
-            </template>
-          </draggable>
-        </el-scrollbar>
+        <xy-tab>
+          <xy-tab-content label="组件">
+            <el-scrollbar height="30vh">
+            <draggable
+                class="dragArea g-list-group"
+                v-model="state.components"
+                @start="onDropStart"
+                @end="onDropEnd"
+                :group="{ name: 'people', pull: 'clone', put: false }"
+                :sort="false"
+                item-key="id"
+                tag="el-row"
+                style="align-items: flex-start; flex-wrap: wrap;"
+            >
+              <template #item="{element}">
+                <el-col class="g-list-group-item"
+                        :class="list1ItemCls(element)"
+                        :span="12"
+                        :data-name="element.name"
+                        :data-column-max="element.columnMax"
+                ><div
+                    class="g-list-group-item__element" v-html="element.label"></div></el-col>
+              </template>
+            </draggable>
+            </el-scrollbar>
+          </xy-tab-content>
+          <xy-tab-content label="结构">
+            <el-scrollbar height="30vh">
+              <el-tree default-expand-all
+                       :data="treeState.data" :props="treeState.defaultProps" @node-click="handleNodeClick" />
+            </el-scrollbar>
+          </xy-tab-content>
+        </xy-tab>
       </el-col>
       <el-col :id="playgroundId"
               style="border: 1px solid #eee;"
@@ -282,12 +288,18 @@ export default {
       let el = getPlaygroundDOM()
       if (el) {
         let zs = Array.of(...el.children)
-        let uuids = zs.map(dom => {
-          return dom.getAttribute(Z_UUID_KEY)
-        })
-        // console.log(uuids)
-        state.uuids = uuids
-        return uuids
+        if (zs.length > 1) {
+          let df = zs.slice(1)
+          let uuids = df.filter(v => {
+            return true
+          }).map(dom => {
+            return dom.getAttribute(Z_UUID_KEY)
+          })
+          // console.log(uuids)
+          state.uuids = uuids
+          return uuids
+        }
+        return []
       }
       return []
     }
@@ -309,6 +321,7 @@ export default {
         // console.log(uuid, index)
       })
       state.layouts = layouts
+      console.log(uuids, state.layouts)
     }
 
     let sortable;
