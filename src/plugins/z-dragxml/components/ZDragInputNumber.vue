@@ -14,6 +14,10 @@ export default {
   name: 'ZDragInput',
   components: {CusInput},
   ZDragXmlCom: true,
+  DRAG_CONFIG() {
+    return {
+    }
+  },
   DRAG_DATASET() {
     return {
       columnMax: 1

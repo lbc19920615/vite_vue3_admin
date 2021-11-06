@@ -15,6 +15,10 @@ export default {
   name: 'ZDragRadio',
   components: {CusRadio},
   ZDragXmlCom: true,
+  DRAG_CONFIG() {
+    return {
+    }
+  },
   DRAG_DATASET() {
     return {
       columnMax: 1

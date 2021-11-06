@@ -15,6 +15,10 @@ export default {
   mixins: [
       ZDragCommonMixin
   ],
+  DRAG_CONFIG() {
+    return {
+    }
+  },
   DRAG_SUB_FORM: true,
   DRAG_DATASET() {
     return {

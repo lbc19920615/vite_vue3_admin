@@ -81,7 +81,9 @@
             <el-scrollbar height="30vh">
               <el-tree default-expand-all
                        :data="treeState.data" :props="treeState.defaultProps"
-                       @node-click="handleNodeClick" />
+                       @node-click="handleNodeClick"
+              :expand-on-click-node="false"
+              />
             </el-scrollbar>
           </xy-tab-content>
         </xy-tab>
@@ -121,6 +123,7 @@
       </el-col>
       <el-col :span="6">
         <template v-if="treeState.current && treeState.current.uuid">
+          {{treeState.current.origin.com}}
           <el-button @click="changeConfig(treeState.current)">修改</el-button>
         </template>
 <!--        {{treeState.current}}-->
