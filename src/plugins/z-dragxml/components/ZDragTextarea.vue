@@ -17,6 +17,11 @@ export default {
   mixins: [
       ZDragCommonMixin
   ],
+  DRAG_CONFIG() {
+    return {
+      com: 'CusInput'
+    }
+  },
   DRAG_DATASET() {
     return {
       columnMax: 1

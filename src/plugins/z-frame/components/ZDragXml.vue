@@ -80,7 +80,8 @@
           <xy-tab-content label="结构">
             <el-scrollbar height="30vh">
               <el-tree default-expand-all
-                       :data="treeState.data" :props="treeState.defaultProps" @node-click="handleNodeClick" />
+                       :data="treeState.data" :props="treeState.defaultProps"
+                       @node-click="handleNodeClick" />
             </el-scrollbar>
           </xy-tab-content>
         </xy-tab>
@@ -582,7 +583,7 @@ export default {
     function buildTree() {
       if (Array.isArray(state.layouts)) {
         // console.log(state.layouts)
-        return state.layouts.map(layout => {
+        let result = state.layouts.map(layout => {
           // console.log(layout, state.layoutsMap)
           let ret = {
             label: 'item',
@@ -635,6 +636,8 @@ export default {
           }
           return ret
         })
+        // console.log(result)
+        return result
       }  else {
         return []
       }
@@ -653,10 +656,17 @@ export default {
     }
 
     function handleNodeClick(e) {
-      console.log('handleNodeClick', e)
+      // console.log('handleNodeClick', e)
+      let {config = {}} = e
       treeState.current = {
         origin: e
       }
+      if (config.com) {
+        let def = CustomVueComponent.resolve(config.com)
+        treeState.current.cusEditor =  def.CUS_EDITOR()
+      }
+      console.log(treeState.current)
+
     }
 
     onMounted(() => {

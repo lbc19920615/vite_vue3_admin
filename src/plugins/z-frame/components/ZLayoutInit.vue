@@ -263,9 +263,9 @@ export default {
      */
     function buildAppend(columnIndex) {
       return function append(com, trueDom) {
-        // console.log(trueDom)
         let child = state.doms[columnIndex]
         let def = state.defs[columnIndex]
+        let config =  com?.DRAG_CONFIG()?? {}
         if (def.length < props.columnMax) {
           let itemUUID =  ZY.rid()
           let instanse = buildInstanse(com, itemUUID, columnIndex)
@@ -276,6 +276,7 @@ export default {
             },
             itemUUID,
             com,
+            config
             // instanse,
             // buildInstanse
           }
