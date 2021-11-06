@@ -9,6 +9,7 @@
     width: 100%;
   }
   padding: 10px;
+  padding-top: 0;
 }
 .z-drag-layout__column {
   box-sizing: border-box;

@@ -32,6 +32,7 @@ export default {
       id: ZY.rid(6),
       ui: {
         widgetConfig: {
+          type: 'number'
         }
       }
     }
