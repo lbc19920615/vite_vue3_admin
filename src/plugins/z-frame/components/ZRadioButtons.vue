@@ -29,6 +29,9 @@ export default defineComponent({
     modelValue: null,
     options: Array
   },
+  emits: [
+    'val-change'
+  ],
   watch: {
     modelValue: {
       handler(newVal) {
@@ -53,6 +56,7 @@ export default defineComponent({
     },
     onChange(e) {
       this.$emit('change', this.radio)
+      this.$emit('val-change', this.radio)
     }
   }
 })

@@ -1,3 +1,5 @@
+import deepMerge from 'deepmerge'
+
 function createSuggestSelectWidget(enums = []) {
   let suggest = enums.map(v => {
     if (Array.isArray(v)) {
@@ -22,6 +24,12 @@ function createSuggestSelectWidget(enums = []) {
       suggest: suggest
     }
   }
+}
+
+export function setPROPS(...args) {
+  return deepMerge(
+    ...args
+  )
 }
 
 /**

@@ -154,7 +154,8 @@
       </el-col>
       <el-col :span="8">
         <template v-if="treeState.current && treeState.current.uuid">
-          {{treeState.current.origin.com}}
+<!--          {{treeState.current.origin.com}}-->
+          <z-common-attrs @common-change="onCommonModelChange"></z-common-attrs>
           <z-http-com :resolve-config="resolveConfig"
                       @http:model:change="onModelChange"
           ></z-http-com>
@@ -179,11 +180,13 @@ import Sortable from 'sortablejs';
 import mitt from "mitt";
 import ZHttpCom from "@/plugins/z-frame/components/ZHttpCom.vue";
 import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusWidgetEditor/createConfig";
+import ZCommonAttrs from "@/plugins/z-frame/components/ZCommonAttrs.vue";
 
 
 export default {
   name: 'ZDragXml',
   components: {
+    ZCommonAttrs,
     ZHttpCom,
     ZLayoutInit,
     RenderDom,
@@ -817,7 +820,8 @@ export default {
       let {config = {}} = e
       treeState.current = {
         origin: e,
-        uuid: e.itemUUID
+        uuid: e.itemUUID,
+        ext: {}
       }
       if (config.com) {
         let def = CustomVueComponent.resolve(config.com)
@@ -840,7 +844,9 @@ export default {
       let origin = current.origin
       let com = origin.com
       console.log(com.DRAG_CONFIG)
-      let widgetConfigProps = {}
+      let widgetConfigProps = {
+
+      }
       let properties = {
         name: {
           type: 'string'
@@ -892,8 +898,36 @@ export default {
       if (widgetFormLocks) {
 
       } else {
-       console.log(model)
-        DRAG_INSTANSE.setConfig(treeState.current.uuid, model)
+        // console.log(model, treeState.current.ext)
+        DRAG_INSTANSE.setConfig(treeState.current.uuid, {
+          ins: model,
+          common: treeState.current.ext
+        })
+      }
+    }
+
+
+    function onCommonModelChange(e) {
+      treeState.current.ext = e
+      let config = DRAG_INSTANSE.getConfig(treeState.current.uuid)
+      if (config) {
+        if (typeof config.common !== 'undefined') {
+          lodash.each(config.common, function (item, key) {
+            Reflect.deleteProperty(config.common, key)
+          })
+          lodash.each(e,function (item, key) {
+            config.common[key] = item
+          })
+        } else {
+          config.common = e
+        }
+        // console.log('onCommonModelChange', config)
+        DRAG_INSTANSE.setConfig(treeState.current.uuid, config)
+      } else {
+        DRAG_INSTANSE.setConfig(treeState.current.uuid, {
+          ins: {},
+          common: e
+        })
       }
     }
 
@@ -930,6 +964,7 @@ export default {
       treeState,
       removeTreeNode,
       resolveConfig,
+      onCommonModelChange,
       onModelChange,
       changeConfig,
       handleNodeClick,

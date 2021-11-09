@@ -15,7 +15,7 @@ export default {
   components: {CusInput},
   ZDragXmlCom: true,
   DRAG_CONFIG() {
-    console.log(CusInput)
+    // console.log(CusInput)
     return CusInput.CUS_EDITOR()
   },
   DRAG_DATASET() {

@@ -112,11 +112,24 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     let data = function (opt) {
         model = reactive({
             value: '',
+            OPT: {
+                ui:   props?.ui ?? {},
+                widgetConfig: props?.ui?.widgetConfig ?? {}
+            },
             ...opt
         })
         return model
     }
     let events = props.ui.events ? props.ui.events : {};
+
+    watch(() => props.ui, function (newVal) {
+        console.log('props ui change', newVal)
+        if (model && model.OPT) {
+            model.OPT.ui = newVal
+            model.OPT.widgetConfig = newVal?.widgetConfig ?? {}
+        }
+    })
+
 
     let parsedWidgetConfig = props?.ui?.widgetConfig ?? {}
     // console.log(parsedWidgetConfig)

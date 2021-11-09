@@ -1,8 +1,18 @@
 <template>
   <div class="z-dragxml-com">
-    {{ui_config}}
-    <z-cell-item :vertical="true" :label="id">
-      <cus-input :ui="ui"></cus-input>
+<!--    {{ui_config_editor}}-->
+<!--    <div>-->
+<!--      {{cus_config}}-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      {{GET_CONFIG('ui.label', '')}}-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      {{GET_CONFIG('ui', {})}}-->
+<!--    </div>-->
+    <z-cell-item :vertical="true"
+                 :label="GET_CONFIG('ui.label', '')">
+      <cus-input :ui="cus_config.ui"></cus-input>
     </z-cell-item>
   </div>
 </template>
@@ -19,9 +29,7 @@ export default {
       ZDragCommonMixin
   ],
   DRAG_CONFIG() {
-    return {
-      com: 'CusInput'
-    }
+    return CusInput.CUS_EDITOR()
   },
   DRAG_DATASET() {
     return {

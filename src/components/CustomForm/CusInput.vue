@@ -1,10 +1,10 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-    <!--{{state}}-->
+<!--    {{state.OPT}}-->
     <el-input
         v-model="state.value"
-        v-bind="widgetConfig"
+        v-bind="state.OPT.widgetConfig"
         v-on="listeners"
     ></el-input>
   </template>
@@ -13,6 +13,8 @@
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import {createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
+import {QuickNumber, setPROPS} from "@/hooks/props";
+
 
 export default {
   name: 'CusInput',
@@ -49,7 +51,7 @@ export default {
           ui: {
             label: '最大长度',
             notice: ''
-          }
+          },
         },
         showWordLimit: {
           type: 'boolean',
@@ -64,12 +66,20 @@ export default {
             type: 'any'
           }
         },
-        rows: {
-          type: 'number',
-          ui: {
-            label: '行数',
-          }
-        },
+        // rows: {
+        //   type: 'number',
+        //   ui: {
+        //     label: '行数',
+        //   }
+        // },
+        rows: setPROPS(
+            QuickNumber() ?? {},
+            {
+              ui: {
+                label: '行数',
+              }
+            }
+        ),
         prefixIcon: {
           type: 'string',
           ui: {
