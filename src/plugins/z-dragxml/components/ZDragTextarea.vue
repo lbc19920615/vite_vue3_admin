@@ -29,7 +29,9 @@ export default {
       ZDragCommonMixin
   ],
   DRAG_CONFIG() {
-    return CusInput.CUS_EDITOR()
+    let obj = CusInput.CUS_EDITOR() ?? { props: {} }
+    Reflect.deleteProperty(obj.props, 'type')
+    return obj
   },
   DRAG_DATASET() {
     return {

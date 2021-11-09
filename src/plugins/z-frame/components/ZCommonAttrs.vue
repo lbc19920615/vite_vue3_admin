@@ -20,14 +20,16 @@
 
 <script>
 import ZRadioButtons from "@/plugins/z-frame/components/ZRadioButtons.vue";
-import {reactive} from "vue";
+import {reactive, toRaw} from "vue";
 export default {
   name: "ZCommonAttrs",
   emits: [
     'common-change'
   ],
   components: {ZRadioButtons},
-
+  props: {
+    value: null
+  },
   setup(props, ctx) {
     let commonOptions = [
       {
@@ -48,9 +50,13 @@ export default {
       },
     ]
 
-    let state = reactive({
-      common_state: ''
-    })
+
+    let def = {
+      common_state: '',
+      ...props.value
+    }
+    console.log('props', props.value)
+    let state = reactive(def)
 
     function onCommonChange(v) {
       // ZY.lodash.each(clonedValue.data, function (item, key) {
@@ -63,11 +69,11 @@ export default {
       //   }
       // })
       // console.log('sdsds')
-      let base_ret = {}
-      if (v) {
-        base_ret[v] = v
-      }
-      ctx.emit('common-change', base_ret)
+      // let base_ret = {}
+      // if (v) {
+      //   base_ret[v] = v
+      // }
+      ctx.emit('common-change', toRaw(state))
     }
 
     return {

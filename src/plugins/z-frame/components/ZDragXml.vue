@@ -153,9 +153,12 @@
         ></z-layout-init>
       </el-col>
       <el-col :span="8">
-        <template v-if="treeState.current && treeState.current.uuid">
+        <template v-if="treeState.current && treeState.current.uuid && treeState.showCurrent">
 <!--          {{treeState.current.origin.com}}-->
-          <z-common-attrs @common-change="onCommonModelChange"></z-common-attrs>
+<!--          {{get_current_config('common', {})}}-->
+          <z-common-attrs
+              :value="get_current_config('common', {})"
+              @common-change="onCommonModelChange"></z-common-attrs>
           <z-http-com :resolve-config="resolveConfig"
                       @http:model:change="onModelChange"
           ></z-http-com>
@@ -181,6 +184,7 @@ import mitt from "mitt";
 import ZHttpCom from "@/plugins/z-frame/components/ZHttpCom.vue";
 import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusWidgetEditor/createConfig";
 import ZCommonAttrs from "@/plugins/z-frame/components/ZCommonAttrs.vue";
+import {setPROPS} from "@/hooks/props";
 
 
 export default {
@@ -257,7 +261,8 @@ export default {
         children: 'children',
         label: 'label',
       },
-      current: {}
+      current: {},
+      showCurrent: false
     })
 
     function buildTreeChild(child = []) {
@@ -821,8 +826,12 @@ export default {
       treeState.current = {
         origin: e,
         uuid: e.itemUUID,
-        ext: {}
+        ext: {},
       }
+      treeState.showCurrent = false
+      setTimeout(() => {
+        treeState.showCurrent = true
+      }, 300)
       if (config.com) {
         let def = CustomVueComponent.resolve(config.com)
         treeState.current.cusEditor =  def.CUS_EDITOR()
@@ -843,14 +852,11 @@ export default {
       let current  = treeState.current
       let origin = current.origin
       let com = origin.com
-      console.log(com.DRAG_CONFIG)
+      // console.log(com.DRAG_CONFIG)
       let widgetConfigProps = {
 
       }
       let properties = {
-        name: {
-          type: 'string'
-        },
         ui: {
           type: 'object',
           properties: {
@@ -862,7 +868,15 @@ export default {
               properties: widgetConfigProps
             }
           }
-        }
+        },
+        server: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string'
+            }
+          }
+        },
       }
       if (com.DRAG_CONFIG) {
         let _config  = com.DRAG_CONFIG() ?? {}
@@ -878,16 +892,21 @@ export default {
         },
         properties,
       }
+      let _cached = DRAG_INSTANSE.getConfig(treeState.current.uuid)
+      let defaultVal = setPROPS({
+        ui: {
+          widgetConfig: {
+          }
+        },
+        server: {
+
+        }
+      }, _cached?.ins ?? {})
+      console.log(defaultVal)
       return {
         default: createCusWidgetEditorConfig(formDef,
             computed,
-            {
-              ui: {
-                widgetConfig: {
-
-                }
-              }
-            }
+            defaultVal
         )
       }
     }
@@ -916,6 +935,9 @@ export default {
             Reflect.deleteProperty(config.common, key)
           })
           lodash.each(e,function (item, key) {
+            if (key === 'common_state') {
+              config.common[item] = item
+            }
             config.common[key] = item
           })
         } else {
@@ -929,6 +951,12 @@ export default {
           common: e
         })
       }
+    }
+
+    function get_current_config(path, defaultVal) {
+      let config = DRAG_INSTANSE.getConfig(treeState.current.uuid)
+      let o = config ?? {}
+      return ZY.deepGet(o, path, defaultVal)
     }
 
     onMounted(() => {
@@ -964,6 +992,7 @@ export default {
       treeState,
       removeTreeNode,
       resolveConfig,
+      get_current_config,
       onCommonModelChange,
       onModelChange,
       changeConfig,
