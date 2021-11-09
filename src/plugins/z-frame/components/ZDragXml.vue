@@ -189,6 +189,7 @@ export default {
     const PLAY_ID = 'playground__' + ZY.rid(6)
     const TEST1_ID = 'test1__' + ZY.rid(6)
     const TEST2_ID = 'test2__' + ZY.rid(6)
+    let lodash = ZY.lodash
     let JSON5 = ZY.JSON5
     let originalEvent = {
     }
@@ -200,7 +201,6 @@ export default {
       isDragging: false,
       disableDrag: false,
       tree: [],
-      // renderDom: [],
       layouts: [],
       layoutsMap: {},
       layoutRefs: {},
@@ -602,8 +602,8 @@ export default {
       function handleButtonClick() {
         // console.log(trueDom)
         if (trueDom.hasAttribute('z-uuid')) {
-          let uuid = trueDom.getAttribute('z-uuid')
-          removeLayout(uuid)
+          // let con_uuid = trueDom.getAttribute('z-uuid')
+          // removeLayout(con_uuid)
         }
         else {
           let trueDom_uuid = app.findUUIDfromClassList(trueDom)
@@ -614,14 +614,14 @@ export default {
           if (context) {
             currentInspectContext = context.findCom(trueDom_uuid, layout_item_uuid)
             if (currentInspectContext.con_uuid) {
-              console.log(state.layouts.map(v => v.uuid), currentInspectContext.con_uuid)
+              // console.log(state.layouts.map(v => v.uuid), currentInspectContext.con_uuid)
               // let index = state.layouts.findIndex(v => {
               //   return v.uuid === currentInspectContext.con_uuid
               // })
               // if (index > -1) {
               //   console.log(state.layouts[index])
               // }
-              removeLayout(currentInspectContext.con_uuid)
+              removeLayout(currentInspectContext.con_uuid, currentInspectContext)
             }
             // console.log(currentInspectContext, context, state.layouts)
           }
@@ -711,22 +711,31 @@ export default {
       // console.log(e.target)
     }
 
-    function removeLayout(uuid) {
+    /**
+     *
+     * @param con_uuid
+     * @param data
+     */
+    function removeLayout(con_uuid, data = {}) {
       let index = state.layouts.findIndex(v => {
-        return v.uuid === uuid
+        return v.uuid === con_uuid
       })
+      console.log(state.uuids, con_uuid, index, data)
       if (index > -1) {
+        if (data && data.itemUUID) {
+          DRAG_INSTANSE.delConfig(data.itemUUID)
+        }
         let layout = state.layouts[index]
-        let layouMapItem = state.layoutsMap[uuid]
+        let layouMapItem = state.layoutsMap[con_uuid]
         let layoutUUID = layouMapItem.layoutUUID
         let layoutRef = state.layoutRefs[layoutUUID]
         Reflect.deleteProperty(state.layoutRefs, layoutUUID)
-        Reflect.deleteProperty(state.layoutsMap, uuid)
+        Reflect.deleteProperty(state.layoutsMap, con_uuid)
         state.layouts.splice(index, 1)
         buildUUIDS()
         reloadTree()
-        console.log(state.uuids)
-        console.log(layout, layouMapItem, layoutRef)
+        console.log(dragConfig)
+        // console.log(layout, layouMapItem, layoutRef)
       }
     }
 
@@ -748,8 +757,18 @@ export default {
     }
 
     function removeTreeNode(node, data) {
-      console.log('removeTreeNode', node, data)
-      removeLayout(data.con_uuid)
+      let {com = {}} = data
+      console.log('removeTreeNode', node, data, com)
+      if (!lodash.isEmpty(node.childNodes)) {
+      // 子表单
+        lodash.each(node.childNodes, (childNode) => {
+          console.log(childNode)
+        })
+      }
+      else {
+        removeLayout(data.con_uuid, data)
+      }
+
     }
 
 
