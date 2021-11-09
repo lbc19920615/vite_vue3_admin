@@ -11,11 +11,11 @@
 
 <script>
 import {ZDragCommonMixin} from "@/plugins/z-dragxml/mixins";
-import CusInput from "@/components/CustomForm/CusInput.vue";
+import CusSelect from "@/components/CustomForm/CusSelect.vue";
 
 export default {
-  name: 'ZDragInput',
-  components: {CusInput},
+  name: 'ZDragSelect',
+  components: {CusSelect},
   ZDragXmlCom: true,
   DRAG_CONFIG() {
     let obj = CusInput.CUS_EDITOR() ?? { props: {} }
@@ -29,8 +29,8 @@ export default {
   },
   DRAG_LABEL_XML() {
     return `<div class="z-dragxml-row">
-<svg t="1636083425081" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2423" width="16" height="16"><path d="M118.784 727.04h778.24V296.96h-778.24v430.08zM77.824 256h860.16v512H77.824V256zM194.56 409.6v204.8c0 12.288 8.192 20.48 20.48 20.48s20.48-8.192 20.48-20.48V409.6c0-12.288-8.192-20.48-20.48-20.48s-20.48 8.192-20.48 20.48z" p-id="2424"></path></svg>
-<div class="z-dragxml-label__name">单行输入框</div>
+<svg t="1636443423038" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5983" width="16" height="16"><path d="M705.248 600.672l169.408-175.776h-56.48l-112.928 117.184-112.928-117.184h-56.448z" p-id="5984"></path><path d="M40 249.12v527.296h946.72V249.12H40z m58.592 58.592h829.536v410.112H98.592V307.712z" p-id="5985"></path></svg>
+<div class="z-dragxml-label__name">选择</div>
 </div>`
   },
   mixins: [
