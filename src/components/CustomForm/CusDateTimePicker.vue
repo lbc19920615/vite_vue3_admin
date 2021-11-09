@@ -23,7 +23,7 @@ export default {
       props: {
         ...createBaseCusCONFIG(),
         type: {
-          type: String,
+          type: 'string',
           ui: {
             label: '类型',
             widget: 'CusSuggest',
@@ -46,7 +46,7 @@ export default {
           }
         },
         format: {
-          type: String,
+          type: 'string',
           ui: {
             label: '格式化'
           }

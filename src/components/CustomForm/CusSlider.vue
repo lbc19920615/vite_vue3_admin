@@ -25,7 +25,7 @@ export default {
     return {
       props: {
         min: {
-          type: Number,
+          type: 'number',
           ui: {
             label: '最小',
             widgetConfig: {
@@ -34,7 +34,7 @@ export default {
           }
         },
         max: {
-          type: Number,
+          type: 'number',
           ui: {
             label: '最大',
             widgetConfig: {
@@ -43,7 +43,7 @@ export default {
           }
         },
         step: {
-          type: Number,
+          type: 'number',
           ui: {
             label: '步数',
             widgetConfig: {

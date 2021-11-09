@@ -2,7 +2,7 @@ import * as constVars from "@/plugins/form-render/const";
 
 export function createAbleProp({label}) {
   return  {
-    type: Boolean,
+    type: 'boolean',
     ui: {
       label: '是否' + label,
       widgetConfig:  {
@@ -19,7 +19,7 @@ export function createAbleProp({label}) {
 export function createBaseCusCONFIG() {
   let ret = {
     placeholder: {
-      type: String,
+      type: 'string',
       ui: {
         label: '占位提示',
       }
@@ -41,7 +41,7 @@ export function createBaseCusEnumsCONFIG() {
   )
   let ret = {
     options2: {
-      type: String,
+      type: 'string',
       ui: {
         label: '选项',
         widget: 'CusOptManager',
@@ -51,7 +51,7 @@ export function createBaseCusEnumsCONFIG() {
       }
     },
     enums: {
-      type: String,
+      type: 'string',
       ui: {
         label: '枚举',
         notice: '是否可以清除',
@@ -63,7 +63,7 @@ export function createBaseCusEnumsCONFIG() {
       computedProp: 'enums_content'
     },
     enums2: {
-      type: String,
+      type: 'string',
       ui: {
         label: '枚举',
         notice: `枚举可以使用的方法

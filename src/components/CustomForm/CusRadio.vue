@@ -30,7 +30,7 @@ export default {
         ...createBaseCusCONFIG(),
         ...createBaseCusEnumsCONFIG(),
         clearable: {
-          type: Boolean,
+          type: 'boolean',
           ui: {
             label: '是否清除',
             widgetConfig:  {

@@ -25,7 +25,7 @@ export default {
     return {
       props: {
         enums: {
-          type: String,
+          type: 'string',
           ui: {
             label: '枚举',
             notice: '枚举可以使用的方法 [sdsd](sdsds)'

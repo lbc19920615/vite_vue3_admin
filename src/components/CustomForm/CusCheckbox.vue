@@ -29,7 +29,7 @@ export default {
       props: {
         ...createBaseCusEnumsCONFIG(),
         clearable: {
-          type: Boolean,
+          type: 'boolean',
           ui: {
             label: '是否清除',
             widgetConfig:  {
@@ -39,7 +39,7 @@ export default {
           }
         },
         min: {
-          type: Number,
+          type: 'number',
           ui: {
             label: '最少选择数',
             widgetConfig: {
@@ -48,7 +48,7 @@ export default {
           }
         },
         max: {
-          type: Number,
+          type: 'number',
           ui: {
             label: '最多选择数',
             widgetConfig: {

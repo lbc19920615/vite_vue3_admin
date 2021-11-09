@@ -25,7 +25,7 @@ export default {
       props: {
         ...createBaseCusCONFIG(),
         clearable: {
-          type: Boolean,
+          type: 'boolean',
           ui: {
             label: '是否清除',
             widgetConfig:  {
@@ -38,21 +38,21 @@ export default {
           }
         },
         type: {
-          type: String,
+          type: 'string',
           ui: {
             label: '类型',
           },
           noticeIframe: `https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types`
         },
         maxlength: {
-          type: String,
+          type: 'string',
           ui: {
             label: '最大长度',
             notice: ''
           }
         },
         showWordLimit: {
-          type: Boolean,
+          type: 'boolean',
           ui: {
             label: '是否计数',
             widgetConfig:  {
@@ -65,19 +65,19 @@ export default {
           }
         },
         rows: {
-          type: Number,
+          type: 'number',
           ui: {
             label: '行数',
           }
         },
         prefixIcon: {
-          type: String,
+          type: 'string',
           ui: {
             label: '前面icon',
           }
         },
         suffixIcon: {
-          type: String,
+          type: 'string',
           ui: {
             label: '后面icon',
           }

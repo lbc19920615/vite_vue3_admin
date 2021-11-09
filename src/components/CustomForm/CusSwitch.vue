@@ -24,31 +24,31 @@ export default {
     return {
       props: {
         activeText: {
-          type: String,
+          type: 'string',
           ui: {
             label: '激活text'
           }
         },
         inactiveText: {
-          type: String,
+          type: 'string',
           ui: {
             label: '不激活text'
           }
         },
         activeValue: {
-          type: String,
+          type: 'string',
           ui: {
             label: '激活值'
           }
         },
         inactiveValue: {
-          type: String,
+          type: 'string',
           ui: {
             label: '不激活值'
           }
         },
         enums: {
-          type: String,
+          type: 'string',
           ui: {
             label: '枚举',
             notice: '枚举可以使用的方法 [sdsd](sdsds)'

@@ -13,7 +13,7 @@
     >
       <template #object_beforebegin="scope">
         <div>
-         <h3>{{scope.label}}</h3>
+         <h3>{{PATH_FORM_ARR(scope.pathArr)}}</h3>
          <slot name="z_http_com-object_beforebegin" v-bind="{scope, page}"></slot>
         </div>
       </template>
@@ -206,10 +206,16 @@ export default {
       }
     }
 
+   let PATH_FORM_ARR = function(pathArr = []) {
+      let path = ZY.getObjPathFromPathArr(pathArr)
+      return path
+    }
+
     return {
       EVENT_NAMES,
       getZWindowUrl,
       getNoticeFunRef,
+      PATH_FORM_ARR,
       page,
       cachedModel,
       store: page.store

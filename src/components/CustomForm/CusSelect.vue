@@ -46,7 +46,7 @@ export default {
         ...createBaseCusCONFIG(),
         ...createBaseCusEnumsCONFIG(),
         // template: {
-        //   type: String,
+        //   type: 'string,
         //   ui: {
         //     label: '模板',
         //     widgetConfig:  {
@@ -56,7 +56,7 @@ export default {
         // },
 
         template: {
-          type: String,
+          type: 'string',
           ui: {
             label: '模板',
             widgetConfig:  {
@@ -67,7 +67,7 @@ export default {
           computedProp: 'template2_jsx'
         },
         template2: {
-          type: String,
+          type: 'string',
           ui: {
             label: '模板',
             widget: 'CusJsxEditor',
@@ -76,7 +76,7 @@ export default {
           }
         },
         clearable: {
-          type: Boolean,
+          type: 'boolean',
           ui: {
             label: '是否清除',
             widgetConfig:  {
@@ -89,7 +89,7 @@ export default {
           }
         },
         filterable: {
-          type: Boolean,
+          type: 'boolean',
           ui: {
             label: '是否过滤',
             widgetConfig:  {
@@ -102,7 +102,7 @@ export default {
           }
         },
         multiple: {
-          type: Boolean,
+          type: 'boolean',
           ui: {
             label: '是否多选',
             widgetConfig:  {
@@ -115,7 +115,7 @@ export default {
           }
         },
         collapseTags: {
-          type: Boolean,
+          type: 'boolean',
           ui: {
             label: '是否折叠',
             widgetConfig:  {

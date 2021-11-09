@@ -28,7 +28,7 @@ export default {
           label: '清除'
         }),
         step: {
-          type: Number,
+          type: 'number',
           ui: {
             label: '步数',
             widgetConfig: {
@@ -37,7 +37,7 @@ export default {
           }
         },
         min: {
-          type: Number,
+          type: 'number',
           ui: {
             label: '最小',
             widgetConfig: {
@@ -46,7 +46,7 @@ export default {
           }
         },
         max: {
-          type: Number,
+          type: 'number',
           ui: {
             label: '步数',
             widgetConfig: {
@@ -55,7 +55,7 @@ export default {
           }
         },
         precision: {
-          type: Number,
+          type: 'number',
           ui: {
             label: '精度',
             widgetConfig: {

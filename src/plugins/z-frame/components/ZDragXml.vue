@@ -66,7 +66,7 @@
   <div class="z-drag-xml" >
 <!--    {{state}}-->
     <el-row>
-      <el-col :span="8" >
+      <el-col :span="6" >
         <xy-tab>
           <xy-tab-content label="组件">
             <el-scrollbar height="30vh">
@@ -152,10 +152,13 @@
             :class="item.class"
         ></z-layout-init>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="8">
         <template v-if="treeState.current && treeState.current.uuid">
           {{treeState.current.origin.com}}
-          <el-button @click="changeConfig(treeState.current)">修改</el-button>
+          <z-http-com :resolve-config="resolveConfig"
+                      @http:model:change="onModelChange"
+          ></z-http-com>
+<!--          <el-button @click="changeConfig(treeState.current)">修改</el-button>-->
         </template>
 <!--        {{treeState.current}}-->
       </el-col>
@@ -174,11 +177,14 @@ import ZLayoutInit from "@/plugins/z-frame/components/ZLayoutInit.vue";
 import {DATA_LAYOUT_ITEM_UUID_KEY, DATA_LAYOUT_UUID_KEY} from "@/vars";
 import Sortable from 'sortablejs';
 import mitt from "mitt";
+import ZHttpCom from "@/plugins/z-frame/components/ZHttpCom.vue";
+import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusWidgetEditor/createConfig";
 
 
 export default {
   name: 'ZDragXml',
   components: {
+    ZHttpCom,
     ZLayoutInit,
     RenderDom,
     JsxRender,
@@ -228,6 +234,9 @@ export default {
       },
       delConfig(key) {
         dragConfig.delete(key)
+      },
+      hasConfig(key) {
+        return dragConfig.has(key)
       },
       register(key, value) {
         DRAG_CONTEXT.set(key, value)
@@ -713,6 +722,16 @@ export default {
 
     /**
      *
+     * @param data
+     */
+    function clearConfig(data) {
+      if (data && data.itemUUID) {
+        DRAG_INSTANSE.delConfig(data.itemUUID)
+      }
+    }
+
+    /**
+     *
      * @param con_uuid
      * @param data
      */
@@ -722,10 +741,7 @@ export default {
       })
       console.log(state.uuids, con_uuid, index, data)
       if (index > -1) {
-        if (data && data.itemUUID) {
-          DRAG_INSTANSE.delConfig(data.itemUUID)
-        }
-        let layout = state.layouts[index]
+        // let layout = state.layouts[index]
         let layouMapItem = state.layoutsMap[con_uuid]
         let layoutUUID = layouMapItem.layoutUUID
         let layoutRef = state.layoutRefs[layoutUUID]
@@ -734,7 +750,6 @@ export default {
         state.layouts.splice(index, 1)
         buildUUIDS()
         reloadTree()
-        console.log(dragConfig)
         // console.log(layout, layouMapItem, layoutRef)
       }
     }
@@ -758,15 +773,27 @@ export default {
 
     function removeTreeNode(node, data) {
       let {com = {}} = data
-      console.log('removeTreeNode', node, data, com)
+      // console.log('removeTreeNode', node, data, com)
       if (!lodash.isEmpty(node.childNodes)) {
       // 子表单
         lodash.each(node.childNodes, (childNode) => {
-          console.log(childNode)
+          let childNodeData = childNode.data
+          // console.log(childNode, childNodeData)
+          clearConfig(childNodeData)
         })
+        clearConfig(data)
+        // console.log(dragConfig)
+        removeLayout(data.con_uuid, data)
       }
       else {
+        clearConfig(data)
         removeLayout(data.con_uuid, data)
+      }
+      if (treeState.current.uuid) {
+        // console.log(treeState.current.uuid, dragConfig)
+        if (!DRAG_CONTEXT.hasConfig(treeState.current.uuid)) {
+          treeState.current = {}
+        }
       }
 
     }
@@ -796,15 +823,78 @@ export default {
         let def = CustomVueComponent.resolve(config.com)
         treeState.current.cusEditor =  def.CUS_EDITOR()
       }
-      console.log(treeState.current)
+      // console.log(treeState.current)
 
     }
 
     function changeConfig(current) {
-      console.log('changeConfig', current)
       DRAG_INSTANSE.setConfig(current.uuid, {
         test: 1
       })
+
+      console.log('changeConfig', current, dragConfig)
+    }
+
+    async function resolveConfig() {
+      let current  = treeState.current
+      let origin = current.origin
+      let com = origin.com
+      console.log(com.DRAG_CONFIG)
+      let widgetConfigProps = {}
+      let properties = {
+        name: {
+          type: 'string'
+        },
+        ui: {
+          type: 'object',
+          properties: {
+            label: {
+              type: 'string'
+            },
+            widgetConfig: {
+              type: 'object',
+              properties: widgetConfigProps
+            }
+          }
+        }
+      }
+      if (com.DRAG_CONFIG) {
+        let _config  = com.DRAG_CONFIG() ?? {}
+        widgetConfigProps = Object.assign(widgetConfigProps, _config.props)
+      }
+      let computed = {}
+      let formDef = {
+        type: 'object',
+        ui: {
+          attrs: [
+            ['label-width', '100px']
+          ],
+        },
+        properties,
+      }
+      return {
+        default: createCusWidgetEditorConfig(formDef,
+            computed,
+            {
+              ui: {
+                widgetConfig: {
+
+                }
+              }
+            }
+        )
+      }
+    }
+
+    let widgetFormLocks = false
+    function onModelChange(e) {
+      let model = e.model ?? {}
+      if (widgetFormLocks) {
+
+      } else {
+       console.log(model)
+        DRAG_INSTANSE.setConfig(treeState.current.uuid, model)
+      }
     }
 
     onMounted(() => {
@@ -839,6 +929,8 @@ export default {
       onMouseMove,
       treeState,
       removeTreeNode,
+      resolveConfig,
+      onModelChange,
       changeConfig,
       handleNodeClick,
     }
