@@ -46,7 +46,11 @@
 <!--    </draggable>-->
 <!--  </el-row>-->
 
-<el-row class="z-drag-layout" :z-layout-uuid="layoutUUID"  layout-dom="layout-dom">
+<el-row class="z-drag-layout" :z-layout-uuid="layoutUUID"
+
+        layout-dom="layout-dom"
+        :id="initId"
+>
   <template v-for="(item, index) in state.column">
 <!--   <div> {{state.uuids[index]}}</div>-->
     <el-col class="z-drag-layout__item z-drag-layout__column"
@@ -66,7 +70,7 @@
 <script>
 import RenderDom from "@/components/renderDom.vue";
 import draggable from 'vuedraggable'
-import {h, nextTick, reactive, toRaw} from "vue";
+import {h, inject, nextTick, reactive, toRaw, provide, getCurrentInstance} from "vue";
 import {DATA_LAYOUT_ITEM_UUID_KEY, DATA_LAYOUT_UUID_KEY, DATA_UUID_KEY} from "@/vars";
 import Sortable from 'sortablejs';
 
@@ -90,8 +94,11 @@ export default {
     uuid: String
   },
   setup(props, ctx) {
+    let instanse = getCurrentInstance()
     const RENDER_DOM_CLS = 'render-dom-item'
     const DRAGENTER_ATTR = 'dragenter'
+
+    let initId = 'init___' + ZY.rid()
 
     let JSON5 = ZY.JSON5
     let sortable = null
@@ -126,6 +133,13 @@ export default {
       column: props.column,
       // items: initData()
     })
+
+
+    let dragxml = inject('dragxml')
+    function onMouseEnter(e) {
+      // console.log('onMouseEnter', e)
+      dragxml.onMouseEnter(e)
+    }
 
     function buildInstanse(com, itemUUID, columnIndex) {
       return h(com, {
@@ -423,10 +437,24 @@ export default {
       return defs
     }
 
+    provide('draginit', {
+      onMouseEnter() {
+        // console.log(initId)
+        let com = document.getElementById(initId)
+        if (com) {
+          onMouseEnter({
+            target: com
+          })
+        }
+      }
+    })
+
     return {
+      initId,
       state,
       layoutUUID,
       onDragEnter,
+      onMouseEnter,
       appendColumn,
       getColumnID,
       getUUIDS,

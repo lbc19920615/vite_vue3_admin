@@ -69,10 +69,10 @@ export default {
 
 
     function onStylesChange(e) {
-      console.log('onStylesChange', e)
+      // console.log('onStylesChange', e)
       // state.control.styles = e
       let options = ZY.JSON5.parse(e)
-      console.log(options)
+      // console.log(options)
       state.control = options.map(v => {
         return v.data
       })

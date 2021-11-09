@@ -123,7 +123,7 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     let events = props.ui.events ? props.ui.events : {};
 
     watch(() => props.ui, function (newVal) {
-        console.log('props ui change', newVal)
+        // console.log('props ui change', newVal)
         if (model && model.OPT) {
             model.OPT.ui = newVal
             model.OPT.widgetConfig = newVal?.widgetConfig ?? {}
@@ -238,8 +238,8 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
 
 
     function buildOptions() {
-        // console.log(widgetConfig2)
-        let options = dxValueEval(widgetConfig2.enums)
+        let _widget = model?.OPT?.widgetConfig ?? {}
+        let options = dxValueEval(_widget.enums)
         if (!options) {
             options = []
         } else {
@@ -247,14 +247,15 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
         }
 
 
-        if (widgetConfig2.options2) {
+        if (_widget.options2) {
             try {
-                let opt = ZY.JSON5.parse(widgetConfig2.options2)
+                let opt = ZY.JSON5.parse(_widget.options2)
                 options = options.concat(opt)
             } catch (e) {
                 //
             }
         }
+        // console.log(_widget, widgetConfig2)
         return options
     }
 

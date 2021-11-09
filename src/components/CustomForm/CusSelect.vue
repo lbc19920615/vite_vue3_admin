@@ -1,13 +1,14 @@
 <template>
   <div v-if="inited">
 <!--    {{parsedWidgetConfig}}-->
+<!--    {{buildOptions()}}-->
     <el-select
         v-model="state.value"
         v-on="listeners"
-        v-bind="widgetConfig"
+        v-bind="state.OPT.widgetConfig"
         @change="onSelectChange"
     >
-      <template   v-if="parsedWidgetConfig.template">
+      <template   v-if="state.OPT.widgetConfig.template">
         <el-option vs-for="(option, key) in options"
                    v-for="(option, key) in buildOptions()"
                    :label="option.label" :value="option.value"

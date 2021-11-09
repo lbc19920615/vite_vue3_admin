@@ -1,5 +1,7 @@
 <template>
-  <div class="z-dragxml-com">
+  <div class="z-dragxml-com"
+       @mouseenter.stop="callParentMoveEnter"
+  >
     <div>子表单</div>
   </div>
 </template>
@@ -38,6 +40,14 @@ export default {
         widgetConfig: {
           type: 'textarea'
         }
+      }
+    }
+  },
+  methods: {
+    callParentMoveEnter(e) {
+      // console.log(this.draginit, e)
+      if (this.draginit) {
+        this.draginit.onMouseEnter()
       }
     }
   }

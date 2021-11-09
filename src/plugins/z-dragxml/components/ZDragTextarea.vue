@@ -1,5 +1,5 @@
 <template>
-  <div class="z-dragxml-com">
+  <div class="z-dragxml-com"     @mouseenter.stop="onMouseEnter">
 <!--    {{ui_config_editor}}-->
     <div>
       {{cus_config}}

@@ -1,8 +1,8 @@
 <template>
-  <div class="z-dragxml-com">
-    <div>
-      {{GET_CONFIG('ui')}}
-    </div>
+  <div class="z-dragxml-com"     @mouseenter.stop="onMouseEnter">
+<!--    <div>-->
+<!--      {{GET_CONFIG('ui')}}-->
+<!--    </div>-->
     <z-cell-item :vertical="true"
                  :label="GET_CONFIG('ui.label', '')"
                  :desc="GET_CONFIG('ui.widgetConfig.common_desc', '')"

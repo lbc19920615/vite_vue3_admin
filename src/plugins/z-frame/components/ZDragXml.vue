@@ -49,6 +49,7 @@
     top: 0;
     pointer-events: all;
     font-size: 12px;
+    z-index: 1111111;
   }
 }
 [current-to-move=line] {
@@ -63,10 +64,34 @@
 </style>
 
 <template>
-  <div class="z-drag-xml" >
+  <div class="z-drag-xml" @mousemove="onMouseMove" >
 <!--    {{state}}-->
     <el-row>
       <el-col :span="6" >
+        <div style="max-height: 30vh">
+          <el-scrollbar max-height="30vh">
+            <el-tree default-expand-all class="custom-tree"
+                     :data="treeState.data" :props="treeState.defaultProps"
+                     @node-click="handleNodeClick"
+                     :expand-on-click-node="false"
+            >
+              <template #default="{ node, data }">
+                <el-row justify="space-between"
+                        class="custom-tree-node"
+
+                >
+                  <el-row align="middle">{{ node.label }}</el-row>
+                  <el-row align="middle">
+                    <el-button size="mini"
+                               type="danger"
+                               @click.stop="removeTreeNode(node, data)"> 删除 </el-button>
+                  </el-row>
+                </el-row>
+              </template>
+
+            </el-tree>
+          </el-scrollbar>
+        </div>
         <xy-tab>
           <xy-tab-content label="组件">
             <el-scrollbar height="30vh">
@@ -93,36 +118,13 @@
             </draggable>
             </el-scrollbar>
           </xy-tab-content>
-          <xy-tab-content label="结构">
-            <el-scrollbar height="30vh">
-              <el-tree default-expand-all class="custom-tree"
-                       :data="treeState.data" :props="treeState.defaultProps"
-                       @node-click="handleNodeClick"
-              :expand-on-click-node="false"
-              >
-                <template #default="{ node, data }">
-                  <el-row justify="space-between"
-                          class="custom-tree-node"
-
-                  >
-                    <el-row align="middle">{{ node.label }}</el-row>
-                    <el-row align="middle">
-                      <el-button size="mini"
-                                 type="danger"
-                                 @click.stop="removeTreeNode(node, data)"> 删除 </el-button>
-                    </el-row>
-                  </el-row>
-                </template>
-
-              </el-tree>
-            </el-scrollbar>
-          </xy-tab-content>
         </xy-tab>
       </el-col>
       <el-col :id="playgroundId"
               style="border: 1px solid #eee;"
               data-index="-1" test-play :span="10"
-              @dragover="onDragMove" @mouseover="onMouseMove"
+              @dragover="onDragMove"
+              @mouseleave="onMouseLeave"
 
       >
         <div style="height: 5px" z-drag-start>&nbsp;</div>
@@ -148,6 +150,7 @@
             @column-max-err="onClearIndex"
             @changed="onChangedLayout(item, $event)"
             @drag-end="onDragEnd(item, $event)"
+            @mouseleave.stop="onMouseLeave"
             :style="item.style"
             :class="item.class"
         ></z-layout-init>
@@ -159,9 +162,11 @@
           <z-common-attrs
               :value="get_current_config('common', {})"
               @common-change="onCommonModelChange"></z-common-attrs>
-          <z-http-com :resolve-config="resolveConfig"
-                      @http:model:change="onModelChange"
-          ></z-http-com>
+          <el-scrollbar height="60vh">
+            <z-http-com :resolve-config="resolveConfig"
+                        @http:model:change="onModelChange"
+            ></z-http-com>
+          </el-scrollbar>
 <!--          <el-button @click="changeConfig(treeState.current)">修改</el-button>-->
         </template>
 <!--        {{treeState.current}}-->
@@ -251,7 +256,16 @@ export default {
       unRegister(key) {
         DRAG_CONTEXT.delete(key)
       },
-      emitter
+      emitter,
+      onMouseEnter(e) {
+        let clone = createInspect(e.target, 'rect',  {
+          onMouseleave(e) {
+
+            test1Tool()
+          }
+        })
+        test1Tool(clone)
+      },
     }
     provide('dragxml', DRAG_INSTANSE)
 
@@ -613,14 +627,17 @@ export default {
      * 创建观察
      * @param trueDom
      * @param type
+     * @param options
      * @returns {HTMLElement | HTMLDivElement | any}
      */
-    function createInspect(trueDom, type) {
+    function createInspect(trueDom, type, options = {}) {
       function handleButtonClick() {
         // console.log(trueDom)
         if (trueDom.hasAttribute('z-uuid')) {
-          // let con_uuid = trueDom.getAttribute('z-uuid')
+          let con_uuid = trueDom.getAttribute('z-uuid')
+          let context = state.layoutsMap[con_uuid]
           // removeLayout(con_uuid)
+          console.log(context)
         }
         else {
           let trueDom_uuid = app.findUUIDfromClassList(trueDom)
@@ -638,7 +655,7 @@ export default {
               // if (index > -1) {
               //   console.log(state.layouts[index])
               // }
-              removeLayout(currentInspectContext.con_uuid, currentInspectContext)
+              console.log(currentInspectContext)
             }
             // console.log(currentInspectContext, context, state.layouts)
           }
@@ -657,6 +674,7 @@ export default {
       clone.style.left = client.left + 'px'
       // clone.style.top = (client.top - marginBottom) + 'px'
       clone.style.width = client.width + 'px'
+      clone.style.zIndex = 11111
       if (type === 'line') {
         clone.style.top = ( client.top + client.height + marginBottom) + 'px'
         clone.style.height = 1 + 'px'
@@ -664,6 +682,12 @@ export default {
       else if (type === 'rect') {
         clone.style.top = (client.top - marginBottom) + 'px'
         clone.style.height = (client.height + marginTop + marginBottom + 1) + 'px'
+
+        clone.addEventListener('mouseleave', function (e) {
+          if (options && options.onMouseleave) {
+            options.onMouseleave(e)
+          }
+        })
 
         let button = document.createElement('button')
         button.textContent = '编辑'
@@ -682,7 +706,7 @@ export default {
      * @param findDom
      */
     function inspcetDom(e, type = 'line', {
-      actionFun = test1Tool, findDom = getNestRenderDom
+      actionFun = test1Tool, findDom = getNestRenderDom, options = {}
     } = {}) {
       let playground = getPlaygroundDOM()
       currentToMove = fromPoint(e.pageX, e.pageY)
@@ -694,7 +718,7 @@ export default {
       //   trueDom = currentToMove
       // }
       if (trueDom) {
-        let clone = createInspect(trueDom, type)
+        let clone = createInspect(trueDom, type, options)
         actionFun(clone)
       }  else {
         actionFun()
@@ -708,6 +732,24 @@ export default {
       //   findDom: getLayoutRenderDom
       // })
       // clearTool()
+      let testId1DOM = document.getElementById(TEST1_ID)
+      let playground = getPlaygroundDOM()
+      currentToMove = fromPoint(e.pageX, e.pageY)
+      let trueDom = null
+      if (currentToMove && playground.contains(currentToMove)) {
+        // trueDom = findDom(currentToMove)
+        // console.log(trueDom)
+      }
+       else {
+         if (testId1DOM.contains(currentToMove)) {
+           // console.log('sdsdsds')
+         } else  {
+           // console.log(currentToMove, testId1DOM.children)
+           if (testId1DOM.children && testId1DOM.children.length > 0) {
+             test1Tool()
+           }
+         }
+      }
     }
 
     function onDragMove(e) {
@@ -959,6 +1001,10 @@ export default {
       return ZY.deepGet(o, path, defaultVal)
     }
 
+    function onMouseLeave() {
+      // test1Tool()
+    }
+
     onMounted(() => {
       // appendLayout({
       //   name: 'ZDragFormStart'
@@ -995,6 +1041,7 @@ export default {
       get_current_config,
       onCommonModelChange,
       onModelChange,
+      onMouseLeave,
       changeConfig,
       handleNodeClick,
     }

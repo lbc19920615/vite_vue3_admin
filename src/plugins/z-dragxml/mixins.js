@@ -1,7 +1,10 @@
 import deepMerge from 'deepmerge'
 
 export let ZDragCommonMixin = {
-  inject: ['dragxml'],
+  inject: ['dragxml', 'draginit'],
+  emits: [
+    'move-enter'
+  ],
   props: {
     layout_uuid: String,
     uuid: String
@@ -46,6 +49,13 @@ export let ZDragCommonMixin = {
     },
     GET_CONFIG(path, defaultVal) {
       return ZY.lodash.get(this.cus_config, path, defaultVal)
+    },
+    onMouseEnter(e) {
+      // console.log('onMouseEnter', e)
+      this.dragxml.onMouseEnter(e)
+    },
+    onMouseLeave(e) {
+
     }
   },
   mounted() {
