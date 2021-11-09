@@ -1,11 +1,11 @@
 <template>
   <div>
-<!--    <el-row align="middle" type="flex" class="a-space-mb-15">-->
-<!--      <div class="a-space-mr-10">描述</div>-->
-<!--      <el-input type="textarea" v-model="state.value.data.common_desc"-->
-<!--                @change="onCommonChange" style="width: 350px"-->
-<!--      ></el-input>-->
-<!--    </el-row>-->
+    <el-row align="middle" type="flex" class="a-space-mb-15">
+      <div class="a-space-mr-10">描述</div>
+      <el-input type="textarea" v-model="state.common_desc"
+                @change="onCommonChange" style="width: 350px"
+      ></el-input>
+    </el-row>
     <el-row align="middle" type="flex" class="a-space-mb-15">
       <div class="a-space-mr-10">状态</div>
       <ZRadioButtons
@@ -53,6 +53,7 @@ export default {
 
     let def = {
       common_state: '',
+      common_desc: '',
       ...props.value
     }
     console.log('props', props.value)

@@ -1,7 +1,10 @@
 <template>
   <div class="z-dragxml-com">
-    <z-cell-item :vertical="true" :label="id">
-      <cus-input :ui="ui"></cus-input>
+    <z-cell-item :vertical="true"
+                 :label="GET_CONFIG('ui.label', '')"
+                 :desc="GET_CONFIG('ui.widgetConfig.common_desc', '')"
+    >
+      <cus-input :ui="cus_config.ui"></cus-input>
     </z-cell-item>
   </div>
 </template>

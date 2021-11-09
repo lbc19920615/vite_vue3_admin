@@ -1,7 +1,13 @@
 <template>
   <div class="z-dragxml-com">
-    <z-cell-item :vertical="true" :label="id">
-      <cus-radio :ui="ui"></cus-radio>
+    <div>
+      {{GET_CONFIG('ui')}}
+    </div>
+    <z-cell-item :vertical="true"
+                 :label="GET_CONFIG('ui.label', '')"
+                 :desc="GET_CONFIG('ui.widgetConfig.common_desc', '')"
+    >
+      <cus-radio :ui="cus_config.ui"></cus-radio>
     </z-cell-item>
   </div>
 </template>

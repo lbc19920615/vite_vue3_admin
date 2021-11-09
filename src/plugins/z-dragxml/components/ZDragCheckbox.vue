@@ -1,7 +1,10 @@
 <template>
   <div class="z-dragxml-com">
-    <z-cell-item :vertical="true" :label="id">
-      <cus-checkbox :ui="ui"></cus-checkbox>
+    <z-cell-item :vertical="true"
+                 :label="GET_CONFIG('ui.label', '')"
+                 :desc="GET_CONFIG('ui.widgetConfig.common_desc', '')"
+    >
+      <cus-checkbox :ui="cus_config.ui"></cus-checkbox>
     </z-cell-item>
   </div>
 </template>

@@ -1,9 +1,9 @@
 <template>
   <div class="z-dragxml-com">
 <!--    {{ui_config_editor}}-->
-<!--    <div>-->
-<!--      {{cus_config}}-->
-<!--    </div>-->
+    <div>
+      {{cus_config}}
+    </div>
 <!--    <div>-->
 <!--      {{GET_CONFIG('ui.label', '')}}-->
 <!--    </div>-->
@@ -11,7 +11,9 @@
 <!--      {{GET_CONFIG('ui', {})}}-->
 <!--    </div>-->
     <z-cell-item :vertical="true"
-                 :label="GET_CONFIG('ui.label', '')">
+                 :label="GET_CONFIG('ui.label', '')"
+                 :desc="GET_CONFIG('ui.widgetConfig.common_desc', '')"
+    >
       <cus-input :ui="cus_config.ui"></cus-input>
     </z-cell-item>
   </div>

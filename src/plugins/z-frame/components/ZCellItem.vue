@@ -31,7 +31,10 @@
 <template>
   <el-row :vertical="vertical" align="middle" class="z-cell-item" :class="{'has-label': label}" type="flex">
     <div class="z-cell-item__label">{{label}}</div>
-    <div class="z-cell-item__content"><slot></slot></div>
+    <div class="z-cell-item__content">
+      <div class="z-cell-item__con"><slot></slot></div>
+      <div class="z-cell-item__desc">{{desc}}</div>
+    </div>
   </el-row>
 </template>
 
@@ -40,7 +43,8 @@ export default {
   name: 'ZCellItem',
   props: {
     label: String,
-    vertical: Boolean
+    vertical: Boolean,
+    desc: String
   }
 }
 </script>

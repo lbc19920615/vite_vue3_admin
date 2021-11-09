@@ -1,9 +1,10 @@
 \<template>
   <template v-if="inited">
 <!--    {{widgetConfig.enums}}-->
+    {{state.OPT.widgetConfig}}
     <el-radio-group
         v-model="state.value"
-        v-bind="widgetConfig"
+        v-bind="state.OPT.widgetConfig"
         v-on="listeners"
     >
       <el-radio v-for="(option, key) in buildOptions()"
