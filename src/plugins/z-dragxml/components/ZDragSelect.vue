@@ -4,7 +4,7 @@
                  :label="GET_CONFIG('ui.label', '')"
                  :desc="GET_CONFIG('ui.widgetConfig.common_desc', '')"
     >
-      <cus-input :ui="cus_config.ui"></cus-input>
+      <cus-select :ui="cus_config.ui"></cus-select>
     </z-cell-item>
   </div>
 </template>
@@ -18,7 +18,7 @@ export default {
   components: {CusSelect},
   ZDragXmlCom: true,
   DRAG_CONFIG() {
-    let obj = CusInput.CUS_EDITOR() ?? { props: {} }
+    let obj = CusSelect.CUS_EDITOR() ?? { props: {} }
     Reflect.deleteProperty(obj.props, 'type')
     return obj
   },

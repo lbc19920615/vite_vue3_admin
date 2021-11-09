@@ -4,7 +4,7 @@
                  :label="GET_CONFIG('ui.label', '')"
                  :desc="GET_CONFIG('ui.widgetConfig.common_desc', '')"
     >
-      <cus-input :ui="cus_config.ui"></cus-input>
+      <cus-input-number :ui="cus_config.ui"></cus-input-number>
     </z-cell-item>
   </div>
 </template>
