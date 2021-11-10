@@ -61,6 +61,27 @@ export function QuickBoolean() {
 }
 
 /**
+ *
+ * @param label
+ * @returns {{ui: {label: string, widgetConfig: {ext: string}}, rules: {type: string}, type: string}}
+ * @constructor
+ */
+export function QuickBooleanWithNull(label = '') {
+  return {
+    type: 'boolean',
+    ui: {
+      label: label,
+      widgetConfig:  {
+        ext: 'booleanWithClearable'
+      },
+    },
+    rules: {
+      type: 'any'
+    }
+  }
+}
+
+/**
  * QuickEnums
  * @param enums
  * @param type

@@ -2,7 +2,7 @@
   <template v-if="inited">
     <el-date-picker v-model="state.value"
                     type="datetime"
-                    v-bind="widgetConfig"
+                    v-bind="state.OPT.widgetConfig"
                     @change="methods.onChange"
     ></el-date-picker>
   </template>

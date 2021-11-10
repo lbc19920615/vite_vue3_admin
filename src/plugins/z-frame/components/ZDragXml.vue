@@ -165,9 +165,9 @@
         <template v-if="treeState.current && treeState.current.uuid && treeState.showCurrent">
 <!--          {{treeState.current.origin.com}}-->
 <!--          {{get_current_config('common', {})}}-->
-          <z-common-attrs
-              :value="get_current_config('common', {})"
-              @common-change="onCommonModelChange"></z-common-attrs>
+<!--          <z-common-attrs-->
+<!--              :value="get_current_config('common', {})"-->
+<!--              @common-change="onCommonModelChange"></z-common-attrs>-->
           <el-scrollbar height="60vh">
             <z-http-com :resolve-config="resolveConfig"
                         @http:model:change="onModelChange"
@@ -195,7 +195,7 @@ import mitt from "mitt";
 import ZHttpCom from "@/plugins/z-frame/components/ZHttpCom.vue";
 import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusWidgetEditor/createConfig";
 import ZCommonAttrs from "@/plugins/z-frame/components/ZCommonAttrs.vue";
-import {setPROPS} from "@/hooks/props";
+import {QuickBoolean, QuickBooleanWithNull, setPROPS} from "@/hooks/props";
 
 
 export default {
@@ -591,6 +591,18 @@ export default {
       })
     }
 
+    function selectCurrent(e) {
+      treeState.current = {
+        origin: e,
+        uuid: e.itemUUID,
+        ext: {},
+      }
+      treeState.showCurrent = false
+      setTimeout(() => {
+        treeState.showCurrent = true
+      }, 300)
+    }
+
     function getPlaygroundDOM() {
       return  document.getElementById(PLAY_ID)
     }
@@ -622,6 +634,7 @@ export default {
        */
       let com = CustomVueComponent.resolve(dataset.name)
       let item = createLayoutItem(dataset)
+
 
       if (currentToTarget.hasAttribute('z-drag-start')) {
         state.layouts.unshift(item);
@@ -725,7 +738,8 @@ export default {
               // if (index > -1) {
               //   console.log(state.layouts[index])
               // }
-              console.log(currentInspectContext)
+              // console.log(currentInspectContext)
+              selectCurrent(currentInspectContext)
             }
             // console.log(currentInspectContext, context, state.layouts)
           }
@@ -966,7 +980,8 @@ export default {
       let com = origin.com
       // console.log(com.DRAG_CONFIG)
       let widgetConfigProps = {
-
+        disabled: QuickBooleanWithNull('禁用'),
+        readonly: QuickBooleanWithNull('只读')
       }
       let properties = {
         type: {
@@ -1004,6 +1019,15 @@ export default {
           properties: {
             label: {
               type: 'string'
+            },
+            desc: {
+              type: 'string',
+              ui: {
+                label: '描述',
+                widgetConfig: {
+                  type: 'textarea'
+                }
+              }
             },
             widgetConfig: {
               type: 'object',
@@ -1105,7 +1129,7 @@ export default {
       if (widgetFormLocks) {
 
       } else {
-        console.log(model, treeState.current.ext)
+        // console.log(model, treeState.current.ext)
         DRAG_INSTANSE.setConfig(treeState.current.uuid, {
           ins: model,
           common: treeState.current.ext
@@ -1132,7 +1156,7 @@ export default {
         } else {
           config.common = e
         }
-        console.log('onCommonModelChange', e)
+        // console.log('onCommonModelChange', e)
         DRAG_INSTANSE.setConfig(treeState.current.uuid, config)
       } else {
         DRAG_INSTANSE.setConfig(treeState.current.uuid, {

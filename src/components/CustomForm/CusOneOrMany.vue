@@ -2,7 +2,7 @@
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
 <!--    CusOneOrMany-->
-    {{state.items}}
+<!--    {{state.items}}-->
     <div>
       <el-row align="middle" v-for="(item, index) in state.items" :key="index">
         <el-col :span="18">

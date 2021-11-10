@@ -1,7 +1,7 @@
 <template>
   <template v-if="inited">
     <el-time-picker v-model="state.value"
-                    v-bind="widgetConfig"
+                    v-bind="state.OPT.widgetConfig"
                     @change="methods.onChange"
     ></el-time-picker>
   </template>

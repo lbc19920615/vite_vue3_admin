@@ -4,7 +4,7 @@
     <!--{{state}}-->
     <el-switch
         v-model="state.value"
-        v-bind="widgetConfig"
+        v-bind="state.OPT.widgetConfig"
         v-on="listeners"
     ></el-switch>
   </template>

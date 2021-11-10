@@ -1,7 +1,7 @@
 <template>
   <template v-if="inited">
     <el-color-picker v-model="state.value"
-                    v-bind="widgetConfig"
+                    v-bind="state.OPT.widgetConfig"
                     @change="methods.onChange"
     ></el-color-picker>
   </template>

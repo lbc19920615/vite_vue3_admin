@@ -58,7 +58,7 @@
             @dragenter.prevent="onDragEnter(index, $event)"
             :id="getColumnID(index)"
     >
-      {{state.uuids[index]}}
+<!--      {{state.uuids[index]}}-->
       <render-dom :render="state.doms[index]" :uuids="state.uuids[index]"
                   @loaded="onLoaded(index, $event)" ></render-dom>
     </el-col>

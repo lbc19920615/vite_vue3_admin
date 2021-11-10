@@ -2,7 +2,7 @@
   <div class="z-dragxml-com"     @mouseenter.stop="onMouseEnter">
     <z-cell-item :vertical="true"
                  :label="GET_CONFIG('ui.label', '')"
-                 :desc="GET_CONFIG('ui.widgetConfig.common_desc', '')"
+                 :desc="GET_CONFIG('ui.desc', '')"
     >
       <cus-select :ui="cus_config.ui"></cus-select>
     </z-cell-item>

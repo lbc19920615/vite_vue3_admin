@@ -26,7 +26,7 @@ export let ZDragCommonMixin = {
     cus_config() {
       let config = this.ui_config_editor
       let ui_cached_common = this.ui_cached.common
-      console.log(ui_cached_common)
+      // console.log(ui_cached_common)
       let _s = deepMerge({
         ui: this.ui ?? {
           widgetConfig: {}
@@ -42,7 +42,14 @@ export let ZDragCommonMixin = {
         }
         if (_c && _c.ui) {
           _c.ui.commonWidgetConfig = commonWidgetConfig
+          if ( _c.ui.widgetConfig) {
+            _c.ui.widgetConfig = {
+              ..._common,
+              ..._c.ui.widgetConfig
+            }
+          }
         }
+
       }
 
       // console.log('cus_config', _c)
