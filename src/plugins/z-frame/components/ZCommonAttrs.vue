@@ -56,7 +56,7 @@ export default {
       common_desc: '',
       ...props.value
     }
-    console.log('props', props.value)
+    // console.log('props', props.value)
     let state = reactive(def)
 
     function onCommonChange(v) {

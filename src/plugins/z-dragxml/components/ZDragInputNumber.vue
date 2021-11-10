@@ -38,6 +38,21 @@ export default {
   data() {
     return {
       id: ZY.rid(6),
+      self_config: {
+        type: 'number',
+        ui: {
+          widgetConfig: {
+            type: 'number'
+          }
+        },
+        rulesArr: [
+          {
+            value: ZY.JSON5.stringify( {
+              type: 'any'
+            })
+          }
+        ]
+      },
       ui: {
         widgetConfig: {
           type: 'number'

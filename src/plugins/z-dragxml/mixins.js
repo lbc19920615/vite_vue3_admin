@@ -27,11 +27,12 @@ export let ZDragCommonMixin = {
         }
       }
       // console.log('config', config)
-      let _c =  deepMerge({
+      let _s = deepMerge({
         ui: this.ui ?? {
           widgetConfig: {}
         },
-      }, config.ins ?? {})
+      }, this.self_config ?? {})
+      let _c =  deepMerge(_s, config.ins ?? {})
       if (config.common) {
         _c  = deepMerge(_c, {
           ui: {
@@ -39,6 +40,7 @@ export let ZDragCommonMixin = {
           }
         })
       }
+      this.dragxml.onCusConfigChange(this.uuid, _c)
       return _c
     }
   },

@@ -41,7 +41,7 @@ export default defineComponent({
     const widgetInstance = ref()
     const widgetDef = resolveComponent(widget)
 
-    // console.log('context', props.slotContent)
+    // console.log('context', props)
 
     const obj = reactive({
       value: props.modelValue

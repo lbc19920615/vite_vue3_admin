@@ -29,6 +29,7 @@
 </style>
 
 <template>
+<!--  {{vertical + ''}}-->
   <el-row :vertical="vertical" align="middle" class="z-cell-item" :class="{'has-label': label}" type="flex">
     <div class="z-cell-item__label">{{label}}</div>
     <div class="z-cell-item__content">

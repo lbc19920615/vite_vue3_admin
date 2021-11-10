@@ -2,25 +2,25 @@
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
 <!--    {{state.value}}-->
-    <z-cell-item label="类型">
+    <z-cell-item :vertical="null" label="类型">
       <ew-suggest v-model="state.value.type"
                   @value:change="onChange" :suggest="typeSuggest"></ew-suggest>
     </z-cell-item>
-    <z-cell-item label="消息">
+    <z-cell-item :vertical="null" label="消息">
       <el-input v-model="state.value.message"
                 clearable
                 @change="onChange"></el-input>
     </z-cell-item>
-    <z-cell-item label="是否必填">
+    <z-cell-item :vertical="null" label="是否必填">
       <el-switch v-model="state.value.required" @change="onChange"
                  active-color="#13ce66" inactive-color="#ff4949"></el-switch>
     </z-cell-item>
-    <z-cell-item label="pattern">
+    <z-cell-item :vertical="null" label="pattern">
       <el-input v-model="state.value.pattern"
                 clearable
                 @change="onChange"></el-input>
     </z-cell-item>
-    <z-cell-item label="max">
+    <z-cell-item :vertical="null" label="max">
       <el-input-number
           v-model="state.value.max"
           @change="onChange"
@@ -28,7 +28,7 @@
           :max="1000"
       ></el-input-number>
     </z-cell-item>
-    <z-cell-item label="min">
+    <z-cell-item :vertical="null" label="min">
       <el-input-number
           v-model="state.value.min"
           @change="onChange"

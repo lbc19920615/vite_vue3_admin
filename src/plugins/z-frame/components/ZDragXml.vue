@@ -69,7 +69,8 @@
     <el-row>
       <el-col :span="6" >
         <div style="max-height: 30vh">
-          <div @click="selectTree">selectTree</div>
+<!--          <div @click="selectTree">selectTree</div>-->
+          <el-scrollbar max-height="30px">{{zprops}}</el-scrollbar>
           <el-scrollbar max-height="30vh">
             <el-tree default-expand-all class="custom-tree"
                      :data="treeState.data" :props="treeState.defaultProps"
@@ -227,8 +228,11 @@ export default {
       layouts: [],
       layoutsMap: {},
       layoutRefs: {},
-      uuids: []
+      uuids: [],
+      zprops: []
     })
+
+
 
     let dragConfig = new Map()
     let emitter = mitt()
@@ -271,6 +275,18 @@ export default {
         })
         test1Tool(clone)
       },
+      onCusConfigChange(uuid, config) {
+        let _config = DRAG_INSTANSE.getConfig(uuid)
+        if (!_config) {
+          _config = {
+            ins: {},
+            common: {},
+          }
+        }
+        _config.ins = config
+        DRAG_INSTANSE.setConfig(uuid, _config)
+        console.log('onCusConfigChange', dragConfig)
+      }
     }
     provide('dragxml', DRAG_INSTANSE)
 
@@ -281,7 +297,8 @@ export default {
         label: 'label',
       },
       current: {},
-      showCurrent: false
+      showCurrent: false,
+      dragConfig
     })
 
     function buildTreeChild(child = []) {
@@ -383,6 +400,48 @@ export default {
         }
       }
     }
+
+    function traveralTree(data = [], context) {
+      let s_path = ZY.getObjPathFromPathArr(context.pathArr)
+      let target = ZY.deepGet(context.res, s_path)
+      lodash.each(data, function (item, key) {
+        // console.log(item)
+        let propKey = item.itemUUID
+        if (
+            Array.isArray(item.children) && item.children.length > 0
+        ) {
+          let properties = {}
+          target[propKey] = {
+            type: 'object',
+            properties
+          }
+          context.pathArr = context.pathArr.concat( [item.id, 'properties'] )
+          traveralTree(item.children, context)
+        } else {
+          // console.log(  DRAG_INSTANSE.getConfig(propKey) )
+          let config = DRAG_INSTANSE.getConfig(propKey) ?? {}
+          target[propKey] = {
+            type: 'string',
+            ...config.ins
+          }
+        }
+      })
+    }
+
+    let zprops = computed(function () {
+      let dragConfig = treeState.dragConfig
+      let context = {
+        res: {},
+        config: dragConfig,
+        pathArr: ['']
+      }
+      if (Array.isArray(treeState.data)) {
+        traveralTree(treeState.data, context)
+        // console.log(context.res)
+        return context.res
+      }
+      return []
+    })
 
     let test1Tool = clearTool()
     let test2Tool = clearTool(TEST2_ID)
@@ -800,7 +859,7 @@ export default {
       let index = state.layouts.findIndex(v => {
         return v.uuid === con_uuid
       })
-      console.log(state.uuids, con_uuid, index, data)
+      // console.log(state.uuids, con_uuid, index, data)
       if (index > -1) {
         // let layout = state.layouts[index]
         let layouMapItem = state.layoutsMap[con_uuid]
@@ -893,13 +952,13 @@ export default {
 
     }
 
-    function changeConfig(current) {
-      DRAG_INSTANSE.setConfig(current.uuid, {
-        test: 1
-      })
-
-      console.log('changeConfig', current, dragConfig)
-    }
+    // function changeConfig(current) {
+    //   DRAG_INSTANSE.setConfig(current.uuid, {
+    //     test: 1
+    //   })
+    //
+    //   console.log('changeConfig', current, dragConfig)
+    // }
 
     async function resolveConfig() {
       let current  = treeState.current
@@ -910,6 +969,36 @@ export default {
 
       }
       let properties = {
+        type: {
+          type: 'string',
+          ui: {
+            label: '类型',
+            // widget: 'CusSelect',
+            widget: 'CusSuggest',
+            widgetConfig: {
+              inputStyle: 'width: 350px',
+              enums: "ROOT_STATE('tools.propTypes', [])",
+              mode: 'select',
+            },
+            events: {
+            }
+          },
+        },
+        sub_type: {
+          type: 'string',
+          ui: {
+            label: '子类型',
+            // widget: 'CusSelect',
+            widget: 'CusSuggest',
+            widgetConfig: {
+              inputStyle: 'width: 350px',
+              enums: "ROOT_GETTERS('subTypes', [MODEL('type', '')])",
+              mode: 'select',
+            },
+            events: {
+            }
+          },
+        },
         ui: {
           type: 'object',
           properties: {
@@ -919,6 +1008,50 @@ export default {
             widgetConfig: {
               type: 'object',
               properties: widgetConfigProps
+            }
+          }
+        },
+        rules: {
+          type: 'string',
+          // hidden: true,
+          computedProp: 'srules',
+          ui: {
+            attrs: [
+              // ['style', 'height: 0; overflow: hidden']
+            ],
+            label: '验证规则',
+            // widget: 'JsonCodeEditor',
+            // widget: 'CodeJsEditor',
+            widgetConfig: {
+              type: 'textarea',
+              disabled: true
+              // style: {height: '200px'}
+            }
+          }
+        },
+        rulesArr: {
+          type: 'array',
+          ui: {
+            label: '校验规则',
+          },
+          items: {
+            type: "object",
+            properties: {
+              value: {
+                type: 'string',
+                ui: {
+                  form_item: {
+                    labelWidth: '0px'
+                  },
+                  // attrs: [
+                  //     ['label-width', '70px']
+                  // ],
+                  label: ' ',
+                  widget: 'CusFormRules',
+                  widgetConfig: {
+                  }
+                },
+              },
             }
           }
         },
@@ -935,7 +1068,9 @@ export default {
         let _config  = com.DRAG_CONFIG() ?? {}
         widgetConfigProps = Object.assign(widgetConfigProps, _config.props)
       }
-      let computed = {}
+      let computed = {
+        srules: `A.getRulesFromRulesArr(MODEL('rulesArr'))`,
+      }
       let formDef = {
         type: 'object',
         ui: {
@@ -955,7 +1090,7 @@ export default {
 
         }
       }, _cached?.ins ?? {})
-      console.log(defaultVal)
+      // console.log(defaultVal)
       return {
         default: createCusWidgetEditorConfig(formDef,
             computed,
@@ -971,10 +1106,10 @@ export default {
 
       } else {
         // console.log(model, treeState.current.ext)
-        DRAG_INSTANSE.setConfig(treeState.current.uuid, {
-          ins: model,
-          common: treeState.current.ext
-        })
+        // DRAG_INSTANSE.setConfig(treeState.current.uuid, {
+        //   ins: model,
+        //   common: treeState.current.ext
+        // })
       }
     }
 
@@ -1029,6 +1164,8 @@ export default {
       // _initTreeRef.setCurrentKey(tree_id)
     }
 
+
+
     onMounted(() => {
       // appendLayout({
       //   name: 'ZDragFormStart'
@@ -1062,13 +1199,14 @@ export default {
       onDropEnd,
       onMouseMove,
       treeState,
+      zprops,
       removeTreeNode,
       resolveConfig,
       get_current_config,
       onCommonModelChange,
       onModelChange,
       onMouseLeave,
-      changeConfig,
+      // changeConfig,
       handleNodeClick,
     }
   }
