@@ -28,30 +28,30 @@ export let ZDragCommonMixin = {
       let config = this.ui_config_editor
       let ui_cached_common = this.ui_cached.common
       // console.log(ui_cached_common)
-      let _s = deepMerge({
+      let _s = Object.assign({
         ui: this.ui ?? {
           widgetConfig: {}
         },
       }, this.self_config ?? {})
-      let _c =  deepMerge(_s, config.ins ?? {})
-      if (config.common) {
-        let _common = config?.common ?? {}
-        let commonWidgetConfig = {}
-        // console.log(_common)
-        if (_common['common_state']) {
-          commonWidgetConfig[_common['common_state']] = _common['common_state']
-        }
-        if (_c && _c.ui) {
-          _c.ui.commonWidgetConfig = commonWidgetConfig
-          if ( _c.ui.widgetConfig) {
-            _c.ui.widgetConfig = {
-              ..._common,
-              ..._c.ui.widgetConfig
-            }
-          }
-        }
-
-      }
+      let _c =  ZY.lodash.merge(_s, config.ins ?? {})
+      // if (config.common) {
+      //   let _common = config?.common ?? {}
+      //   let commonWidgetConfig = {}
+      //   // console.log(_common)
+      //   if (_common['common_state']) {
+      //     commonWidgetConfig[_common['common_state']] = _common['common_state']
+      //   }
+      //   if (_c && _c.ui) {
+      //     _c.ui.commonWidgetConfig = commonWidgetConfig
+      //     if ( _c.ui.widgetConfig) {
+      //       _c.ui.widgetConfig = {
+      //         ..._common,
+      //         ..._c.ui.widgetConfig
+      //       }
+      //     }
+      //   }
+      //
+      // }
 
       // console.log('cus_config', _c)
       this.dragxml.onCusConfigChange(this.uuid, _c)
@@ -66,9 +66,9 @@ export let ZDragCommonMixin = {
     onConfigChanged(e) {
       // console.log('onConfigChanged', e)
       let c = this.dragxml.getConfig(this.uuid)
-      if (c.common) {
-        this.ui_cached.common = c.common
-      }
+      // if (c.common) {
+      //   this.ui_cached.common = c.common
+      // }
       this.ui_config_editor = c
     },
     GET_CONFIG(path, defaultVal) {

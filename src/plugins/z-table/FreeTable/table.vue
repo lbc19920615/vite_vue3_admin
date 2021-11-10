@@ -3,6 +3,7 @@
 </style>
 <template>
   <div class="z-table">
+<!--    {{data}}-->
     <el-table ref="elTable" :data="data" v-bind="$attrs" >
       <template v-for="item in tbColumns"   :key="item.prop">
         <el-table-column
@@ -22,7 +23,7 @@
 <!--        <free-column-->
 <!--            v-bind="$attrs" :column="item" />-->
       </template>
-      <el-table-column v-bind="actionProps" label="ACTION">
+      <el-table-column v-if="showAcion" v-bind="actionProps" label="ACTION">
         <template v-slot:default="scope">
           <el-button
               class="z-table__button"
@@ -59,6 +60,10 @@ export default {
     actionProps: Object,
     actions: Array,
     columnsProps: Object,
+    showAcion: {
+      type: Boolean,
+      default: true
+    },
     pagination: {
       type: Boolean,
       default: false

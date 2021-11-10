@@ -27,7 +27,9 @@ export default {
   CUS_EDITOR: function () {
     return {
       props: {
-        ...createBaseCusEnumsCONFIG(),
+        ...createBaseCusEnumsCONFIG({
+          type: 'multi'
+        }),
         clearable: {
           type: 'boolean',
           ui: {

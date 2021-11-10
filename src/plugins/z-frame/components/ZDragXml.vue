@@ -71,6 +71,17 @@
         <div style="max-height: 30vh">
 <!--          <div @click="selectTree">selectTree</div>-->
 <!--          <el-scrollbar max-height="30vh">{{zprops}}</el-scrollbar>-->
+          <el-row>
+            <z-easy-modal title="数据展示" :model-attr="{width: '60vw'}">
+              <template #button-content>打开数据展示</template>
+              <template #default>
+                <v-json-viewer   :expand-depth=5 copyable :expanded="true"
+                               boxed :value="zprops"></v-json-viewer>
+              </template>
+            </z-easy-modal>
+            <el-button @click="exportFile">导出</el-button>
+            <el-button @click="importFile">导入</el-button>
+          </el-row>
           <el-scrollbar max-height="30vh">
             <el-tree default-expand-all class="custom-tree"
                      :data="treeState.data" :props="treeState.defaultProps"
@@ -172,6 +183,7 @@
             <z-http-com :resolve-config="resolveConfig"
                         @http:model:change="onModelChange"
                         @select-list="onSelectList"
+                        @select-checked="onSelectChecked"
             ></z-http-com>
           </el-scrollbar>
 <!--          <el-button @click="changeConfig(treeState.current)">修改</el-button>-->
@@ -185,7 +197,7 @@
 </template>
 
 <script>
-import {computed, nextTick, onMounted, reactive, provide} from "vue";
+import {computed, nextTick, onMounted, reactive, provide, toRaw} from "vue";
 import draggable from 'vuedraggable'
 import JsxRender from "@/components/jsxrender.vue";
 import RenderDom from "@/components/renderDom.vue";
@@ -197,11 +209,13 @@ import ZHttpCom from "@/plugins/z-frame/components/ZHttpCom.vue";
 import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusWidgetEditor/createConfig";
 import ZCommonAttrs from "@/plugins/z-frame/components/ZCommonAttrs.vue";
 import {QuickBoolean, QuickBooleanWithNull, setPROPS} from "@/hooks/props";
+import ZEasyModal from "@/plugins/z-frame/components/ZEasyModal.vue";
 
 
 export default {
   name: 'ZDragXml',
   components: {
+    ZEasyModal,
     ZCommonAttrs,
     ZHttpCom,
     ZLayoutInit,
@@ -225,15 +239,12 @@ export default {
       filterList: '',
       isDragging: false,
       disableDrag: false,
-      tree: [],
+      // tree: [],
       layouts: [],
       layoutsMap: {},
       layoutRefs: {},
       uuids: [],
-      zprops: []
     })
-
-
 
     let dragConfig = new Map()
     let emitter = mitt()
@@ -882,7 +893,7 @@ export default {
         // let layout = state.layouts[index]
         let layouMapItem = state.layoutsMap[con_uuid]
         let layoutUUID = layouMapItem.layoutUUID
-        let layoutRef = state.layoutRefs[layoutUUID]
+        // let layoutRef = state.layoutRefs[layoutUUID]
         Reflect.deleteProperty(state.layoutRefs, layoutUUID)
         Reflect.deleteProperty(state.layoutsMap, con_uuid)
         state.layouts.splice(index, 1)
@@ -1196,11 +1207,77 @@ export default {
       let uuid = treeState?.current?.uuid ?? ''
       if (uuid) {
         let context = DRAG_INSTANSE.get(uuid)
-        console.log(context)
+        // console.log(context)
         context.setVal(e.origin.value)
       }
     }
 
+    function onSelectChecked(e) {
+      let uuid = treeState?.current?.uuid ?? ''
+      if (uuid) {
+        let context = DRAG_INSTANSE.get(uuid)
+        // console.log('onSelectList', e)
+        let arr = e.origin.options ?? []
+        if (Array.isArray(arr)) {
+          arr = arr.map(v => v.value)
+        }
+        context.setVal(arr)
+        // console.log('onSelectChecked', arr)
+      }
+    }
+
+    function getModelValue() {
+      let ret = {
+        state: {
+          layouts: toRaw(state.layouts),
+          uuids:  toRaw(state.uuids),
+        },
+        defs: {}
+      }
+      ret.treeState ={
+        data: toRaw(treeState.data)
+      }
+      lodash.each(state.layoutsMap, function (map, key) {
+        let cached = map.el.toMemo()
+        // console.log(cached)
+        ret.defs[key] = cached
+      })
+      return ret
+    }
+
+    async function exportFile() {
+      let m = getModelValue()
+      // console.log(m)
+      await ZY_EXT.store.setItem('test_export', ZY.JSON5.stringify( { data: m }) )
+      ZY_EXT.saveDesignFile({fileName: 'test_export', data: m})
+    }
+
+     async function importFile() {
+       // let obj = await ZY_EXT.fileOpenJSON5()
+       let data = await ZY_EXT.store.getItem('test_export') ?? '{}'
+       let obj = ZY.JSON5.parse(data)
+       if (obj.data) {
+         // console.log(obj)
+         ZY.lodash.each(obj.data.state, function (item, key) {
+            // console.log(item, key)
+           state[key] = item
+         })
+         ZY.lodash.each(obj.data.treeState, function (item, key) {
+           // console.log(item, key)
+           treeState[key] = item
+         })
+         nextTick(() => {
+
+           lodash.each(obj.data.defs, (item, uuid) => {
+             let map = state.layoutsMap[uuid]
+             // console.log(item, map)
+             if (map && map.el) {
+               map.el.fromMemo(item)
+             }
+           })
+         })
+       }
+     }
 
     onMounted(() => {
       // appendLayout({
@@ -1223,6 +1300,8 @@ export default {
       getRef,
       playgroundId: PLAY_ID,
       onDropStart,
+      exportFile,
+      importFile,
       initRef,
       onDragMove,
       onLayoutSelfDragEnter,
@@ -1230,9 +1309,11 @@ export default {
       onChangedLayout,
       onDragEnd,
       onClearIndex,
+      getModelValue,
       testId1: TEST1_ID,
       testId2: TEST2_ID,
       onSelectList,
+      onSelectChecked,
       onDropEnd,
       onMouseMove,
       treeState,

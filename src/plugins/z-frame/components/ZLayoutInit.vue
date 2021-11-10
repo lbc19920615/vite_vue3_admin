@@ -58,8 +58,11 @@
             @dragenter.prevent="onDragEnter(index, $event)"
             :id="getColumnID(index)"
     >
-<!--      {{state.uuids[index]}}-->
-      <render-dom :render="state.doms[index]" :uuids="state.uuids[index]"
+      {{state.uuids[index]}}
+      <render-dom
+                  :ref="initRefs(index)"
+                  :render="state.doms[index]"
+                  :uuids="state.uuids[index]"
                   @loaded="onLoaded(index, $event)" ></render-dom>
     </el-col>
   </template>
@@ -70,7 +73,7 @@
 <script>
 import RenderDom from "@/components/renderDom.vue";
 import draggable from 'vuedraggable'
-import {h, inject, nextTick, reactive, toRaw, provide, getCurrentInstance} from "vue";
+import {h, inject, nextTick, reactive, toRaw, provide, getCurrentInstance, onMounted} from "vue";
 import {DATA_LAYOUT_ITEM_UUID_KEY, DATA_LAYOUT_UUID_KEY, DATA_UUID_KEY} from "@/vars";
 import Sortable from 'sortablejs';
 
@@ -94,12 +97,13 @@ export default {
     uuid: String
   },
   setup(props, ctx) {
-    let instanse = getCurrentInstance()
+    // let instanse = getCurrentInstance()
     const RENDER_DOM_CLS = 'render-dom-item'
     const DRAGENTER_ATTR = 'dragenter'
 
     let initId = 'init___' + ZY.rid()
 
+    let lodash = ZY.lodash
     let JSON5 = ZY.JSON5
     let sortable = null
     // console.log(props.columnMax)
@@ -437,6 +441,66 @@ export default {
       return defs
     }
 
+    function append(columnIndex = 0, data) {
+      let child = state.doms[columnIndex]
+      let def = state.defs[columnIndex]
+      let config =  com?.DRAG_CONFIG()?? {}
+      if (def.length < props.columnMax) {
+        // let instanse = buildInstanse(com, itemUUID, columnIndex)
+      }
+    }
+
+    function toMemo() {
+      console.log(state.doms)
+      return {
+        defs: toRaw(state.defs),
+        // doms: toRaw(state.doms),
+        uuids:  toRaw(state.uuids),
+        column: toRaw(state.column)
+      }
+    }
+
+
+    let refs = new Map()
+    function initRefs(index) {
+      return function (el) {
+        refs.set(index, el)
+      }
+    }
+
+
+    function fromMemo(item) {
+
+      lodash.each(item.defs, function (column, columnIndex) {
+        let child = state.doms[columnIndex]
+        lodash.each(column, function (row) {
+          // console.log(row)
+          let com = CustomVueComponent.resolve(row.com.name)
+          child[row.itemUUID] = buildInstanse(com, row.itemUUID, columnIndex)
+        })
+      })
+
+      lodash.each(item, function (v, key) {
+        // state[key]  = v
+      })
+
+      state.defs = item.defs
+
+      nextTick(() => {
+        console.log('fromMemo', state, refs)
+        lodash.each(item.defs, function (column, columnIndex) {
+          genUUIDS(columnIndex)
+          rebuildSortAble(columnIndex)
+        })
+        refs.forEach(function (ref) {
+          console.log(ref)
+          if (ref && ref.reload) {
+            ref.reload()
+          }
+        })
+      })
+    }
+
     provide('draginit', {
       onMouseEnter() {
         // console.log(initId)
@@ -454,13 +518,16 @@ export default {
       state,
       layoutUUID,
       onDragEnter,
+      toMemo,
       onMouseEnter,
+      fromMemo,
       appendColumn,
       getColumnID,
       getUUIDS,
       onLoaded,
       getChildren,
       onDragLeave,
+      initRefs,
       initGrid,
       findCom,
       // getRef

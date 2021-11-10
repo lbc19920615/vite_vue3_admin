@@ -39,8 +39,8 @@ export default {
       ZDragCommonMixin
   ],
   methods: {
-    setVal(v) {
-      this.cus_ref.state.value = [v]
+    setVal(v = []) {
+      this.cus_ref.state.value = v
     }
   },
   data() {
@@ -52,11 +52,13 @@ export default {
               [
                 {
                   label: '选项1',
-                  value: 'radio1'
+                  value: 'check1',
+                  // LAY_CHECKED: true,
                 },
                 {
                   label: '选项2',
-                  value: 'radio2'
+                  value: 'check2',
+                  // LAY_CHECKED: true,
                 }
               ]
           )

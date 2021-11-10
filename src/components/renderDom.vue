@@ -1,6 +1,9 @@
 <template>
-  <template v-for="item in state.child" :key="item.uuid">
-    <render-jsx :render="item.data"></render-jsx>
+  {{state.inited}}
+  <template v-if="state.inited">
+    <template v-for="item in state.child" :key="item.uuid">
+      <render-jsx :render="item.data"></render-jsx>
+    </template>
   </template>
 </template>
 
@@ -28,7 +31,8 @@ export default defineComponent( {
     // let root = new ChildDom()
     let state = reactive({
       child: [],
-      oldUUIDS: []
+      oldUUIDS: [],
+      inited: true
     })
 
     function reload(newVal, cb) {
@@ -53,12 +57,26 @@ export default defineComponent( {
         })
         // obj.push(render[uuid].props.class)
       })
-      // console.log(ret, obj)
+      console.log(ret)
       state.child = ret
     }
 
-    watch(props.uuids, (newVal) => {
-      // console.log('props change', newVal)
+    function reload() {
+      state.inited = false
+      load()
+      setTimeout( () => {
+        state.inited = true
+      }, 150)
+    }
+
+    // watch(() => props.render, (newVal) => {
+    //   console.log('render', newVal)
+    // }, {
+    //   immediate: true
+    // })
+
+    watch(() => props.uuids, (newVal) => {
+      console.log('props change', newVal)
       // root.children =  []
       // props.render.forEach((renderItem) => {
       //   // console.log(renderItem)
@@ -76,7 +94,9 @@ export default defineComponent( {
     })
 
     return {
-      state
+      state,
+      reload,
+      load,
     }
   }
 })

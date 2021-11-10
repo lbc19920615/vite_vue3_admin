@@ -28,7 +28,12 @@ export function createBaseCusCONFIG() {
   return ret
 }
 
-export function createBaseCusEnumsCONFIG() {
+/**
+ * createBaseCusEnumsCONFIG
+ * @param type {string}
+ * @returns {{enums: {ui: {styles: ((string|number)[]|string[])[], label: string, notice: string}, type: string, computedProp: string}, options2: {ui: {widget: string, label: string, widgetConfig: {mounted: boolean}}, type: string}, enums2: {ui: {widget: string, label: string, widgetConfig: {insFun: (string|string)[], insVars: (string|string)[]}, notice: string}, type: string}}}
+ */
+export function createBaseCusEnumsCONFIG({type = ''} = '') {
   let app = getApp()
   let APP_FUNS = Object.keys(app).filter(v => v.startsWith('ENUMS'))
   // console.log(APP_FUNS)
@@ -85,6 +90,9 @@ export function createBaseCusEnumsCONFIG() {
         }
       }
     },
+  }
+  if (type === 'multi') {
+    ret.options2.ui.widgetConfig.multi = true
   }
   return ret
 }

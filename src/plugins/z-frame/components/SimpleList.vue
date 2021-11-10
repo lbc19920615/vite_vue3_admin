@@ -12,6 +12,7 @@
                :actions="state.actions"
                :actionProps="actionProps"
                :column="state.column"
+               :showAcion="showAcion"
                :data="state.dataTable"></z-table>
     </div>
   </div>
@@ -32,6 +33,10 @@ export default {
       default() {
         return {width: '100px'}
       }
+    },
+    showAcion: {
+      type: Boolean,
+      default: true
     },
     conClass: String,
     conStyle: String,
