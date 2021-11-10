@@ -70,7 +70,7 @@
       <el-col :span="6" >
         <div style="max-height: 30vh">
 <!--          <div @click="selectTree">selectTree</div>-->
-          <el-scrollbar max-height="30vh">{{zprops}}</el-scrollbar>
+<!--          <el-scrollbar max-height="30vh">{{zprops}}</el-scrollbar>-->
           <el-scrollbar max-height="30vh">
             <el-tree default-expand-all class="custom-tree"
                      :data="treeState.data" :props="treeState.defaultProps"
