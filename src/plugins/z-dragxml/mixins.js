@@ -16,17 +16,17 @@ export let ZDragCommonMixin = {
         ui: {
           widgetConfig: {}
         }
+      },
+      ui_cached: {
+        common: {}
       }
     }
   },
   computed: {
     cus_config() {
-      let config = this.ui_config_editor ?? {
-        ui: {
-          widgetConfig: {}
-        }
-      }
-      // console.log('config', config)
+      let config = this.ui_config_editor
+      let ui_cached_common = this.ui_cached.common
+      console.log(ui_cached_common)
       let _s = deepMerge({
         ui: this.ui ?? {
           widgetConfig: {}
@@ -34,12 +34,18 @@ export let ZDragCommonMixin = {
       }, this.self_config ?? {})
       let _c =  deepMerge(_s, config.ins ?? {})
       if (config.common) {
-        _c  = deepMerge(_c, {
-          ui: {
-            widgetConfig: config.common ?? {}
-          }
-        })
+        let _common = config?.common ?? {}
+        let commonWidgetConfig = {}
+        // console.log(_common)
+        if (_common['common_state']) {
+          commonWidgetConfig[_common['common_state']] = _common['common_state']
+        }
+        if (_c && _c.ui) {
+          _c.ui.commonWidgetConfig = commonWidgetConfig
+        }
       }
+
+      // console.log('cus_config', _c)
       this.dragxml.onCusConfigChange(this.uuid, _c)
       return _c
     }
@@ -47,7 +53,11 @@ export let ZDragCommonMixin = {
   methods: {
     onConfigChanged(e) {
       // console.log('onConfigChanged', e)
-      this.ui_config_editor = this.dragxml.getConfig(this.uuid)
+      let c = this.dragxml.getConfig(this.uuid)
+      if (c.common) {
+        this.ui_cached.common = c.common
+      }
+      this.ui_config_editor = c
     },
     GET_CONFIG(path, defaultVal) {
       return ZY.lodash.get(this.cus_config, path, defaultVal)

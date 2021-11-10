@@ -70,7 +70,7 @@
       <el-col :span="6" >
         <div style="max-height: 30vh">
 <!--          <div @click="selectTree">selectTree</div>-->
-          <el-scrollbar max-height="30px">{{zprops}}</el-scrollbar>
+          <el-scrollbar max-height="30vh">{{zprops}}</el-scrollbar>
           <el-scrollbar max-height="30vh">
             <el-tree default-expand-all class="custom-tree"
                      :data="treeState.data" :props="treeState.defaultProps"
@@ -285,7 +285,7 @@ export default {
         }
         _config.ins = config
         DRAG_INSTANSE.setConfig(uuid, _config)
-        console.log('onCusConfigChange', dragConfig)
+        // console.log('onCusConfigChange', dragConfig)
       }
     }
     provide('dragxml', DRAG_INSTANSE)
@@ -1105,11 +1105,11 @@ export default {
       if (widgetFormLocks) {
 
       } else {
-        // console.log(model, treeState.current.ext)
-        // DRAG_INSTANSE.setConfig(treeState.current.uuid, {
-        //   ins: model,
-        //   common: treeState.current.ext
-        // })
+        console.log(model, treeState.current.ext)
+        DRAG_INSTANSE.setConfig(treeState.current.uuid, {
+          ins: model,
+          common: treeState.current.ext
+        })
       }
     }
 
@@ -1119,19 +1119,20 @@ export default {
       let config = DRAG_INSTANSE.getConfig(treeState.current.uuid)
       if (config) {
         if (typeof config.common !== 'undefined') {
-          lodash.each(config.common, function (item, key) {
-            Reflect.deleteProperty(config.common, key)
-          })
-          lodash.each(e,function (item, key) {
-            if (key === 'common_state') {
-              config.common[item] = item
-            }
-            config.common[key] = item
-          })
+          // lodash.each(config.common, function (item, key) {
+          //   Reflect.deleteProperty(config.common, key)
+          // })
+          // lodash.each(e,function (item, key) {
+          //   // if (key === 'common_state') {
+          //   //   config.common[item] = item
+          //   // }
+          //   config.common[key] = item
+          // })
+          config.common = e
         } else {
           config.common = e
         }
-        // console.log('onCommonModelChange', config)
+        console.log('onCommonModelChange', e)
         DRAG_INSTANSE.setConfig(treeState.current.uuid, config)
       } else {
         DRAG_INSTANSE.setConfig(treeState.current.uuid, {
