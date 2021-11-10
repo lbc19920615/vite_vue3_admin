@@ -4,7 +4,7 @@
                  :label="GET_CONFIG('ui.label', '')"
                  :desc="GET_CONFIG('ui.desc', '')"
     >
-      <cus-select :ui="cus_config.ui"></cus-select>
+      <cus-select :ref="get_cus_ref"  :ui="cus_config.ui"></cus-select>
     </z-cell-item>
   </div>
 </template>
@@ -36,11 +36,28 @@ export default {
   mixins: [
       ZDragCommonMixin
   ],
+  methods: {
+    setVal(v) {
+      this.cus_ref.state.value = v
+    }
+  },
   data() {
     return {
       id: ZY.rid(6),
       ui: {
         widgetConfig: {
+          options2: ZY.JSON5.stringify(
+              [
+                {
+                  label: '选项1',
+                  value: 'option1'
+                },
+                {
+                  label: '选项2',
+                  value: 'option2'
+                }
+              ]
+          )
         }
       }
     }

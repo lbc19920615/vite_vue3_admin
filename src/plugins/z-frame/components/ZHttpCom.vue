@@ -138,6 +138,11 @@ export default {
       ['form:input:blur'](e) {
         // console.log('sdsdsdsdsdsds', e)
         ctx.emit('form:input:blur', e)
+      },
+      ['cus:com:fire'](e) {
+        // console.log('cus:com:fire', e)
+        let eventName = e.scope.name
+        ctx.emit(eventName, e.originEvent)
       }
     })
 

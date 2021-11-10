@@ -19,7 +19,8 @@ export let ZDragCommonMixin = {
       },
       ui_cached: {
         common: {}
-      }
+      },
+      cus_ref: null
     }
   },
   computed: {
@@ -58,6 +59,10 @@ export let ZDragCommonMixin = {
     }
   },
   methods: {
+    get_cus_ref(el) {
+      this.cus_ref = el
+      // console.log(this.cus_ref)
+    },
     onConfigChanged(e) {
       // console.log('onConfigChanged', e)
       let c = this.dragxml.getConfig(this.uuid)

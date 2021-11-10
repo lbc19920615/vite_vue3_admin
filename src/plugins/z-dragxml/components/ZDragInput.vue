@@ -2,7 +2,7 @@
   <div class="z-dragxml-com"
        @mouseenter.stop="onMouseEnter"
   >
-    {{uuid}}
+<!--    {{uuid}}-->
     <z-cell-item :vertical="true"
                  :label="GET_CONFIG('ui.label', '')"
                  :desc="GET_CONFIG('ui.desc', '')"

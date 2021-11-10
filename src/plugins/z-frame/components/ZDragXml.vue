@@ -171,6 +171,7 @@
           <el-scrollbar height="60vh">
             <z-http-com :resolve-config="resolveConfig"
                         @http:model:change="onModelChange"
+                        @select-list="onSelectList"
             ></z-http-com>
           </el-scrollbar>
 <!--          <el-button @click="changeConfig(treeState.current)">修改</el-button>-->
@@ -264,6 +265,9 @@ export default {
       },
       unRegister(key) {
         DRAG_CONTEXT.delete(key)
+      },
+      get(key) {
+        return DRAG_CONTEXT.get(key)
       },
       emitter,
       onMouseEnter(e) {
@@ -929,11 +933,7 @@ export default {
           treeState.current = {}
         }
       }
-
     }
-
-
-
 
     function onChangedLayout() {
       reloadTree()
@@ -1190,6 +1190,17 @@ export default {
     }
 
 
+    function onSelectList(e) {
+      // console.log('onSelectList', e)
+      // console.log(treeState.current)
+      let uuid = treeState?.current?.uuid ?? ''
+      if (uuid) {
+        let context = DRAG_INSTANSE.get(uuid)
+        console.log(context)
+        context.setVal(e.origin.value)
+      }
+    }
+
 
     onMounted(() => {
       // appendLayout({
@@ -1221,6 +1232,7 @@ export default {
       onClearIndex,
       testId1: TEST1_ID,
       testId2: TEST2_ID,
+      onSelectList,
       onDropEnd,
       onMouseMove,
       treeState,

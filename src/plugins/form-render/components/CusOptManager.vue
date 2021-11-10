@@ -11,7 +11,7 @@
 <!--            style="border-bottom: 1px solid #CFD1C4"-->
 <!--            v-for="option in state.control"-->
 <!--            :label="option.label">{{option.value}}</z-cell-item>-->
-        <simple-list :suggest="state.control"></simple-list>
+        <simple-list @select="onSelectList" :suggest="state.control"></simple-list>
       </div>
 
       <section  class="a-space-mb-10">
@@ -23,7 +23,7 @@
 
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
-import {onMounted, watch} from "vue";
+import {inject, onMounted, watch} from "vue";
 import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
 import ZCellItem from "@/plugins/z-frame/components/ZCellItem.vue";
 import SimpleList from "@/plugins/z-frame/components/SimpleList.vue";
@@ -35,6 +35,8 @@ export default {
     CustomRenderControlMixin
   ],
   setup(props, ctx) {
+    let curFormCon = inject('curFormCon')
+    // console.log(curFormCon)
     let obj;
     let JSON5 = ZY.JSON5;
     let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx, {
@@ -92,11 +94,22 @@ export default {
       onStylesChange(option.value)
     }
 
+    function onSelectList(e) {
+      // console.log('onSelectList', e)
+      curFormCon.callPageEvent('cus:com:fire', {
+        name: 'select-list',
+      }, {
+        origin: e,
+      })
+    }
+
     onMounted(() => {
       if (widgetConfig2.mounted) {
         init(props)
       }
     })
+
+
 
     return {
       state,
@@ -104,6 +117,7 @@ export default {
       onChange,
       methods,
       onSelect,
+      onSelectList,
       onStylesChange,
       save,
       listeners,

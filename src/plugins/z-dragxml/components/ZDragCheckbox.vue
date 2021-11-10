@@ -4,7 +4,7 @@
                  :label="GET_CONFIG('ui.label', '')"
                  :desc="GET_CONFIG('ui.desc', '')"
     >
-      <cus-checkbox :ui="cus_config.ui"></cus-checkbox>
+      <cus-checkbox :ref="get_cus_ref" :ui="cus_config.ui"></cus-checkbox>
     </z-cell-item>
   </div>
 </template>
@@ -14,13 +14,15 @@ import {ZDragCommonMixin} from "@/plugins/z-dragxml/mixins";
 import CusCheckbox from "@/components/CustomForm/CusCheckbox.vue";
 
 
+
 export default {
   name: 'ZDragCheckbox',
   components: {CusCheckbox},
   ZDragXmlCom: true,
   DRAG_CONFIG() {
-    return {
-    }
+    let obj = CusCheckbox.CUS_EDITOR() ?? { props: {} }
+
+    return obj
   },
   DRAG_DATASET() {
     return {
@@ -36,6 +38,11 @@ export default {
   mixins: [
       ZDragCommonMixin
   ],
+  methods: {
+    setVal(v) {
+      this.cus_ref.state.value = [v]
+    }
+  },
   data() {
     return {
       id: ZY.rid(6),

@@ -155,8 +155,10 @@ export default {
         model: curFormCon,
         options: buildOptions()
       }
-      curFormCon.callPageEvent('CUS_SELECT:CHANGE',sendObj, e)
-      curFormCon.callPageEvent(`CUS_SELECT:CHANGE(${selfpath})`,sendObj, e)
+      if (curFormCon) {
+        curFormCon.callPageEvent('CUS_SELECT:CHANGE',sendObj, e)
+        curFormCon.callPageEvent(`CUS_SELECT:CHANGE(${selfpath})`,sendObj, e)
+      }
     }
 
     function dom(option) {

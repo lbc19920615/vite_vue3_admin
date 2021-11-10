@@ -7,7 +7,7 @@
                  :label="GET_CONFIG('ui.label', '')"
                  :desc="GET_CONFIG('ui.desc', '')"
     >
-      <cus-radio :ui="cus_config.ui"></cus-radio>
+      <cus-radio :ref="get_cus_ref" :ui="cus_config.ui"></cus-radio>
     </z-cell-item>
   </div>
 </template>
@@ -17,13 +17,15 @@ import {ZDragCommonMixin} from "@/plugins/z-dragxml/mixins";
 import CusRadio from "@/components/CustomForm/CusRadio.vue";
 
 
+
 export default {
   name: 'ZDragRadio',
   components: {CusRadio},
   ZDragXmlCom: true,
   DRAG_CONFIG() {
-    return {
-    }
+    let obj = CusRadio.CUS_EDITOR() ?? { props: {} }
+
+    return obj
   },
   DRAG_DATASET() {
     return {
@@ -39,6 +41,11 @@ export default {
   mixins: [
       ZDragCommonMixin
   ],
+  methods: {
+    setVal(v) {
+      this.cus_ref.state.value = v
+    }
+  },
   data() {
     return {
       id: ZY.rid(6),
