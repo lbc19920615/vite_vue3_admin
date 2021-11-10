@@ -69,18 +69,23 @@
     <el-row>
       <el-col :span="6" >
         <div style="max-height: 30vh">
+          <div @click="selectTree">selectTree</div>
           <el-scrollbar max-height="30vh">
             <el-tree default-expand-all class="custom-tree"
                      :data="treeState.data" :props="treeState.defaultProps"
+                     node-key="id"
                      @node-click="handleNodeClick"
                      :expand-on-click-node="false"
+                     :ref="initTreeRef"
             >
               <template #default="{ node, data }">
                 <el-row justify="space-between"
                         class="custom-tree-node"
 
                 >
-                  <el-row align="middle">{{ node.label }}</el-row>
+                  <el-row align="middle">{{ node.label }}
+                  <div hidden>{{data.tree_id}}</div>
+                  </el-row>
                   <el-row align="middle">
                     <el-button size="mini"
                                type="danger"
@@ -282,6 +287,9 @@ export default {
     function buildTreeChild(child = []) {
       return child.map(item => {
         item.label = item.com.name
+        item.tree_id = item.itemUUID
+        item.id = item.itemUUID
+        // console.log(item)
         return item
       })
     }
@@ -334,6 +342,9 @@ export default {
                 } else {
                   ret = child[0].children
                 }
+                ret.tree_id = ret.itemUUID
+                ret.id = ret.itemUUID
+                // console.log(ret)
               } else {
                 // console.log(child)
               }
@@ -1005,6 +1016,19 @@ export default {
       // test1Tool()
     }
 
+    let _initTreeRef = null
+    function initTreeRef(el) {
+      _initTreeRef = el
+    }
+
+    function selectTree() {
+      // let current = _initTreeRef.getCurrentNode()
+      // console.log(treeState.data)
+      // let tree_id = treeState.data[0].tree_id
+      // console.log(tree_id, treeState.data)
+      // _initTreeRef.setCurrentKey(tree_id)
+    }
+
     onMounted(() => {
       // appendLayout({
       //   name: 'ZDragFormStart'
@@ -1020,6 +1044,8 @@ export default {
 
     return {
       list1ItemCls,
+      selectTree,
+      initTreeRef,
       state,
       getRef,
       playgroundId: PLAY_ID,
