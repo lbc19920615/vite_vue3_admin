@@ -5,6 +5,7 @@ import ZDragRadio from "@/plugins/z-dragxml/components/ZDragRadio.vue";
 import ZDragCheckbox from "@/plugins/z-dragxml/components/ZDragCheckbox.vue";
 import ZDragInputNumber from "@/plugins/z-dragxml/components/ZDragInputNumber.vue";
 import ZDragSelect from "@/plugins/z-dragxml/components/ZDragSelect.vue";
+import ZDragGrid from "@/plugins/z-dragxml/components/ZDragGrid.vue";
 import ZDragSubForm from "@/plugins/z-dragxml/components/ZDragSubForm.vue";
 
 export function install(app) {
@@ -14,6 +15,7 @@ export function install(app) {
   CustomVueComponent.register(ZDragRadio)
   CustomVueComponent.register(ZDragCheckbox)
   CustomVueComponent.register(ZDragInputNumber)
+  CustomVueComponent.register(ZDragGrid)
   CustomVueComponent.register(ZDragSelect)
   CustomVueComponent.register(ZDragInput)
 }
