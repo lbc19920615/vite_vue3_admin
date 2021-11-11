@@ -1,13 +1,4 @@
 <style lang="scss">
-
-//test-com {
-//  display: block;
-//  border: 1px solid;
-//  /*background-color: #00bb00;*/
-//  /*width: 50px;*/
-//  height: 50px;
-//}
-
 .custom-tree {
   :deep(.el-tree-node__content) {
     height: initial;
@@ -37,7 +28,7 @@
 }
 [current-to-move] {
    /*background-color: #0d84ff;*/
-  border: 1px dashed #0d84ff;
+  border: 1px dashed transparent;
   /*border-bottom: 2px solid;*/
   /*border-bottom-color: #0d84ff;*/
   pointer-events: none;
@@ -52,17 +43,37 @@
     z-index: 1111111;
   }
 }
+[current-to-move=rect] {
+  border-color:  #4099f8;
+}
 [current-to-move=line] {
-  border-top: none;
+  //border-color:  #4099f8;
+  //border-top-color: transparent;
 }
 .debug-tool2 {
+  [current-to-move=line] {
+    border-bottom-color:  #4099f8;
+  }
+}
+
+.debug-tool3 {
   [current-to-move] {
-    //border-color: #00bb00;
+    border-color:  #4099f8;
     border-width: 1px;
     border-style: solid;
     > button {
       display: none;
     }
+  }
+}
+
+.playground {
+  &[type=mobile] {
+    min-height: 60px;
+    background-color: rgb(255, 255, 255);
+    width: 375px;
+    border: 1px solid rgb(238, 238, 238);
+    margin: 0 auto;
   }
 }
 </style>
@@ -72,21 +83,21 @@
 <!--    {{state}}-->
     <el-row>
       <el-col :span="6" >
-        <div style="max-height: 30vh">
+        <el-row class="a-space-mb-10">
+          <z-easy-modal title="数据展示" :buttonAttr="{size: 'small'}" :model-attr="{width: '60vw'}">
+            <template #button-content>打开数据展示</template>
+            <template #default>
+              <v-json-viewer   :expand-depth=5 copyable :expanded="true"
+                               boxed :value="zprops"></v-json-viewer>
+            </template>
+          </z-easy-modal>
+          <el-button class="a-space-ml-10" size="small" @click="exportFile">导出</el-button>
+          <el-button  size="small" @click="importFile">导入</el-button>
+        </el-row>
+        <div style="max-height: 30vh" class="a-space-mb-10">
 <!--          <div @click="selectTree">selectTree</div>-->
 <!--          <el-scrollbar max-height="30vh">{{zprops}}</el-scrollbar>-->
-          <el-row>
-            <z-easy-modal title="数据展示" :model-attr="{width: '60vw'}">
-              <template #button-content>打开数据展示</template>
-              <template #default>
-                <v-json-viewer   :expand-depth=5 copyable :expanded="true"
-                               boxed :value="zprops"></v-json-viewer>
-              </template>
-            </z-easy-modal>
-            <el-button @click="exportFile">导出</el-button>
-            <el-button @click="importFile">导入</el-button>
-          </el-row>
-          <el-scrollbar max-height="30vh">
+          <el-scrollbar max-height="30vh" >
             <el-tree default-expand-all class="custom-tree"
                      :data="treeState.data" :props="treeState.defaultProps"
                      node-key="id"
@@ -141,40 +152,38 @@
           </xy-tab-content>
         </xy-tab>
       </el-col>
-      <el-col :id="playgroundId"
-              style="border: 1px solid #eee;"
-              data-index="-1" test-play :span="10"
-              @dragover="onDragMove"
-              @mouseleave="onMouseLeave"
+      <el-col
+              :span="10"
 
       >
-        <div style="height: 5px" z-drag-start>&nbsp;</div>
-<!--        <z-layout-init-->
-<!--            :z-uuid="121111111111"-->
-<!--            :uuid="121111111111"-->
-<!--            :column="1"-->
-<!--            :column-max="1"-->
-<!--            @dragenter.prevent="onLayoutSelfDragEnter"-->
-<!--            :drag-enter="onLayoutDragEnter"-->
-<!--        ></z-layout-init>-->
-        <z-layout-init
-            :z-uuid="item.uuid"
-            :uuid="item.uuid"
-            v-for="(item, index) in state.layouts"
-            :key="item.uuid"
-            :column="1"
-            :ref="initRef(item)"
-            :column-max="item.columnMax"
-            @dragenter.prevent="onLayoutSelfDragEnter"
-            :drag-enter="onLayoutDragEnter"
-            @clear-index="onClearIndex"
-            @column-max-err="onClearIndex"
-            @changed="onChangedLayout(item, $event)"
-            @drag-end="onDragEnd(item, $event)"
-            @mouseleave.stop="onMouseLeave"
-            :style="item.style"
-            :class="item.class"
-        ></z-layout-init>
+        <div :id="playgroundId"
+             class="playground"
+             type="mobile"
+             data-index="-1"
+             @dragover="onDragMove"
+             @mouseleave="onMouseLeave"
+             style="min-height: 60px; border: 1px solid #eee; background-color: #fff; width: 375px;"
+        >
+          <div style="height: 3px" z-drag-start>&nbsp;</div>
+          <z-layout-init
+              :z-uuid="item.uuid"
+              :uuid="item.uuid"
+              v-for="(item, index) in state.layouts"
+              :key="item.uuid"
+              :column="1"
+              :ref="initRef(item)"
+              :column-max="item.columnMax"
+              @dragenter.prevent="onLayoutSelfDragEnter"
+              :drag-enter="onLayoutDragEnter"
+              @clear-index="onClearIndex"
+              @column-max-err="onClearIndex"
+              @changed="onChangedLayout(item, $event)"
+              @drag-end="onDragEnd(item, $event)"
+              @mouseleave.stop="onMouseLeave"
+              :style="item.style"
+              :class="item.class"
+          ></z-layout-init>
+        </div>
       </el-col>
       <el-col :span="8">
         <template v-if="treeState.current && treeState.current.uuid && treeState.showCurrent">
@@ -198,6 +207,7 @@
     </el-row>
     <div class="debug-tool1" :id="testId1"></div>
     <div class="debug-tool2" :id="testId2"></div>
+    <div class="debug-tool3" :id="testId3"></div>
   </div>
 </template>
 
@@ -233,6 +243,7 @@ export default {
     const PLAY_ID = 'playground__' + ZY.rid(6)
     const TEST1_ID = 'test1__' + ZY.rid(6)
     const TEST2_ID = 'test2__' + ZY.rid(6)
+    const TEST3_ID = 'test3__' + ZY.rid(6)
     let lodash = ZY.lodash
     let JSON5 = ZY.JSON5
     let originalEvent = {
@@ -305,22 +316,24 @@ export default {
         }
         _config.ins = config
         DRAG_INSTANSE.setConfig(uuid, _config)
-        // console.log('onCusConfigChange', dragConfig)
+        console.log('onCusConfigChange', dragConfig)
       },
       getCurrent() {
         return treeState.current ?? {}
       },
       highLight(context) {
-        console.log(context)
+        // console.log(context)
         setTimeout(() => {
           let dom = document.querySelectorAll('.z-drag-highlight')
           if (dom) {
             let arr = Array.of(...dom)
-            let clone = createInspect(arr[arr.length - 1], 'rect',  {
-              onMouseleave(e) {
-              }
-            })
-            test2Tool(clone)
+            // let clone = createInspect(arr[arr.length - 1], 'rect',  {
+            //   onMouseleave(e) {
+            //   }
+            // })
+            // clone.style.position = 'absolute'
+            // test2Tool(clone)
+            createHighlightRect(arr[arr.length - 1])
             // console.log(dom)
           }
         }, 30)
@@ -483,8 +496,18 @@ export default {
 
     let test1Tool = clearTool()
     let test2Tool = clearTool(TEST2_ID)
+    let test3Tool = clearTool(TEST3_ID)
 
     let app = getApp()
+
+    function createHighlightRect(dom) {
+      let clone = createInspect(dom, 'rect',  {
+        onMouseleave(e) {
+        }
+      })
+      clone.style.position = 'absolute'
+      test3Tool(clone)
+    }
 
     /**
      * 初始化拖拽组件
@@ -680,6 +703,7 @@ export default {
         state.layouts.unshift(item);
         nextTick(() => {
           onDropEndItemsChanged(item)
+          test1Tool()
         })
         return;
       }
@@ -846,9 +870,11 @@ export default {
       if (currentToMove && playground.contains(currentToMove)) {
         trueDom = findDom(currentToMove)
       }
-      // if (currentToMove.hasAttribute('z-drag-start')) {
-      //   trueDom = currentToMove
-      // }
+      if (currentToMove.hasAttribute('z-drag-start')) {
+        let clone = createInspect(currentToMove, type, options)
+        actionFun(clone)
+        return;
+      }
       if (trueDom) {
         let clone = createInspect(trueDom, type, options)
         actionFun(clone)
@@ -1159,7 +1185,7 @@ export default {
 
         }
       }, _cached?.ins ?? {})
-      // console.log(defaultVal)
+      console.log(defaultVal)
       return {
         default: createCusWidgetEditorConfig(formDef,
             computed,
@@ -1364,6 +1390,7 @@ export default {
       getMemo,
       testId1: TEST1_ID,
       testId2: TEST2_ID,
+      testId3: TEST3_ID,
       onSelectList,
       onSelectChecked,
       onDropEnd,

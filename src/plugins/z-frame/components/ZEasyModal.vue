@@ -13,7 +13,8 @@
 <template>
   <section class="z-easy-dialog">
 <!--    {{modelAttr}}-->
-    <el-button @click="openModal"><slot name="button-content"></slot></el-button>
+    <el-button v-bind="buttonAttr"
+               @click="openModal"><slot name="button-content"></slot></el-button>
     <el-dialog class="z-easy-dialog__dialog" v-bind="modelAttr"
                v-model="opened"
                 placement="top"
@@ -37,6 +38,12 @@ export default {
       default: '打开'
     },
     modelAttr: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    buttonAttr: {
       type: Object,
       default() {
         return {}

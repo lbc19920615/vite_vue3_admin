@@ -46,7 +46,7 @@ export default {
     let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx, {
       handleValueInit(newVal, from) {
         // console.log(from)
-        // console.log('CusOptManager', newVal, typeof  newVal)
+        console.log('CusOptManager', newVal, typeof  newVal)
         if (newVal) {
           try {
             obj = JSON5.parse(newVal)
@@ -111,9 +111,12 @@ export default {
     }
 
     onMounted(() => {
-      if (widgetConfig2.mounted) {
-        init(props)
-      }
+      setTimeout(() => {
+        console.log('props', props)
+        if (widgetConfig2.mounted) {
+          init(props)
+        }
+      }, 30)
     })
 
 
