@@ -1068,7 +1068,7 @@ export default {
 
     function removeTreeNode(node, data) {
       let {com = {}} = data
-      console.log('removeTreeNode', node, data, com)
+      // console.log('removeTreeNode', node, data, com)
       if (com.DRAG_SUB_FORM) {
         lodash.each(node.childNodes, (childNode) => {
           let childNodeData = childNode.data
@@ -1080,9 +1080,17 @@ export default {
         removeLayout(data.con_uuid, data)
       }
       else {
-        clearConfig(data)
+        if (node.parent && node.parent.data?.com?.DRAG_SUB_FORM) {
+          clearConfig(data)
+          // console.log(dragConfig, data)
+          removeSubLayout(data.con_uuid, data)
+        } else {
+          clearConfig(data)
+          removeLayout(data.con_uuid, data)
+        }
+        // clearConfig(data)
         // console.log(dragConfig, data)
-        removeSubLayout(data.con_uuid, data)
+        // removeSubLayout(data.con_uuid, data)
       }
       if (treeState.current.uuid) {
         // console.log(treeState.current.uuid, dragConfig)
