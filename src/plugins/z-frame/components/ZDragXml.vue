@@ -535,6 +535,7 @@ export default {
 
     let app = getApp()
 
+
     let _currentBuild = null
     function createHighlightRect(dom) {
       function build() {
@@ -552,6 +553,14 @@ export default {
     window.addEventListener('resize', function () {
       _currentBuild()
     })
+
+    function onMutation(mutations) {
+      let el = document.querySelector('.z-drag-highlight')
+      console.log('mutations', el)
+      if (!el) {
+        test3Tool()
+      }
+    }
 
     /**
      * 初始化拖拽组件
@@ -1094,7 +1103,7 @@ export default {
       }
       if (treeState.current.uuid) {
         // console.log(treeState.current.uuid, dragConfig)
-        if (!DRAG_CONTEXT.hasConfig(treeState.current.uuid)) {
+        if (!DRAG_INSTANSE.hasConfig(treeState.current.uuid)) {
           treeState.current = {}
         }
       }
@@ -1484,6 +1493,13 @@ export default {
       //     'form-first-item': true
       //   }
       // })
+
+      const mo = new MutationObserver(onMutation);
+      mo.observe(getPlaygroundDOM(), {
+        attributes : true,
+        subtree: true,
+        childList: true
+      });
     })
 
     return {
