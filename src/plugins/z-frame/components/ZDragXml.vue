@@ -270,6 +270,8 @@ export default {
       filterList: '',
       isDragging: false,
       disableDrag: false,
+      currentDragItem: {},
+      cachedGridItem: null,
       // tree: [],
       layouts: [],
       layoutsMap: {},
@@ -356,6 +358,13 @@ export default {
             // console.log(dom)
           }
         }, 30)
+      },
+      onGridDragEnter(cachedGridItem ) {
+        state.cachedGridItem = cachedGridItem
+      },
+      onGridDragleave() {
+        state.cachedGridItem = null
+        // console.log('sdsdsds')
       }
     }
     provide('dragxml', DRAG_INSTANSE)
@@ -389,10 +398,11 @@ export default {
         // console.log(state.layouts)
         let result = state.layouts.map(layout => {
           // console.log(layout, state.layoutsMap)
-          let ret = {
-            label: 'item',
-            children: []
-          }
+          // let ret = {
+          //   label: 'item',
+          //   children: []
+          // }
+          let ret = null
           let context =state.layoutsMap[layout.uuid]?.el
           if (context) {
             // console.log(context)
@@ -445,8 +455,8 @@ export default {
 
           }
           return ret
-        })
-        // console.log(result)
+        }).filter( v => v)
+        console.log(result)
         return result
       }  else {
         return []
@@ -581,6 +591,7 @@ export default {
     function onDropStart(e) {
       state.isDragging = true
       state.disableDrag = true
+      state.currentDragItem = e.item
     }
 
     let currentDragEnterContext = null
@@ -711,6 +722,22 @@ export default {
       buildUUIDS()
     }
 
+    function buildGridItem(dataset) {
+      let {e,itemKey,context} = state.cachedGridItem
+      let target = e.target
+      let el = context.$el
+      // console.log('onGridDragEnter', e, state.currentDragItem)
+      // let dataset = state.currentDragItem?.dataset ?? {}
+      // console.log(dataset)
+      if (dataset.name) {
+        let com = CustomVueComponent.resolve(dataset.name)
+        if (!com.DRAG_GRID) {
+          console.log(dataset.name)
+          context.initDomCom(itemKey, com)
+        }
+      }
+    }
+
     function onDropEnd(e) {
       let playground = getPlaygroundDOM()
       state.isDragging = false
@@ -718,6 +745,13 @@ export default {
       // console.log('onDropEnd', originalEvent)
 
       let dataset = e?.item?.dataset ?? {}
+
+      if (state.cachedGridItem) {
+        buildGridItem(dataset)
+        return;
+      }
+
+
       currentToTarget = fromPoint(originalEvent.pageX, originalEvent.pageY)
 
       // console.log(currentToTarget)
@@ -740,6 +774,10 @@ export default {
           test1Tool()
         })
         return;
+      }
+
+      if (currentToTarget.hasAttribute('z-drag-grid-item')) {
+        console.log(currentToTarget, )
       }
 
       if (playground.isEqualNode(currentToTarget)) {
@@ -1030,21 +1068,20 @@ export default {
 
     function removeTreeNode(node, data) {
       let {com = {}} = data
-      // console.log('removeTreeNode', node, data, com)
-      if (!lodash.isEmpty(node.childNodes)) {
-      // 子表单
+      console.log('removeTreeNode', node, data, com)
+      if (com.DRAG_SUB_FORM) {
         lodash.each(node.childNodes, (childNode) => {
           let childNodeData = childNode.data
           // console.log(childNode, childNodeData)
           clearConfig(childNodeData)
         })
         clearConfig(data)
-        console.log(dragConfig)
+        // console.log(dragConfig)
         removeLayout(data.con_uuid, data)
       }
       else {
         clearConfig(data)
-        console.log(dragConfig, data)
+        // console.log(dragConfig, data)
         removeSubLayout(data.con_uuid, data)
       }
       if (treeState.current.uuid) {
