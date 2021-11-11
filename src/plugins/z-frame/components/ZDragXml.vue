@@ -67,13 +67,16 @@
   }
 }
 
+$play_media: (
+mobile: 375px,
+);
 .playground {
+  min-height: 60px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(238, 238, 238);
+  margin: 0 auto;
   &[type=mobile] {
-    min-height: 60px;
-    background-color: rgb(255, 255, 255);
-    width: 375px;
-    border: 1px solid rgb(238, 238, 238);
-    margin: 0 auto;
+    width: map-get($play_media, mobile);
   }
 }
 </style>
@@ -81,6 +84,16 @@
 <template>
   <div class="z-drag-xml" @mousemove="onMouseMove" >
 <!--    {{state}}-->
+    <el-row class="a-space-mb-10" justify="space-between" align="middle">
+      <div>标题</div>
+      <div>
+        <el-radio-group size="small" v-model="toolState.type">
+          <el-radio-button label="mobile"></el-radio-button>
+          <el-radio-button label="responsive"></el-radio-button>
+        </el-radio-group>
+      </div>
+      <div>动作</div>
+    </el-row>
     <el-row>
       <el-col :span="6" >
         <el-row class="a-space-mb-10">
@@ -158,11 +171,11 @@
       >
         <div :id="playgroundId"
              class="playground"
-             type="mobile"
+             :type="toolState.type"
              data-index="-1"
              @dragover="onDragMove"
              @mouseleave="onMouseLeave"
-             style="min-height: 60px; border: 1px solid #eee; background-color: #fff; width: 375px;"
+            
         >
           <div style="height: 3px" z-drag-start>&nbsp;</div>
           <z-layout-init
@@ -260,6 +273,10 @@ export default {
       layoutsMap: {},
       layoutRefs: {},
       uuids: [],
+    })
+
+    let toolState = reactive({
+      type: 'mobile'
     })
 
     let dragConfig = new Map()
@@ -1398,6 +1415,7 @@ export default {
       treeState,
       zprops,
       removeTreeNode,
+      toolState,
       resolveConfig,
       get_current_config,
       onCommonModelChange,
