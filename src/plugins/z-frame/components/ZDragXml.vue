@@ -525,14 +525,23 @@ export default {
 
     let app = getApp()
 
+    let _currentBuild = null
     function createHighlightRect(dom) {
-      let clone = createInspect(dom, 'rect',  {
-        onMouseleave(e) {
-        }
-      })
-      clone.style.position = 'absolute'
-      test3Tool(clone)
+      function build() {
+        let clone = createInspect(dom, 'rect',  {
+          onMouseleave(e) {
+          }
+        })
+        clone.style.position = 'absolute'
+        test3Tool(clone)
+      }
+      build()
+      _currentBuild = build
     }
+
+    window.addEventListener('resize', function () {
+      _currentBuild()
+    })
 
     /**
      * 初始化拖拽组件
