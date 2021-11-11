@@ -57,8 +57,12 @@
 }
 .debug-tool2 {
   [current-to-move] {
-    border-color: #00bb00;
+    //border-color: #00bb00;
     border-width: 1px;
+    border-style: solid;
+    > button {
+      display: none;
+    }
   }
 }
 </style>
@@ -751,7 +755,7 @@ export default {
      */
     function createInspect(trueDom, type, options = {}) {
       function handleButtonClick() {
-        console.log(trueDom)
+        // console.log(trueDom)
         if (trueDom.hasAttribute('z-uuid')) {
           let con_uuid = trueDom.getAttribute('z-uuid')
           let context = state.layoutsMap[con_uuid]
@@ -762,7 +766,7 @@ export default {
             if (children[0] && children[0].children[0]) {
               let currentInspectContext = children[0].children[0]
               selectCurrent(currentInspectContext)
-              console.log(context, currentInspectContext)
+              // console.log(context, currentInspectContext)
             }
           }
         }

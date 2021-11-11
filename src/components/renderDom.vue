@@ -1,5 +1,5 @@
 <template>
-  {{state.inited + ''}}
+<!--  {{state.inited + ''}}-->
   <template v-if="state.inited">
     <template v-for="item in state.child" :key="item.uuid">
       <render-jsx :render="item.data"></render-jsx>
