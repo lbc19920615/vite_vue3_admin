@@ -139,6 +139,13 @@ export default {
     })
 
 
+    let refs = new Map()
+    function initRefs(index) {
+      return function (el) {
+        refs.set(index, el)
+      }
+    }
+
     let dragxml = inject('dragxml')
     function onMouseEnter(e) {
       // console.log('onMouseEnter', e)
@@ -450,21 +457,17 @@ export default {
       }
     }
 
+    /**
+     * 存储
+     * @returns {{defs: *, column: *, uuids: Array<UnwrapRefSimple<*>>}}
+     */
     function toMemo() {
-      console.log(state.doms)
+      // console.log(state.doms)
       return {
         defs: toRaw(state.defs),
         // doms: toRaw(state.doms),
         uuids:  toRaw(state.uuids),
         column: toRaw(state.column)
-      }
-    }
-
-
-    let refs = new Map()
-    function initRefs(index) {
-      return function (el) {
-        refs.set(index, el)
       }
     }
 
@@ -487,13 +490,13 @@ export default {
       state.defs = item.defs
 
       nextTick(() => {
-        console.log('fromMemo', state, refs)
+        // console.log('fromMemo', state, refs)
         lodash.each(item.defs, function (column, columnIndex) {
           genUUIDS(columnIndex)
           rebuildSortAble(columnIndex)
         })
         refs.forEach(function (ref) {
-          console.log(ref)
+          // console.log(ref)
           if (ref && ref.reload) {
             ref.reload()
           }

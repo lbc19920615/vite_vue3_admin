@@ -1,5 +1,5 @@
 <template>
-  {{state.inited}}
+  {{state.inited + ''}}
   <template v-if="state.inited">
     <template v-for="item in state.child" :key="item.uuid">
       <render-jsx :render="item.data"></render-jsx>
@@ -35,8 +35,14 @@ export default defineComponent( {
       inited: true
     })
 
-    function reload(newVal, cb) {
+    function reload() {
+      state.inited = false
+      load()
+      setTimeout( () => {
+        state.inited = true
+      }, 150)
     }
+
 
     function load() {
       // let obj = []
@@ -57,17 +63,10 @@ export default defineComponent( {
         })
         // obj.push(render[uuid].props.class)
       })
-      console.log(ret)
+      // console.log(ret)
       state.child = ret
     }
 
-    function reload() {
-      state.inited = false
-      load()
-      setTimeout( () => {
-        state.inited = true
-      }, 150)
-    }
 
     // watch(() => props.render, (newVal) => {
     //   console.log('render', newVal)
@@ -75,8 +74,8 @@ export default defineComponent( {
     //   immediate: true
     // })
 
-    watch(() => props.uuids, (newVal) => {
-      console.log('props change', newVal)
+    watch(props.uuids, (newVal) => {
+      // console.log('props change', newVal)
       // root.children =  []
       // props.render.forEach((renderItem) => {
       //   // console.log(renderItem)

@@ -12,7 +12,7 @@ export let ZDragCommonMixin = {
   data() {
     // console.log(this.uuid)
     return {
-      ui_config_editor: {
+      ui_config_editor: this.dragxml.getConfig(this.uuid) ?? {
         ui: {
           widgetConfig: {}
         }
@@ -20,13 +20,15 @@ export let ZDragCommonMixin = {
       ui_cached: {
         common: {}
       },
-      cus_ref: null
+      cus_ref: null,
+      locked: true
     }
   },
   computed: {
     cus_config() {
       let config = this.ui_config_editor
-      let ui_cached_common = this.ui_cached.common
+      // let config = this.dragxml.getConfig(this.uuid)
+      // let ui_cached_common = this.ui_cached.common
       // console.log(ui_cached_common)
       let _s = Object.assign({
         ui: this.ui ?? {
@@ -54,7 +56,11 @@ export let ZDragCommonMixin = {
       // }
 
       // console.log('cus_config', _c)
-      this.dragxml.onCusConfigChange(this.uuid, _c)
+      if (this.locked) {
+        this.locked = false
+      } else {
+        this.dragxml.onCusConfigChange(this.uuid, _c)
+      }
       return _c
     }
   },

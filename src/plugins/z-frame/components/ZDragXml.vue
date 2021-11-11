@@ -1226,30 +1226,38 @@ export default {
       }
     }
 
-    function getModelValue() {
+    /**
+     * 获取存储
+     * @returns {{defs: {}, state: {layouts: *[], uuids: *[]}}}
+     */
+    function getMemo() {
       let ret = {
         state: {
           layouts: toRaw(state.layouts),
           uuids:  toRaw(state.uuids),
         },
-        defs: {}
+        defs: {},
       }
       ret.treeState ={
         data: toRaw(treeState.data)
       }
+      ret.dragConfig =  JSON5.stringify(
+          [...toRaw(treeState.dragConfig)]
+      )
       lodash.each(state.layoutsMap, function (map, key) {
         let cached = map.el.toMemo()
         // console.log(cached)
         ret.defs[key] = cached
       })
+      console.log(ret)
       return ret
     }
 
     async function exportFile() {
-      let m = getModelValue()
-      // console.log(m)
+      let m = getMemo()
+      // console.log(DRAG_INSTANSE.dragConfig)
       await ZY_EXT.store.setItem('test_export', ZY.JSON5.stringify( { data: m }) )
-      ZY_EXT.saveDesignFile({fileName: 'test_export', data: m})
+      // ZY_EXT.saveDesignFile({fileName: 'test_export', data: m})
     }
 
      async function importFile() {
@@ -1257,24 +1265,34 @@ export default {
        let data = await ZY_EXT.store.getItem('test_export') ?? '{}'
        let obj = ZY.JSON5.parse(data)
        if (obj.data) {
+         const obj_data = obj.data
          // console.log(obj)
-         ZY.lodash.each(obj.data.state, function (item, key) {
+         ZY.lodash.each(obj_data.state, function (item, key) {
             // console.log(item, key)
            state[key] = item
          })
-         ZY.lodash.each(obj.data.treeState, function (item, key) {
+         ZY.lodash.each(obj_data.treeState, function (item, key) {
            // console.log(item, key)
            treeState[key] = item
          })
          nextTick(() => {
-
-           lodash.each(obj.data.defs, (item, uuid) => {
+           lodash.each(obj_data.defs, (item, uuid) => {
              let map = state.layoutsMap[uuid]
              // console.log(item, map)
              if (map && map.el) {
                map.el.fromMemo(item)
              }
            })
+           try {
+             let map = new Map(JSON5.parse(obj_data.dragConfig))
+
+             console.log(map)
+             map.forEach((item, key) => {
+               DRAG_INSTANSE.setConfig(key, item)
+             })
+           } catch (e) {
+             console.error(e)
+           }
          })
        }
      }
@@ -1309,7 +1327,7 @@ export default {
       onChangedLayout,
       onDragEnd,
       onClearIndex,
-      getModelValue,
+      getMemo,
       testId1: TEST1_ID,
       testId2: TEST2_ID,
       onSelectList,

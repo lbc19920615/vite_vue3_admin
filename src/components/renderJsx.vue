@@ -9,7 +9,7 @@ export default defineComponent( {
     render: null
   },
   setup(props, ctx) {
-    console.log(props.render)
+    // console.log(props.render)
     return () => {
       return props.render
     }
