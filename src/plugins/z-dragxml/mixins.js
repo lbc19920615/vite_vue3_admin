@@ -83,7 +83,7 @@ export let ZDragCommonMixin = {
       //
       // }
 
-      console.log('cus_config', _c)
+      // console.log('cus_config', _c)
       if (this.locked) {
         this.locked = false
       } else {

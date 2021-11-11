@@ -456,6 +456,31 @@ export default {
       return defs
     }
 
+    function removeChild(data) {
+      state.defs.forEach((column, columnIndex) => {
+        state.defs[columnIndex] = column.filter(v => {
+          return v.itemUUID !== data.itemUUID
+        })
+      })
+      state.doms.forEach((column, columnIndex) => {
+        Reflect.deleteProperty(state.doms[columnIndex], data.itemUUID)
+      })
+      console.log(data, state.doms, state.uuids)
+      nextTick(() => {
+        // console.log('fromMemo', state, refs)
+        lodash.each(state.defs, function (column, columnIndex) {
+          genUUIDS(columnIndex)
+          rebuildSortAble(columnIndex)
+        })
+        // refs.forEach(function (ref) {
+        //   // console.log(ref)
+        //   if (ref && ref.reload) {
+        //     ref.reload()
+        //   }
+        // })
+      })
+    }
+
     function append(columnIndex = 0, data) {
       let child = state.doms[columnIndex]
       let def = state.defs[columnIndex]
@@ -534,6 +559,7 @@ export default {
       onDragEnter,
       toMemo,
       onMouseEnter,
+      removeChild,
       fromMemo,
       appendColumn,
       getColumnID,

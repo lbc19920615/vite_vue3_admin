@@ -13,7 +13,7 @@
     >
       <template #object_beforebegin="scope">
         <div>
-         <h3>{{PATH_FORM_ARR(scope.pathArr)}}</h3>
+         <h3>{{scope.label ?? PATH_FORM_ARR(scope.pathArr)}}</h3>
          <slot name="z_http_com-object_beforebegin" v-bind="{scope, page}"></slot>
         </div>
       </template>

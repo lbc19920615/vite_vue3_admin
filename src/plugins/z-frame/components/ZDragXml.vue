@@ -48,7 +48,7 @@
 }
 [current-to-move=line] {
   //border-color:  #4099f8;
-  //border-top-color: transparent;
+  border-bottom-color:  #4099f8;
 }
 .debug-tool2 {
   [current-to-move=line] {
@@ -123,7 +123,9 @@ mobile: 375px,
                         class="custom-tree-node"
 
                 >
-                  <el-row align="middle">{{ node.label }}
+                  <el-row align="middle">
+                    <template v-if="data.label_xml"><div v-html="data.label_xml"></div></template>
+                  <template v-if="!data.label_xml">{{data.label}}</template>
                   <div hidden>{{data.tree_id}}</div>
                   </el-row>
                   <el-row align="middle">
@@ -175,7 +177,7 @@ mobile: 375px,
              data-index="-1"
              @dragover="onDragMove"
              @mouseleave="onMouseLeave"
-            
+
         >
           <div style="height: 3px" z-drag-start>&nbsp;</div>
           <z-layout-init
@@ -205,7 +207,7 @@ mobile: 375px,
 <!--          <z-common-attrs-->
 <!--              :value="get_current_config('common', {})"-->
 <!--              @common-change="onCommonModelChange"></z-common-attrs>-->
-          <div>{{treeState.current.com_name}}</div>
+          <div v-html="treeState.current.com_xml"></div>
           <el-scrollbar height="60vh">
             <z-http-com :resolve-config="resolveConfig"
                         @http:model:change="onModelChange"
@@ -333,7 +335,7 @@ export default {
         }
         _config.ins = config
         DRAG_INSTANSE.setConfig(uuid, _config)
-        console.log('onCusConfigChange', dragConfig)
+        // console.log('onCusConfigChange', dragConfig)
       },
       getCurrent() {
         return treeState.current ?? {}
@@ -375,6 +377,9 @@ export default {
         item.tree_id = item.itemUUID
         item.id = item.itemUUID
         // console.log(item)
+        if (item.com.DRAG_LABEL_XML) {
+          item.label_xml = item.com.DRAG_LABEL_XML()
+        }
         return item
       })
     }
@@ -407,6 +412,9 @@ export default {
                       ...first,
                       label: first.com.name,
                       children: arr
+                    }
+                    if (first.com.DRAG_LABEL_XML) {
+                      res.label_xml = first.com.DRAG_LABEL_XML()
                     }
                   } else {
                     res = buildTreeChild(child)
@@ -646,7 +654,7 @@ export default {
         // console.log(uuid, index)
       })
       state.layouts = layouts
-      console.log(uuids, state.layouts)
+      // console.log(uuids, state.layouts)
     }
 
     let sortable;
@@ -801,7 +809,7 @@ export default {
           let con_uuid = trueDom.getAttribute('z-uuid')
           let context = state.layoutsMap[con_uuid]
           // removeLayout(con_uuid)
-          console.log(state.layoutsMap, context)
+          // console.log(state.layoutsMap, context)
           if (context && context.el) {
             let children = context.el.getChildren()
             if (children[0] && children[0].children[0]) {
@@ -847,7 +855,7 @@ export default {
       clone.style.left = client.left + 'px'
       // clone.style.top = (client.top - marginBottom) + 'px'
       clone.style.width = client.width + 'px'
-      clone.style.zIndex = 11111
+      clone.style.zIndex = 111
       if (type === 'line') {
         clone.style.top = ( client.top + client.height + marginBottom) + 'px'
         clone.style.height = 1 + 'px'
@@ -956,9 +964,24 @@ export default {
     }
 
     /**
-     *
-     * @param con_uuid
-     * @param data
+     * removeSubLayout
+     * @param con_uuid {string}
+     * @param data {{}}
+     */
+    function removeSubLayout(con_uuid, data = {}) {
+      let layouMapItem = state.layoutsMap[con_uuid]
+      // console.log(layouMapItem)
+      if (layouMapItem && layouMapItem.el && layouMapItem.el.removeChild) {
+        layouMapItem.el.removeChild(data)
+      }
+      // Reflect.deleteProperty(state.layoutsMap, con_uuid)
+      reloadTree()
+    }
+
+    /**
+     * removeLayout
+     * @param con_uuid {string}
+     * @param data {{}}
      */
     function removeLayout(con_uuid, data = {}) {
       let index = state.layouts.findIndex(v => {
@@ -1007,12 +1030,13 @@ export default {
           clearConfig(childNodeData)
         })
         clearConfig(data)
-        // console.log(dragConfig)
+        console.log(dragConfig)
         removeLayout(data.con_uuid, data)
       }
       else {
         clearConfig(data)
-        removeLayout(data.con_uuid, data)
+        console.log(dragConfig, data)
+        removeSubLayout(data.con_uuid, data)
       }
       if (treeState.current.uuid) {
         // console.log(treeState.current.uuid, dragConfig)
@@ -1066,7 +1090,8 @@ export default {
       let origin = current.origin
       let com = origin.com
       treeState.current.com_name = com.name
-      // console.log(com.DRAG_CONFIG)
+      treeState.current.com_xml = treeState.current?.origin?.label_xml ?? com.name
+      console.log(treeState.current)
       let widgetConfigProps = {
         disabled: QuickBooleanWithNull('禁用'),
         readonly: QuickBooleanWithNull('只读')
@@ -1104,6 +1129,9 @@ export default {
         },
         ui: {
           type: 'object',
+          ui: {
+            label: "UI"
+          },
           properties: {
             label: {
               type: 'string'
@@ -1119,6 +1147,9 @@ export default {
             },
             widgetConfig: {
               type: 'object',
+              ui: {
+                label: "UI 配置"
+              },
               properties: widgetConfigProps
             }
           }
@@ -1169,9 +1200,12 @@ export default {
         },
         server: {
           type: 'object',
+          ui: {
+            label: '服务器'
+          },
           properties: {
-            name: {
-              type: 'string'
+            field_name: {
+              type: 'string',
             }
           }
         },
