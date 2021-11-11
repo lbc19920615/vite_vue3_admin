@@ -1373,11 +1373,22 @@ export default {
       return ret
     }
 
+    // async function exportFile(form) {
+    //   let m = getMemo()
+    //   ZY_EXT.saveDesignFile({
+    //     fileName: 'test_export',
+    //     data: m,
+    //     prefix: 'dragxml_',
+    //     ...form
+    //   })
+    //   // console.log('sdsdsds')
+    // }
+
     async function exportFile() {
       let m = getMemo()
       // console.log(DRAG_INSTANSE.dragConfig)
       // await ZY_EXT.store.setItem('test_export', ZY.JSON5.stringify( { data: m }) )
-      ZY_EXT.saveDesignFile({fileName: 'test_export', data: m})
+      ZY_EXT.saveDesignFile({fileName: 'dragxml_export', data: m})
     }
 
      async function importFile() {
