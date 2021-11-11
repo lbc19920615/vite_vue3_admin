@@ -1,5 +1,7 @@
 <template>
-  <div class="z-dragxml-com"     @mouseenter.stop="onMouseEnter">
+  <div class="z-dragxml-com"
+       :class="drag_highlight_cls('itemUUID', uuid)"
+       @mouseenter.stop="onMouseEnter">
 <!--    {{ui_config_editor}}-->
 <!--    <div>-->
 <!--      {{cus_config}}-->

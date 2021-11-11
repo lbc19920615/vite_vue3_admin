@@ -179,6 +179,7 @@
 <!--          <z-common-attrs-->
 <!--              :value="get_current_config('common', {})"-->
 <!--              @common-change="onCommonModelChange"></z-common-attrs>-->
+          <div>{{treeState.current.com_name}}</div>
           <el-scrollbar height="60vh">
             <z-http-com :resolve-config="resolveConfig"
                         @http:model:change="onModelChange"
@@ -301,6 +302,24 @@ export default {
         _config.ins = config
         DRAG_INSTANSE.setConfig(uuid, _config)
         // console.log('onCusConfigChange', dragConfig)
+      },
+      getCurrent() {
+        return treeState.current ?? {}
+      },
+      highLight(context) {
+        console.log(context)
+        setTimeout(() => {
+          let dom = document.querySelectorAll('.z-drag-highlight')
+          if (dom) {
+            let arr = Array.of(...dom)
+            let clone = createInspect(arr[arr.length - 1], 'rect',  {
+              onMouseleave(e) {
+              }
+            })
+            test2Tool(clone)
+            // console.log(dom)
+          }
+        }, 30)
       }
     }
     provide('dragxml', DRAG_INSTANSE)
@@ -607,6 +626,8 @@ export default {
     }
 
     function selectCurrent(e) {
+
+      // console.log(e)
       treeState.current = {
         origin: e,
         uuid: e.itemUUID,
@@ -730,12 +751,20 @@ export default {
      */
     function createInspect(trueDom, type, options = {}) {
       function handleButtonClick() {
-        // console.log(trueDom)
+        console.log(trueDom)
         if (trueDom.hasAttribute('z-uuid')) {
           let con_uuid = trueDom.getAttribute('z-uuid')
           let context = state.layoutsMap[con_uuid]
           // removeLayout(con_uuid)
-          console.log(context)
+          console.log(state.layoutsMap, context)
+          if (context && context.el) {
+            let children = context.el.getChildren()
+            if (children[0] && children[0].children[0]) {
+              let currentInspectContext = children[0].children[0]
+              selectCurrent(currentInspectContext)
+              console.log(context, currentInspectContext)
+            }
+          }
         }
         else {
           let trueDom_uuid = app.findUUIDfromClassList(trueDom)
@@ -909,9 +938,9 @@ export default {
         if (el) {
           state.layoutsMap[item.uuid] = {
             el,
-            layoutUUID: el.layoutUUID
+            layoutUUID: el.state.layoutUUID
           }
-          state.layoutRefs[el.layoutUUID] = el
+          state.layoutRefs[el.state.layoutUUID] = el
         }
       }
     }
@@ -989,6 +1018,7 @@ export default {
       let current  = treeState.current
       let origin = current.origin
       let com = origin.com
+      treeState.current.com_name = com.name
       // console.log(com.DRAG_CONFIG)
       let widgetConfigProps = {
         disabled: QuickBooleanWithNull('禁用'),
@@ -1256,14 +1286,14 @@ export default {
     async function exportFile() {
       let m = getMemo()
       // console.log(DRAG_INSTANSE.dragConfig)
-      await ZY_EXT.store.setItem('test_export', ZY.JSON5.stringify( { data: m }) )
-      // ZY_EXT.saveDesignFile({fileName: 'test_export', data: m})
+      // await ZY_EXT.store.setItem('test_export', ZY.JSON5.stringify( { data: m }) )
+      ZY_EXT.saveDesignFile({fileName: 'test_export', data: m})
     }
 
      async function importFile() {
-       // let obj = await ZY_EXT.fileOpenJSON5()
-       let data = await ZY_EXT.store.getItem('test_export') ?? '{}'
-       let obj = ZY.JSON5.parse(data)
+       let obj = await ZY_EXT.fileOpenJSON5()
+       // let data = await ZY_EXT.store.getItem('test_export') ?? '{}'
+       // let obj = ZY.JSON5.parse(data)
        if (obj.data) {
          const obj_data = obj.data
          // console.log(obj)
@@ -1286,7 +1316,7 @@ export default {
            try {
              let map = new Map(JSON5.parse(obj_data.dragConfig))
 
-             console.log(map)
+             // console.log(map)
              map.forEach((item, key) => {
                DRAG_INSTANSE.setConfig(key, item)
              })

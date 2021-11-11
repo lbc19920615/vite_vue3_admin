@@ -1,7 +1,35 @@
 import deepMerge from 'deepmerge'
 
+export let ZDragHighlightMixin = {
+  inject: ['dragxml'],
+  data() {
+    return {}
+  },
+  methods: {
+    drag_highlight_cls(key, value) {
+      let isHighLight = false
+      let current = this.dragxml.getCurrent()
+      if (current.origin && current.origin[key]) {
+        isHighLight = (value === current.origin[key])
+        if (key === 'layoutUUID') {
+          // console.log(key, current.origin[key], value)
+        }
+      }
+      if (isHighLight) {
+        this.dragxml.highLight(this)
+      }
+      return {
+        ['z-drag-highlight']: isHighLight
+      }
+    }
+  }
+}
+
 export let ZDragCommonMixin = {
   inject: ['dragxml', 'draginit'],
+  mixins: [
+    ZDragHighlightMixin
+  ],
   emits: [
     'move-enter'
   ],
@@ -26,7 +54,7 @@ export let ZDragCommonMixin = {
   },
   computed: {
     cus_config() {
-      let config = this.ui_config_editor
+      let config = this.ui_config_editor ?? { }
       // let config = this.dragxml.getConfig(this.uuid)
       // let ui_cached_common = this.ui_cached.common
       // console.log(ui_cached_common)

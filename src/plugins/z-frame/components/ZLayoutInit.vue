@@ -46,8 +46,11 @@
 <!--    </draggable>-->
 <!--  </el-row>-->
 
-<el-row class="z-drag-layout" :z-layout-uuid="layoutUUID"
-
+<!--  {{layoutUUID}}-->
+<el-row class="z-drag-layout"
+        :z-layout-uuid="state.layoutUUID"
+        :z-uuid="uuid"
+        :class="drag_highlight_cls('layoutUUID', state.layoutUUID)"
         layout-dom="layout-dom"
         :id="initId"
 >
@@ -58,7 +61,7 @@
             @dragenter.prevent="onDragEnter(index, $event)"
             :id="getColumnID(index)"
     >
-      {{state.uuids[index]}}
+<!--      {{state.uuids[index]}}-->
       <render-dom
                   :ref="initRefs(index)"
                   :render="state.doms[index]"
@@ -76,10 +79,14 @@ import draggable from 'vuedraggable'
 import {h, inject, nextTick, reactive, toRaw, provide, getCurrentInstance, onMounted} from "vue";
 import {DATA_LAYOUT_ITEM_UUID_KEY, DATA_LAYOUT_UUID_KEY, DATA_UUID_KEY} from "@/vars";
 import Sortable from 'sortablejs';
+import {ZDragHighlightMixin} from "@/plugins/z-dragxml/mixins";
 
 export default {
   name: "ZLayoutInit",
   components: {RenderDom, draggable,},
+  mixins: [
+      ZDragHighlightMixin
+  ],
   props: {
     dragEnter: null,
     column: {
@@ -129,12 +136,13 @@ export default {
 
 
     let app = getApp()
-    let layoutUUID = ZY.rid()
+    // let layoutUUID = ZY.rid()
     let state = reactive({
       doms: initMaps(),
       defs: initData(),
       uuids: initMaps(),
       column: props.column,
+      layoutUUID:  ZY.rid()
       // items: initData()
     })
 
@@ -156,11 +164,11 @@ export default {
       return h(com, {
         class: [
           RENDER_DOM_CLS,
-          DATA_LAYOUT_UUID_KEY + layoutUUID,
+          DATA_LAYOUT_UUID_KEY + state.layoutUUID,
           DATA_LAYOUT_ITEM_UUID_KEY + columnIndex,
           DATA_UUID_KEY + itemUUID,
         ],
-        layout_uuid: layoutUUID,
+        layout_uuid: state.layoutUUID,
         uuid: itemUUID,
       }, Date.now())
     }
@@ -297,7 +305,7 @@ export default {
           let itemUUID =  ZY.rid()
           let instanse = buildInstanse(com, itemUUID, columnIndex)
           let cachedDef = {
-            layoutUUID,
+            layoutUUID: state.layoutUUID,
             attrs: {
               // test: 1,
             },
@@ -466,6 +474,7 @@ export default {
       return {
         defs: toRaw(state.defs),
         // doms: toRaw(state.doms),
+        layoutUUID: state.layoutUUID,
         uuids:  toRaw(state.uuids),
         column: toRaw(state.column)
       }
@@ -473,6 +482,14 @@ export default {
 
 
     function fromMemo(item) {
+
+      state.layoutUUID = item.layoutUUID
+
+      state.defs = item.defs.map((column, columnIndex) => {
+        return lodash.map(column, function (row) {
+          return row
+        })
+      })
 
       lodash.each(item.defs, function (column, columnIndex) {
         let child = state.doms[columnIndex]
@@ -482,12 +499,6 @@ export default {
           child[row.itemUUID] = buildInstanse(com, row.itemUUID, columnIndex)
         })
       })
-
-      lodash.each(item, function (v, key) {
-        // state[key]  = v
-      })
-
-      state.defs = item.defs
 
       nextTick(() => {
         // console.log('fromMemo', state, refs)
@@ -519,7 +530,7 @@ export default {
     return {
       initId,
       state,
-      layoutUUID,
+      // layoutUUID,
       onDragEnter,
       toMemo,
       onMouseEnter,
