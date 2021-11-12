@@ -176,6 +176,7 @@ mobile: 375px,
       >
         <el-scrollbar
         max-height="600px"
+        :ref="initScrollRef"
         >
           <div :id="playgroundId"
                class="playground"
@@ -748,6 +749,12 @@ export default {
       })
     }
 
+    let _initScrollRef;
+    function initScrollRef(el) {
+      _initScrollRef = el
+      console.log(el)
+    }
+
     function selectCurrent(e) {
       // console.log(e)
       treeState.current = {
@@ -770,6 +777,12 @@ export default {
       initLayoutRefs(item)
       rebuildSortable()
       buildUUIDS()
+      setTimeout(() => {
+        _initScrollRef.setScrollTop(_initScrollRef.wrap.scrollHeight)
+        // console.log(_initScrollRef.wrap.scrollHeight)
+      // _initScrollRef.update()
+      //   _initScrollRef.wrap.scrollTop = _initScrollRef.wrap.scrollHeight
+      }, 300)
     }
 
     function buildGridItem(dataset) {
@@ -788,6 +801,20 @@ export default {
             reloadTree()
           })
         }
+      }
+    }
+
+    function appendLayout(uuid, item) {
+      let index = state.uuids.findIndex((v) => v === uuid)
+      // console.log(index, uuid)
+      // let newUUID = ZY.rid()
+      // console.log(uuid, index, newUUID)
+      if (index > -1) {
+        let newIndex = index + 1
+        state.layouts.splice(newIndex, 0, item)
+        nextTick(() => {
+          onDropEndItemsChanged(item)
+        })
       }
     }
 
@@ -878,19 +905,6 @@ export default {
     }
 
 
-    function appendLayout(uuid, item) {
-      let index = state.uuids.findIndex((v) => v === uuid)
-      // console.log(index, uuid)
-      // let newUUID = ZY.rid()
-      // console.log(uuid, index, newUUID)
-      if (index > -1) {
-        let newIndex = index + 1
-        state.layouts.splice(newIndex, 0, item)
-        nextTick(() => {
-          onDropEndItemsChanged(item)
-        })
-      }
-    }
 
     function getNestRenderDom(dom) {
       if (dom.classList.contains('render-dom-item')) {
@@ -1664,6 +1678,7 @@ export default {
       onMouseMove,
       treeState,
       zprops,
+      initScrollRef,
       removeTreeNode,
       toolState,
       resolveConfig,
