@@ -1,9 +1,16 @@
 <style lang="scss" scoped>
 .cus-suggest__button {
   //margin: initial;
+  border-right-color: rgb(220, 223, 230) !important;
+  border-radius: 0;
 }
 .cus-sugges__con {
   min-height: 200px
+}
+.cus-suggest-input {
+  :deep(.el-input-group__append) {
+    background-color: transparent;
+  }
 }
 </style>
 
@@ -11,7 +18,9 @@
   <template v-if="inited">
 <!--        {{state}}-->
 <!--    {{ui.widgetConfig}}-->
-    <el-input :style="widgetConfig.inputStyle"
+    <el-input
+        class="cus-suggest-input"
+        :style="widgetConfig.inputStyle"
               :readonly="widgetConfig.mode === 'select'"
               v-model="state.value"
               @input="onChange">
@@ -21,7 +30,6 @@
         </el-space>
       </template>
       <template #append>
-
         <e-popover
             class="cus-suggest__popover"
             :placement="widgetConfig.placement"
@@ -32,7 +40,9 @@
         >
           <template #reference>
             <el-space>
-              <el-button class="cus-suggest__button" @click="setRefMan(true)">选择</el-button>
+              <el-button class="cus-suggest__button"
+                         @click="setRefMan(true)">选择</el-button>
+
             </el-space>
           </template>
           <div class="cus-sugges__con">
@@ -45,6 +55,9 @@
                         @select-item="selectSuggest"></SimpleList>
           </div>
         </e-popover>
+        <el-button
+            class="a-space-ml-10"
+            @click="removeValue"><el-icon><Remove></Remove></el-icon></el-button>
       </template>
     </el-input>
   </template>
@@ -56,11 +69,12 @@ import {getCurrentInstance, resolveComponent} from 'vue'
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import {useArrHandler, useReloadMan} from "@/views/home/hooks";
 import {EPopover} from "@/components/EPopover/index.js";
+import {Remove} from "@element-plus/icons";
 // import SimpleList from "@/components/SimpleList.vue";
 
 export default {
   name: 'CusSuggest',
-  components: {EPopover},
+  components: {EPopover, Remove,},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -136,6 +150,13 @@ export default {
       }, 30)
     }
 
+    function removeValue() {
+      state.value = null
+      setTimeout(() => {
+        onChange()
+      }, 30)
+    }
+
     function onChange() {
       methods.on_change(state.value)
     }
@@ -174,6 +195,7 @@ export default {
       refMan,
       setRefMan,
       onChange,
+      removeValue,
       widgetConfig: props.ui.widgetConfig,
       handler,
       methods,
