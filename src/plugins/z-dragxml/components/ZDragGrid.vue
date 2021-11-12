@@ -33,8 +33,9 @@
 <script>
 import {ZDragCommonMixin} from "@/plugins/z-dragxml/mixins";
 import CusInput from "@/components/CustomForm/CusInput.vue";
-import {h, reactive} from "vue";
+import {h, reactive, toRaw} from "vue";
 import RenderJsx from "@/components/renderJsx.vue";
+import {DATA_LAYOUT_ITEM_UUID_KEY, DATA_LAYOUT_UUID_KEY, DATA_UUID_KEY} from "@/vars";
 
 export default {
   name: 'ZDragGrid',
@@ -78,8 +79,92 @@ export default {
       // console.log(itemKey)
       if (this.state.dom[itemKey]) {
         let ctx = this.state.dom[itemKey]
-        ctx.jsx = h(com, {}, [])
+        let itemUUID = 'z_drag_grid__' + ZY.rid()
+        let props = {
+          // class: [
+          //   DATA_LAYOUT_UUID_KEY + this.layout_uuid,
+          //   // DATA_LAYOUT_ITEM_UUID_KEY + columnIndex,
+          //   DATA_UUID_KEY + itemUUID,
+          // ],
+          layoutUUID: this.layout_uuid,
+          gridUUID: this.uuid,
+          itemUUID: itemUUID,
+          gridItemUUID: itemKey,
+          layout_uuid: this.layout_uuid,
+          uuid: itemUUID,
+        }
+        // console.log(com, props)
+        ctx.jsx = h(com, props, [])
+        ctx.def = {
+          com,
+          ...props
+        }
+        ctx.sef = {
+          comName: com.name,
+          props
+        }
       }
+    },
+    getTree() {
+      let dom = toRaw(this.state.dom)
+      let ret = []
+
+      ZY.lodash.each(dom, function (item, key) {
+        // console.log(item)
+        if (item.def) {
+          let com = item.def.com
+          let c = {
+            label: com.name,
+            id: item.def.itemUUID,
+            ...item.def,
+          }
+          if (com.DRAG_LABEL_XML) {
+            c.label_xml = com.DRAG_LABEL_XML()
+          }
+          ret.push(c)
+        }
+      })
+
+      return ret
+    },
+    clearGridItem(gridItemUUID = '') {
+      // console.log(itemUUID)
+      if (this.state.dom[gridItemUUID]) {
+        // console.log('sdsdsdsdsdswdsdsdsdsdsdsdsds', this.state.dom)
+        // Reflect.deleteProperty(this.state.dom, itemUUID)
+        this.state.dom[gridItemUUID].jsx = null
+        this.state.dom[gridItemUUID].def = null
+      }
+    },
+    toMemo() {
+      let dom =  toRaw(this.state.dom)
+      let ret = {}
+      ZY.lodash.each(dom, function (item, key) {
+        ret[key] = {
+          sef: ZY.JSON5.parse(ZY.JSON5.stringify(dom[key].sef))
+        }
+      })
+      return {
+        dom: ret
+      }
+    },
+    fromMemo(data) {
+      console.log('fromMemo', data)
+      let self = this
+      ZY.lodash.each(data.dom, function (item, key) {
+        if (item.sef) {
+          let com = CustomVueComponent.resolve(item.sef.comName)
+          self.state.dom[key] = {
+            sef: item.sef,
+            def: {
+              com,
+              ...item.sef.props
+            },
+            jsx: h(com, item.sef.props, [])
+          }
+          console.log(item)
+        }
+      })
     }
   },
   data() {
@@ -92,13 +177,19 @@ export default {
       state: {
         dom: {
           sjdhsjds: {
-            jsx: null
+            jsx: null,
+            def: null,
+            sef: null,
           },
           sdhskdhsjdshjds: {
-            jsx: null
+            jsx: null,
+            def: null,
+            sef: null,
           },
           sdsdsdsdsds: {
-            jsx: null
+            jsx: null,
+            def: null,
+            sef: null,
           }
         }
       }

@@ -456,6 +456,15 @@ export default {
       return defs
     }
 
+    function getFirstCom(columnIndex = 0) {
+      let children = getChildren()
+      console.log(children, refs)
+      if (Array.isArray(children[columnIndex]?.children)) {
+        return children[columnIndex].children[0]
+      }
+      return null
+    }
+
     function removeChild(data) {
       state.defs.forEach((column, columnIndex) => {
         state.defs[columnIndex] = column.filter(v => {
@@ -566,6 +575,7 @@ export default {
       getUUIDS,
       onLoaded,
       getChildren,
+      getFirstCom,
       onDragLeave,
       initRefs,
       initGrid,

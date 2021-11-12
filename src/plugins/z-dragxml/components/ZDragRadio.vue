@@ -46,9 +46,11 @@ export default {
   methods: {
     setVal(v) {
       this.cus_ref.state.value = v
-    }
+    },
+    CUS_RADIO() {}
   },
   data() {
+    // console.log(this.uuid)
     return {
       id: ZY.rid(6),
       ui: {

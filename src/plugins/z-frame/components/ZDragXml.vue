@@ -277,6 +277,7 @@ export default {
       layoutsMap: {},
       layoutRefs: {},
       uuids: [],
+      comMemo: {}
     })
 
     let toolState = reactive({
@@ -310,12 +311,20 @@ export default {
       },
       register(key, value) {
         DRAG_CONTEXT.set(key, value)
+        // console.log('register', state.comMemo, key, value)
+        if (state.comMemo[key] && value.fromMemo) {
+          value.fromMemo(state.comMemo[key] )
+          Reflect.deleteProperty(state.comMemo, key)
+        }
       },
       unRegister(key) {
         DRAG_CONTEXT.delete(key)
       },
       get(key) {
         return DRAG_CONTEXT.get(key)
+      },
+      getCtxs() {
+        return DRAG_CONTEXT
       },
       emitter,
       onMouseEnter(e) {
@@ -426,12 +435,25 @@ export default {
                     if (first.com.DRAG_LABEL_XML) {
                       res.label_xml = first.com.DRAG_LABEL_XML()
                     }
-                  } else {
+                  }
+                  else if(first && first.com && first.com.DRAG_GRID) {
+                    // console.log(first, child)
+                    res = buildTreeChild(child)
+                    // let layMap = state.layoutsMap[first.con_uuid]
+                    // let gridLayout = layMap.el.getFirstCom()
+                    let itemUUID = first.itemUUID
+                    let context = DRAG_INSTANSE.get(itemUUID)
+                    if (context) {
+                      console.log(context)
+                      res[0].children = context.getTree()
+                    }
+                  }
+                  else {
                     res = buildTreeChild(child)
                   }
                 }
                 column.children = res
-                // console.log('res', res)
+                console.log('res', res)
                 return column
               })
               ret = {
@@ -456,7 +478,7 @@ export default {
           }
           return ret
         }).filter( v => v)
-        console.log(result)
+        // console.log(result)
         return result
       }  else {
         return []
@@ -551,12 +573,14 @@ export default {
     }
 
     window.addEventListener('resize', function () {
-      _currentBuild()
+      if (_currentBuild) {
+        _currentBuild()
+      }
     })
 
     function onMutation(mutations) {
       let el = document.querySelector('.z-drag-highlight')
-      console.log('mutations', el)
+      // console.log('mutations', el)
       if (!el) {
         test3Tool()
       }
@@ -741,8 +765,11 @@ export default {
       if (dataset.name) {
         let com = CustomVueComponent.resolve(dataset.name)
         if (!com.DRAG_GRID) {
-          console.log(dataset.name)
+          // console.log(dataset.name)
           context.initDomCom(itemKey, com)
+          nextTick(() => {
+            reloadTree()
+          })
         }
       }
     }
@@ -784,11 +811,6 @@ export default {
         })
         return;
       }
-
-      if (currentToTarget.hasAttribute('z-drag-grid-item')) {
-        console.log(currentToTarget, )
-      }
-
       if (playground.isEqualNode(currentToTarget)) {
         state.layouts.push(item)
         nextTick(() => {
@@ -1077,7 +1099,7 @@ export default {
 
     function removeTreeNode(node, data) {
       let {com = {}} = data
-      // console.log('removeTreeNode', node, data, com)
+      console.log('removeTreeNode', node, data, com)
       if (com.DRAG_SUB_FORM) {
         lodash.each(node.childNodes, (childNode) => {
           let childNodeData = childNode.data
@@ -1093,7 +1115,20 @@ export default {
           clearConfig(data)
           // console.log(dragConfig, data)
           removeSubLayout(data.con_uuid, data)
-        } else {
+        }
+        else if (node.parent && node.parent.data?.com?.DRAG_GRID) {
+          let parentData =  node.parent.data
+          let parentRef = DRAG_INSTANSE.get(parentData.itemUUID)
+          // console.log(parentRef)
+          if (parentRef) {
+            parentRef.clearGridItem(data.gridItemUUID)
+            nextTick(() => {
+              reloadTree()
+            })
+          }
+          // console.log('dsdsdsds', parentData, data)
+        }
+        else {
           clearConfig(data)
           removeLayout(data.con_uuid, data)
         }
@@ -1121,7 +1156,7 @@ export default {
     }
 
     function handleNodeClick(e) {
-      // console.log('handleNodeClick', e)
+      console.log('handleNodeClick', e)
       let {config = {}} = e
       treeState.current = {
         origin: e,
@@ -1423,7 +1458,21 @@ export default {
         // console.log(cached)
         ret.defs[key] = cached
       })
-      console.log(ret)
+
+
+      let ctx = DRAG_INSTANSE.getCtxs()
+
+      ret.comMemo = {
+      }
+
+      ctx.forEach( function (item, key) {
+        // console.log(item, key)
+        if (item.toMemo) {
+          ret.comMemo[key] = item.toMemo()
+        }
+      })
+
+      console.log(ret.comMemo )
       return ret
     }
 
@@ -1460,6 +1509,8 @@ export default {
            // console.log(item, key)
            treeState[key] = item
          })
+         console.log(obj_data)
+         state.comMemo = obj_data.comMemo
          nextTick(() => {
            lodash.each(obj_data.defs, (item, uuid) => {
              let map = state.layoutsMap[uuid]
@@ -1478,6 +1529,15 @@ export default {
            } catch (e) {
              console.error(e)
            }
+
+           // let ctx = DRAG_INSTANSE.getCtxs()
+           // console.log(ctx)
+           // ctx.forEach( function (item, key) {
+           //   // console.log(item, key)
+           //   if (item.fromMemo) {
+           //     item.fromMemo(obj_data.comMemo)
+           //   }
+           // })
          })
        }
      }
