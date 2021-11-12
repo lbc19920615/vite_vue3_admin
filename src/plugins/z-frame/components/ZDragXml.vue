@@ -112,7 +112,8 @@ mobile: 375px,
 <!--          <el-scrollbar max-height="30vh">{{zprops}}</el-scrollbar>-->
           <el-scrollbar max-height="30vh" >
             <el-tree default-expand-all class="custom-tree"
-                     :data="treeState.data" :props="treeState.defaultProps"
+                     :data="treeState.data"
+                     :props="treeState.defaultProps"
                      node-key="id"
                      @node-click="handleNodeClick"
                      :expand-on-click-node="false"
@@ -128,7 +129,9 @@ mobile: 375px,
                   <template v-if="!data.label_xml">{{data.label}}</template>
                   <div hidden>{{data.tree_id}}</div>
                   </el-row>
-                  <el-row align="middle">
+                  <el-row align="middle"
+                  v-if="!data.NOT_ACTION"
+                  >
                     <el-button size="mini"
                                type="danger"
                                @click.stop="removeTreeNode(node, data)"> 删除 </el-button>
@@ -374,6 +377,9 @@ export default {
       onGridDragleave() {
         state.cachedGridItem = null
         // console.log('sdsdsds')
+      },
+      reloadTree() {
+        reloadTree()
       }
     }
     provide('dragxml', DRAG_INSTANSE)
@@ -1116,9 +1122,10 @@ export default {
           // console.log(dragConfig, data)
           removeSubLayout(data.con_uuid, data)
         }
-        else if (node.parent && node.parent.data?.com?.DRAG_GRID) {
+        else if (node.parent && node.parent.data?.DRAG_GRID_ITEM) {
           let parentData =  node.parent.data
-          let parentRef = DRAG_INSTANSE.get(parentData.itemUUID)
+          // console.log(parentData)
+          let parentRef = DRAG_INSTANSE.get(parentData.GRID_UUID)
           // console.log(parentRef)
           if (parentRef) {
             parentRef.clearGridItem(data.gridItemUUID)
