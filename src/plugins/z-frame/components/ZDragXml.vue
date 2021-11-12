@@ -450,7 +450,7 @@ export default {
                     let itemUUID = first.itemUUID
                     let context = DRAG_INSTANSE.get(itemUUID)
                     if (context) {
-                      console.log(context)
+                      // console.log(context)
                       res[0].children = context.getTree()
                     }
                   }
@@ -459,7 +459,7 @@ export default {
                   }
                 }
                 column.children = res
-                console.log('res', res)
+                // console.log('res', res)
                 return column
               })
               ret = {
@@ -1105,7 +1105,7 @@ export default {
 
     function removeTreeNode(node, data) {
       let {com = {}} = data
-      console.log('removeTreeNode', node, data, com)
+      // console.log('removeTreeNode', node, data, com)
       if (com.DRAG_SUB_FORM) {
         lodash.each(node.childNodes, (childNode) => {
           let childNodeData = childNode.data
@@ -1129,6 +1129,10 @@ export default {
           // console.log(parentRef)
           if (parentRef) {
             parentRef.clearGridItem(data.gridItemUUID)
+            console.log(treeState.current, data)
+            if (treeState.current.uuid === data.uuid) {
+              treeState.current = {}
+            }
             nextTick(() => {
               reloadTree()
             })

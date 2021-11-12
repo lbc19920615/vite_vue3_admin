@@ -158,7 +158,7 @@ export default {
       }
     },
     fromMemo(data) {
-      console.log('fromMemo', data)
+      // console.log('fromMemo', data)
       let self = this
       ZY.lodash.each(data.dom, function (item, key) {
         if (item.sef) {
