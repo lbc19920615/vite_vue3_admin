@@ -1,9 +1,11 @@
 <style lang="scss">
 .z-drag-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
-
+  //display: grid;
+  //grid-template-columns: 1fr 1fr;
+  //grid-template-rows: auto;
+  //margin-bottom: 50px;
+  padding-bottom: 10px;
+  //pointer-events: none;
 }
 .z-drag-grid__item {
   background-color: #e0e0e0;
@@ -16,14 +18,21 @@
        :class="drag_highlight_cls('itemUUID', uuid)"
        @mouseenter.stop="onMouseEnter"
        @dragleave="ondragleave"
-       style="pointer-events: none"
+       @mouseleave="ondragleave"
 
   >
 <!--    {{uuid}}-->
 
-    <div class="z-drag-grid__item" style="height: 90px; pointer-events: all;"
+    <div class="z-drag-grid__item"
+         style="height: 90px; pointer-events: initial"
          v-for="(item, itemKey) in state.dom"
-         @dragover.prevent="ondragend(itemKey, $event)" >
+         @dragover.prevent="ondragend(itemKey, $event)"
+         @mousemove="onGridItemMouseEnter"
+         :data-grid-id="uuid"
+         :data-key="itemKey"
+         :data-item-id="item.sef ? item.sef.uuid : ''"
+         z-drag-grid-item=""
+    >
       <render-jsx :render="item.jsx"></render-jsx>
     </div>
 
@@ -36,6 +45,19 @@ import CusInput from "@/components/CustomForm/CusInput.vue";
 import {h, reactive, toRaw} from "vue";
 import RenderJsx from "@/components/renderJsx.vue";
 import {DATA_LAYOUT_ITEM_UUID_KEY, DATA_LAYOUT_UUID_KEY, DATA_UUID_KEY} from "@/vars";
+
+function getDomRange(trueDom, heightRatio = 1) {
+  let computedStyle = getComputedStyle(trueDom)
+  let marginBottom = parseFloat(computedStyle.marginBottom)
+  let marginTop = parseFloat(computedStyle.marginTop)
+  let rect =   trueDom.getBoundingClientRect()
+  let xRange = [rect.left, rect.left + rect.width]
+  let yRange = [rect.top - marginTop, rect.top + (rect.height * heightRatio) + marginBottom]
+  return {
+    xRange,
+    yRange
+  }
+}
 
 export default {
   name: 'ZDragGrid',
@@ -64,16 +86,24 @@ export default {
   methods: {
     ondragend(itemKey, e) {
       // console.log('ondragend', e)
-      this.dragxml.onGridDragEnter({
-        e,
-        state: this.state,
-        context: this,
-        itemKey,
-      })
+      let range = getDomRange(e.target, .5)
+      // console.log(range.yRange[1], e.pageY)
+      if (e.pageY < range.yRange[1]) {
+        this.dragxml.onGridDragEnter({
+          e,
+          state: this.state,
+          context: this,
+          itemKey,
+        })
+      }
     },
     ondragleave() {
       this.dragxml.onGridDragleave()
     },
+    getDom(key)  {
+      return this.state.dom[key]
+    },
+
     initDomCom(itemKey, com) {
       // this.state.dom = h(com, {}, [])
       // console.log(itemKey)
@@ -99,8 +129,12 @@ export default {
           com,
           ...props
         }
+        if (com.DRAG_LABEL_XML) {
+          ctx.def .label_xml = com.DRAG_LABEL_XML()
+        }
         ctx.sef = {
           comName: com.name,
+          uuid: props.uuid,
           props
         }
       }
@@ -173,6 +207,31 @@ export default {
           }
         }
       })
+    },
+    onGridItemMouseEnter(e) {
+      // let dom =  document.elementFromPoint(e.pageX, e.pageY)
+      // console.log('onGridItemMouseEnter', e.target)
+      if (e.target ) {
+        if (e.target.children && e.target.children[0]) {
+          let trueDom  = e.target.children[0]
+          let computedStyle = getComputedStyle(trueDom)
+          let marginBottom = parseFloat(computedStyle.marginBottom)
+          let marginTop = parseFloat(computedStyle.marginTop)
+          let rect =   e.target.children[0].getBoundingClientRect()
+          let xRange = [rect.left, rect.left + rect.width]
+          let yRange = [rect.top - marginTop, rect.top + rect.height + marginBottom]
+          // console.log(xRange, yRange, e.pageX, e.pageY)
+          if (e.pageX < xRange[1] && e.pageX > xRange[0]) {
+            if (e.pageY < yRange[1] && e.pageY > yRange[0]) {
+              this.dragxml.onMouseEnter2(e.target.children[0])
+              return;
+            }
+          }
+          this.dragxml.onMouseEnter2(e.target)
+        } else {
+          this.dragxml.onMouseEnter2(e.target)
+        }
+      }
     }
   },
   data() {
@@ -182,6 +241,7 @@ export default {
         widgetConfig: {
         }
       },
+      gridItemMouseEnterLast: null,
       state: {
         dom: {
           sjdhsjds: {

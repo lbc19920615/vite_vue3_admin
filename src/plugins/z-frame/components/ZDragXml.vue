@@ -339,6 +339,14 @@ export default {
         })
         test1Tool(clone)
       },
+      onMouseEnter2(target) {
+        let clone = createInspect(target, 'rect',  {
+          onMouseleave(e) {
+            test1Tool()
+          }
+        })
+        test1Tool(clone)
+      },
       onCusConfigChange(uuid, config) {
         let _config = DRAG_INSTANSE.getConfig(uuid)
         if (!_config) {
@@ -737,7 +745,6 @@ export default {
     }
 
     function selectCurrent(e) {
-
       // console.log(e)
       treeState.current = {
         origin: e,
@@ -888,7 +895,7 @@ export default {
      */
     function createInspect(trueDom, type, options = {}) {
       function handleButtonClick() {
-        // console.log(trueDom)
+        console.log(trueDom)
         if (trueDom.hasAttribute('z-uuid')) {
           let con_uuid = trueDom.getAttribute('z-uuid')
           let context = state.layoutsMap[con_uuid]
@@ -900,6 +907,17 @@ export default {
               let currentInspectContext = children[0].children[0]
               selectCurrent(currentInspectContext)
               // console.log(context, currentInspectContext)
+            }
+          }
+        }
+        else if (trueDom.hasAttribute('z-drag-grid-item')) {
+          let dataset = trueDom.dataset
+          let gridUUId = dataset.gridId
+          let gridIns = DRAG_INSTANSE.get(gridUUId)
+          if (gridIns) {
+            let dom = gridIns.getDom(dataset.key)
+            if (dom) {
+              selectCurrent(dom.def)
             }
           }
         }
@@ -923,6 +941,21 @@ export default {
               selectCurrent(currentInspectContext)
             }
             // console.log(currentInspectContext, context, state.layouts)
+          }
+        }
+      }
+
+      // console.log(trueDom)
+
+      // 单一组件不可以
+      if (type === 'line') {
+        if (trueDom && trueDom.parentElement && trueDom.parentElement
+            && trueDom.parentElement.hasAttribute('z-drag-layout__column')
+            ) {
+          let columnMax = parseInt(trueDom.parentElement.getAttribute('z-drag-layout__column'))
+          // console.log(columnMax)
+          if (columnMax < 2) {
+            return
           }
         }
       }
@@ -1020,7 +1053,7 @@ export default {
     }
 
     function onDragMove(e) {
-      // console.log('onDragMove', e.pageX)
+      // console.log('onDragMove', e)
       inspcetDom(e)
       inspcetDom(e,'line', {
         actionFun: test2Tool,

@@ -8,7 +8,7 @@
     background-color: #e0e0e0;
     width: 100%;
   }
-  padding: 10px;
+  padding: 10px 10px;
   padding-top: 0;
 }
 .z-drag-layout__column {
@@ -60,8 +60,10 @@
             @dragleave="onDragLeave"
             @dragenter.prevent="onDragEnter(index, $event)"
             :id="getColumnID(index)"
+            :z-drag-layout__column="columnMax"
     >
 <!--      {{state.uuids[index]}}-->
+<!--      {{columnMax}}-->
       <render-dom
                   :ref="initRefs(index)"
                   :render="state.doms[index]"
