@@ -5,7 +5,7 @@
     content: '';
     display: block;
     height: 1px;
-    background-color: #e0e0e0;
+    background-color: transparent;
     width: 100%;
   }
   padding: 10px 10px;
