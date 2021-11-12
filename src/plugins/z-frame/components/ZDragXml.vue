@@ -866,7 +866,7 @@ export default {
         let columnMax = parseInt(trueDom.parentElement.getAttribute('z-drag-layout__column'))
 
         if (columnMax < 2) {
-          console.log('sdsdsds', trueDom.parentElement.parentElement)
+          // console.log('sdsdsds', trueDom.parentElement.parentElement)
           let uuid = trueDom.parentElement.parentElement.getAttribute(Z_UUID_KEY)
           appendLayout(uuid, item)
         }
