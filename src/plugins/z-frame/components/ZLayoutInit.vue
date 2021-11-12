@@ -8,8 +8,7 @@
     background-color: transparent;
     width: 100%;
   }
-  padding: 10px 10px;
-  padding-top: 0;
+  padding: 0 10px;
 }
 .z-drag-layout__column {
   box-sizing: border-box;

@@ -174,34 +174,38 @@ mobile: 375px,
               :span="10"
 
       >
-        <div :id="playgroundId"
-             class="playground"
-             :type="toolState.type"
-             data-index="-1"
-             @dragover="onDragMove"
-             @mouseleave="onMouseLeave"
-
+        <el-scrollbar
+        max-height="600px"
         >
-          <div style="height: 3px" z-drag-start>&nbsp;</div>
-          <z-layout-init
-              :z-uuid="item.uuid"
-              :uuid="item.uuid"
-              v-for="(item, index) in state.layouts"
-              :key="item.uuid"
-              :column="1"
-              :ref="initRef(item)"
-              :column-max="item.columnMax"
-              @dragenter.prevent="onLayoutSelfDragEnter"
-              :drag-enter="onLayoutDragEnter"
-              @clear-index="onClearIndex"
-              @column-max-err="onClearIndex"
-              @changed="onChangedLayout(item, $event)"
-              @drag-end="onDragEnd(item, $event)"
-              @mouseleave.stop="onMouseLeave"
-              :style="item.style"
-              :class="item.class"
-          ></z-layout-init>
-        </div>
+          <div :id="playgroundId"
+               class="playground"
+               :type="toolState.type"
+               data-index="-1"
+               @dragover="onDragMove"
+               @mouseleave="onMouseLeave"
+
+          >
+            <div style="height: 1px; " z-drag-start>&nbsp;</div>
+            <z-layout-init
+                :z-uuid="item.uuid"
+                :uuid="item.uuid"
+                v-for="(item, index) in state.layouts"
+                :key="item.uuid"
+                :column="1"
+                :ref="initRef(item)"
+                :column-max="item.columnMax"
+                @dragenter.prevent="onLayoutSelfDragEnter"
+                :drag-enter="onLayoutDragEnter"
+                @clear-index="onClearIndex"
+                @column-max-err="onClearIndex"
+                @changed="onChangedLayout(item, $event)"
+                @drag-end="onDragEnd(item, $event)"
+                @mouseleave.stop="onMouseLeave"
+                :style="item.style"
+                :class="item.class"
+            ></z-layout-init>
+          </div>
+        </el-scrollbar>
       </el-col>
       <el-col :span="8">
         <template v-if="treeState.current && treeState.current.uuid && treeState.showCurrent">
@@ -858,14 +862,40 @@ export default {
         trueDom = getNestRenderDom(currentToTarget)
       }
 
+      if (trueDom && trueDom.parentElement && trueDom.parentElement.hasAttribute('z-drag-layout__column')) {
+        let columnMax = parseInt(trueDom.parentElement.getAttribute('z-drag-layout__column'))
+
+        if (columnMax < 2) {
+          console.log('sdsdsds', trueDom.parentElement.parentElement)
+          let uuid = trueDom.parentElement.parentElement.getAttribute(Z_UUID_KEY)
+          appendLayout(uuid, item)
+        }
+      }
 
       if (currentDragEnterContext) {
         currentDragEnterContext.append(com, trueDom)
       }
     }
 
+
+    function appendLayout(uuid, item) {
+      let index = state.uuids.findIndex((v) => v === uuid)
+      // console.log(index, uuid)
+      // let newUUID = ZY.rid()
+      // console.log(uuid, index, newUUID)
+      if (index > -1) {
+        let newIndex = index + 1
+        state.layouts.splice(newIndex, 0, item)
+        nextTick(() => {
+          onDropEndItemsChanged(item)
+        })
+      }
+    }
+
     function getNestRenderDom(dom) {
       if (dom.classList.contains('render-dom-item')) {
+
+
         return dom
       }
       if (dom.parentElement) {
@@ -955,7 +985,7 @@ export default {
           let columnMax = parseInt(trueDom.parentElement.getAttribute('z-drag-layout__column'))
           // console.log(columnMax)
           if (columnMax < 2) {
-            return
+            trueDom = trueDom.parentElement.parentElement
           }
         }
       }
@@ -974,12 +1004,13 @@ export default {
       clone.style.width = client.width + 'px'
       clone.style.zIndex = 111
       if (type === 'line') {
-        clone.style.top = ( client.top + client.height + marginBottom) + 'px'
+        clone.style.top = ( client.top + client.height ) + 'px'
         clone.style.height = 1 + 'px'
       }
       else if (type === 'rect') {
-        clone.style.top = (client.top - marginBottom) + 'px'
+        clone.style.top = (client.top - marginTop) + 'px'
         clone.style.height = (client.height + marginTop + marginBottom + 1) + 'px'
+        // clone.style.height = (client.height + marginTop + 1) + 'px'
 
         clone.addEventListener('mouseleave', function (e) {
           if (options && options.onMouseleave) {
