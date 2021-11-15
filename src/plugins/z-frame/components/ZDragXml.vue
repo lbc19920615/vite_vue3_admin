@@ -532,24 +532,49 @@ export default {
       let s_path = ZY.getObjPathFromPathArr(context.pathArr)
       let target = ZY.deepGet(context.res, s_path)
       lodash.each(data, function (item, key) {
-        // console.log(item)
+        console.log(item)
         let propKey = item.itemUUID
-        if (
-            Array.isArray(item.children) && item.children.length > 0
-        ) {
-          let properties = {}
-          target[propKey] = {
-            type: 'object',
-            properties
+        if (item.DRAG_GRID_ITEM) {
+          // propKey = lodash
+          if (Array.isArray(item.children)) {
+            let gridItem = item.children.find(v => v.gridItemUUID === propKey)
+            if (gridItem) {
+              propKey = gridItem.itemUUID
+              let config = DRAG_INSTANSE.getConfig(propKey) ?? {}
+              // console.log(propKey)
+              target[propKey] = {
+                type: 'string',
+                wrap: 'z-drag-grid-item',
+                ...config.ins
+              }
+            }
           }
-          context.pathArr = context.pathArr.concat( [item.id, 'properties'] )
-          traveralTree(item.children, context)
+          // console.log(data, target, s_path)
         } else {
-          // console.log(  DRAG_INSTANSE.getConfig(propKey) )
-          let config = DRAG_INSTANSE.getConfig(propKey) ?? {}
-          target[propKey] = {
-            type: 'string',
-            ...config.ins
+          if (!propKey) {
+            return;
+          }
+          if (
+              Array.isArray(item.children) && item.children.length > 0
+          ) {
+            let properties = {}
+            target[propKey] = {
+              type: 'object',
+              properties
+            }
+           if (item.com && item.com.DRAG_EXPORT) {
+             target[propKey] = Object.assign( target[propKey], item.com.DRAG_EXPORT())
+           }
+            context.pathArr = context.pathArr.concat( [item.id, 'properties'] )
+            traveralTree(item.children, context)
+          } else {
+            let config = DRAG_INSTANSE.getConfig(propKey) ?? {}
+            // console.log( propKey, config)
+            target[propKey] = {
+              type: 'string',
+              ...config.ins
+            }
+
           }
         }
       })
@@ -752,7 +777,7 @@ export default {
     let _initScrollRef;
     function initScrollRef(el) {
       _initScrollRef = el
-      console.log(el)
+      // console.log(el)
     }
 
     function selectCurrent(e) {
@@ -777,12 +802,6 @@ export default {
       initLayoutRefs(item)
       rebuildSortable()
       buildUUIDS()
-      setTimeout(() => {
-        _initScrollRef.setScrollTop(_initScrollRef.wrap.scrollHeight)
-        // console.log(_initScrollRef.wrap.scrollHeight)
-      // _initScrollRef.update()
-      //   _initScrollRef.wrap.scrollTop = _initScrollRef.wrap.scrollHeight
-      }, 300)
     }
 
     function buildGridItem(dataset) {
@@ -814,6 +833,12 @@ export default {
         state.layouts.splice(newIndex, 0, item)
         nextTick(() => {
           onDropEndItemsChanged(item)
+          setTimeout(() => {
+            _initScrollRef.setScrollTop(_initScrollRef.wrap.scrollHeight)
+            // console.log(_initScrollRef.wrap.scrollHeight)
+            // _initScrollRef.update()
+            //   _initScrollRef.wrap.scrollTop = _initScrollRef.wrap.scrollHeight
+          }, 300)
         })
       }
     }
@@ -1245,7 +1270,7 @@ export default {
     }
 
     function handleNodeClick(e) {
-      console.log('handleNodeClick', e)
+      // console.log('handleNodeClick', e)
       let {config = {}} = e
       treeState.current = {
         origin: e,
@@ -1278,7 +1303,7 @@ export default {
       let com = origin.com
       treeState.current.com_name = com.name
       treeState.current.com_xml = treeState.current?.origin?.label_xml ?? com.name
-      console.log(treeState.current)
+      // console.log(treeState.current)
       let widgetConfigProps = {
         disabled: QuickBooleanWithNull('禁用'),
         readonly: QuickBooleanWithNull('只读')

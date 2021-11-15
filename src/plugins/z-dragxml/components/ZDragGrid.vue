@@ -64,6 +64,11 @@ export default {
   components: {RenderJsx, CusInput},
   DRAG_GRID: true,
   ZDragXmlCom: true,
+  DRAG_EXPORT() {
+    return {
+      wrap: 'z-drag-grid'
+    }
+  },
   DRAG_CONFIG() {
     // let obj = CusInput.CUS_EDITOR() ?? { props: {} }
     // Reflect.deleteProperty(obj.props, 'type')
@@ -148,6 +153,7 @@ export default {
         // console.log(item)
         let column = {
           id: key,
+          itemUUID: key,
           NOT_ACTION: true,
           DRAG_GRID_ITEM: true,
           GRID_UUID: self.uuid,
