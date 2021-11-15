@@ -851,15 +851,20 @@ export default {
       // console.log(uuid, index, newUUID)
       if (index > -1) {
         let newIndex = index + 1
+        let newLen =  state.layouts.length
         state.layouts.splice(newIndex, 0, item)
+        console.log(newIndex, newLen)
         nextTick(() => {
           onDropEndItemsChanged(item)
-          setTimeout(() => {
-            _initScrollRef.setScrollTop(_initScrollRef.wrap.scrollHeight)
-            // console.log(_initScrollRef.wrap.scrollHeight)
-            // _initScrollRef.update()
-            //   _initScrollRef.wrap.scrollTop = _initScrollRef.wrap.scrollHeight
-          }, 300)
+          if (newIndex > newLen -1) {
+            setTimeout(() => {
+              _initScrollRef.setScrollTop(_initScrollRef.wrap.scrollHeight)
+              // console.log(_initScrollRef.wrap.scrollHeight)
+              // _initScrollRef.update()
+              //   _initScrollRef.wrap.scrollTop = _initScrollRef.wrap.scrollHeight
+            }, 300)
+          }
+
         })
       }
     }
