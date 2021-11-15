@@ -224,7 +224,7 @@ mobile: 375px,
       </el-col>
       <el-col :span="toolState.spans[1]">
         <el-scrollbar
-        max-height="600px"
+        :max-height="toolState.maxCanvasHeight"
         :ref="initScrollRef"
         >
           <div :id="playgroundId"
@@ -354,7 +354,8 @@ export default {
           7,
           10,
           7,
-      ]
+      ],
+      maxCanvasHeight: '600px'
     })
 
     const handleMenuSelect = (key, keyPath) => {
