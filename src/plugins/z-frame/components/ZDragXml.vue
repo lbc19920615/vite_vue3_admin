@@ -1329,12 +1329,50 @@ export default {
       let com = origin.com
       treeState.current.com_name = com.name
       treeState.current.com_xml = treeState.current?.origin?.label_xml ?? com.name
-      // console.log(treeState.current)
+      console.log(com)
       let widgetConfigProps = {
         disabled: QuickBooleanWithNull('禁用'),
         readonly: QuickBooleanWithNull('只读')
       }
-      let properties = {
+      let base_ui_props =  {
+        type: 'object',
+        ui: {
+          label: "UI"
+        },
+        properties: {
+          label: {
+            type: 'string'
+          },
+          desc: {
+            type: 'string',
+            ui: {
+              label: '描述',
+              widgetConfig: {
+                type: 'textarea'
+              }
+            }
+          },
+          widgetConfig: {
+            type: 'object',
+            ui: {
+              label: "UI 配置"
+            },
+            properties: widgetConfigProps
+          }
+        }
+      }
+      let base_server_props = {
+        type: 'object',
+        ui: {
+          label: '服务器'
+        },
+        properties: {
+          field_name: {
+            type: 'string',
+          }
+        }
+      }
+      let base_form_props = {
         type: {
           type: 'string',
           ui: {
@@ -1364,33 +1402,6 @@ export default {
             events: {
             }
           },
-        },
-        ui: {
-          type: 'object',
-          ui: {
-            label: "UI"
-          },
-          properties: {
-            label: {
-              type: 'string'
-            },
-            desc: {
-              type: 'string',
-              ui: {
-                label: '描述',
-                widgetConfig: {
-                  type: 'textarea'
-                }
-              }
-            },
-            widgetConfig: {
-              type: 'object',
-              ui: {
-                label: "UI 配置"
-              },
-              properties: widgetConfigProps
-            }
-          }
         },
         rules: {
           type: 'string',
@@ -1436,17 +1447,17 @@ export default {
             }
           }
         },
-        server: {
-          type: 'object',
-          ui: {
-            label: '服务器'
-          },
-          properties: {
-            field_name: {
-              type: 'string',
-            }
-          }
-        },
+      }
+      let properties = {
+        ui: base_ui_props,
+        server: base_server_props,
+      }
+      if (!com.DRAG_GRID) {
+        properties = {
+          ui: base_ui_props,
+          ...base_form_props,
+          server: base_server_props,
+        }
       }
       if (com.DRAG_CONFIG) {
         let _config  = com.DRAG_CONFIG() ?? {}
