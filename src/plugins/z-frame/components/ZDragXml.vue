@@ -101,7 +101,7 @@ mobile: 375px,
             <template #button-content>打开数据展示</template>
             <template #default>
               <v-json-viewer
-                  :expand-depth=5 copyable :expanded="true"
+                  :expand-depth=10 copyable :expanded="true"
                                boxed
                   :value="getZprops()"></v-json-viewer>
             </template>
@@ -586,18 +586,34 @@ export default {
 
     function getZprops() {
       let dragConfig = treeState.dragConfig
-      console.log(dragConfig)
+      // console.log(dragConfig)
       let context = {
         res: {},
         config: dragConfig,
         pathArr: ['']
       }
+      let propsDef = {
+        type: 'object',
+        ui: {
+          styles: [
+
+          ],
+          widgetConfig: {
+
+          }
+        },
+        properties: {
+
+        }
+      }
       if (Array.isArray(treeState.data)) {
         traveralTree(treeState.data, context)
         // console.log(context.res)
-        return context.res
+        // return context.res
+        propsDef.properties = context.res
       }
-      return []
+      // return []
+      return propsDef
     }
 
     let zprops = computed(function () {
@@ -1334,6 +1350,38 @@ export default {
         disabled: QuickBooleanWithNull('禁用'),
         readonly: QuickBooleanWithNull('只读')
       }
+      let base_type_props = {
+        type: {
+          type: 'string',
+          ui: {
+            label: '类型',
+            // widget: 'CusSelect',
+            widget: 'CusSuggest',
+            widgetConfig: {
+              inputStyle: 'width: 350px',
+              enums: "ROOT_STATE('tools.propTypes', [])",
+              mode: 'select',
+            },
+            events: {
+            }
+          },
+        },
+        sub_type: {
+          type: 'string',
+          ui: {
+            label: '子类型',
+            // widget: 'CusSelect',
+            widget: 'CusSuggest',
+            widgetConfig: {
+              inputStyle: 'width: 350px',
+              enums: "ROOT_GETTERS('subTypes', [MODEL('type', '')])",
+              mode: 'select',
+            },
+            events: {
+            }
+          },
+        },
+      }
       let base_ui_props =  {
         type: 'object',
         ui: {
@@ -1373,36 +1421,7 @@ export default {
         }
       }
       let base_form_props = {
-        type: {
-          type: 'string',
-          ui: {
-            label: '类型',
-            // widget: 'CusSelect',
-            widget: 'CusSuggest',
-            widgetConfig: {
-              inputStyle: 'width: 350px',
-              enums: "ROOT_STATE('tools.propTypes', [])",
-              mode: 'select',
-            },
-            events: {
-            }
-          },
-        },
-        sub_type: {
-          type: 'string',
-          ui: {
-            label: '子类型',
-            // widget: 'CusSelect',
-            widget: 'CusSuggest',
-            widgetConfig: {
-              inputStyle: 'width: 350px',
-              enums: "ROOT_GETTERS('subTypes', [MODEL('type', '')])",
-              mode: 'select',
-            },
-            events: {
-            }
-          },
-        },
+
         rules: {
           type: 'string',
           // hidden: true,
@@ -1449,11 +1468,13 @@ export default {
         },
       }
       let properties = {
+        ...base_type_props,
         ui: base_ui_props,
         server: base_server_props,
       }
       if (!com.DRAG_GRID) {
         properties = {
+          ...base_type_props,
           ui: base_ui_props,
           ...base_form_props,
           server: base_server_props,
