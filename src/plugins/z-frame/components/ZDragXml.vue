@@ -99,8 +99,9 @@ mobile: 375px,
           <z-easy-modal title="数据展示" :buttonAttr="{size: 'small'}" :model-attr="{width: '60vw'}">
             <template #button-content>打开数据展示</template>
             <template #default>
+              <el-button class="a-space-mb-10" @click="downloadJSON(getZprops())">下载json5</el-button>
               <v-json-viewer
-                  :expand-depth=10 copyable :expanded="true"
+                  :expand-depth=10  :expanded="true"
                   boxed
                   :value="getZprops()"></v-json-viewer>
             </template>
@@ -365,6 +366,14 @@ export default {
     }
     const handleMenuClose = (key, keyPath) => {
       // console.log(key, keyPath)
+    }
+
+    async function downloadJSON(data) {
+      let d = ZY.JSON5.parse(ZY.JSON5.stringify(data))
+      await ZY_EXT.saveJSONFile({
+        data: d,
+        prefix: 'z_drag_form__'
+      })
     }
 
     let dragConfig = new Map()
@@ -1843,6 +1852,7 @@ export default {
       onDropStart,
       exportFile,
       importFile,
+      downloadJSON,
       initRef,
       onDragMove,
       onLayoutSelfDragEnter,
