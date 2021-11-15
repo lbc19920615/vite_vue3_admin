@@ -109,47 +109,88 @@ mobile: 375px,
           <el-button class="a-space-ml-10" size="small" @click="exportFile">导出</el-button>
           <el-button  size="small" @click="importFile">导入</el-button>
         </el-row>
-        <div style="max-height: 30vh" class="a-space-mb-10">
+        <el-row class="a-space-mb-10" style="min-height: 30vh">
 <!--          <div @click="selectTree">selectTree</div>-->
 <!--          <el-scrollbar max-height="30vh">{{zprops}}</el-scrollbar>-->
-          <el-scrollbar max-height="30vh" >
-            <el-tree default-expand-all class="custom-tree"
-                     :data="treeState.data"
-                     :props="treeState.defaultProps"
-                     node-key="id"
-                     @node-click="handleNodeClick"
-                     :expand-on-click-node="false"
-                     :ref="initTreeRef"
-            >
-              <template #default="{ node, data }">
-                <el-row justify="space-between"
-                        class="custom-tree-node"
+          <el-menu
+              :default-active="toolState.defaultIndex"
+              class="el-menu-vertical-demo"
+              :collapse="true"
+              @select="handleMenuSelect"
 
-                >
-                  <el-row align="middle">
-                    <template v-if="data.label_xml"><div v-html="data.label_xml"></div></template>
-                  <template v-if="!data.label_xml">{{data.label}}</template>
-                  <div hidden>{{data.tree_id}}</div>
-                  </el-row>
-                  <el-row align="middle"
-                  v-if="!data.NOT_ACTION"
+          >
+<!--            <el-sub-menu index="1">-->
+<!--              <template #title>-->
+<!--                <el-icon><location /></el-icon>-->
+<!--                <span>Navigator One</span>-->
+<!--              </template>-->
+<!--              <el-menu-item-group>-->
+<!--                <template #title><span>Group One</span></template>-->
+<!--                <el-menu-item index="1-1">item one</el-menu-item>-->
+<!--                <el-menu-item index="1-2">item two</el-menu-item>-->
+<!--              </el-menu-item-group>-->
+<!--              <el-menu-item-group title="Group Two">-->
+<!--                <el-menu-item index="1-3">item three</el-menu-item>-->
+<!--              </el-menu-item-group>-->
+<!--              <el-sub-menu index="1-4">-->
+<!--                <template #title><span>item four</span></template>-->
+<!--                <el-menu-item index="1-4-1">item one</el-menu-item>-->
+<!--              </el-sub-menu>-->
+<!--            </el-sub-menu>-->
+            <el-menu-item index="1">
+              <el-icon><document /></el-icon>
+              <template #title>大纲树</template>
+            </el-menu-item>
+            <el-menu-item index="2">
+              <el-icon><icon-menu /></el-icon>
+              <template #title>组件库</template>
+            </el-menu-item>
+<!--            <el-menu-item index="3" disabled>-->
+<!--              <el-icon><document /></el-icon>-->
+<!--              <template #title>Navigator Three</template>-->
+<!--            </el-menu-item>-->
+<!--            <el-menu-item index="4">-->
+<!--              <el-icon><setting /></el-icon>-->
+<!--              <template #title>Navigator Four</template>-->
+<!--            </el-menu-item>-->
+          </el-menu>
+
+          <div style="flex: 1;">
+            <el-scrollbar max-height="30vh" v-show="toolState.activeIndex === '1'" >
+              <el-tree default-expand-all class="custom-tree"
+                       :data="treeState.data"
+                       :props="treeState.defaultProps"
+                       node-key="id"
+                       @node-click="handleNodeClick"
+                       :expand-on-click-node="false"
+                       :ref="initTreeRef"
+              >
+                <template #default="{ node, data }">
+                  <el-row justify="space-between"
+                          class="custom-tree-node"
+
                   >
-                    <el-button size="mini"
-                               type="danger"
-                               @click.stop="removeTreeNode(node, data)"> 删除 </el-button>
+                    <el-row align="middle">
+                      <template v-if="data.label_xml"><div v-html="data.label_xml"></div></template>
+                      <template v-if="!data.label_xml">{{data.label}}</template>
+                      <div hidden>{{data.tree_id}}</div>
+                    </el-row>
+                    <el-row align="middle"
+                            v-if="!data.NOT_ACTION"
+                    >
+                      <el-button size="mini"
+                                 type="danger"
+                                 @click.stop="removeTreeNode(node, data)"> 删除 </el-button>
+                    </el-row>
                   </el-row>
-                </el-row>
-              </template>
+                </template>
+              </el-tree>
+            </el-scrollbar>
 
-            </el-tree>
-          </el-scrollbar>
-        </div>
-        <xy-tab>
-          <xy-tab-content label="控件">
-            <el-scrollbar height="50vh">
-<!--              {{treeState.tplComponents}}-->
+            <el-scrollbar height="50vh" v-show="toolState.activeIndex === '2'">
+              <!--              {{treeState.tplComponents}}-->
               <template v-for="(components, index) in treeState.tplComponents">
-<!--                {{index}}-->
+                <!--                {{index}}-->
                 <h5>{{treeState.tplComponents[index].label}}</h5>
                 <draggable
                     class="dragArea g-list-group"
@@ -174,8 +215,8 @@ mobile: 375px,
                 </draggable>
               </template>
             </el-scrollbar>
-          </xy-tab-content>
-        </xy-tab>
+          </div>
+        </el-row>
       </el-col>
       <el-col
               :span="10"
@@ -255,7 +296,12 @@ import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusW
 import ZCommonAttrs from "@/plugins/z-frame/components/ZCommonAttrs.vue";
 import {QuickBoolean, QuickBooleanWithNull, setPROPS} from "@/hooks/props";
 import ZEasyModal from "@/plugins/z-frame/components/ZEasyModal.vue";
-
+import {
+  Location,
+  Document,
+  Menu as IconMenu,
+  Setting,
+} from '@element-plus/icons'
 
 export default {
   name: 'ZDragXml',
@@ -267,6 +313,10 @@ export default {
     RenderDom,
     JsxRender,
     draggable,
+    Location,
+    Document,
+    IconMenu,
+    Setting,
   },
   setup() {
     const Z_UUID_KEY = 'z-uuid'
@@ -296,8 +346,18 @@ export default {
     })
 
     let toolState = reactive({
-      type: 'mobile'
+      type: 'mobile',
+      activeIndex:'2',
+      defaultIndex: '2'
     })
+
+    const handleMenuSelect = (key, keyPath) => {
+      // console.log(key, keyPath)
+      toolState.activeIndex =  key
+    }
+    const handleMenuClose = (key, keyPath) => {
+      // console.log(key, keyPath)
+    }
 
     let dragConfig = new Map()
     let emitter = mitt()
@@ -708,7 +768,7 @@ export default {
 
     function getTplComponents(group = undefined) {
       return state.components.filter(v => {
-        console.log('v', v)
+        // console.log('v', v)
         return v.DRAG_GROUP === group
       })
     }
@@ -1793,6 +1853,8 @@ export default {
       initScrollRef,
       removeTreeNode,
       toolState,
+      handleMenuSelect,
+      handleMenuClose,
       resolveConfig,
       get_current_config,
       onCommonModelChange,
