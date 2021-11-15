@@ -853,7 +853,7 @@ export default {
         let newIndex = index + 1
         let newLen =  state.layouts.length
         state.layouts.splice(newIndex, 0, item)
-        console.log(newIndex, newLen)
+        // console.log(newIndex, newLen)
         nextTick(() => {
           onDropEndItemsChanged(item)
           if (newIndex > newLen -1) {
