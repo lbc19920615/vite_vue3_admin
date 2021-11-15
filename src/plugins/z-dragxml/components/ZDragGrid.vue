@@ -241,7 +241,22 @@ export default {
       }
     }
   },
+  props: {
+    initColumnLen: {
+      type: Number,
+      default: 3
+    }
+  },
   data() {
+    let dom = {}
+    for (let i = 0; i < this.initColumnLen; i++) {
+      dom['z_grid_column__' + ZY.rid(10)] = {
+        jsx: null,
+        def: null,
+        sef: null,
+      }
+    }
+
     return {
       id: ZY.rid(6),
       ui: {
@@ -250,23 +265,7 @@ export default {
       },
       gridItemMouseEnterLast: null,
       state: {
-        dom: {
-          sjdhsjds: {
-            jsx: null,
-            def: null,
-            sef: null,
-          },
-          sdhskdhsjdshjds: {
-            jsx: null,
-            def: null,
-            sef: null,
-          },
-          sdsdsdsdsds: {
-            jsx: null,
-            def: null,
-            sef: null,
-          }
-        }
+        dom: dom
       }
     }
   },

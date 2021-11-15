@@ -610,19 +610,22 @@ export default {
       let s_path = ZY.getObjPathFromPathArr(context.pathArr)
       let target = ZY.deepGet(context.res, s_path)
       lodash.each(data, function (item, key) {
-        console.log(item)
+        // console.log(item)
         let propKey = item.itemUUID
         if (item.DRAG_GRID_ITEM) {
           // propKey = lodash
           if (Array.isArray(item.children)) {
             let gridItem = item.children.find(v => v.gridItemUUID === propKey)
             if (gridItem) {
+              let wrap_config = DRAG_INSTANSE.getConfig(propKey) ?? {}
+              // console.log(wrap_config)
               propKey = gridItem.itemUUID
               let config = DRAG_INSTANSE.getConfig(propKey) ?? {}
               // console.log(propKey)
               target[propKey] = {
                 type: 'string',
                 wrap: 'z-drag-grid-item',
+                wrap_config: wrap_config ?? {},
                 ...config.ins
               }
             }
