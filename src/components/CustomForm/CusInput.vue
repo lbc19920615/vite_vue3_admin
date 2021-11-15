@@ -12,7 +12,7 @@
 
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
-import {createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
+import {createAbleProp, createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
 import {QuickNumber, setPROPS} from "@/hooks/props";
 
 
@@ -26,19 +26,9 @@ export default {
     return {
       props: {
         ...createBaseCusCONFIG(),
-        clearable: {
-          type: 'boolean',
-          ui: {
-            label: '是否清除',
-            widgetConfig:  {
-              ext: 'booleanWithClearable'
-            },
-            notice: '是否可以清除'
-          },
-          rules: {
-            type: 'any'
-          }
-        },
+        clearable: createAbleProp({
+          label: '清除'
+        }),
         type: {
           type: 'string',
           ui: {
@@ -53,19 +43,9 @@ export default {
             notice: ''
           },
         },
-        showWordLimit: {
-          type: 'boolean',
-          ui: {
-            label: '是否计数',
-            widgetConfig:  {
-              ext: 'booleanWithClearable'
-            },
-            notice: '是否可以计数'
-          },
-          rules: {
-            type: 'any'
-          }
-        },
+        showWordLimit: createAbleProp({
+          label: '计数'
+        }),
         // rows: {
         //   type: 'number',
         //   ui: {
