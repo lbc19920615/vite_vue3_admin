@@ -85,30 +85,34 @@ mobile: 375px,
   <div class="z-drag-xml" @mousemove="onMouseMove" >
 <!--    {{state}}-->
     <el-row class="a-space-mb-10" justify="space-between" align="middle">
-      <div>标题</div>
-      <div>
-        <el-radio-group size="small" v-model="toolState.type">
-          <el-radio-button label="mobile"></el-radio-button>
-          <el-radio-button label="responsive"></el-radio-button>
-        </el-radio-group>
-      </div>
-      <div>动作</div>
-    </el-row>
-    <el-row>
-      <el-col :span="6" >
-        <el-row class="a-space-mb-10">
+      <el-col :span="toolState.spans[0]">编辑标题</el-col>
+      <el-col :span="toolState.spans[1]">
+        <el-row  justify="center">
+          <el-radio-group size="small" v-model="toolState.type">
+            <el-radio-button label="mobile"></el-radio-button>
+            <el-radio-button label="responsive"></el-radio-button>
+          </el-radio-group>
+        </el-row>
+      </el-col>
+      <el-col :span="toolState.spans[2]">
+        <el-row style="flex: 1" justify="end">
           <z-easy-modal title="数据展示" :buttonAttr="{size: 'small'}" :model-attr="{width: '60vw'}">
             <template #button-content>打开数据展示</template>
             <template #default>
               <v-json-viewer
                   :expand-depth=10 copyable :expanded="true"
-                               boxed
+                  boxed
                   :value="getZprops()"></v-json-viewer>
             </template>
           </z-easy-modal>
           <el-button class="a-space-ml-10" size="small" @click="exportFile">导出</el-button>
           <el-button  size="small" @click="importFile">导入</el-button>
         </el-row>
+      </el-col>
+
+    </el-row>
+    <el-row>
+      <el-col :span="toolState.spans[0]" >
         <el-row class="a-space-mb-10" style="min-height: 30vh">
 <!--          <div @click="selectTree">selectTree</div>-->
 <!--          <el-scrollbar max-height="30vh">{{zprops}}</el-scrollbar>-->
@@ -218,10 +222,7 @@ mobile: 375px,
           </div>
         </el-row>
       </el-col>
-      <el-col
-              :span="10"
-
-      >
+      <el-col :span="toolState.spans[1]">
         <el-scrollbar
         max-height="600px"
         :ref="initScrollRef"
@@ -256,7 +257,7 @@ mobile: 375px,
           </div>
         </el-scrollbar>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="toolState.spans[2]">
         <template v-if="treeState.current && treeState.current.uuid && treeState.showCurrent">
 <!--          {{treeState.current.origin.com}}-->
 <!--          {{get_current_config('common', {})}}-->
@@ -348,7 +349,12 @@ export default {
     let toolState = reactive({
       type: 'mobile',
       activeIndex:'2',
-      defaultIndex: '2'
+      defaultIndex: '2',
+      spans: [
+          7,
+          10,
+          7,
+      ]
     })
 
     const handleMenuSelect = (key, keyPath) => {
@@ -745,7 +751,7 @@ export default {
             return comDef.ZDragXmlCom
           }
       ).map(v => {
-        console.log(v)
+        // console.log(v)
         let extDataset = {}
         if (v.origin && v.origin.DRAG_DATASET) {
           extDataset = v.origin.DRAG_DATASET()
