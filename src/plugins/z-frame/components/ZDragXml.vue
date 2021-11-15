@@ -557,10 +557,12 @@ export default {
           if (
               Array.isArray(item.children) && item.children.length > 0
           ) {
+            let config = DRAG_INSTANSE.getConfig(propKey) ?? {}
             let properties = {}
             target[propKey] = {
               type: 'object',
-              properties
+              properties,
+              ...config.ins
             }
            if (item.com && item.com.DRAG_EXPORT) {
              target[propKey] = Object.assign( target[propKey], item.com.DRAG_EXPORT())
