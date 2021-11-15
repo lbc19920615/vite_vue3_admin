@@ -23,7 +23,7 @@
 <!--        <free-column-->
 <!--            v-bind="$attrs" :column="item" />-->
       </template>
-      <el-table-column v-if="showAcion" v-bind="actionProps" label="ACTION">
+      <el-table-column v-if="showAcion" v-bind="actionProps" label="动作">
         <template v-slot:default="scope">
           <el-button
               class="z-table__button"

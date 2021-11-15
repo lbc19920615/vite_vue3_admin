@@ -48,8 +48,8 @@ export default {
   setup(props, ctx) {
     // console.log(props)
     let column = [
-      { label: 'Label', prop: 'label' },
-      { label: 'Value', prop: 'value' },
+      { label: '标题', prop: 'label' },
+      { label: '值', prop: 'value' },
     ]
 
     let customColumn = []

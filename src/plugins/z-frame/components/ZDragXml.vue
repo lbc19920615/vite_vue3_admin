@@ -160,7 +160,7 @@ mobile: 375px,
           </el-menu>
 
           <div style="flex: 1;">
-            <el-scrollbar max-height="30vh" v-show="toolState.activeIndex === '1'" >
+            <el-scrollbar :height="toolState.menuConHeight" v-show="toolState.activeIndex === '1'" >
               <el-tree default-expand-all class="custom-tree"
                        :data="treeState.data"
                        :props="treeState.defaultProps"
@@ -191,7 +191,7 @@ mobile: 375px,
               </el-tree>
             </el-scrollbar>
 
-            <el-scrollbar height="50vh" v-show="toolState.activeIndex === '2'">
+            <el-scrollbar :height="toolState.menuConHeight" v-show="toolState.activeIndex === '2'">
               <!--              {{treeState.tplComponents}}-->
               <template v-for="(components, index) in treeState.tplComponents">
                 <!--                {{index}}-->
@@ -355,7 +355,8 @@ export default {
           10,
           7,
       ],
-      maxCanvasHeight: '600px'
+      maxCanvasHeight: '600px',
+      menuConHeight: '600px'
     })
 
     const handleMenuSelect = (key, keyPath) => {
