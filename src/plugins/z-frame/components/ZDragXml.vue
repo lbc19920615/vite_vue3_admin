@@ -100,8 +100,10 @@ mobile: 375px,
           <z-easy-modal title="数据展示" :buttonAttr="{size: 'small'}" :model-attr="{width: '60vw'}">
             <template #button-content>打开数据展示</template>
             <template #default>
-              <v-json-viewer   :expand-depth=5 copyable :expanded="true"
-                               boxed :value="zprops"></v-json-viewer>
+              <v-json-viewer
+                  :expand-depth=5 copyable :expanded="true"
+                               boxed
+                  :value="getZprops()"></v-json-viewer>
             </template>
           </z-easy-modal>
           <el-button class="a-space-ml-10" size="small" @click="exportFile">导出</el-button>
@@ -582,8 +584,25 @@ export default {
       })
     }
 
+    function getZprops() {
+      let dragConfig = treeState.dragConfig
+      console.log(dragConfig)
+      let context = {
+        res: {},
+        config: dragConfig,
+        pathArr: ['']
+      }
+      if (Array.isArray(treeState.data)) {
+        traveralTree(treeState.data, context)
+        // console.log(context.res)
+        return context.res
+      }
+      return []
+    }
+
     let zprops = computed(function () {
       let dragConfig = treeState.dragConfig
+      // console.log(dragConfig)
       let context = {
         res: {},
         config: dragConfig,
@@ -1705,6 +1724,7 @@ export default {
       onMouseMove,
       treeState,
       zprops,
+      getZprops,
       initScrollRef,
       removeTreeNode,
       toolState,
