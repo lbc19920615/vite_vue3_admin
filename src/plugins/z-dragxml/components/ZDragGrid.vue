@@ -62,6 +62,7 @@ function getDomRange(trueDom, heightRatio = 1) {
 export default {
   name: 'ZDragGrid',
   components: {RenderJsx, CusInput},
+  DRAG_GROUP: 'high',
   DRAG_GRID: true,
   ZDragXmlCom: true,
   DRAG_EXPORT() {

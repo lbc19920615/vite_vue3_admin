@@ -145,29 +145,34 @@ mobile: 375px,
           </el-scrollbar>
         </div>
         <xy-tab>
-          <xy-tab-content label="组件">
-            <el-scrollbar height="30vh">
-            <draggable
-                class="dragArea g-list-group"
-                v-model="state.components"
-                @start="onDropStart"
-                @end="onDropEnd"
-                :group="{ name: 'people', pull: 'clone', put: false }"
-                :sort="false"
-                item-key="id"
-                tag="el-row"
-                style="align-items: flex-start; flex-wrap: wrap;"
-            >
-              <template #item="{element}">
-                <el-col class="g-list-group-item"
-                        :class="list1ItemCls(element)"
-                        :span="12"
-                        :data-name="element.name"
-                        :data-column-max="element.columnMax"
-                ><div
-                    class="g-list-group-item__element" v-html="element.label"></div></el-col>
+          <xy-tab-content label="控件">
+            <el-scrollbar height="50vh">
+<!--              {{treeState.tplComponents}}-->
+              <template v-for="(components, index) in treeState.tplComponents">
+<!--                {{index}}-->
+                <h5>{{treeState.tplComponents[index].label}}</h5>
+                <draggable
+                    class="dragArea g-list-group"
+                    v-model="treeState.tplComponents[index].components"
+                    @start="onDropStart"
+                    @end="onDropEnd"
+                    :group="{ name: 'people', pull: 'clone', put: false }"
+                    :sort="false"
+                    item-key="id"
+                    tag="el-row"
+                    style="align-items: flex-start; flex-wrap: wrap;"
+                >
+                  <template #item="{element}">
+                    <el-col class="g-list-group-item"
+                            :class="list1ItemCls(element)"
+                            :span="12"
+                            :data-name="element.name"
+                            :data-column-max="element.columnMax"
+                    ><div
+                        class="g-list-group-item__element" v-html="element.label"></div></el-col>
+                  </template>
+                </draggable>
               </template>
-            </draggable>
             </el-scrollbar>
           </xy-tab-content>
         </xy-tab>
@@ -407,8 +412,11 @@ export default {
       },
       current: {},
       showCurrent: false,
-      dragConfig
+      dragConfig,
+      tplComponents: []
     })
+
+
 
     function buildTreeChild(child = []) {
       return child.map(item => {
@@ -677,7 +685,7 @@ export default {
             return comDef.ZDragXmlCom
           }
       ).map(v => {
-        // console.log(v)
+        console.log(v)
         let extDataset = {}
         if (v.origin && v.origin.DRAG_DATASET) {
           extDataset = v.origin.DRAG_DATASET()
@@ -689,11 +697,30 @@ export default {
         // console.log(ret)
         return {
           name: v.value,
+
+          DRAG_GROUP: v.origin.DRAG_GROUP,
           label: label,
           ...extDataset
         }
       }),
     ]
+
+
+    function getTplComponents(group = undefined) {
+      return state.components.filter(v => {
+        console.log('v', v)
+        return v.DRAG_GROUP === group
+      })
+    }
+
+    treeState.tplComponents[0] = {
+      label: '基础控件',
+      components: getTplComponents()
+    }
+    treeState.tplComponents[1] = {
+      label: '高级控件',
+      components: getTplComponents('high')
+    }
 
     function list1ItemCls(element) {
       let filted = !element.name.includes(state.filterList)
@@ -1644,7 +1671,7 @@ export default {
         }
       })
 
-      console.log(ret.comMemo )
+      // console.log(ret.comMemo )
       return ret
     }
 
@@ -1740,6 +1767,7 @@ export default {
       initTreeRef,
       state,
       getRef,
+      getTplComponents,
       playgroundId: PLAY_ID,
       onDropStart,
       exportFile,
