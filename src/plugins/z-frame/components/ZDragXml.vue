@@ -643,8 +643,8 @@ export default {
       return wrap_config
     }
 
-    function getZpropsFieldKey(config) {
-      let field_key = 'field_' + ZY.rid(10)
+    function getZpropsFieldKey(config, prefix = 'field_') {
+      let field_key = prefix + ZY.rid(10)
       if (config.ins && config.ins.server && config.ins.server.field_name) {
         field_key = config.ins.server.field_name
 
@@ -689,7 +689,7 @@ export default {
               isObjectItem
           ) {
             let config = getParsedConfig(propKey, item)
-            let field_key = getZpropsFieldKey(config)
+            let field_key = getZpropsFieldKey(config, 'subform__')
             let properties = {}
             target[field_key] = {
               type: 'object',
@@ -707,7 +707,7 @@ export default {
           } else {
             let config = getParsedConfig(propKey, item)
             let field_key = getZpropsFieldKey(config)
-            // console.log( propKey, config, target, pathArr)
+            console.log( field_key)
             if (target) {
               target[field_key] = {
                 type: 'string',
@@ -1583,7 +1583,12 @@ export default {
         },
         properties: {
           field_name: {
-            type: 'string'
+            type: 'string',
+            ui: {
+              widgetConfig: {
+                readonly: true
+              }
+            }
           }
         }
       }
@@ -1640,7 +1645,7 @@ export default {
         ui: base_ui_props,
         // server: base_server_props,
       }
-      console.log(com)
+      // console.log(com)
       if (!com.DRAG_GRID) {
         properties = {
           ...base_type_props,
@@ -1676,7 +1681,7 @@ export default {
         server: {
         }
       }, _cached?.ins ?? {})
-      console.log('defaultVal',  _cached?.ins, defaultVal)
+      // console.log('defaultVal',  _cached?.ins, defaultVal)
       return {
         default: createCusWidgetEditorConfig(formDef,
             computed,
