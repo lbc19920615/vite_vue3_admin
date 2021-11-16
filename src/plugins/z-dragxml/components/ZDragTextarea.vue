@@ -32,6 +32,13 @@ export default {
   mixins: [
       ZDragCommonMixin
   ],
+  DRAG_EXPORT() {
+    return {
+      ui: {
+        widget: 'CusTextarea'
+      }
+    }
+  },
   DRAG_CONFIG() {
     let obj = CusInput.CUS_EDITOR() ?? { props: {} }
     Reflect.deleteProperty(obj.props, 'type')

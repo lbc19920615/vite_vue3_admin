@@ -22,6 +22,13 @@ export default {
   name: 'ZDragRate',
   components: {CusRate},
   ZDragXmlCom: true,
+  DRAG_EXPORT() {
+    return {
+      ui: {
+        widget: 'CusRate'
+      }
+    }
+  },
   DRAG_CONFIG() {
     let obj = CusRate.CUS_EDITOR() ?? { props: {} }
     Reflect.deleteProperty(obj.props, 'type')

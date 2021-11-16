@@ -21,6 +21,13 @@ export default {
   name: 'ZDragDateTimePicker',
   components: {CusDateTimePicker},
   ZDragXmlCom: true,
+  DRAG_EXPORT() {
+    return {
+      ui: {
+        widget: 'CusDateTimePicker'
+      }
+    }
+  },
   DRAG_CONFIG() {
     let obj = CusDateTimePicker.CUS_EDITOR() ?? { props: {} }
     Reflect.deleteProperty(obj.props, 'type')

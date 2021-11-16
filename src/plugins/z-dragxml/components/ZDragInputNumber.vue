@@ -19,6 +19,13 @@ export default {
   name: 'ZDragInputNumber',
   components: {CusInputNumber},
   ZDragXmlCom: true,
+  DRAG_EXPORT() {
+    return {
+      ui: {
+        widget: 'CusInputNumber'
+      }
+    }
+  },
   DRAG_CONFIG() {
     return {
     }

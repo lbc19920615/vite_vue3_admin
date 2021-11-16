@@ -19,6 +19,13 @@ export default {
   name: 'ZDragSelect',
   components: {CusSelect},
   ZDragXmlCom: true,
+  DRAG_EXPORT() {
+    return {
+      ui: {
+        widget: 'CusSelect'
+      }
+    }
+  },
   DRAG_CONFIG() {
     let obj = CusSelect.CUS_EDITOR() ?? { props: {} }
     Reflect.deleteProperty(obj.props, 'type')
