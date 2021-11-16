@@ -411,7 +411,7 @@ export default {
       register(key, value) {
         DRAG_CONTEXT.set(key, value)
         // console.log('register', state.comMemo, key, value)
-        if (state.comMemo[key] && value.fromMemo) {
+        if (state.comMemo && state.comMemo[key] &&  value && value.fromMemo) {
           value.fromMemo(state.comMemo[key] )
           Reflect.deleteProperty(state.comMemo, key)
         }
@@ -643,8 +643,9 @@ export default {
       return wrap_config
     }
 
-    function traveralTree(data = [], context) {
-      let s_path = ZY.getObjPathFromPathArr(context.pathArr)
+    function traveralTree(data = [], context, pathArr = []) {
+      console.log(pathArr)
+      let s_path = ZY.getObjPathFromPathArr(pathArr)
       let target = ZY.deepGet(context.res, s_path)
       lodash.each(data, function (item, key) {
         // console.log(item)
@@ -672,27 +673,35 @@ export default {
           if (!propKey) {
             return;
           }
+          let com = item.com
+          let isObjectItem = (Array.isArray(item.children) && item.children.length > 0)
+          || (com && com.DRAG_SUB_FORM)
           if (
-              Array.isArray(item.children) && item.children.length > 0
+              isObjectItem
           ) {
-            let config = getParsedConfig(propKey)
+            let config = getParsedConfig(propKey, item)
             let properties = {}
             target[propKey] = {
               type: 'object',
               properties,
               ...config.ins
             }
-           if (item.com && item.com.DRAG_EXPORT) {
-             target[propKey] = Object.assign( target[propKey], item.com.DRAG_EXPORT())
-           }
-            context.pathArr = context.pathArr.concat( [item.id, 'properties'] )
-            traveralTree(item.children, context)
+
+            // console.log(target)
+
+
+
+            context.pathArr = pathArr.concat( [item.id, 'properties'] )
+
+            traveralTree(item.children, context, context.pathArr)
           } else {
             let config = getParsedConfig(propKey, item)
-            // console.log( propKey, config)
-            target[propKey] = {
-              type: 'string',
-              ...config.ins
+            console.log( propKey, config, target, pathArr)
+            if (target) {
+              target[propKey] = {
+                type: 'string',
+                ...config.ins
+              }
             }
 
           }
@@ -706,7 +715,10 @@ export default {
       let context = {
         res: {},
         config: dragConfig,
-        pathArr: ['']
+        pathArr: [''],
+        pathMap: {
+
+        }
       }
       let propsDef = {
         type: 'object',
@@ -723,7 +735,7 @@ export default {
         }
       }
       if (Array.isArray(treeState.data)) {
-        traveralTree(treeState.data, context)
+        traveralTree(treeState.data, context, [])
         // console.log(context.res)
         // return context.res
         propsDef.properties = context.res
@@ -732,21 +744,6 @@ export default {
       return propsDef
     }
 
-    let zprops = computed(function () {
-      let dragConfig = treeState.dragConfig
-      // console.log(dragConfig)
-      let context = {
-        res: {},
-        config: dragConfig,
-        pathArr: ['']
-      }
-      if (Array.isArray(treeState.data)) {
-        traveralTree(treeState.data, context)
-        // console.log(context.res)
-        return context.res
-      }
-      return []
-    })
 
     let test1Tool = clearTool()
     let test2Tool = clearTool(TEST2_ID)
@@ -1910,7 +1907,7 @@ export default {
       onDropEnd,
       onMouseMove,
       treeState,
-      zprops,
+      // zprops,
       getZprops,
       initScrollRef,
       removeTreeNode,
