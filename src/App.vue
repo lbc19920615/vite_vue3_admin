@@ -127,6 +127,17 @@ export default defineComponent({
       // console.log('v1', v1, v2)
       return getDeepConfigFromLinksAndDeps(v1, v2)
     },
+    getDragProps(v) {
+      try {
+        let o = ZY.JSON5.parse(v)
+        console.log('getDragProps', o)
+        let r = o.props ?? {}
+        return ZY.JSON5.stringify(r)
+      } catch (e) {
+        //
+      }
+      return '{}'
+    },
     getProps(v) {
       // console.log('getProps', v)
       try {

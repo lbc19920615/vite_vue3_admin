@@ -2,6 +2,7 @@
   <template v-if="inited">
 <!--        {{state}}-->
     <z-easy-modal title="编辑"
+                  @opened="onOpened"
                   @closed="onClosed"
                   :modelAttr="{width: '96vw', appendToBody: true}">
       <template #button-content>打开数据展示</template>
@@ -47,22 +48,32 @@ export default {
       }
       if (newVal) {
         obj = JSON5.parse(newVal)
-        // console.log('newVal handleValueInit', typeof newVal)
+        // console.log('newVal handleValueInit', obj)
       }
       // console.log('handleValueInit', part_key, obj)
       return newVal
     }
 
     function onChange() {
-      let value = JSON5.stringify({
-      })
+      let value = JSON5.stringify(obj)
       state.value = value
       methods.on_change(value)
     }
 
     function onClosed() {
       let ctx = getRef('main')
-      console.log(ctx)
+      obj.props = ctx.getZprops()
+      obj.memos = ctx.getMemo()
+      // console.log(obj)
+      onChange()
+    }
+
+    function onOpened() {
+      let ctx = getRef('main')
+      // console.log(obj, ctx)
+      if (ctx) {
+        ctx.importData(obj.memos)
+      }
     }
 
     return {
@@ -70,6 +81,7 @@ export default {
       state,
       mainRef,
       onClosed,
+      onOpened,
       widgetConfig: widgetConfig2,
       methods,
       listeners,

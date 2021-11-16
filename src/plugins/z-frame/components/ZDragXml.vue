@@ -1802,6 +1802,47 @@ export default {
     //   // console.log('sdsdsds')
     // }
 
+    function importData(obj_data = {}) {
+      ZY.lodash.each(obj_data.state, function (item, key) {
+        // console.log(item, key)
+        state[key] = item
+      })
+      ZY.lodash.each(obj_data.treeState, function (item, key) {
+        // console.log(item, key)
+        treeState[key] = item
+      })
+      // console.log(obj_data)
+      state.comMemo = obj_data.comMemo
+      nextTick(() => {
+        lodash.each(obj_data.defs, (item, uuid) => {
+          let map = state.layoutsMap[uuid]
+          // console.log(item, map)
+          if (map && map.el) {
+            map.el.fromMemo(item)
+          }
+        })
+        try {
+          let map = new Map(JSON5.parse(obj_data.dragConfig))
+
+          // console.log(map)
+          map.forEach((item, key) => {
+            DRAG_INSTANSE.setConfig(key, item)
+          })
+        } catch (e) {
+          console.error(e)
+        }
+
+        // let ctx = DRAG_INSTANSE.getCtxs()
+        // console.log(ctx)
+        // ctx.forEach( function (item, key) {
+        //   // console.log(item, key)
+        //   if (item.fromMemo) {
+        //     item.fromMemo(obj_data.comMemo)
+        //   }
+        // })
+      })
+    }
+
     async function exportFile() {
       let m = getMemo()
       // console.log(DRAG_INSTANSE.dragConfig)
@@ -1816,44 +1857,7 @@ export default {
        if (obj.data) {
          const obj_data = obj.data
          // console.log(obj)
-         ZY.lodash.each(obj_data.state, function (item, key) {
-            // console.log(item, key)
-           state[key] = item
-         })
-         ZY.lodash.each(obj_data.treeState, function (item, key) {
-           // console.log(item, key)
-           treeState[key] = item
-         })
-         console.log(obj_data)
-         state.comMemo = obj_data.comMemo
-         nextTick(() => {
-           lodash.each(obj_data.defs, (item, uuid) => {
-             let map = state.layoutsMap[uuid]
-             // console.log(item, map)
-             if (map && map.el) {
-               map.el.fromMemo(item)
-             }
-           })
-           try {
-             let map = new Map(JSON5.parse(obj_data.dragConfig))
-
-             // console.log(map)
-             map.forEach((item, key) => {
-               DRAG_INSTANSE.setConfig(key, item)
-             })
-           } catch (e) {
-             console.error(e)
-           }
-
-           // let ctx = DRAG_INSTANSE.getCtxs()
-           // console.log(ctx)
-           // ctx.forEach( function (item, key) {
-           //   // console.log(item, key)
-           //   if (item.fromMemo) {
-           //     item.fromMemo(obj_data.comMemo)
-           //   }
-           // })
-         })
+         importData(obj_data)
        }
      }
 
@@ -1886,6 +1890,7 @@ export default {
       getTplComponents,
       playgroundId: PLAY_ID,
       onDropStart,
+      importData,
       exportFile,
       importFile,
       downloadJSON,
