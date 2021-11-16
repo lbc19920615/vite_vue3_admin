@@ -303,7 +303,7 @@ export default {
         let def = state.defs[columnIndex]
         let config =  com?.DRAG_CONFIG()?? {}
         if (def.length < props.columnMax) {
-          let itemUUID =  ZY.rid()
+          let itemUUID =  'z_layout_item__' + ZY.rid(10)
           let instanse = buildInstanse(com, itemUUID, columnIndex)
           let cachedDef = {
             layoutUUID: state.layoutUUID,

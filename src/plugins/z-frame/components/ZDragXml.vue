@@ -1,6 +1,6 @@
 <style lang="scss">
 .z-drag-xml {
-  position: relative;
+  //position: relative;
 }
 
 .custom-tree {
@@ -643,8 +643,17 @@ export default {
       return wrap_config
     }
 
+    function getZpropsFieldKey(config) {
+      let field_key = 'field_' + ZY.rid(10)
+      if (config.ins && config.ins.server && config.ins.server.field_name) {
+        field_key = config.ins.server.field_name
+
+      }
+      return field_key
+    }
+
     function traveralTree(data = [], context, pathArr = []) {
-      console.log(pathArr)
+      // console.log(pathArr)
       let s_path = ZY.getObjPathFromPathArr(pathArr)
       let target = ZY.deepGet(context.res, s_path)
       lodash.each(data, function (item, key) {
@@ -680,8 +689,9 @@ export default {
               isObjectItem
           ) {
             let config = getParsedConfig(propKey, item)
+            let field_key = getZpropsFieldKey(config)
             let properties = {}
-            target[propKey] = {
+            target[field_key] = {
               type: 'object',
               properties,
               ...config.ins
@@ -691,17 +701,25 @@ export default {
 
 
 
-            context.pathArr = pathArr.concat( [item.id, 'properties'] )
+            context.pathArr = pathArr.concat( [field_key, 'properties'] )
 
             traveralTree(item.children, context, context.pathArr)
           } else {
             let config = getParsedConfig(propKey, item)
-            console.log( propKey, config, target, pathArr)
+            let field_key = getZpropsFieldKey(config)
+            // console.log( propKey, config, target, pathArr)
             if (target) {
-              target[propKey] = {
+              target[field_key] = {
                 type: 'string',
                 ...config.ins
               }
+
+              // if (!target[propKey].server) {
+              //   target[propKey].server = {}
+              // }
+              // if (!target[propKey].server.field_name) {
+              //   target[propKey].server.field_name = field_key
+              // }
             }
 
           }
@@ -1088,6 +1106,8 @@ export default {
       if (playground.contains(currentToTarget)) {
         trueDom = getNestRenderDom(currentToTarget)
       }
+
+      console.log(trueDom)
 
       if (trueDom && trueDom.parentElement && trueDom.parentElement.hasAttribute('z-drag-layout__column')) {
         let columnMax = parseInt(trueDom.parentElement.getAttribute('z-drag-layout__column'))
@@ -1485,7 +1505,11 @@ export default {
       let com = origin.com
       treeState.current.com_name = com.name
       treeState.current.com_xml = treeState.current?.origin?.label_xml ?? com.name
-      console.log(com)
+      console.log(treeState.current)
+      if (treeState?.current?.origin?.com?.DRAG_LABEL_XML) {
+        treeState.current.com_xml = treeState?.current?.origin?.com?.DRAG_LABEL_XML()
+
+      }
       let widgetConfigProps = {
         disabled: QuickBooleanWithNull('禁用'),
         readonly: QuickBooleanWithNull('只读')
@@ -1493,12 +1517,13 @@ export default {
       let base_type_props = {
         type: {
           type: 'string',
+          wrap_start: '<xy-tab-content label="常见">',
           ui: {
             label: '类型',
             // widget: 'CusSelect',
             widget: 'CusSuggest',
             widgetConfig: {
-              inputStyle: 'width: 350px',
+              // inputStyle: 'width: 350px',
               enums: "ROOT_STATE('tools.propTypes', [])",
               mode: 'select',
             },
@@ -1513,7 +1538,7 @@ export default {
             // widget: 'CusSelect',
             widget: 'CusSuggest',
             widgetConfig: {
-              inputStyle: 'width: 350px',
+              // inputStyle: 'width: 350px',
               enums: "ROOT_GETTERS('subTypes', [MODEL('type', '')])",
               mode: 'select',
             },
@@ -1551,12 +1576,14 @@ export default {
       }
       let base_server_props = {
         type: 'object',
+        wrap_start: '<xy-tab-content label="高级">',
+        wrap_end: '</xy-tab-content>',
         ui: {
           label: '服务器'
         },
         properties: {
           field_name: {
-            type: 'string',
+            type: 'string'
           }
         }
       }
@@ -1585,6 +1612,7 @@ export default {
           ui: {
             label: '校验规则',
           },
+          wrap_end: '</xy-tab-content>',
           items: {
             type: "object",
             properties: {
@@ -1610,8 +1638,9 @@ export default {
       let properties = {
         ...base_type_props,
         ui: base_ui_props,
-        server: base_server_props,
+        // server: base_server_props,
       }
+      console.log(com)
       if (!com.DRAG_GRID) {
         properties = {
           ...base_type_props,
@@ -1629,6 +1658,8 @@ export default {
       }
       let formDef = {
         type: 'object',
+
+        tag: 'xy-tab',
         ui: {
           attrs: [
             ['label-width', '100px']
@@ -1643,10 +1674,9 @@ export default {
           }
         },
         server: {
-
         }
       }, _cached?.ins ?? {})
-      console.log(defaultVal)
+      console.log('defaultVal',  _cached?.ins, defaultVal)
       return {
         default: createCusWidgetEditorConfig(formDef,
             computed,

@@ -36,6 +36,7 @@ export default {
   data() {
     return {
       id: ZY.rid(6),
+      DATA_IS_SUB_FORM: true,
       ui: {
         widgetConfig: {
           type: 'textarea'

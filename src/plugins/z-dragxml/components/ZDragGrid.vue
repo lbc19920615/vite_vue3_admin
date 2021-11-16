@@ -93,8 +93,8 @@ export default {
     ondragend(itemKey, e) {
       // console.log('ondragend', e)
       let range = getDomRange(e.target, .5)
-      // console.log(range.yRange[1], e.pageY)
-      if (e.pageY < range.yRange[1]) {
+      // console.log(range.yRange[1], e.clientY)
+      if (e.clientY < range.yRange[1]) {
         this.dragxml.onGridDragEnter({
           e,
           state: this.state,
@@ -115,7 +115,7 @@ export default {
       // console.log(itemKey)
       if (this.state.dom[itemKey]) {
         let ctx = this.state.dom[itemKey]
-        let itemUUID = 'z_drag_grid__' + ZY.rid()
+        let itemUUID = 'z_drag_grid_item__' + ZY.rid()
         let props = {
           // class: [
           //   DATA_LAYOUT_UUID_KEY + this.layout_uuid,
@@ -216,7 +216,7 @@ export default {
       })
     },
     onGridItemMouseEnter(e) {
-      // let dom =  document.elementFromPoint(e.pageX, e.pageY)
+      // let dom =  document.elementFromPoint(e.clientX, e.clientY)
       // console.log('onGridItemMouseEnter', e.target)
       if (e.target ) {
         if (e.target.children && e.target.children[0]) {
@@ -227,9 +227,9 @@ export default {
           let rect =   e.target.children[0].getBoundingClientRect()
           let xRange = [rect.left, rect.left + rect.width]
           let yRange = [rect.top - marginTop, rect.top + rect.height + marginBottom]
-          // console.log(xRange, yRange, e.pageX, e.pageY)
-          if (e.pageX < xRange[1] && e.pageX > xRange[0]) {
-            if (e.pageY < yRange[1] && e.pageY > yRange[0]) {
+          // console.log(xRange, yRange, e.clientX, e.clientY)
+          if (e.clientX < xRange[1] && e.clientX > xRange[0]) {
+            if (e.clientY < yRange[1] && e.clientY > yRange[0]) {
               this.dragxml.onMouseEnter2(e.target.children[0])
               return;
             }
@@ -259,6 +259,7 @@ export default {
 
     return {
       id: ZY.rid(6),
+      DATA_IS_DRAG_GRID: true,
       ui: {
         widgetConfig: {
         }

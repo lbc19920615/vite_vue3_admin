@@ -82,8 +82,13 @@ export let ZDragCommonMixin = {
       //   }
       //
       // }
-
-      // console.log('cus_config', _c)
+if (!_c.server) {
+  _c.server = {}
+}
+if (!_c.server.field_name) {
+  _c.server.field_name = 'field__' + ZY.rid(10)
+}
+      // console.log('cus_config', _c, this)
       if (this.locked) {
         this.locked = false
       } else {
