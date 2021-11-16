@@ -1,29 +1,27 @@
 <style lang="scss">
-.z-easy-dialog {
+.z-quick-dialog {
   &__content {
-
   }
 }
 
-.z-easy-dialog__popover {
-  max-width: var(--z-easy-dialog__popover-max-width, 700px);
+.z-quick-dialog__popover {
+  max-width: var(--z-quick-dialog__popover-max-width, 700px);
 }
 </style>
 
 <template>
-  <section class="z-easy-dialog">
+  <section class="z-quick-dialog">
 <!--    {{modelAttr}}-->
     <el-button v-bind="buttonAttr"
                @click="openModal"><slot name="button-content"></slot></el-button>
-    <el-dialog class="z-easy-dialog__dialog" v-bind="modelAttr"
+    <el-dialog class="z-quick-dialog__dialog" v-bind="modelAttr"
                v-model="opened"
                 placement="top"
-                popper-class="z-easy-dialog__popover"
+                popper-class="z-quick-dialog__popover"
                @opened="fireEvent('opened')"
                :title="title"
-               @closed="fireEvent('closed')"
     >
-      <div v-if="opened" class="z-easy-dialog__content">
+      <div v-if="opened" class="z-quick-dialog__content">
         <slot></slot>
       </div>
     </el-dialog>
@@ -32,7 +30,7 @@
 
 <script>
 export default {
-  name: 'ZEasyModal',
+  name: 'ZQuickDialog',
   props: {
     title: {
       type: String,
@@ -55,6 +53,10 @@ export default {
     return {
       opened: false
     }
+  },
+  mounted() {
+    let rect =      this.$el.getBoundingClientRect()
+    console.log(rect)
   },
   methods: {
     openModal() {

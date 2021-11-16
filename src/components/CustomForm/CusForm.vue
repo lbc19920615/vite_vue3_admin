@@ -7,29 +7,57 @@
 <template>
   <div class="cus-form" v-if="page.inited">
     <div hidden>{{store.model}}</div>
-    <el-button v-if="useDrag"
+<!--    <el-button v-if="useDrag"-->
 
-              size="small"
-               @click="openDialog">打开编辑</el-button>
-    <CustomElement :is="useDrag ? 'my-vue-dialog' : 'div'" :name="dialogName"
-                   :params="{sstyle: 'width: 80vw; min-width: 720px;', modal: false}"
-    @closed="onClosed"
+<!--              size="small"-->
+<!--               @click="openDialog">打开编辑</el-button>-->
+<!--    <CustomElement :is="useDrag ? 'my-vue-dialog' : 'div'" :name="dialogName"-->
+<!--                   :params="{sstyle: 'width: 80vw; min-width: 720px;', modal: false}"-->
+<!--    @closed="onClosed"-->
+<!--    >-->
+<!--      <template #default>-->
+<!--        <HttpComponent-->
+<!--            :defs="page.defMap"-->
+<!--            :is="store.model.editor_step"-->
+<!--            v-if="!useDrag || store.model.dialog_open"-->
+<!--        >-->
+<!--          <template #array_con_afterbegin="scope">-->
+<!--&lt;!&ndash;            <h3>{{getArrItemBeforeKey(scope)}}</h3>&ndash;&gt;-->
+<!--          </template>-->
+<!--          <template #array_afterbegin="scope">-->
+<!--            &lt;!&ndash;        <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>&ndash;&gt;-->
+<!--          </template>-->
+<!--        </HttpComponent>-->
+<!--      </template>-->
+<!--    </CustomElement>-->
+
+    <HttpComponent
+        :defs="page.defMap"
+        :is="store.model.editor_step"
     >
-      <template #default>
-        <HttpComponent
-            :defs="page.defMap"
-            :is="store.model.editor_step"
-            v-if="!useDrag || store.model.dialog_open"
-        >
-          <template #array_con_afterbegin="scope">
-<!--            <h3>{{getArrItemBeforeKey(scope)}}</h3>-->
-          </template>
-          <template #array_afterbegin="scope">
-            <!--        <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>-->
-          </template>
-        </HttpComponent>
+      <template #array_con_afterbegin="scope">
+        <!--            <h3>{{getArrItemBeforeKey(scope)}}</h3>-->
       </template>
-    </CustomElement>
+      <template #array_afterbegin="scope">
+        <!--        <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>-->
+      </template>
+    </HttpComponent>
+<!--    <el-dialog v-model="store.model.dialog_open"  @closed="onClosed" :append-to-body="true">-->
+<!--      <template #default>-->
+<!--        <HttpComponent-->
+<!--            :defs="page.defMap"-->
+<!--            :is="store.model.editor_step"-->
+<!--            v-if="!useDrag || store.model.dialog_open"-->
+<!--        >-->
+<!--          <template #array_con_afterbegin="scope">-->
+<!--            &lt;!&ndash;            <h3>{{getArrItemBeforeKey(scope)}}</h3>&ndash;&gt;-->
+<!--          </template>-->
+<!--          <template #array_afterbegin="scope">-->
+<!--            &lt;!&ndash;        <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>&ndash;&gt;-->
+<!--          </template>-->
+<!--        </HttpComponent>-->
+<!--      </template>-->
+<!--    </el-dialog>-->
   </div>
 
 </template>
@@ -47,13 +75,17 @@ export default {
     CustomRenderControlMixin
   ],
   props: {
+    configUrl: {
+      type: String,
+      default: '/src/plugins/CusForm/formEditorConfig.js'
+    }
   },
   setup(props, ctx) {
     let instanse = getCurrentInstance()
     let locks = true
     let cached = null
     let cachedModel = null
-    let { methods, init, data } = defineCustomRender(props, ctx, {
+    let { methods, init, data, widgetConfig2 } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
         // console.log('handleValueInit', newVal, typeof newVal)
         if (typeof newVal !== 'undefined') {
@@ -83,6 +115,9 @@ export default {
         type: Boolean
       },
       loaded: {
+        type: Boolean
+      },
+      dialogVisible: {
         type: Boolean
       }
     }
@@ -137,8 +172,13 @@ export default {
     let self_config = {}
 
     onMounted(function () {
+      // console.log(widgetConfig2.configUrl)
+      let _configUrl = props.configUrl
+      if (widgetConfig2.configUrl) {
+        _configUrl = widgetConfig2.configUrl
+      }
       page.commonLoadStep(
-          import('@/plugins/CusForm/formEditorConfig.js'),
+          import(_configUrl),
           'editor_step',
           {
             async onMounted(config, {setPartModel}) {
@@ -169,6 +209,7 @@ export default {
         currentPageWebComponentRef.toggleDialog(dialogName);
       }
       console.log('formEditorConfig', cached)
+
       if (!locks) {
         setStepModel()
       }

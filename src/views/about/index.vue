@@ -31,7 +31,14 @@
 <!--       </el-space>-->
 <!--      </el-card>-->
 <!--    </my-fixed>-->
-    <z-drag-xml></z-drag-xml>
+<!--    <z-quick-dialog title="编辑" :modelAttr="{width: '100vw'}">-->
+<!--      <template #button-content>打开数据展示</template>-->
+<!--      <template #default>-->
+<!--        <z-drag-xml></z-drag-xml>-->
+<!--      </template>-->
+<!--    </z-quick-dialog>-->
+
+<!--    <z-drag-xml></z-drag-xml>-->
 
     <CustomElement is="my-vue-dialog" name="form-event-dialog"
                    :params="{sstyle: 'width: 60vw; min-width: 720px;'}">
@@ -228,6 +235,7 @@ import {VARS_PAGE_MODEL_NAME} from "@/vars";
 import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
 import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
 import ZEchartsEasy from "@/plugins/z-frame/components/ZEchartsEasy.vue";
+import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
 // globalThis.CnChar = CnChar
 //
 // globalThis.sortCnCharStroke = function (chars = []) {
@@ -266,6 +274,7 @@ export default defineComponent({
     }
   },
   components: {
+    ZQuickDialog,
     ZEchartsEasy,
     ZOptionsManager,
     ZDragXml,

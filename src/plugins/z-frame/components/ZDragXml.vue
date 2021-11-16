@@ -1,4 +1,8 @@
 <style lang="scss">
+.z-drag-xml {
+  position: relative;
+}
+
 .custom-tree {
   :deep(.el-tree-node__content) {
     height: initial;
@@ -202,7 +206,7 @@ mobile: 375px,
                     v-model="treeState.tplComponents[index].components"
                     @start="onDropStart"
                     @end="onDropEnd"
-                    :group="{ name: 'people', pull: 'clone', put: false }"
+                    :group="{ name: toolState.group, pull: 'clone', put: false }"
                     :sort="false"
                     item-key="id"
                     tag="el-row"
@@ -298,6 +302,8 @@ import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusW
 import ZCommonAttrs from "@/plugins/z-frame/components/ZCommonAttrs.vue";
 import {QuickBoolean, QuickBooleanWithNull, setPROPS} from "@/hooks/props";
 import ZEasyModal from "@/plugins/z-frame/components/ZEasyModal.vue";
+import deepMerge from 'deepmerge'
+
 import {
   Location,
   Document,
@@ -357,7 +363,8 @@ export default {
           7,
       ],
       maxCanvasHeight: '600px',
-      menuConHeight: '600px'
+      menuConHeight: '600px',
+      group: 'people__' + ZY.rid(6)
     })
 
     const handleMenuSelect = (key, keyPath) => {
@@ -608,11 +615,32 @@ export default {
     function clearTool(id = TEST1_ID) {
       return function (clone) {
         let tool = document.getElementById(id)
-        tool.innerHTML = ''
-        if (clone) {
-          tool.appendChild(clone)
+        if (tool) {
+          tool.innerHTML = ''
+          if (clone) {
+            tool.appendChild(clone)
+          }
         }
       }
+    }
+
+    function getParsedConfig(propKey, item) {
+      let wrap_config = JSON5.parse(JSON5.stringify(
+          DRAG_INSTANSE.getConfig(propKey) ?? {}))
+      // console.log(wrap_config)
+      if (wrap_config.ins && wrap_config.ins.rules) {
+        wrap_config.ins.rules_json = wrap_config.ins.rules
+        wrap_config.ins.rules = JSON5.parse( wrap_config.ins.rules)
+        Reflect.deleteProperty(wrap_config.ins, 'rulesArr')
+      }
+      if (item && item.com && item.com.DRAG_EXPORT) {
+        let export_data = item.com.DRAG_EXPORT() ?? {}
+        let ins = wrap_config.ins ?? {}
+
+        wrap_config.ins = deepMerge(export_data,
+            ins)
+      }
+      return wrap_config
     }
 
     function traveralTree(data = [], context) {
@@ -626,15 +654,15 @@ export default {
           if (Array.isArray(item.children)) {
             let gridItem = item.children.find(v => v.gridItemUUID === propKey)
             if (gridItem) {
-              let wrap_config = DRAG_INSTANSE.getConfig(propKey) ?? {}
+              let wrap_config = getParsedConfig(propKey)
               // console.log(wrap_config)
               propKey = gridItem.itemUUID
-              let config = DRAG_INSTANSE.getConfig(propKey) ?? {}
+              let config =  getParsedConfig(propKey)
               // console.log(propKey)
               target[propKey] = {
                 type: 'string',
                 wrap: 'z-drag-grid-item',
-                wrap_config: wrap_config ?? {},
+                wrap_config: wrap_config?.ins ?? {},
                 ...config.ins
               }
             }
@@ -647,7 +675,7 @@ export default {
           if (
               Array.isArray(item.children) && item.children.length > 0
           ) {
-            let config = DRAG_INSTANSE.getConfig(propKey) ?? {}
+            let config = getParsedConfig(propKey)
             let properties = {}
             target[propKey] = {
               type: 'object',
@@ -660,7 +688,7 @@ export default {
             context.pathArr = context.pathArr.concat( [item.id, 'properties'] )
             traveralTree(item.children, context)
           } else {
-            let config = DRAG_INSTANSE.getConfig(propKey) ?? {}
+            let config = getParsedConfig(propKey, item)
             // console.log( propKey, config)
             target[propKey] = {
               type: 'string',
@@ -734,7 +762,7 @@ export default {
           onMouseleave(e) {
           }
         })
-        clone.style.position = 'absolute'
+        clone.style.position = 'fixed'
         test3Tool(clone)
       }
       build()
@@ -899,13 +927,14 @@ export default {
     }
 
     let sortable;
+    let dragGroup = "drag-level" + ZY.rid(6);
     /**
      *
      */
     function rebuildSortable() {
       let el = getPlaygroundDOM()
       sortable = new Sortable(el, {
-        group: "drag-level1",
+        group: dragGroup,
         onEnd: function (/**Event*/evt) {
           test1Tool()
           test2Tool()
@@ -1006,9 +1035,9 @@ export default {
       }
 
 
-      currentToTarget = fromPoint(originalEvent.pageX, originalEvent.pageY)
+      currentToTarget = fromPoint(originalEvent.clientX, originalEvent.clientY)
 
-      // console.log(currentToTarget)
+      // console.log(currentToTarget, [originalEvent.clientX, originalEvent.clientY])
       if (!currentToTarget) {
         return;
       }
@@ -1113,7 +1142,7 @@ export default {
      */
     function createInspect(trueDom, type, options = {}) {
       function handleButtonClick() {
-        console.log(trueDom)
+        // console.log(trueDom)
         if (trueDom.hasAttribute('z-uuid')) {
           let con_uuid = trueDom.getAttribute('z-uuid')
           let context = state.layoutsMap[con_uuid]
@@ -1186,6 +1215,7 @@ export default {
       let client = trueDom.getBoundingClientRect()
       // console.log(clone, client)
       clone.setAttribute('data-type', type)
+      // clone.style.position = 'fixed'
       clone.style.position = 'fixed'
       clone.style.left = client.left + 'px'
       // clone.style.top = (client.top - marginBottom) + 'px'
@@ -1222,12 +1252,17 @@ export default {
      * @param actionFun
      * @param findDom
      */
-    function inspcetDom(e, type = 'line', {
+    function inspectDom(e, type = 'line', {
       actionFun = test1Tool, findDom = getNestRenderDom, options = {}
     } = {}) {
       let playground = getPlaygroundDOM()
-      currentToMove = fromPoint(e.pageX, e.pageY)
+      // console.log(playground, e.pageX, e.pageY)
+      currentToMove = fromPoint(e.clientX, e.clientY)
+      // console.log(currentToMove)
       let trueDom = null
+      if (!currentToMove) {
+        return
+      }
       if (currentToMove && playground.contains(currentToMove)) {
         trueDom = findDom(currentToMove)
       }
@@ -1245,15 +1280,16 @@ export default {
     }
 
     function onMouseMove(e) {
-      // inspcetDom(e,'rect')
-      // inspcetDom(e,'rect', {
+      // inspectDom(e,'rect')
+      // inspectDom(e,'rect', {
       //   actionFun: test2Tool,
       //   findDom: getLayoutRenderDom
       // })
       // clearTool()
       let testId1DOM = document.getElementById(TEST1_ID)
       let playground = getPlaygroundDOM()
-      currentToMove = fromPoint(e.pageX, e.pageY)
+      currentToMove = fromPoint(e.clientX, e.clientY)
+      // console.log(currentToMove)
       let trueDom = null
       if (currentToMove && playground.contains(currentToMove)) {
         // trueDom = findDom(currentToMove)
@@ -1273,8 +1309,8 @@ export default {
 
     function onDragMove(e) {
       // console.log('onDragMove', e)
-      inspcetDom(e)
-      inspcetDom(e,'line', {
+      inspectDom(e)
+      inspectDom(e,'line', {
         actionFun: test2Tool,
         findDom: getLayoutRenderDom
       })

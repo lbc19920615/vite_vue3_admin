@@ -198,6 +198,9 @@ export default {
                                         tag: 'div',
                                         ui: {
                                             label: '表单名',
+                                            form_item: {
+                                                labelWidth: '60px',
+                                            },
                                             widget: 'CusSuggest',
                                             widgetConfig: {
                                                 enums: "ROOT_STATE('tools.constVars_processSteps', [])",
@@ -209,8 +212,12 @@ export default {
                                         tag: 'div',
                                         ui: {
                                             label: '表单值',
+                                            form_item: {
+                                                labelWidth: '60px',
+                                            },
                                             widget: 'CusForm',
                                             widgetConfig: {
+                                                configUrl: '/src/plugins/CusForm/formEditorConfig2.js',
                                                 enums: "ROOT_STATE('tools.propTypes', [])",
                                             },
                                         }

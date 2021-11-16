@@ -122,6 +122,17 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     }
     let events = props.ui.events ? props.ui.events : {};
 
+    let refMap = new Map()
+    function buildGetRef(key) {
+        return function (el) {
+            refMap.set(key, el)
+        }
+    }
+
+    function getRef(key) {
+        return refMap.get(key)
+    }
+
     watch(() => props.ui, function (newVal) {
         // console.log('props ui change', newVal)
         let parsedWidgetConfig = newVal?.widgetConfig ?? {}
@@ -264,8 +275,12 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     }
 
 
+
+
     return {
         data,
+        buildGetRef,
+        getRef,
         curFormCon,
         buildOptions,
         FROM_TYPES,
