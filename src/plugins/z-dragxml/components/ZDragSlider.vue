@@ -22,13 +22,6 @@ export default {
   name: 'ZDragSlider',
   components: {CusSlider},
   ZDragXmlCom: true,
-  DRAG_EXPORT() {
-    return {
-      ui: {
-        widget: 'CusSlider'
-      }
-    }
-  },
   DRAG_CONFIG() {
     let obj = CusSlider.CUS_EDITOR() ?? { props: {} }
     Reflect.deleteProperty(obj.props, 'type')
@@ -48,6 +41,15 @@ export default {
   mixins: [
       ZDragCommonMixin
   ],
+  methods: {
+    DRAG_EXPORT() {
+      return {
+        ui: {
+          widget: 'CusSlider'
+        }
+      }
+    },
+  },
   data() {
     return {
       id: ZY.rid(6),

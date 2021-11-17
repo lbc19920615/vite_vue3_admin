@@ -19,13 +19,6 @@ export default {
   name: 'ZDragInputNumber',
   components: {CusInputNumber},
   ZDragXmlCom: true,
-  DRAG_EXPORT() {
-    return {
-      ui: {
-        widget: 'CusInputNumber'
-      }
-    }
-  },
   DRAG_CONFIG() {
     return {
     }
@@ -44,6 +37,15 @@ export default {
   mixins: [
       ZDragCommonMixin
   ],
+  methods: {
+    DRAG_EXPORT() {
+      return {
+        ui: {
+          widget: 'CusInputNumber'
+        }
+      }
+    },
+  },
   data() {
     return {
       id: ZY.rid(6),

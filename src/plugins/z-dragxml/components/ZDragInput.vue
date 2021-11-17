@@ -21,13 +21,6 @@ export default {
   name: 'ZDragInput',
   components: {CusInput},
   ZDragXmlCom: true,
-  DRAG_EXPORT() {
-    return {
-      ui: {
-        widget: 'CusInput'
-      }
-    }
-  },
   DRAG_CONFIG() {
     let obj = CusInput.CUS_EDITOR() ?? { props: {} }
     Reflect.deleteProperty(obj.props, 'type')
@@ -47,6 +40,15 @@ export default {
   mixins: [
       ZDragCommonMixin
   ],
+  methods: {
+    DRAG_EXPORT() {
+      return {
+        ui: {
+          widget: 'CusInput'
+        }
+      }
+    },
+  },
   data() {
     return {
       id: ZY.rid(6),

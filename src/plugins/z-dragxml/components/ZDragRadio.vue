@@ -24,13 +24,7 @@ export default {
   name: 'ZDragRadio',
   components: {CusRadio},
   ZDragXmlCom: true,
-  DRAG_EXPORT() {
-    return {
-      ui: {
-        widget: 'CusRadio'
-      }
-    }
-  },
+
   DRAG_CONFIG() {
     let obj = CusRadio.CUS_EDITOR() ?? { props: {} }
 
@@ -54,7 +48,14 @@ export default {
     setVal(v) {
       this.cus_ref.state.value = v
     },
-    CUS_RADIO() {}
+    CUS_RADIO() {},
+    DRAG_EXPORT() {
+      return {
+        ui: {
+          widget: 'CusRadio'
+        }
+      }
+    },
   },
   data() {
     // console.log(this.uuid)

@@ -633,13 +633,25 @@ export default {
         wrap_config.ins.rules = JSON5.parse( wrap_config.ins.rules)
         Reflect.deleteProperty(wrap_config.ins, 'rulesArr')
       }
-      if (item && item.com && item.com.DRAG_EXPORT) {
-        let export_data = item.com.DRAG_EXPORT() ?? {}
-        let ins = wrap_config.ins ?? {}
+      console.log(wrap_config, item)
+      let instanse = DRAG_INSTANSE.get(item.itemUUID)
+      if (instanse) {
+        console.log(instanse)
+        if (instanse.DRAG_EXPORT) {
+          let export_data = instanse.DRAG_EXPORT() ?? {}
+          let ins = wrap_config.ins ?? {}
 
-        wrap_config.ins = deepMerge(export_data,
-            ins)
+          wrap_config.ins = deepMerge(export_data,
+              ins)
+        }
       }
+      // if (item && item.com && item.com.DRAG_EXPORT) {
+      //   let export_data = item.com.DRAG_EXPORT() ?? {}
+      //   let ins = wrap_config.ins ?? {}
+      //
+      //   wrap_config.ins = deepMerge(export_data,
+      //       ins)
+      // }
       return wrap_config
     }
 
@@ -707,7 +719,7 @@ export default {
           } else {
             let config = getParsedConfig(propKey, item)
             let field_key = getZpropsFieldKey(config)
-            console.log( field_key)
+            // console.log( field_key)
             if (target) {
               target[field_key] = {
                 type: 'string',

@@ -21,13 +21,6 @@ export default {
   name: 'ZDragTimePicker',
   components: {CusTimePicker},
   ZDragXmlCom: true,
-  DRAG_EXPORT() {
-    return {
-      ui: {
-        widget: 'CusTimePicker'
-      }
-    }
-  },
   DRAG_CONFIG() {
     let obj = CusTimePicker.CUS_EDITOR() ?? { props: {} }
     Reflect.deleteProperty(obj.props, 'type')
@@ -47,6 +40,15 @@ export default {
   mixins: [
     ZDragCommonMixin
   ],
+  methods: {
+    DRAG_EXPORT() {
+      return {
+        ui: {
+          widget: 'CusTimePicker'
+        }
+      }
+    },
+  },
   data() {
     return {
       id: ZY.rid(6),

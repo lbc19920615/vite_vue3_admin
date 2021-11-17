@@ -4,6 +4,7 @@
 
 <script lang="jsx">
 import {defineComponent, h, inject, provide, ref, resolveComponent, watch} from "vue";
+import {createFormModel} from "@/hooks/form";
 
 export default defineComponent( {
   name: 'auto-http-com',
@@ -20,16 +21,24 @@ export default defineComponent( {
     let config
     let httpCtx = null
     let oldIs = undefined
+    let partConfig = {}
+    let fromDefModel
 
     function load(newDef) {
       config = ZY.JSON5.parse(newDef)
+
       // console.log(config, typeof config)
       page.setDef(config, function ({done}) {
         // console.log('autohttp com load', config)
 
         for (let [partName, data] of Object.entries(config.defaultVal)) {
           let defaultObj = ZY.JSON5.parse(ZY.JSON5.stringify(data))
-          // console.log('autohttp', config.name, partName, defaultObj)
+          partConfig = config.init.def.parts.find(v => v.name === partName)
+          if (partConfig.def) {
+            fromDefModel = createFormModel(partConfig.def)
+          }
+          defaultObj = Object.assign(defaultObj, fromDefModel)
+          console.log('autohttp', config, partName, partConfig, fromDefModel)
           // console.log(self.currentEditDep, depPath, ZY.lodash.get( self.currentEditDep, depPath))
           page.setPartModel( config.name, partName,
               defaultObj

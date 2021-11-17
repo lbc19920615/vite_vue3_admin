@@ -21,13 +21,6 @@ export default {
   name: 'ZDragCheckbox',
   components: {CusCheckbox},
   ZDragXmlCom: true,
-  DRAG_EXPORT() {
-    return {
-      ui: {
-        widget: 'CusCheckbox'
-      }
-    }
-  },
   DRAG_CONFIG() {
     let obj = CusCheckbox.CUS_EDITOR() ?? { props: {} }
     return obj
@@ -49,7 +42,14 @@ export default {
   methods: {
     setVal(v = []) {
       this.cus_ref.state.value = v
-    }
+    },
+    DRAG_EXPORT() {
+      return {
+        ui: {
+          widget: 'CusCheckbox'
+        }
+      }
+    },
   },
   data() {
     return {

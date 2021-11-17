@@ -36,7 +36,7 @@ export function useRenderControl() {
     if (currentRoute && currentRoute.value) {
         params = currentRoute.value.params
     }
-    console.log('useRenderControl route params', STORE_NAME, params)
+    // console.log('useRenderControl route params', STORE_NAME, params)
 
     let state = reactive({
         rootId: '',

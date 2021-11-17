@@ -236,6 +236,7 @@ import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
 import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
 import ZEchartsEasy from "@/plugins/z-frame/components/ZEchartsEasy.vue";
 import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
+import {createFormModel} from "@/hooks/form";
 // globalThis.CnChar = CnChar
 //
 // globalThis.sortCnCharStroke = function (chars = []) {
@@ -288,6 +289,105 @@ export default defineComponent({
     CustomElement,
   },
   setup(props, ctx) {
+
+    let o = {
+      "type": "object",
+      "ui": {
+        "attrs": [
+          [
+            "label-width",
+            "100px"
+          ]
+        ],
+        "class": [
+          "dsds"
+        ],
+        "styles": [
+          [
+            "text-align",
+            "left"
+          ],
+          [
+            "font-weight",
+            "normal"
+          ],
+          [
+            "font-family",
+            "Arial,Helvetica,微软雅黑"
+          ],
+          [
+            "color",
+            null
+          ],
+          [
+            "additive-symbols",
+            ""
+          ]
+        ]
+      },
+      "properties": {
+        "object_L4GyknwNxo": {
+          "type": "object",
+          "properties": {
+            "field__jR1sX0nSK4": {
+              "type": "string",
+              "ui": {
+                "widgetConfig": {
+                  "options2": "[{label:'选项1',value:'radio1'},{label:'选项2',value:'radio2'}]"
+                }
+              },
+              "server": {
+                "field_name": "field__jR1sX0nSK4"
+              }
+            },
+            "object_SI4alEIWm5": {
+              "type": "object",
+              "properties": {}
+            },
+            "field__Wcav7_vPOE": {
+              "type": "string",
+              "ui": {
+                "widget": "CusRate",
+                "widgetConfig": {}
+              },
+              "server": {
+                "field_name": "field__Wcav7_vPOE"
+              }
+            },
+            "field__tk1fEwPdQM": {
+              "type": "string",
+              "ui": {
+                "widgetConfig": {
+                  "options2": "[{label:'选项1',value:'radio1'},{label:'选项2',value:'radio2'}]"
+                }
+              },
+              "server": {
+                "field_name": "field__tk1fEwPdQM"
+              }
+            },
+            "field__FpEt581Oro": {
+              "type": "string",
+              "ui": {
+                "widgetConfig": {
+                  "type": "textarea"
+                },
+                "label": "sds",
+                "desc": "sdsds"
+              },
+              "rules": [],
+              "server": {
+                "field_name": "field__FpEt581Oro"
+              },
+              "rules_json": "[]"
+            }
+          }
+        }
+      }
+    }
+
+    let m = createFormModel(o)
+    console.log(m)
+
     // ZY.PinYin.initDict()
     let cachedPageControlModel = null
     let { currentRoute, router } = useRouter2()
