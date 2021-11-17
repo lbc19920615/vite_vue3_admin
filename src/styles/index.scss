@@ -159,6 +159,7 @@ a:hover {
   --el-dialog-width: 90%;
   //max-width: 99vw !important;
   //transform: translateY(10%);
+  top: var(--el-dialog-margin-top);
   .el-dialog__header {
     padding-bottom: 30px;
   }
@@ -167,6 +168,16 @@ a:hover {
     overflow: auto;
     position: relative;
     padding-top: 0;
+  }
+}
+
+.el-dialog--no-modal {
+  pointer-events: none;
+  background-color: transparent;
+  > .el-overlay-dialog {
+    > * {
+      pointer-events: all;
+    }
   }
 }
 
