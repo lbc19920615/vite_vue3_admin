@@ -65,6 +65,7 @@ export default {
         ]
       },
       ui: {
+        label: '数字',
         widgetConfig: {
           type: 'number'
         }

@@ -43,7 +43,10 @@ export default {
       this.showDialog = true
     },
     exportFile() {
-      this.$emit('exported', this.form)
+      this.$emit('exported', {
+        form: this.form,
+        toggleDialog: this.toggleDialog
+      })
     },
   }
 }

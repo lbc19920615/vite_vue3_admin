@@ -54,6 +54,7 @@ export default {
     DRAG_EXPORT() {
       return {
         ui: {
+          label: '打分',
           widget: 'CusRate'
         }
       }

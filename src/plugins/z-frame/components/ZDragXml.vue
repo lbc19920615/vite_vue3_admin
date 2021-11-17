@@ -110,8 +110,11 @@ mobile: 375px,
                   :value="getZprops()"></v-json-viewer>
             </template>
           </z-easy-modal>
-          <el-button class="a-space-ml-10" size="small" @click="exportFile">导出</el-button>
-          <el-button  size="small" @click="importFile">导入</el-button>
+<!--          <el-button class="a-space-ml-10" size="small" @click="exportFile">导出</el-button>-->
+          <z-export-dialog class="a-space-ml-10"  :button-attr="{ size:'small'}"
+                           @exported="exportFile"></z-export-dialog>
+          <el-button class="a-space-ml-10"
+                     size="small" @click="importFile">导入</el-button>
         </el-row>
       </el-col>
 
@@ -310,10 +313,12 @@ import {
   Menu as IconMenu,
   Setting,
 } from '@element-plus/icons'
+import ZExportDialog from "@/plugins/z-frame/components/ZEchartsEasy/ZExportDialog.vue";
 
 export default {
   name: 'ZDragXml',
   components: {
+    ZExportDialog,
     ZEasyModal,
     ZCommonAttrs,
     ZHttpCom,
@@ -633,10 +638,10 @@ export default {
         wrap_config.ins.rules = JSON5.parse( wrap_config.ins.rules)
         Reflect.deleteProperty(wrap_config.ins, 'rulesArr')
       }
-      console.log(wrap_config, item)
+      // console.log(wrap_config, item)
       let instanse = DRAG_INSTANSE.get(item.itemUUID)
       if (instanse) {
-        console.log(instanse)
+        // console.log(instanse)
         if (instanse.DRAG_EXPORT) {
           let export_data = instanse.DRAG_EXPORT() ?? {}
           let ins = wrap_config.ins ?? {}
@@ -1680,7 +1685,7 @@ export default {
         }
       }
 
-      console.log(widgetConfigProps)
+      // console.log(widgetConfigProps)
       let computed = {
         srules: `A.getRulesFromRulesArr(MODEL('rulesArr'))`,
       }
@@ -1898,11 +1903,16 @@ export default {
       })
     }
 
-    async function exportFile() {
+    async function exportFile({form, toggleDialog}) {
+      // console.log(form)
       let m = getMemo()
+      let fileName = 'dragxml_export'
+      if (form.fileName) {
+        fileName = form.fileName
+      }
       // console.log(DRAG_INSTANSE.dragConfig)
       // await ZY_EXT.store.setItem('test_export', ZY.JSON5.stringify( { data: m }) )
-      ZY_EXT.saveDesignFile({fileName: 'dragxml_export', data: m})
+      ZY_EXT.saveDesignFile({fileName, data: m})
     }
 
      async function importFile() {

@@ -53,6 +53,7 @@ export default {
     return {
       id: ZY.rid(6),
       ui: {
+        label: '单行文本',
         widgetConfig: {
         }
       }

@@ -53,6 +53,7 @@ export default {
     DRAG_EXPORT() {
       return {
         ui: {
+          label: '多行文本',
           widget: 'CusInput'
         }
       }

@@ -53,6 +53,7 @@ export default {
     return {
       id: ZY.rid(6),
       ui: {
+        label: '时间选择',
         widgetConfig: {
         }
       }

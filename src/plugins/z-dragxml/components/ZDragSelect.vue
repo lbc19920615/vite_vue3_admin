@@ -54,6 +54,7 @@ export default {
     return {
       id: ZY.rid(6),
       ui: {
+        label: '选择',
         widgetConfig: {
           options2: ZY.JSON5.stringify(
               [
