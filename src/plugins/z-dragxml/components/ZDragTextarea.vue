@@ -2,17 +2,8 @@
   <div class="z-dragxml-com z-dragxml-input"
        :class="drag_highlight_cls('itemUUID', uuid)"
        @mouseenter.stop="onMouseEnter">
-<!--    {{ui_config_editor}}-->
-<!--    <div>-->
-<!--      {{cus_config}}-->
-<!--    </div>-->
-<!--    <div>-->
-<!--      {{GET_CONFIG('ui.label', '')}}-->
-<!--    </div>-->
-<!--    <div>-->
-<!--      {{GET_CONFIG('ui', {})}}-->
-<!--    </div>-->
-    <z-cell-item :vertical="true"
+<!--    {{form_config}}-->
+    <z-cell-item v-bind="form_config"
                  :label="GET_CONFIG('ui.label', '')"
                  :desc="GET_CONFIG('ui.desc', '')"
     >

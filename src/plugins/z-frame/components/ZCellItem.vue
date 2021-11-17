@@ -30,8 +30,9 @@
 
 <template>
 <!--  {{vertical + ''}}-->
-  <el-row :vertical="vertical" align="middle" class="z-cell-item" :class="{'has-label': label}" type="flex">
-    <div class="z-cell-item__label">{{label}}</div>
+  <el-row :vertical="vertical" align="middle"
+          class="z-cell-item" :class="{'has-label': label}" type="flex">
+    <div class="z-cell-item__label" :style="labelStyle">{{label}}</div>
     <div class="z-cell-item__content">
       <div class="z-cell-item__con"><slot></slot></div>
       <div class="z-cell-item__desc">{{desc}}</div>
@@ -45,7 +46,23 @@ export default {
   props: {
     label: String,
     vertical: Boolean,
-    desc: String
+    desc: String,
+    labelPosition: String,
+    labelWidth: String,
+  },
+  computed: {
+    vertical() {
+      if (this.labelPosition === 'top') {
+        return true
+      }
+      return null
+    },
+    labelStyle() {
+      let labelWidth = this.label ? this.labelWidth : ''
+      return {
+        width: labelWidth
+      }
+    }
   }
 }
 </script>

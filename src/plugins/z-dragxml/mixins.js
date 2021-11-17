@@ -26,7 +26,7 @@ export let ZDragHighlightMixin = {
 }
 
 export let ZDragCommonMixin = {
-  inject: ['dragxml', 'draginit'],
+  inject: ['dragxml', 'draginit', 'cusDragXml'],
   mixins: [
     ZDragHighlightMixin
   ],
@@ -53,6 +53,12 @@ export let ZDragCommonMixin = {
     }
   },
   computed: {
+    form_config() {
+      if (this.cusDragXml && this.cusDragXml.getFormConfig) {
+        return this.cusDragXml.getFormConfig()
+      }
+      return {}
+    },
     cus_config() {
       let config = this.ui_config_editor ?? { }
       // let config = this.dragxml.getConfig(this.uuid)
