@@ -13,6 +13,7 @@ import CusInput from "@/components/CustomForm/CusInput.vue";
 import CusSwitch from "@/components/CustomForm/CusSwitch.vue";
 import CusOneOrMany from "@/components/CustomForm/CusOneOrMany.vue";
 import CusProps from "@/components/CustomForm/CusProps.vue";
+import CusUploader from "@/components/CustomForm/CusUploader.vue";
 import CusDragXml from "@/components/CustomForm/CusDragXml.vue";
 import CusForm from "@/components/CustomForm/CusForm.vue";
 import CusSuggest from "@/components/CustomForm/CusSuggest.vue";
@@ -57,6 +58,7 @@ const plugin = {
         CustomVueComponent.register(CusInput)
         CustomVueComponent.register(CusDragXml)
         CustomVueComponent.register(CusOneOrMany)
+        CustomVueComponent.register(CusUploader)
 
         CustomVueComponent.register(MyVueTab)
         CustomVueComponent.register(MyVueTabPane)

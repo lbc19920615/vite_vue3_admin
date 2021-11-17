@@ -37,7 +37,13 @@
   /*border-bottom-color: #0d84ff;*/
   pointer-events: none;
   position: relative;
+  > * {
+    pointer-events: all;
+  }
   > button {
+    margin-right: 10px;
+  }
+  > [actions] {
     position: absolute;
     //transform: translate(-100%);
     left: 0;
@@ -1211,17 +1217,30 @@ export default {
           if (context) {
             currentInspectContext = context.findCom(trueDom_uuid, layout_item_uuid)
             if (currentInspectContext.con_uuid) {
-              // console.log(state.layouts.map(v => v.uuid), currentInspectContext.con_uuid)
-              // let index = state.layouts.findIndex(v => {
-              //   return v.uuid === currentInspectContext.con_uuid
-              // })
-              // if (index > -1) {
-              //   console.log(state.layouts[index])
-              // }
-              // console.log(currentInspectContext)
               selectCurrent(currentInspectContext)
             }
-            // console.log(currentInspectContext, context, state.layouts)
+          }
+        }
+      }
+
+      function handleDelClick() {
+        if (trueDom.hasAttribute('z-uuid')) {
+
+        }
+        else if (trueDom.hasAttribute('z-drag-grid-item')) {
+
+        }
+        else {
+          let trueDom_uuid = app.findUUIDfromClassList(trueDom)
+          let layout_uuid = app.findUUIDfromClassList(trueDom, DATA_LAYOUT_UUID_KEY)
+          let layout_item_uuid = app.findUUIDfromClassList(trueDom, DATA_LAYOUT_ITEM_UUID_KEY)
+          // console.log(layout_uuid, trueDom_uuid)
+          let context = state.layoutRefs[layout_uuid]
+          if (context) {
+            currentInspectContext = context.findCom(trueDom_uuid, layout_item_uuid)
+            console.log(currentInspectContext)
+            clearConfigByID(currentInspectContext.itemUUID)
+            removeLayout(currentInspectContext.con_uuid)
           }
         }
       }
@@ -1270,10 +1289,17 @@ export default {
           }
         })
 
-        let button = document.createElement('button')
-        button.textContent = '编辑'
-        button.addEventListener('click', handleButtonClick)
-        clone.appendChild(button)
+        let button1 = document.createElement('button')
+        button1.textContent = '编辑'
+        button1.addEventListener('click', handleButtonClick)
+        // clone.appendChild(button1)
+
+        let button2 = document.createElement('button')
+        button2.textContent = '删除'
+        button2.addEventListener('click', handleDelClick)
+        // clone.appendChild(button2)
+
+        clone.append(button1, button2)
       }
       clone.setAttribute('current-to-move', type)
       return clone
@@ -1370,6 +1396,16 @@ export default {
     }
 
     /**
+     *
+     * @param id
+     */
+    function clearConfigByID(id) {
+      if (id) {
+        DRAG_INSTANSE.delConfig(id)
+      }
+    }
+
+    /**
      * removeSubLayout
      * @param con_uuid {string}
      * @param data {{}}
@@ -1451,7 +1487,7 @@ export default {
           // console.log(parentRef)
           if (parentRef) {
             parentRef.clearGridItem(data.gridItemUUID)
-            console.log(treeState.current, data)
+            // console.log(treeState.current, data)
             if (treeState.current.uuid === data.uuid) {
               treeState.current = {}
             }

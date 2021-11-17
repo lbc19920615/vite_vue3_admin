@@ -9,6 +9,7 @@ import ZDragDateTimePicker from "@/plugins/z-dragxml/components/ZDragDateTimePic
 import ZDragSlider from "@/plugins/z-dragxml/components/ZDragSlider.vue";
 import ZDragTimePicker from "@/plugins/z-dragxml/components/ZDragTimePicker.vue";
 import ZDragRate from "@/plugins/z-dragxml/components/ZDragRate.vue";
+import ZDragUpload from "@/plugins/z-dragxml/components/ZDragUpload.vue";
 import ZDragGrid from "@/plugins/z-dragxml/components/ZDragGrid.vue";
 import ZDragSubForm from "@/plugins/z-dragxml/components/ZDragSubForm.vue";
 
@@ -22,6 +23,7 @@ export function install(app) {
   CustomVueComponent.register(ZDragTimePicker)
   CustomVueComponent.register(ZDragDateTimePicker)
   CustomVueComponent.register(ZDragCheckbox)
+  CustomVueComponent.register(ZDragUpload)
   CustomVueComponent.register(ZDragInputNumber)
   CustomVueComponent.register(ZDragGrid)
   CustomVueComponent.register(ZDragSelect)
