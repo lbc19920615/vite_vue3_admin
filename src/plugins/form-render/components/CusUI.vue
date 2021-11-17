@@ -21,7 +21,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-    {{state.value.data}}
+<!--    {{state.value.data}}-->
 <!--    <el-row>-->
 <!--      <el-button @click="save">保存</el-button>-->
 <!--    </el-row>-->
@@ -80,7 +80,7 @@ export default {
     let {part_key} = props.defs;
     let obj;
     let JSON5 = ZY.JSON5;
-    let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
+    let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
 
         // console.log('CusUI', newVal, typeof  newVal)
@@ -154,13 +154,13 @@ export default {
       // console.log(clonedValue)
       Reflect.deleteProperty(clonedValue, 'control')
       let str =JSON5.stringify(clonedValue)
-      console.log('onChaneg')
+      // console.log('onChaneg')
       methods.on_change(str)
     }
 
 
     function onAttrsChange(e) {
-      console.log('onAttrsChange', e.props)
+      // console.log('onAttrsChange', e.props)
       // state.value.attrsObj = e
 
       state.value.data.attrs = e.props.filter(v => {
@@ -199,7 +199,7 @@ export default {
 
     return {
       state,
-      widgetConfig: props.ui.widgetConfig,
+      widgetConfig: widgetConfig2,
       onChange,
       methods,
       onAttrsChange,
