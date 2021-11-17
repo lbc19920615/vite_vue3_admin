@@ -4,7 +4,14 @@
     <z-easy-modal title="编辑"
                   @opened="onOpened"
                   @closed="onClosed"
-                  :modelAttr="{width: '96vw', appendToBody: true}">
+                  :modelAttr="{
+                    width: '96vw',
+                     appendToBody: true,
+                     top: '10vh',
+                     modalClass: 'el-dialog--no-modal'
+                  }"
+
+    >
       <template #button-content>打开数据展示</template>
       <template #default>
         <z-drag-xml :ref="mainRef"></z-drag-xml>
