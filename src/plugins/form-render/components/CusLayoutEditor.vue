@@ -72,6 +72,7 @@
               :auto-load="false"
               @plumb-inited="onPlumbInited"
               @mode:update:all="onPlumbUpdate"
+              @del-dep="onPlumbDelDep"
               @save-layout="onSaveLayout"
           ></ZLayoutEditor>
         </div>
@@ -123,7 +124,7 @@ export default {
     })();
 
     let locks = true
-    let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
+    let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
         if (!newVal) {
           newVal = '{data: {links: [], deps: []}, posMap: {}}'
@@ -202,6 +203,13 @@ export default {
       state.value = ret
     }
 
+    function onPlumbDelDep() {
+      let v = layoutRef.getToolsData()
+      let ret = JSON5.stringify(v)
+      console.log(ret)
+      state.value = ret
+    }
+
     onBeforeUnmount(() => {
       if (layoutRef) {
 
@@ -222,7 +230,8 @@ export default {
       setLayoutRef,
       onPlumbUpdate,
       getXMLDisplay,
-      widgetConfig: props?.ui?.widgetConfig ?? {},
+      onPlumbDelDep,
+      widgetConfig: widgetConfig2,
       methods,
       listeners,
     }

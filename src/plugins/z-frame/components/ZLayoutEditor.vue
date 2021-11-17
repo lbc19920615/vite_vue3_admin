@@ -189,6 +189,7 @@ let depManagerMixin = {
       let depId = dep.id
       // console.log(dep, this.LayoutContext.deletePos(depId))
       this.LayoutContext.deletePos(depId)
+      this.$emit('del-dep')
     }
   },
 }
