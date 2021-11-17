@@ -1606,6 +1606,27 @@ export default {
               type: 'textarea'
             }
           }
+        },
+        computedFunIns: {
+          type: 'string',
+          ui: {
+            widget: 'CusInsert',
+            widgetConfig: {
+              insText: [
+              ],
+              insFun: [
+                  'MODEL',
+                ...Object.keys(globalThis.COM_FORM_COMMON_EVAL_FUNS)
+              ],
+              insVars: [
+                [
+                    '爱你',
+                    'xy-text',
+                    `val="MODEL('field__cov27IMEbX')"`
+                ]
+              ]
+            }
+          }
         }
       }
       let base_ui_props =  {
