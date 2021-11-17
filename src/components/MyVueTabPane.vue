@@ -1,4 +1,8 @@
-
+<style>
+.my-vue-tab-pane:not(.my-vue-tab-pane--loaded) {
+  display: none;
+}
+</style>
 
 <template>
 <div class="my-vue-tab-pane"
