@@ -1517,7 +1517,7 @@ export default {
       let com = origin.com
       treeState.current.com_name = com.name
       treeState.current.com_xml = treeState.current?.origin?.label_xml ?? com.name
-      console.log(treeState.current)
+      // console.log(treeState.current)
       if (treeState?.current?.origin?.com?.DRAG_LABEL_XML) {
         treeState.current.com_xml = treeState?.current?.origin?.com?.DRAG_LABEL_XML()
 
@@ -1657,19 +1657,22 @@ export default {
         ui: base_ui_props,
         // server: base_server_props,
       }
+      if (com.DRAG_CONFIG) {
+        let _config  = com.DRAG_CONFIG() ?? {}
+        widgetConfigProps = Object.assign(widgetConfigProps, _config.props)
+      }
       // console.log(com)
       if (!com.DRAG_GRID) {
         properties = {
           ...base_type_props,
           ui: base_ui_props,
+          ...widgetConfigProps,
           ...base_form_props,
           server: base_server_props,
         }
       }
-      if (com.DRAG_CONFIG) {
-        let _config  = com.DRAG_CONFIG() ?? {}
-        widgetConfigProps = Object.assign(widgetConfigProps, _config.props)
-      }
+
+      console.log(widgetConfigProps)
       let computed = {
         srules: `A.getRulesFromRulesArr(MODEL('rulesArr'))`,
       }
