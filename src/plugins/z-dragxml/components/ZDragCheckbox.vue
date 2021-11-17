@@ -2,7 +2,7 @@
   <div class="z-dragxml-com"
        :class="drag_highlight_cls('itemUUID', uuid)"
        @mouseenter.stop="onMouseEnter">
-    <z-cell-item :vertical="true"
+    <z-cell-item v-bind="form_config"
                  :label="GET_CONFIG('ui.label', '')"
                  :desc="GET_CONFIG('ui.desc', '')"
     >

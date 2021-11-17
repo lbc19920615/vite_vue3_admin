@@ -14,6 +14,9 @@
     >
       <template #button-content>打开数据展示</template>
       <template #default>
+        <el-row>
+          <el-button type="primary" size="small" @click="saveData">保存</el-button>
+        </el-row>
         <z-drag-xml :ref="mainRef"></z-drag-xml>
       </template>
     </z-easy-modal>
@@ -76,12 +79,16 @@ export default {
       methods.on_change(value)
     }
 
-    function onClosed() {
+    function saveData() {
       let ctx = getRef('main')
       obj.props = ctx.getZprops()
       obj.memos = ctx.getMemo()
       // console.log(obj)
       onChange()
+    }
+
+    function onClosed() {
+      // saveData()
     }
 
     function onOpened() {
@@ -108,6 +115,7 @@ export default {
       mainRef,
       onClosed,
       onOpened,
+      saveData,
       widgetConfig: widgetConfig2,
       methods,
       listeners,

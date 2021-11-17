@@ -4,7 +4,7 @@
        @mouseenter.stop="onMouseEnter"
   >
 <!--    {{uuid}}-->
-    <z-cell-item :vertical="true"
+    <z-cell-item v-bind="form_config"
                  :label="GET_CONFIG('ui.label', '')"
                  :desc="GET_CONFIG('ui.desc', '')"
     >

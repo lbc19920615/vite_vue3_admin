@@ -1558,6 +1558,14 @@ export default {
             }
           },
         },
+        computedFun: {
+          type: 'string',
+          ui: {
+            widgetConfig: {
+              type: 'textarea'
+            }
+          }
+        }
       }
       let base_ui_props =  {
         type: 'object',
