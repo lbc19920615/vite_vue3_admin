@@ -150,7 +150,8 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-<!--    {{state.value}}-->
+    {{state.str}}
+
     <div
         :id="hid"
         class="cus-insert-input"
@@ -189,6 +190,7 @@
         modal-class="cus-insert-modal"
         @closed="onModalClosed"
         :close-on-click-modal="false"
+        :append-to-body="true"
     >
       <div  class="cus-insert-keyboard" tabindex="-1"   @keydown="onPopupkeyup">
 <!--        <div style="border: 1px solid #eee; min-height: 40px; display: flex; align-items: center; flex-wrap: nowrap;">-->
@@ -212,7 +214,14 @@
          <template v-for="item in insertedVars">
            <el-popover trigger="hover" width="450" placement="top">
              <div v-html="getFunDOC(item)"></div>
-             <template #reference><el-button @click="insertText(`${item}`)"><span v-html="item"></span></el-button></template>
+             <template #reference>
+               <template v-if="isArray(item)">
+                 <el-button @click="insertTVars(item)"><span v-html="item[0]"></span></el-button>
+               </template>
+               <template v-else>
+                 <el-button @click="insertText(`${item}`, 'xy-text', '')"><span v-html="item"></span></el-button>
+               </template>
+             </template>
            </el-popover>
          </template>
        </div>
@@ -396,7 +405,8 @@ export default {
       selected: false,
       pinyin: '',
       parsedList: [],
-      parsedText: []
+      parsedText: [],
+      str: ''
     })
     init(props)
 
@@ -405,9 +415,27 @@ export default {
       // console.log(clonedValue)
       // clonedValue = toRaw(state.control)
       // Reflect.deleteProperty(clonedValue, 'control')
-      let content = document.querySelector(`#${hid} [content]`)?.textContent ?? ''
+      let dom = document.querySelector(`#${hid} [content]`)
+      if (!dom) {
+        return;
+      }
+      let child = dom.children
+      let content = ''
+      if (child.length > 0) {
+        Array.of(...child).forEach(item => {
+          // console.log(item)
+          if (item.hasAttribute('val')) {
+            content = content + item.getAttribute('val')
+          } else {
+            content = content + item.textContent
+          }
+        })
+      }
+      // console.log(child, content)
+      // let content = document.querySelector(`#${hid} [content]`)?.textContent ?? ''
       clonedValue.textContent = content.trim()
       let str =JSON5.stringify(clonedValue)
+      state.str = clonedValue.textContent
       methods.on_change(str)
     }
 
@@ -449,7 +477,9 @@ export default {
       // let length = state.control.funcs.length
       setTimeout(() => {
         setCursor(112121, 'add', addLength);
-        onChange()
+        setTimeout(() => {
+          onChange()
+        }, 100)
       }, 30)
     }
 
@@ -488,6 +518,14 @@ export default {
       insertChange()
     }
 
+
+    function isArray(v) {
+      return Array.isArray(v)
+    }
+
+    function insertTVars(item) {
+      insertTexts([item[0]], item[1], item[2])
+    }
 
     function insertTexts(texts = [], tag = 'xy-text', attr = '') {
       if (Array.isArray(texts) && texts.length > 0) {
@@ -913,6 +951,7 @@ export default {
       insertFun,
       insertText,
       insertQute,
+      isArray,
       selectCnText,
       onCursorcompositionstart,
       onCursorcompositionend,
@@ -927,6 +966,7 @@ export default {
       sortSuggest,
       insertedText,
       insertedFun,
+      insertTVars,
       onFocus,
       onMainMouseUp,
       onMouseDown,
