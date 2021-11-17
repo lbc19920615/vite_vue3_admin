@@ -81,6 +81,11 @@ export default {
         ctx.emit('form:input:blur', '')
       }
 
+      if (type === EVENT_NAMES.ARR_APPEND_COMMON) {
+        ctx.emit('props-change', model)
+        ctx.emit('form:input:blur', '')
+      }
+
     })
 
     page.setEventHandler({
@@ -89,8 +94,8 @@ export default {
           ctx.emit('props-change', e.model)
         }
       },
-      ['form:input:blur'](e) {
-        // console.log('sdsdsdsdsdsds', e)
+      ['cmfield:blur'](e) {
+        console.log('cmfield:blur', e)
         ctx.emit('form:input:blur', e)
       }
     })

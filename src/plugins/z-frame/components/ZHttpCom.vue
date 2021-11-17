@@ -135,7 +135,7 @@ export default {
           ctx.emit('http:model:change', e)
         }
       },
-      ['form:input:blur'](e) {
+      ['cmfield:blur'](e) {
         // console.log('sdsdsdsdsdsds', e)
         ctx.emit('form:input:blur', e)
       },

@@ -21,7 +21,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-<!--    {{state.value.data}}-->
+    {{state.value.data}}
 <!--    <el-row>-->
 <!--      <el-button @click="save">保存</el-button>-->
 <!--    </el-row>-->
@@ -45,7 +45,9 @@
       </div>
       <ZProps
           style="flex: 1"
-          v-model:value="state.value.control.attrsObj" @form:input:blur="onBlur" @props-change="onAttrsChange"></ZProps>
+          v-model:value="state.value.control.attrsObj"
+          @form:input:blur="onBlur"
+          @props-change="onAttrsChange"></ZProps>
     </el-row>
 
 
@@ -152,12 +154,13 @@ export default {
       // console.log(clonedValue)
       Reflect.deleteProperty(clonedValue, 'control')
       let str =JSON5.stringify(clonedValue)
+      console.log('onChaneg')
       methods.on_change(str)
     }
 
 
     function onAttrsChange(e) {
-      // console.log('onAttrsChange', e.props)
+      console.log('onAttrsChange', e.props)
       // state.value.attrsObj = e
 
       state.value.data.attrs = e.props.filter(v => {
@@ -190,6 +193,7 @@ export default {
     }
 
     function onBlur() {
+      console.log('onBlur')
       onChange()
     }
 

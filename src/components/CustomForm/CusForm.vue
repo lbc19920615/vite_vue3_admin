@@ -42,22 +42,6 @@
         <!--        <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>-->
       </template>
     </HttpComponent>
-<!--    <el-dialog v-model="store.model.dialog_open"  @closed="onClosed" :append-to-body="true">-->
-<!--      <template #default>-->
-<!--        <HttpComponent-->
-<!--            :defs="page.defMap"-->
-<!--            :is="store.model.editor_step"-->
-<!--            v-if="!useDrag || store.model.dialog_open"-->
-<!--        >-->
-<!--          <template #array_con_afterbegin="scope">-->
-<!--            &lt;!&ndash;            <h3>{{getArrItemBeforeKey(scope)}}</h3>&ndash;&gt;-->
-<!--          </template>-->
-<!--          <template #array_afterbegin="scope">-->
-<!--            &lt;!&ndash;        <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>&ndash;&gt;-->
-<!--          </template>-->
-<!--        </HttpComponent>-->
-<!--      </template>-->
-<!--    </el-dialog>-->
   </div>
 
 </template>
@@ -144,7 +128,7 @@ export default {
       },
       async ['model:update:all'](e) {
         let { model, key, newVal, config } = e
-        // console.log('cus:form model:update:all', model)
+        console.log('cus:form model:update:all', model)
         cachedModel = model
         if (!locks) {
           let val = ZY.JSON5.stringify(model)
