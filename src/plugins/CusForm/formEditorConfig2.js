@@ -47,6 +47,13 @@ let formDef = {
               }
             }
           },
+          ui2: {
+            type: 'string',
+            ui: {
+              widget: 'CusUI',
+              label: 'UI编辑',
+            }
+          },
           computed2: {
             type: 'string',
             ui: {
@@ -55,17 +62,11 @@ let formDef = {
               widgetConfig: {
                 style: {
                   height: "350px",
+                  overflow: 'auto'
                 },
                 // enums: 'MODEL("name")'
               }
             }
-          },
-          ui2: {
-              type: 'string',
-              ui: {
-                widget: 'CusUI',
-                label: 'UI编辑',
-              }
           },
           computed: {
             type: 'string',

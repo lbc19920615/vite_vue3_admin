@@ -5,7 +5,7 @@
 </style>
 
 <template>
-  <div class="cus-form" v-if="page.inited">
+  <div class="cus-form" v-if="page.inited" :style="widgetConfig.style">
     <div hidden>{{store.model}}</div>
     <HttpComponent
         :defs="page.defMap"
@@ -57,7 +57,7 @@ export default {
     let widgetConfig = props.ui.widgetConfig
     let locks = true
     let cached = null
-    let { methods, init, data } = defineCustomRender(props, ctx, {
+    let { methods, init, data, widgetConfig2 } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
         // console.log('handleValueInit', newVal, typeof newVal)
         if (typeof newVal !== 'undefined') {
@@ -217,7 +217,7 @@ export default {
 
     return {
       dialogName,
-      widgetConfig,
+      widgetConfig: widgetConfig2,
       page,
       EVENT_NAMES,
       openDialog,

@@ -187,13 +187,13 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
         callComManager: callComManager,
         onChange(v) {
             lock.lock(async () => {
-                console.log('onChange', v, typeof v)
+                // console.log('onChange', v, typeof v)
                 ctx.emit('valuechange', v)
             }, 1000)
         },
         on_change(v) {
             lock.lock(async () => {
-                console.log('on_change', v, typeof v)
+                // console.log('on_change', v, typeof v)
                 ctx.emit('valuechange', v)
             }, 1000)
         }
