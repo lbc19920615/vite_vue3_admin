@@ -58,6 +58,10 @@ let formDef = {
             type: 'string',
             ui: {
               label: '计算属性',
+              styles: [
+                ['height', 0],
+                ['overflow', 'hidden'],
+              ],
               widget: 'CusComputed',
               widgetConfig: {
                 style: {
