@@ -19,11 +19,6 @@ export default {
   name: 'ZDragSelect',
   components: {CusSelect},
   ZDragXmlCom: true,
-  DRAG_CONFIG() {
-    let obj = CusSelect.CUS_EDITOR() ?? { props: {} }
-    Reflect.deleteProperty(obj.props, 'type')
-    return obj
-  },
   DRAG_DATASET() {
     return {
       columnMax: 1
@@ -41,6 +36,11 @@ export default {
   methods: {
     setVal(v) {
       this.cus_ref.state.value = v
+    },
+    DRAG_CONFIG() {
+      let obj = CusSelect.CUS_EDITOR() ?? { props: {} }
+      // Reflect.deleteProperty(obj.props, 'type')
+      return obj
     },
     DRAG_EXPORT() {
       return {

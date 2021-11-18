@@ -22,11 +22,6 @@ export default {
   name: 'ZDragUpload',
   components: {CusUploader},
   ZDragXmlCom: true,
-  DRAG_CONFIG() {
-    let obj = CusUploader.CUS_EDITOR() ?? { props: {} }
-    Reflect.deleteProperty(obj.props, 'type')
-    return obj
-  },
   DRAG_DATASET() {
     return {
       columnMax: 1
@@ -42,6 +37,11 @@ export default {
       ZDragCommonMixin
   ],
   methods: {
+    DRAG_CONFIG() {
+      let obj = CusUploader.CUS_EDITOR() ?? { props: {} }
+      Reflect.deleteProperty(obj.props, 'type')
+      return obj
+    },
     DRAG_EXPORT() {
       return {
         ui: {

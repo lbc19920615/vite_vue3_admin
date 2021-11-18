@@ -19,10 +19,6 @@ export default {
   name: 'ZDragInputNumber',
   components: {CusInputNumber},
   ZDragXmlCom: true,
-  DRAG_CONFIG() {
-    return {
-    }
-  },
   DRAG_DATASET() {
     return {
       columnMax: 1
@@ -38,6 +34,10 @@ export default {
       ZDragCommonMixin
   ],
   methods: {
+    DRAG_CONFIG() {
+      return {
+      }
+    },
     DRAG_EXPORT() {
       return {
         ui: {

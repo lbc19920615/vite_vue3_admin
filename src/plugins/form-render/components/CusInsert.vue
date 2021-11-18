@@ -150,7 +150,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-    {{state.str}}
+<!--    {{state.str}}-->
 
     <div
         :id="hid"

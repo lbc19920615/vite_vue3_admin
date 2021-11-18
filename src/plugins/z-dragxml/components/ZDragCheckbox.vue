@@ -21,10 +21,6 @@ export default {
   name: 'ZDragCheckbox',
   components: {CusCheckbox},
   ZDragXmlCom: true,
-  DRAG_CONFIG() {
-    let obj = CusCheckbox.CUS_EDITOR() ?? { props: {} }
-    return obj
-  },
   DRAG_DATASET() {
     return {
       columnMax: 1
@@ -42,6 +38,10 @@ export default {
   methods: {
     setVal(v = []) {
       this.cus_ref.state.value = v
+    },
+    DRAG_CONFIG() {
+      let obj = CusCheckbox.CUS_EDITOR() ?? { props: {} }
+      return obj
     },
     DRAG_EXPORT() {
       return {

@@ -24,16 +24,14 @@
       <el-input-number
           v-model="state.value.max"
           @change="onChange"
-          :min="1"
-          :max="1000"
+
       ></el-input-number>
     </z-cell-item>
     <z-cell-item :vertical="null" label="min">
       <el-input-number
           v-model="state.value.min"
           @change="onChange"
-          :min="1"
-          :max="1000"
+
       ></el-input-number>
     </z-cell-item>
   </template>

@@ -337,7 +337,15 @@ export default {
     IconMenu,
     Setting,
   },
-  setup() {
+  props: {
+    insVars: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
+  setup(props) {
     const Z_UUID_KEY = 'z-uuid'
     const PLAY_ID = 'playground__' + ZY.rid(6)
     const TEST1_ID = 'test1__' + ZY.rid(6)
@@ -991,6 +999,27 @@ export default {
       // console.log(el)
     }
 
+    function getInsVars() {
+      // console.log(DRAG_INSTANSE.dragConfig)
+      let ret = []
+      DRAG_INSTANSE.dragConfig.forEach((config) => {
+        if (config.ins && config.ins.ui && config.ins.ui.label) {
+          let field_name = config.ins?.server?.field_name
+          if (field_name) {
+            ret.push(
+                [
+                  config.ins.ui.label,
+                  'xy-text',
+                  `val="MODEL('${field_name}')"`
+                ]
+            )
+          }
+        }
+      })
+      // console.log('getInsVars', ret)
+      return ret
+    }
+
     function selectCurrent(e) {
       // console.log(e)
       treeState.current = {
@@ -1525,7 +1554,7 @@ export default {
     }
 
     function handleNodeClick(e) {
-      // console.log('handleNodeClick', e)
+      console.log('handleNodeClick', e)
       let {config = {}} = e
       treeState.current = {
         origin: e,
@@ -1555,6 +1584,7 @@ export default {
     async function resolveConfig() {
       let current  = treeState.current
       let origin = current.origin
+      let uuid = current.uuid
       let com = origin.com
       treeState.current.com_name = com.name
       treeState.current.com_xml = treeState.current?.origin?.label_xml ?? com.name
@@ -1567,6 +1597,15 @@ export default {
         disabled: QuickBooleanWithNull('禁用'),
         readonly: QuickBooleanWithNull('只读')
       }
+      if (com.DRAG_CONFIG) {
+        let _config  = com.DRAG_CONFIG() ?? {}
+        widgetConfigProps = Object.assign(widgetConfigProps, _config.props)
+      }
+      let instanse = DRAG_INSTANSE.get(uuid)
+      if (instanse && instanse.DRAG_CONFIG) {
+        widgetConfigProps = Object.assign(widgetConfigProps, instanse.DRAG_CONFIG()?.props )
+      }
+      console.log(com,widgetConfigProps)
       let base_type_props = {
         type: {
           type: 'string',
@@ -1601,15 +1640,18 @@ export default {
         },
         computedFun: {
           type: 'string',
+          computedProp: 'get_computedFunIns',
           ui: {
             widgetConfig: {
-              type: 'textarea'
+              type: 'textarea',
+              readonly: true,
             }
           }
         },
         computedFunIns: {
           type: 'string',
           ui: {
+            label: '表达式',
             widget: 'CusInsert',
             widgetConfig: {
               insText: [
@@ -1618,13 +1660,7 @@ export default {
                   'MODEL',
                 ...Object.keys(globalThis.COM_FORM_COMMON_EVAL_FUNS)
               ],
-              insVars: [
-                [
-                    '爱你',
-                    'xy-text',
-                    `val="MODEL('field__cov27IMEbX')"`
-                ]
-              ]
+              insVars: getInsVars()
             }
           }
         }
@@ -1727,16 +1763,12 @@ export default {
         ui: base_ui_props,
         // server: base_server_props,
       }
-      if (com.DRAG_CONFIG) {
-        let _config  = com.DRAG_CONFIG() ?? {}
-        widgetConfigProps = Object.assign(widgetConfigProps, _config.props)
-      }
+
       // console.log(com)
       if (!com.DRAG_GRID) {
         properties = {
           ...base_type_props,
           ui: base_ui_props,
-          ...widgetConfigProps,
           ...base_form_props,
           server: base_server_props,
         }
@@ -1745,6 +1777,7 @@ export default {
       // console.log(widgetConfigProps)
       let computed = {
         srules: `A.getRulesFromRulesArr(MODEL('rulesArr'))`,
+        get_computedFunIns: `A.get_computedFunIns(MODEL('computedFunIns'))`
       }
       let formDef = {
         type: 'object',

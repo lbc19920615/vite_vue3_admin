@@ -1,12 +1,24 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-<!--    {{state.OPT}}-->
-    <el-input
-        v-model="state.value"
-        v-bind="state.OPT.widgetConfig"
-        v-on="listeners"
-    ></el-input>
+    {{state.OPT.widgetConfig}}
+    {{typeof state.value}}
+    <template v-if="state.OPT.widgetConfig">
+      <template v-if="state.OPT.widgetConfig.type === 'number' ">
+        <el-input
+            v-model.number="state.value"
+            v-bind="state.OPT.widgetConfig"
+            @change="onNumberChange"
+        ></el-input>
+      </template>
+      <template v-else>
+        <el-input
+            v-model="state.value"
+            v-bind="state.OPT.widgetConfig"
+            v-on="listeners"
+        ></el-input>
+      </template>
+    </template>
   </template>
 </template>
 
@@ -87,8 +99,15 @@ export default {
 
     let widgetConfig = props?.ui?.widgetConfig ?? {}
 
+    function onNumberChange(v) {
+      // console.log(v)
+      let val = parseInt(v)
+      methods.on_change(val)
+    }
+
     return {
       state,
+      onNumberChange,
       widgetConfig,
       methods,
       listeners,

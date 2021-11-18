@@ -21,11 +21,6 @@ export default {
   name: 'ZDragDateTimePicker',
   components: {CusDateTimePicker},
   ZDragXmlCom: true,
-  DRAG_CONFIG() {
-    let obj = CusDateTimePicker.CUS_EDITOR() ?? { props: {} }
-    Reflect.deleteProperty(obj.props, 'type')
-    return obj
-  },
   DRAG_DATASET() {
     return {
       columnMax: 1
@@ -41,6 +36,11 @@ export default {
     ZDragCommonMixin
   ],
   methods: {
+    DRAG_CONFIG() {
+      let obj = CusDateTimePicker.CUS_EDITOR() ?? { props: {} }
+      Reflect.deleteProperty(obj.props, 'type')
+      return obj
+    },
     DRAG_EXPORT() {
       return {
         ui: {

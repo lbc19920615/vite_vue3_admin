@@ -1,6 +1,5 @@
 <template>
   <template v-if="inited">
-<!--        {{state}}-->
     <z-easy-modal title="编辑"
                   @opened="onOpened"
                   @closed="onClosed"
@@ -14,10 +13,11 @@
     >
       <template #button-content>打开数据展示</template>
       <template #default>
+<!--        {{state.insVars}}-->
         <el-row>
           <el-button type="primary" size="small" @click="saveData">保存</el-button>
         </el-row>
-        <z-drag-xml :ref="mainRef"></z-drag-xml>
+        <z-drag-xml :ins-vars="state.insVars" :ref="mainRef"></z-drag-xml>
       </template>
     </z-easy-modal>
 <!--    <z-drag-xml></z-drag-xml>-->
@@ -55,7 +55,7 @@ export default {
       handleValueInit
     })
     let state = data({
-
+      insVars: []
     })
     init(props)
 
@@ -95,14 +95,22 @@ export default {
       let model = {}
       let ctx = getRef('main')
       // console.log(obj, ctx)
+      state.insVars =  [
+        [
+          '爱你11',
+          'xy-text',
+          `val="MODEL('field__cov27IMEbX')"`
+        ]
+      ]
       if (CusFormExpose && CusFormExpose.getPartModel) {
         model = CusFormExpose.getPartModel()
+        console.log(model)
         let ui = JSON5.parse(model.ui)
-        console.log(ui)
+        // console.log(ui)
         if (Array.isArray(ui.attrs)) {
           form_config = Object.fromEntries(ui.attrs)
         }
-        console.log(form_config)
+        // console.log(form_config)
       }
       if (ctx) {
         ctx.importData(obj.memos)

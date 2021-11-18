@@ -66,7 +66,7 @@ let propArr = pos_arr.map((v, index) => {
 const slotTypes = [
   {
     label: 'Form After',
-    value: 'form_after',
+    value: 'form_afterend',
     labelTip: '表单后面',
   },
   {

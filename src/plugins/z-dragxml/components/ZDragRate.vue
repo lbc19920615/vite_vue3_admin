@@ -22,11 +22,6 @@ export default {
   name: 'ZDragRate',
   components: {CusRate},
   ZDragXmlCom: true,
-  DRAG_CONFIG() {
-    let obj = CusRate.CUS_EDITOR() ?? { props: {} }
-    Reflect.deleteProperty(obj.props, 'type')
-    return obj
-  },
   DRAG_DATASET() {
     return {
       columnMax: 1
@@ -51,6 +46,10 @@ export default {
     }
   },
   methods: {
+    DRAG_CONFIG() {
+      let obj = CusRate.CUS_EDITOR() ?? { props: {} }
+      return obj
+    },
     DRAG_EXPORT() {
       return {
         ui: {

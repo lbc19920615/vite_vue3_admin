@@ -24,12 +24,6 @@ export default {
   name: 'ZDragRadio',
   components: {CusRadio},
   ZDragXmlCom: true,
-
-  DRAG_CONFIG() {
-    let obj = CusRadio.CUS_EDITOR() ?? { props: {} }
-
-    return obj
-  },
   DRAG_DATASET() {
     return {
       columnMax: 1
@@ -49,6 +43,11 @@ export default {
       this.cus_ref.state.value = v
     },
     CUS_RADIO() {},
+    DRAG_CONFIG() {
+      let obj = CusRadio.CUS_EDITOR() ?? { props: {} }
+
+      return obj
+    },
     DRAG_EXPORT() {
       return {
         ui: {

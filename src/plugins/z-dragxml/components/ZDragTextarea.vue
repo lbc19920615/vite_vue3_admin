@@ -23,11 +23,6 @@ export default {
   mixins: [
       ZDragCommonMixin
   ],
-  DRAG_CONFIG() {
-    let obj = CusInput.CUS_EDITOR() ?? { props: {} }
-    Reflect.deleteProperty(obj.props, 'type')
-    return obj
-  },
   DRAG_DATASET() {
     return {
       columnMax: 1
@@ -51,6 +46,11 @@ export default {
     }
   },
   methods: {
+    DRAG_CONFIG() {
+      let obj = CusInput.CUS_EDITOR() ?? { props: {} }
+      Reflect.deleteProperty(obj.props, 'type')
+      return obj
+    },
     DRAG_EXPORT() {
       return {
         ui: {
