@@ -1,6 +1,4 @@
-<style>
 
-</style>
 
 <template>
   <div class="z-props" v-if="page.inited">

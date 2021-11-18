@@ -4,24 +4,34 @@ let formDef = {
     type: 'object',
     ui: {
         attrs: [
-            ['label-width', '100px']
+            // ['label-width', '100px']
         ],
     },
     properties: {
         props: {
             type: 'array',
+            ui: {
+                conAttrs: [
+                  [
+                    'style',
+                      'display: flex;'
+                  ]
+                ]
+            },
             items: {
                 type: "object",
                 properties: {
                     name: {
                         type: 'string',
                         ui: {
+                            label: '名称',
                             class: ['z-props__name']
                         }
                     },
                     value: {
                         type: 'string',
                         ui: {
+                            label: '值',
                             class: ['z-props__value']
                         }
                     },

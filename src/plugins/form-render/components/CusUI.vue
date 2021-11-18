@@ -16,6 +16,9 @@
     opacity: 0;
   }
 }
+.z-props__value {
+  width: 30vw;
+}
 </style>
 
 <template>
