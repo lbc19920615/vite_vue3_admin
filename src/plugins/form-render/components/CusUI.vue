@@ -40,7 +40,7 @@
     <el-row  class="a-space-mb-10">
       <div class="cus-ui__label">属性
       <z-window class="a-space-ml-5"
-                url="https://element-plus.gitee.io/zh-CN/component/form.html#form-%E5%B1%9E%E6%80%A7">
+                url="https://element-plus.gitee.io/zh-CN/component/form.html#form-%E6%96%B9%E6%B3%95">
         <i class="fa fa-book"></i>
       </z-window>
       </div>
