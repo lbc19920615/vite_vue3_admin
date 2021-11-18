@@ -55,10 +55,67 @@ export default {
                                 }
                             }
                         },
-                        layoutSlotArr: {
+                        forms: {
                             type: 'array',
                             tag: 'my-vue-tab',
                             con_tag: 'my-vue-tab-pane',
+                            wrap: 'em-props-item',
+                            ui: {
+                                label: '表单',
+                                attrs: [
+                                    ['scroll-control', 'page_forms'],
+                                ],
+                                conAttrs: [
+                                    {
+                                        prefixValue: '"表单"+',
+                                        handler: ['c', 'return [":name", c.indexKey]']
+                                    }
+                                ],
+                                class: [
+                                ],
+                                conClass: [
+                                    'a-space-mb-20'
+                                ]
+                            },
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    name: {
+                                        type: 'string',
+                                        tag: 'div',
+                                        ui: {
+                                            label: '表单名',
+                                            form_item: {
+                                                labelWidth: '60px',
+                                            },
+                                            widget: 'CusSuggest',
+                                            widgetConfig: {
+                                                enums: "ROOT_STATE('tools.constVars_processSteps', [])",
+                                            }
+                                        }
+                                    },
+                                    value: {
+                                        type: 'string',
+                                        tag: 'div',
+                                        ui: {
+                                            label: '表单值',
+                                            form_item: {
+                                                labelWidth: '60px',
+                                            },
+                                            widget: 'CusForm',
+                                            widgetConfig: {
+                                                configUrl: '/src/plugins/CusForm/formEditorConfig2.js',
+                                                enums: "ROOT_STATE('tools.propTypes', [])",
+                                            },
+                                        }
+                                    },
+                                }
+                            }
+                        },
+                        layoutSlotArr: {
+                            type: 'array',
+                            tag: 'z-filter-list',
+                            // con_tag: 'my-vue-tab-pane',
                             wrap: 'em-props-item',
                             ui: {
                                 label: 'Slot',
@@ -129,34 +186,10 @@ export default {
                                             }
                                         }
                                     },
-                                    // propsCopy: {
-                                    //     type: 'string',
-                                    //     reflect: 'props',
-                                    //     reflectTpl: `A.propsToJSON5($VAL, 'props')`,
-                                    //     ui: {
-                                    //        widgetConfig: {
-                                    //            readonly: true
-                                    //        }
-                                    //     }
-                                    // },
-                                    // props: {
-                                    //     type: 'string',
-                                    //     ui: {
-                                    //         widget: 'CusPropsEditor',
-                                    //         widgetConfig: {
-                                    //             valueConfig: {
-                                    //               ui: {
-                                    //                   widgetConfig: {
-                                    //                       type: 'textarea'
-                                    //                   }
-                                    //               }
-                                    //             }
-                                    //         }
-                                    //     }
-                                    // }
                                 }
                             }
                         },
+
                         layoutSlots: {
                             type: 'string',
                             computedProp: 'layoutSlotArrComputed',
@@ -168,67 +201,9 @@ export default {
                                 }
                             }
                         },
-                        forms: {
-                            type: 'array',
-                            tag: 'my-vue-tab',
-                            con_tag: 'my-vue-tab-pane',
-                            wrap: 'em-props-item',
-                            ui: {
-                                label: '表单',
-                                attrs: [
-                                    ['scroll-control', 'page_forms'],
-                                ],
-                                conAttrs: [
-                                    {
-                                        prefixValue: '"表单"+',
-                                        handler: ['c', 'return [":name", c.indexKey]']
-                                    }
-                                ],
-                                class: [
-                                ],
-                                conClass: [
-                                    'a-space-mb-20'
-                                ]
-                            },
-                            items: {
-                                type: 'object',
-                                properties: {
-                                    name: {
-                                        type: 'string',
-                                        tag: 'div',
-                                        ui: {
-                                            label: '表单名',
-                                            form_item: {
-                                                labelWidth: '60px',
-                                            },
-                                            widget: 'CusSuggest',
-                                            widgetConfig: {
-                                                enums: "ROOT_STATE('tools.constVars_processSteps', [])",
-                                            }
-                                        }
-                                    },
-                                    value: {
-                                        type: 'string',
-                                        tag: 'div',
-                                        ui: {
-                                            label: '表单值',
-                                            form_item: {
-                                                labelWidth: '60px',
-                                            },
-                                            widget: 'CusForm',
-                                            widgetConfig: {
-                                                configUrl: '/src/plugins/CusForm/formEditorConfig2.js',
-                                                enums: "ROOT_STATE('tools.propTypes', [])",
-                                            },
-                                        }
-                                    },
-                                }
-                            }
-                        },
                         events: {
                             type: 'array',
-                            tag: 'my-vue-tab',
-                            con_tag: 'my-vue-tab-pane',
+                            tag: 'z-filter-list',
                             wrap: 'em-props-item',
                             ui: {
                               label: '事件',
