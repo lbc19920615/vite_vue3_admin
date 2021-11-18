@@ -28,6 +28,38 @@
   <body>
 {% include './src/htmls/template.html' %}
 <script>
+  {
+    const COMMON_EVAL_FUNS = {
+      时间间隔(date1, date2) {
+        /**
+         * @param date1 {Date|string (Date format)}
+         * @param date2 {Date|string (Date format)}
+         * @returns {null|*}
+         */
+        if (date1 && date2) {
+          return ZY.Time.subtract2Date(date1, date2).asHours()
+        }
+        return null
+      },
+      取整(v, presion) {
+        /**
+         * @param v
+         * @param presion
+         * @returns {string|*}
+         */
+        let ret = ZY.lodash.floor(v, presion)
+        // if (ret === 0) {
+        //   return ''
+        // }
+        return ret
+      }
+    }
+    if (typeof  window.COM_FORM_COMMON_EVAL_FUNS === 'undefined') {
+      window.COM_FORM_COMMON_EVAL_FUNS = COMMON_EVAL_FUNS
+    }
+
+  }
+
   class ZEmoji extends HTMLElement {
     constructor() {
       super();

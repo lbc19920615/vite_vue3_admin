@@ -19,6 +19,19 @@ ${JSON.stringify(value)}
   )
 }
 
+let COM_FORM_COMMON_EVAL_FUNS_docs = []
+for (let [key, value] of Object.entries(globalThis.COM_FORM_COMMON_EVAL_FUNS)) {
+  COM_FORM_COMMON_EVAL_FUNS_docs.push({
+    label: key,
+    value: function () {
+      // console.log(ZY.getHereDoc(value).trim())
+return ZY.getHereDoc(value).trim()
+    }
+  })
+}
+
+// console.log(COM_FORM_COMMON_EVAL_FUNS_docs)
+
 // <!-- beforebegin -->
 // <p>
 //   <!-- afterbegin -->
@@ -83,6 +96,7 @@ const slotTypes = [
 
 globalThis.ToolsDocs =  [
   ...objDoc,
+  ...COM_FORM_COMMON_EVAL_FUNS_docs,
   {
     label: 'MODEL',
     value: `### MODEL

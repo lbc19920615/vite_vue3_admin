@@ -229,7 +229,8 @@
           <template v-for="item in insertedFun">
             <el-popover trigger="hover" width="450" placement="top">
               <div v-html="getFunDOC(item)"></div>
-              <template #reference><el-button @click="insertFun(item)"><span v-html="item"></span></el-button></template>
+              <template #reference><el-button
+                  @click="insertFun(item)"><span v-html="item"></span></el-button></template>
             </el-popover>
           </template>
         </div>
