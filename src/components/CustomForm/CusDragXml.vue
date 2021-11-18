@@ -104,7 +104,7 @@ export default {
       ]
       if (CusFormExpose && CusFormExpose.getPartModel) {
         model = CusFormExpose.getPartModel()
-        console.log(model)
+        // console.log(model)
         let ui = JSON5.parse(model.ui)
         // console.log(ui)
         if (Array.isArray(ui.attrs)) {
