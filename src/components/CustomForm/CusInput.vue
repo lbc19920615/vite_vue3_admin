@@ -1,8 +1,8 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-    {{state.OPT.widgetConfig}}
-    {{typeof state.value}}
+<!--    {{state.OPT.widgetConfig}}-->
+<!--    {{typeof state.value}}-->
     <template v-if="state.OPT.widgetConfig">
       <template v-if="state.OPT.widgetConfig.type === 'number' ">
         <el-input
