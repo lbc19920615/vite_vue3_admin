@@ -21,7 +21,7 @@
     <el-input
         class="cus-suggest-input"
         :style="widgetConfig.inputStyle"
-              :readonly="widgetConfig.mode === 'select'"
+              :readonly="widgetConfig.readonly"
               v-model="state.value"
               @input="onChange">
       <template v-if="widgetConfig.mode === 'select' && state.value" #prepend>

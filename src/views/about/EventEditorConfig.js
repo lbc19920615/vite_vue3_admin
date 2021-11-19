@@ -90,6 +90,7 @@ export default {
                                             },
                                             widget: 'CusSuggest',
                                             widgetConfig: {
+                                                mode: 'select',
                                                 enums: "ROOT_STATE('tools.constVars_processSteps', [])",
                                             }
                                         }
@@ -143,6 +144,7 @@ export default {
                                             widget: 'CusSuggest',
                                             widgetConfig: {
                                                 useLabelTip: 'labelTip',
+                                                mode: 'select',
                                                 enums: "ROOT_STATE('tools.slotTypes', [])",
                                                 listStyle: 'height: 300px; overflow: auto;'
                                             }
@@ -235,6 +237,7 @@ export default {
                                             label: '事件名',
                                             widget: 'CusSuggest',
                                             widgetConfig: {
+                                                mode: 'select',
                                                 enums: "ROOT_STATE('tools.constVars_eventSuggests', [])",
                                             }
                                         }

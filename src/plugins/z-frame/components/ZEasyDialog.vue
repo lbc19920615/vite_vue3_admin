@@ -18,7 +18,9 @@
                 placement="top"
                 popper-class="z-easy-dialog__popover"
     >
-      <template #reference> <el-button @click="openModal">{{title}}</el-button></template>
+      <template #reference> <el-button
+          v-bind="buttonAttr"
+          @click="openModal">{{title}}</el-button></template>
       <div class="z-easy-dialog__content">
         <slot></slot>
       </div>
@@ -35,6 +37,12 @@ export default {
       default: '打开'
     },
     modelAttr: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    buttonAttr: {
       type: Object,
       default() {
         return {}

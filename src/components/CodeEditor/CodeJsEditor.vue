@@ -9,7 +9,7 @@
  <div class="code-js-editor">
 <!--   {{state}}-->
    <el-space class="a-space-mb-10"  align="middle">
-     <z-easy-dialog title="快捷指令" :model-attr="modelAttr">
+     <z-easy-dialog title="快捷指令" :button-attr="{size: 'small'}" :model-attr="modelAttr">
        <el-row style="height: 350px">
          <el-col :span="24">
            <el-row>
