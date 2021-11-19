@@ -8,9 +8,9 @@ export default {
             //     ]
             // },
             // slots: 'sdsds',
-            events: [
-                // {}
-            ]
+            // events: [
+            //     // {}
+            // ]
         }
     },
     init: {

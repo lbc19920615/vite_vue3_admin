@@ -7,6 +7,9 @@
 .page-search {
   //--z-emoji-zoom: 0.9;
 }
+.em-props-item--active {
+  width: 30vw;
+}
 </style>
 
 <template>

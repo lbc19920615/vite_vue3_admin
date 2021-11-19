@@ -118,6 +118,7 @@ export default {
                             tag: 'z-filter-list',
                             // con_tag: 'my-vue-tab-pane',
                             wrap: 'em-props-item',
+                            EmHidden: true,
                             ui: {
                                 label: '片段',
                                 attrs: [
@@ -207,6 +208,7 @@ export default {
                             type: 'array',
                             tag: 'z-filter-list',
                             wrap: 'em-props-item',
+                            EmHidden: true,
                             ui: {
                               label: '事件',
                               attrs:
@@ -285,9 +287,16 @@ export default {
                             type: 'string',
                             wrap: 'em-props-item',
                             ui: {
-                                label: '&nbsp;',
+                                label: '',
+                                form_item: {
+                                    labelWidth: '0px',
+                                },
+                                form_item_label: {
+                                    style: 'opacity: 0;'
+                                },
                                 attrs: [
                                     ['scroll-control', 'page_props'],
+
                                 ],
                                 widget: 'CusProps',
                                 widgetConfig: {
@@ -319,8 +328,15 @@ export default {
                         onInited: {
                             type: 'string',
                             wrap: 'em-props-item',
+                            EmHidden: true,
                             ui: {
-                                label: '&nbsp;',
+                                form_item: {
+                                    labelWidth: '0px',
+                                },
+                                form_item_label: {
+                                    style: 'opacity: 0;'
+                                },
+                                label: '当初始化',
                                 attrs: [
                                     ['scroll-control', 'page_onInited'],
                                 ],

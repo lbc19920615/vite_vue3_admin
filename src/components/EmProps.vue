@@ -1,11 +1,15 @@
 <template>
   <div class="em-props">
-    <div v-for="([key, value]) in state.map">
-<!--      {{value}}-->
-      <template v-if="value.binds && value.binds.label">
-        {{value.binds.label}}
-      </template>
-    </div>
+    <el-space style="align-items: center">
+      <div v-for="([key, value]) in state.map"
+           >
+        <!--      {{value}}-->
+        <template v-if="value.binds && value.binds.label">
+          <el-button size="small"
+                     @click="toggleShow(value, key)">{{value.binds.label}}</el-button>
+        </template>
+      </div>
+    </el-space>
     <div>
       <slot></slot>
     </div>
@@ -19,15 +23,24 @@ export default {
   name: 'EmProps',
   setup() {
     let state = reactive({
-      map: new Map()
+      map: new Map(),
+      current: null
     })
     provide('EmProps', {
       register(key, value) {
         state.map.set(key, value)
       }
     })
+    function toggleShow(value, key) {
+      if (state.current) {
+        state.current.active = false
+      }
+      state.current = value
+      value.active = true
+    }
     return {
-      state
+      state,
+      toggleShow
     }
   }
 }

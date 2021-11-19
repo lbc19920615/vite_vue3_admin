@@ -1,8 +1,10 @@
 <template>
   <div class="page-home" v-if="page.inited">
     <el-row class="a-space-mb-20">
-      <el-button type="primary" @click="page.callEvent('call:save:file')">保存文件</el-button>
+      <el-button type="primary"
+                 @click="page.callEvent('call:save:file')">保存文件</el-button>
       <el-button type="primary" @click="save">保存</el-button>
+      <el-button type="primary" @click="importFile">导入</el-button>
 <!--      <el-button><el-link type="primary" target="_blank"-->
 <!--                          href="/about?page=show&storeName=111">测试</el-link></el-button>-->
     </el-row>
@@ -38,6 +40,7 @@ export default defineComponent({
   },
   setup() {
     const pageStoreName = APP_STORE_NAME
+    let setAppModel = null
     function onInited({storeControl}) {
       page.commonLoadStep(
           import('./EventEditorConfig.js'),
@@ -49,6 +52,10 @@ export default defineComponent({
                 storeName: pageStoreName
               })
               page.setPartModel(config.name, 'form2', eventModel ?? {})
+
+              setAppModel = function (v) {
+                page.setPartModel(config.name, 'form2', v ?? {})
+              }
               // console.log('eventModel', config, eventModel)
             }
           }
@@ -94,6 +101,20 @@ export default defineComponent({
       })
     }
 
+    async function importFile() {
+      let obj = await ZY_EXT.fileOpenJSON5()
+      if (obj.data) {
+        let obj_data = obj.data
+        console.log(obj_data)
+        console.log(setAppModel)
+        await page.dispatchRoot('SetStoreLocal', {
+          storeName: pageStoreName,
+          data: obj_data
+        })
+        location.reload()
+      }
+    }
+
     function getHref(scope) {
       let depData = scope.dep?.data ?? {}
       // console.log(depData)
@@ -108,6 +129,7 @@ export default defineComponent({
       store: page.store,
       getHref,
       page,
+      importFile,
       allDef: page.defMap,
       save,
     }
