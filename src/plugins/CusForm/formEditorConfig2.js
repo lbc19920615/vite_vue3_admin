@@ -93,7 +93,11 @@ let formDef = {
             ui: {
               label: '默认值',
               // widget: 'JsonCodeEditor',
-              widget: 'CodeJsEditor',
+              styles: [
+                ['height', 0],
+                ['overflow', 'hidden'],
+              ],
+              // widget: 'CodeJsEditor',
               widgetConfig: {
                 style: {
                   height: "200px",
@@ -105,6 +109,10 @@ let formDef = {
             type: 'string',
             ui: {
               label: '名称',
+              styles: [
+                ['height', 0],
+                ['overflow', 'hidden'],
+              ],
               widgetConfig: {
                 readonly: true
               }
