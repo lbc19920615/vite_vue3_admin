@@ -3,6 +3,10 @@
   .el-drawer__body {
     overflow: auto;
   }
+  .content-item {
+    display: flex;
+    align-items: center;
+  }
 }
 </style>
 <template>
