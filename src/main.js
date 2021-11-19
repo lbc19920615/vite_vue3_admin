@@ -142,10 +142,23 @@ import CustomFormRenderPlugin from "@/plugins/form-render";
 import {initStoreApp} from "@/storeApp";
 
 
-import {initMathJax} from "@/components/Ew/EwMathJax/utils";
+
+// import {initMathJax} from "@/components/Ew/EwMathJax/utils";
+// initMathJax()
+
 import {initChinaAreaManangerFromUrl} from "@/plugins/chinaArea";
 
-initMathJax()
+import EmProps from "@/components/EmProps.vue";
+import EmPropsItem from "@/components/EmPropsItem.vue";
+function comPlugin() {
+}
+comPlugin.install = function (app) {
+  CustomVueComponent.app = app
+  CustomVueComponent.register(EmProps)
+  CustomVueComponent.register(EmPropsItem)
+}
+
+
 
 globalThis.chinaAreaManager = await initChinaAreaManangerFromUrl(
     ZY.REMOTE_ORIGIN + '/public/area.json'
@@ -179,6 +192,7 @@ window.startApp = function () {
     size: 'medium',
     locale
   })
+  app.use(comPlugin)
   app.use(ZformMana)
   app.use(CustomFormRenderPlugin)
   app.use(CodeMirrorPlugin)
@@ -191,7 +205,7 @@ window.startApp = function () {
   // import JsonViewer from "vue3-json-viewer";
   import("vue3-json-viewer").then(res => {
     // app.use(res.default)
-    console.log(res)
+    // console.log(res)
     let JsonViewer = res.JsonViewer
     app.component('v-json-viewer',JsonViewer )
   })
