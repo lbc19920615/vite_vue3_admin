@@ -8,7 +8,8 @@
   //--z-emoji-zoom: 0.9;
 }
 .em-props-item--active {
-  width: 30vw;
+  width: 700px;
+  height: 75vh;
 }
 </style>
 

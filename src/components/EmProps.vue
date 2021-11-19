@@ -1,23 +1,23 @@
 <template>
   <div class="em-props">
-    <el-space style="align-items: center">
+    <el-row style="align-items: center">
       <div v-for="([key, value]) in state.map"
            >
         <!--      {{value}}-->
         <template v-if="value.binds && value.binds.label">
-          <el-button size="small"
+          <el-button size="small" class="a-space-mr-10"
                      @click="toggleShow(value, key)">{{value.binds.label}}</el-button>
         </template>
       </div>
-    </el-space>
+    </el-row>
     <div>
-      <slot></slot>
+      <slot ></slot>
     </div>
   </div>
 </template>
 
 <script>
-import {reactive, provide} from "vue";
+import {reactive, provide, h} from "vue";
 
 export default {
   name: 'EmProps',
@@ -29,9 +29,15 @@ export default {
     provide('EmProps', {
       register(key, value) {
         state.map.set(key, value)
+      },
+      notityClose(key) {
+        state.current.active = false
       }
     })
     function toggleShow(value, key) {
+      value.render = function () {
+        return h('div', {}, 'sdsdsd')
+      }
       if (state.current) {
         state.current.active = false
       }
