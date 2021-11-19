@@ -119,7 +119,7 @@ export default {
                             // con_tag: 'my-vue-tab-pane',
                             wrap: 'em-props-item',
                             ui: {
-                                label: 'Slot',
+                                label: '片段',
                                 attrs: [
                                     ['scroll-control', 'page_slotArr'],
                                 ],

@@ -15,8 +15,16 @@ export default {
       }
     }
   },
+  inject: ['EmProps'],
+  data() {
+    return {
+      uuid: 'em-props-item__' + ZY.rid(10)
+    }
+  },
   mounted() {
-    // console.log(this)
+
+    console.log(this.binds)
+    this.EmProps.register(this.uuid, this)
   }
 }
 </script>
