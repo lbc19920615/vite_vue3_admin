@@ -8,7 +8,8 @@
 
 <script>
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
-import {createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
+import {createAbleProp, createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
+import {QuickNumber} from "@/hooks/props";
 
 export default {
   name: 'CusUploader',
@@ -21,6 +22,27 @@ export default {
     return {
       props: {
         ...createBaseCusCONFIG(),
+        accept: {
+          type: 'string',
+          ui: {
+            label: '接受上传的文件类型'
+          }
+        },
+        multiple: createAbleProp({
+          label: '多选'
+        }),
+        ['showFileList']: createAbleProp({
+          label: '文件列表'
+        }),
+        ['autoUpload']: createAbleProp({
+          label: '自动上传'
+        }),
+        ['limit']: {
+          ...QuickNumber(),
+          ui: {
+            label: '限制'
+          }
+        }
       }
     }
   },

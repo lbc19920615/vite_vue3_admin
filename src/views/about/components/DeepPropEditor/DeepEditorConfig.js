@@ -1,4 +1,4 @@
-import {createbooleanWithClearableProp} from "@/hooks/formConfig";
+import {createAbleProp} from "@/plugins/z-frame/CusBaseEditor";
 
 export default {
     name: 'process-step1',
@@ -221,7 +221,7 @@ export default {
                                                 label: '标题'
                                             }
                                         },
-                                        required: createbooleanWithClearableProp({
+                                        required: createAbleProp({
                                             label: '必要'
                                         })
                                     }

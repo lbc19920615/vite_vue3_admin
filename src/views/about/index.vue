@@ -240,7 +240,11 @@ import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
 import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
 import ZEchartsEasy from "@/plugins/z-frame/components/ZEchartsEasy.vue";
 import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
-import {createFormModel} from "@/hooks/form";
+
+
+import { request, context } from '@/plugins/z-request/index.js'
+console.log(import.meta.env)
+
 // globalThis.CnChar = CnChar
 //
 // globalThis.sortCnCharStroke = function (chars = []) {
