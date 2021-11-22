@@ -652,6 +652,14 @@ export default {
         wrap_config.ins.rules = JSON5.parse( wrap_config.ins.rules)
         Reflect.deleteProperty(wrap_config.ins, 'rulesArr')
       }
+      if (wrap_config.ins) {
+        if (wrap_config.ins.computedFunIns) {
+          Reflect.deleteProperty(wrap_config.ins, 'computedFunIns')
+        }
+        if (wrap_config.ins.computedFun) {
+          Reflect.deleteProperty(wrap_config.ins, 'computedFun')
+        }
+      }
       // console.log(wrap_config, item)
       let instanse = DRAG_INSTANSE.get(item.itemUUID)
       if (instanse) {
@@ -744,6 +752,8 @@ export default {
                 type: 'string',
                 ...config.ins
               }
+
+
 
               // if (!target[propKey].server) {
               //   target[propKey].server = {}
