@@ -45,7 +45,13 @@ export default {
     onSuccess: Function,
     onProgress: Function,
     beforeUpload: Function,
-    fileType: null // 文件类型限制用|分隔 如png|jpg|jpeg|gif
+    fileType: null, // 文件类型限制用|分隔 如png|jpg|jpeg|gif
+    binds: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
   },
   data() {
     return {

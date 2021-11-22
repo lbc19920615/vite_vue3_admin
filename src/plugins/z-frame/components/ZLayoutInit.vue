@@ -301,7 +301,16 @@ export default {
       return function append(com, trueDom) {
         let child = state.doms[columnIndex]
         let def = state.defs[columnIndex]
-        let config =  com?.DRAG_CONFIG()?? {}
+        let config = {}
+        let DRAG_CONFIG = null
+        if (com.methods && com.methods.DRAG_CONFIG) {
+          DRAG_CONFIG = com.methods.DRAG_CONFIG
+        }
+        if (com.DRAG_CONFIG) {
+          DRAG_CONFIG = com.DRAG_CONFIG
+        }
+        console.log('buildAppend', com, DRAG_CONFIG)
+        config =  DRAG_CONFIG()?? {}
         if (def.length < props.columnMax) {
           let itemUUID =  'z_layout_item__' + ZY.rid(10)
           let instanse = buildInstanse(com, itemUUID, columnIndex)

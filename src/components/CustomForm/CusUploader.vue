@@ -1,7 +1,7 @@
 <template>
   <template v-if="inited">
 <!--    {{widgetConfig.enums}}-->
-    <z-upload></z-upload>
+    <z-upload  :binds="state.OPT.widgetConfig"></z-upload>
   </template>
 
 </template>
@@ -10,10 +10,11 @@
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import {createAbleProp, createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
 import {QuickNumber} from "@/hooks/props";
+import ZUpload from "@/plugins/z-frame/components/ZUpload.vue";
 
 export default {
   name: 'CusUploader',
-  components: {},
+  components: {ZUpload},
   mixins: [
       CustomRenderControlMixin
   ],
@@ -22,6 +23,12 @@ export default {
     return {
       props: {
         ...createBaseCusCONFIG(),
+        action: {
+          type: 'string',
+          ui: {
+            label: '必选参数，上传的地址'
+          }
+        },
         accept: {
           type: 'string',
           ui: {
