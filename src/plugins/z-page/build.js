@@ -14,6 +14,13 @@ export let buildFormDep = function (model = {parts: []}, name = model.name, args
   parts.forEach(part => {
     if (part.name && part.type) {
       try {
+
+        let metas = {}
+        try {
+          metas = JSON5.parse(part.metas)
+        } catch (e) {
+        //
+        }
         let ui = JSON5.parse(part.ui)
         let partProps = JSON5.parse(part.properties)
         // let computed = JSON5.parse(part.computed)
@@ -45,6 +52,7 @@ export let buildFormDep = function (model = {parts: []}, name = model.name, args
         }
         // console.log('computed', computed)
         let properties = partProps.properties
+        // console.log(partProps)
 
         let obj = {
           type: part.type,
@@ -59,6 +67,7 @@ export let buildFormDep = function (model = {parts: []}, name = model.name, args
             type: 'object',
             ui,
             properties,
+            metas,
           },
           computed: computed,
         }

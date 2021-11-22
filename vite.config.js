@@ -39,5 +39,17 @@ export default (({mode}) => {
       rawTransform([/\.bpmn$/]),
       vueJsx(),
     ],
+    server: {
+      proxy: {
+        // 字符串简写写法
+        // '/api': 'http://192.168.1.51:10010',
+        '/api': {
+          target: 'http://192.168.1.51:10010',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, '')
+        },
+      },
+      cors: true,
+    },
   })
 })

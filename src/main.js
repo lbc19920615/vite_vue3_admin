@@ -80,6 +80,9 @@ import '@alenaksu/json-viewer';
 
 import '@/components/WebElements/index'
 
+import {ElMessage} from "element-plus";
+globalThis.ElMessage = ElMessage
+
 // vant
 
 import UrlPattern from 'url-pattern';

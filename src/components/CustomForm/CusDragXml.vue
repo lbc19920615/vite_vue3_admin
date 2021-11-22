@@ -15,7 +15,8 @@
       <template #default>
 <!--        {{state.insVars}}-->
         <el-row>
-          <el-button type="primary" size="small" @click="saveData">保存</el-button>
+          <el-button type="primary" size="small"
+                     @click="saveData">保存</el-button>
         </el-row>
         <z-drag-xml :ins-vars="state.insVars" :ref="mainRef"></z-drag-xml>
       </template>
@@ -30,6 +31,8 @@ import {inject, provide, toRaw} from 'vue'
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
 import ZEasyModal from "@/plugins/z-frame/components/ZEasyModal.vue";
+
+import { request, context } from '@/plugins/z-request/index.js'
 
 export default {
   name: 'CusDragXml',
@@ -79,12 +82,21 @@ export default {
       methods.on_change(value)
     }
 
-    function saveData() {
+    async function saveData() {
       let ctx = getRef('main')
       obj.props = ctx.getZprops()
       obj.memos = ctx.getMemo()
-      // console.log(obj)
-      onChange()
+      try {
+        let res = await request.post('/api-assess/assess_json/json', JSON.stringify(obj.props))
+        obj.metas = {
+          form_data: res.data
+        }
+        onChange()
+      } catch (e) {
+        console.log(e)
+      }
+
+
     }
 
     function onClosed() {

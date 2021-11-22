@@ -23,6 +23,9 @@ export function useGlobalEasy(page) {
             let {parts, partName, fromPath, indexKey} = e;
             parts[partName].arrSplice(fromPath, indexKey);
         }
+        static 成功消息(v = '') {
+            return ElMessage.success(v)
+        }
     }
     globalThis.G = G
 }
