@@ -16,7 +16,7 @@
 </style>
 
 <template>
- <z-easy-modal title="枚举值管理" @opened="onOpened">
+ <z-easy-modal title="枚举值管理" @opened="onOpened" :model-attr="{appendToBody: true}">
    <template #button-content>枚举值管理</template>
    <div class="z-opt-man-group">
 <!--         {{state}}-->

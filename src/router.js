@@ -65,24 +65,34 @@ export const constantRouterMap = [
         },
         component: () => import('@/views/about/index.vue'),
       },
+      // {
+      //   path: "form",
+      //   name: "Form",
+      //   meta: {
+      //     title: '接口获取',
+      //     // icon: 'shangdian'
+      //   },
+      //   component: () => import('@/views/home/search.vue'),
+      // },
       {
-        path: "form",
-        name: "Form",
+        path: "form2",
+        name: "Form2",
+        hidden: true,
         meta: {
-          title: '接口获取',
+          title: '表单设计',
           // icon: 'shangdian'
         },
-        component: () => import('@/views/home/search.vue'),
+        component: () => import('@/views/about/form2.vue'),
       },
-      {
-        path: "demo",
-        name: "Demo",
-        meta: {
-          title: '流程设计',
-          // icon: 'shangdian'
-        },
-        component: () => import('@/views/home/demo.vue'),
-      },
+      // {
+      //   path: "demo",
+      //   name: "Demo",
+      //   meta: {
+      //     title: '流程设计',
+      //     // icon: 'shangdian'
+      //   },
+      //   component: () => import('@/views/home/demo.vue'),
+      // },
       {
         z_parent: 'main',
         path: "show/:name",

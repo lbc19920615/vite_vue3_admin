@@ -9,9 +9,13 @@
                      top: '10vh',
                      modalClass: 'el-dialog--no-modal'
                   }"
+                  :button-attr="{
+
+                    size: 'small'
+                  }"
 
     >
-      <template #button-content>打开数据展示</template>
+      <template #button-content>编辑</template>
       <template #default>
 <!--        {{state.insVars}}-->
         <el-row>

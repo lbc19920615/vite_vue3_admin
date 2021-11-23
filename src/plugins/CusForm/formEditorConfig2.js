@@ -31,6 +31,10 @@ let formDef = {
             ui: {
               label: '类型',
               widget: 'CusSelect',
+              styles: [
+                ['height', 0],
+                ['overflow', 'hidden'],
+              ],
               widgetConfig: {
                 enums: "ROOT_STATE('tools.partOptions', [])",
               },
