@@ -30,7 +30,8 @@
        </el-space>
      </el-row>
      <el-scrollbar height="50vh" class="a-space-mb-10">
-       <div class="z-opt-man-item a-space-mb-10" v-for="option in filterOptions(state.options)">
+       <div class="z-opt-man-item a-space-mb-10"
+            v-for="option in filterOptions(state.options)">
          <!--      {{option}}-->
          <el-row class="z-opt-man-item__label a-space-mb-10">
            <z-cell-item label="name">
@@ -76,7 +77,9 @@
            <el-button size="small" @click="selectOption(option)">
              选择
            </el-button>
-           <el-popconfirm title="确定删除吗？" @confirm="deleteItem(state.options, option.id)">
+<!--           {{option.id}}-->
+           <el-popconfirm title="确定删除吗？"
+                          @confirm="deleteGroup(state.options, option.id)">
              <template #reference>
                <el-button type="danger" size="small"><el-icon><Remove></Remove></el-icon></el-button>
              </template>
@@ -97,7 +100,7 @@
 import ZEasyModal from "@/plugins/z-frame/components/ZEasyModal.vue";
 import {createStaticFormCls} from "@/plugins/z-frame/BaseForm";
 import draggable from 'vuedraggable'
-import {onMounted, reactive, toRaw} from "vue";
+import {nextTick, onMounted, reactive, toRaw} from "vue";
 import {Plus, Rank, Remove} from "@element-plus/icons";
 import ZCellItem from "@/plugins/z-frame/components/ZCellItem.vue";
 
@@ -121,6 +124,8 @@ export default {
       await FormsOptions.init();
       await ZY.sleep(30)
       let options = FormsOptions.getOptions().map(v => {
+        // console.log('sdsdsds', v)
+        v.id = ZY.rid()
         try {
           v.arr = ZY.JSON5.parse(v.value)
         } catch (e) {
@@ -128,7 +133,7 @@ export default {
         }
         return v
       })
-      console.log(options)
+      // console.log(options)
       state.options = options
     }
 
@@ -165,11 +170,24 @@ export default {
       hide()
     }
 
+    async function save() {
+      FormsOptions.clear()
+      await FormsOptions.setStorage(
+          getSavedOptions()
+      )
+    }
+
+
     function appendGroup() {
       state.options.push({
         id: ZY.rid(),
         name: "",
         arr: []
+      })
+      nextTick(() => {
+        setTimeout(() => {
+          save()
+        }, 30)
       })
     }
 
@@ -182,6 +200,15 @@ export default {
       }
     }
 
+    function deleteGroup(options, id) {
+      deleteItem(options, id)
+      nextTick(() => {
+        setTimeout(() => {
+          save()
+        }, 30)
+      })
+    }
+
     function getSavedOptions() {
       return toRaw(
           state.options.map(v => {
@@ -191,12 +218,6 @@ export default {
       )
     }
 
-    async function save() {
-      FormsOptions.clear()
-      await FormsOptions.setStorage(
-          getSavedOptions()
-      )
-    }
 
     async function exportFile() {
       await FormsOptions.saveCache2File(
@@ -227,6 +248,7 @@ export default {
       selectOption,
       save,
       appendGroup,
+      deleteGroup,
       loadFile,
       deleteItem,
       exportFile,

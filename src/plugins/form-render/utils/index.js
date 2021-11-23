@@ -27,6 +27,12 @@ export let PROPS_DEF =function () {
                 return {}
             }
         },
+        prop_config: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
         rules: null,
         // context 是一个com
         context: null,
@@ -108,11 +114,13 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
     let instanse = getCurrentInstance()
     let curFormCon = inject('curFormCon')
     let lock = new ZY.Lock(/* optional lock name, should be unique */)
+    // console.log(props)
     let model = null;
     let data = function (opt) {
         model = reactive({
             value: '',
             OPT: {
+                propConfig: props?.prop_config ?? {},
                 ui:   props?.ui ?? {},
                 widgetConfig: props?.ui?.widgetConfig ?? {}
             },

@@ -1,7 +1,7 @@
 <template>
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
-<!--    {{state.OPT.widgetConfig}}-->
+<!--    {{state.OPT.propConfig}}-->
 <!--    {{typeof state.value}}-->
     <template v-if="state.OPT.widgetConfig">
       <template v-if="state.OPT.widgetConfig.type === 'number' ">
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
+import {CUSOM_RENDER_FROM_TYPES, CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import {createAbleProp, createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
 import {QuickNumber, setPROPS} from "@/hooks/props";
 
@@ -88,16 +88,24 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
-      handleValueInit(v) {
+    let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx, {
+      handleValueInit(v, from) {
+        // console.log('widgetConfig2?.defaultVal', v)
+        if (from === CUSOM_RENDER_FROM_TYPES.init) {
+          if (typeof v === 'undefined') {
+            return state.OPT.propConfig.defaultVal
+          }
+        }
         return v
       }
     })
+    // console.log(widgetConfig2)
     let state = data({
+
     })
     init(props)
 
-    let widgetConfig = props?.ui?.widgetConfig ?? {}
+    // let widgetConfig = props?.ui?.widgetConfig ?? {}
 
     function onNumberChange(v) {
       // console.log(v)
@@ -108,7 +116,7 @@ export default {
     return {
       state,
       onNumberChange,
-      widgetConfig,
+      widgetConfig: widgetConfig2,
       methods,
       listeners,
     }

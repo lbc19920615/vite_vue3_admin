@@ -1605,7 +1605,7 @@ export default {
       }
       let widgetConfigProps = {
         disabled: QuickBooleanWithNull('禁用'),
-        readonly: QuickBooleanWithNull('只读')
+        readonly: QuickBooleanWithNull('只读'),
       }
       if (com.DRAG_CONFIG) {
         let _config  = com.DRAG_CONFIG() ?? {}
@@ -1652,6 +1652,9 @@ export default {
           type: 'string',
           computedProp: 'get_computedFunIns',
           ui: {
+            attrs: [
+              ['style', 'height: 0; overflow: hidden']
+            ],
             widgetConfig: {
               type: 'textarea',
               readonly: true,
@@ -1661,7 +1664,7 @@ export default {
         computedFunIns: {
           type: 'string',
           ui: {
-            label: '表达式',
+            label: '计算属性',
             widget: 'CusInsert',
             widgetConfig: {
               insText: [
@@ -1673,6 +1676,12 @@ export default {
               insVars: getInsVars()
             }
           }
+        },
+        defaultVal: {
+          type: 'string',
+          ui: {
+            label: '默认值',
+          }
         }
       }
       let base_ui_props =  {
@@ -1682,7 +1691,10 @@ export default {
         },
         properties: {
           label: {
-            type: 'string'
+            type: 'string',
+            ui: {
+              label: '标题'
+            }
           },
           desc: {
             type: 'string',
