@@ -39,7 +39,8 @@ export default {
     return {
       id: ZY.rid(6),
       ui: {
-        label: '图文展示',
+        label: '',
+        hiddenLabel: true,
       }
     }
   },
