@@ -230,6 +230,18 @@ const store = {
               label: '日期(datetime)',
               value: 'datetime',
             },
+            {
+              label: '时间(time)',
+              value: 'time',
+            },
+            {
+              label: '日期(date)',
+              value: 'date',
+            },
+            {
+              label: '年(year)',
+              value: 'year',
+            },
           ]
         }
         else {
