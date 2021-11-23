@@ -52,6 +52,13 @@
     font-size: 12px;
     z-index: 1111111;
   }
+  .inspect-label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translateY(-120%);
+    //color: #4099f8;
+  }
 }
 [current-to-move=rect] {
   border-color:  #4099f8;
@@ -1186,6 +1193,47 @@ export default {
 
     let currentInspectContext = null
 
+    function getDomContext(trueDom) {
+      if (trueDom.hasAttribute('z-uuid')) {
+        let con_uuid = trueDom.getAttribute('z-uuid')
+        let context = state.layoutsMap[con_uuid]
+        // removeLayout(con_uuid)
+        // console.log(state.layoutsMap, context)
+        if (context && context.el) {
+          let children = context.el.getChildren()
+          if (children[0] && children[0].children[0]) {
+            let currentInspectContext = children[0].children[0]
+            return currentInspectContext
+            // console.log(context, currentInspectContext)
+          }
+        }
+      }
+      else if (trueDom.hasAttribute('z-drag-grid-item')) {
+        let dataset = trueDom.dataset
+        let gridUUId = dataset.gridId
+        let gridIns = DRAG_INSTANSE.get(gridUUId)
+        if (gridIns) {
+          let dom = gridIns.getDom(dataset.key)
+          if (dom) {
+            return dom.def
+          }
+        }
+      }
+      else {
+        let trueDom_uuid = app.findUUIDfromClassList(trueDom)
+        let layout_uuid = app.findUUIDfromClassList(trueDom, DATA_LAYOUT_UUID_KEY)
+        let layout_item_uuid = app.findUUIDfromClassList(trueDom, DATA_LAYOUT_ITEM_UUID_KEY)
+        // console.log(layout_uuid, trueDom_uuid)
+        let context = state.layoutRefs[layout_uuid]
+        if (context) {
+          currentInspectContext = context.findCom(trueDom_uuid, layout_item_uuid)
+          if (currentInspectContext.con_uuid) {
+            return currentInspectContext
+          }
+        }
+      }
+    }
+
     /**
      * 创建观察
      * @param trueDom
@@ -1312,7 +1360,13 @@ export default {
         button2.addEventListener('click', handleDelClick)
         // clone.appendChild(button2)
 
-        clone.append(button1, button2)
+        let context = getDomContext(trueDom)
+        let label1 = document.createElement('div')
+        label1.className = 'inspect-label'
+        label1.innerHTML =context.label_xml ?? context.label
+        // console.log(context)
+
+        clone.append(button1, button2, label1)
       }
       clone.setAttribute('current-to-move', type)
       return clone
@@ -1656,7 +1710,7 @@ export default {
           ui: {
             label: '默认值',
           }
-        }
+        },
       }
       let base_ui_props =  {
         type: 'object',
@@ -1679,6 +1733,7 @@ export default {
               }
             }
           },
+          hiddenLabel: QuickBooleanWithNull('隐藏标题'),
           widgetConfig: {
             type: 'object',
             ui: {
