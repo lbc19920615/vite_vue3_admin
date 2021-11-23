@@ -433,7 +433,7 @@ export default defineComponent({
         })
 
         // try {
-        //   let res = await request.post('/api-assess/assess_json/json', JSON.stringify(obj.props))
+        //   let res = await Req.post('/api-assess/assess_json/json', JSON.stringify(obj.props))
         //   obj.metas = {
         //     form_data: res.data
         //   }
