@@ -5,6 +5,8 @@ import CusTimePicker from "@/components/CustomForm/CusTimePicker.vue";
 import CusSelect from "@/components/CustomForm/CusSelect.vue";
 import CusRadio from "@/components/CustomForm/CusRadio.vue";
 import CusCheckbox from "@/components/CustomForm/CusCheckbox.vue"
+import CusRichText from "@/components/CustomForm/CusRichText.vue"
+import CusRichEditor from "@/components/CustomForm/CusRichEditor.vue"
 import CusCascader from "@/components/CustomForm/CusCascader.vue"
 import CusRate from "@/components/CustomForm/CusRate.vue";
 import CusSlider from "@/components/CustomForm/CusSlider.vue";
@@ -54,9 +56,11 @@ const plugin = {
         CustomVueComponent.register(CusColorPicker)
         CustomVueComponent.register(CusRate)
         CustomVueComponent.register(CusSlider)
+        CustomVueComponent.register(CusRichText)
         CustomVueComponent.register(CusSwitch)
         CustomVueComponent.register(CusCascader)
         CustomVueComponent.register(CusInputNumber)
+        CustomVueComponent.register(CusRichEditor)
         CustomVueComponent.register(CusInput)
         CustomVueComponent.register(CusDragXml)
         CustomVueComponent.register(CusOneOrMany)

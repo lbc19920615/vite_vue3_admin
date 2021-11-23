@@ -87,7 +87,7 @@ export default defineComponent({
       emit('change', e)
     }
 
-    console.log('props', props)
+    // console.log('props', props)
 
     return () => (<widgetDef ui={props.ui} prop_config={props.prop_config} form_slot_content={props.slotContent} path_arr={props.pathArr} selfpath={props.selfpath} formpath={props.formpath} field_uuid={props.field_uuid} props={props} defs={props} part_key={props.part_key} context={props.context} rules={props.rules} ref={widgetInstance} onFchange={onFchange} onValuechange={onValueChange} onUpdate:modelValue={onUpdateModelValue}  modelValue={obj.value} config={widgetConfig}></widgetDef>)
   }

@@ -137,24 +137,6 @@ mobile: 375px,
               @select="handleMenuSelect"
 
           >
-<!--            <el-sub-menu index="1">-->
-<!--              <template #title>-->
-<!--                <el-icon><location /></el-icon>-->
-<!--                <span>Navigator One</span>-->
-<!--              </template>-->
-<!--              <el-menu-item-group>-->
-<!--                <template #title><span>Group One</span></template>-->
-<!--                <el-menu-item index="1-1">item one</el-menu-item>-->
-<!--                <el-menu-item index="1-2">item two</el-menu-item>-->
-<!--              </el-menu-item-group>-->
-<!--              <el-menu-item-group title="Group Two">-->
-<!--                <el-menu-item index="1-3">item three</el-menu-item>-->
-<!--              </el-menu-item-group>-->
-<!--              <el-sub-menu index="1-4">-->
-<!--                <template #title><span>item four</span></template>-->
-<!--                <el-menu-item index="1-4-1">item one</el-menu-item>-->
-<!--              </el-sub-menu>-->
-<!--            </el-sub-menu>-->
             <el-menu-item index="1">
               <el-icon><document /></el-icon>
               <template #title>大纲树</template>
@@ -163,14 +145,6 @@ mobile: 375px,
               <el-icon><icon-menu /></el-icon>
               <template #title>组件库</template>
             </el-menu-item>
-<!--            <el-menu-item index="3" disabled>-->
-<!--              <el-icon><document /></el-icon>-->
-<!--              <template #title>Navigator Three</template>-->
-<!--            </el-menu-item>-->
-<!--            <el-menu-item index="4">-->
-<!--              <el-icon><setting /></el-icon>-->
-<!--              <template #title>Navigator Four</template>-->
-<!--            </el-menu-item>-->
           </el-menu>
 
           <div style="flex: 1;">
@@ -1615,7 +1589,7 @@ export default {
       if (instanse && instanse.DRAG_CONFIG) {
         widgetConfigProps = Object.assign(widgetConfigProps, instanse.DRAG_CONFIG()?.props )
       }
-      console.log(com,widgetConfigProps)
+      // console.log(com,widgetConfigProps)
       let base_type_props = {
         type: {
           type: 'string',
