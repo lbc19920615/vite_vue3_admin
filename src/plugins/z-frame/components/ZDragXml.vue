@@ -81,6 +81,9 @@
     > button {
       display: none;
     }
+    .inspect-label {
+      display: none;
+    }
   }
 }
 
