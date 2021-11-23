@@ -239,6 +239,7 @@ import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
 import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
 import ZEchartsEasy from "@/plugins/z-frame/components/ZEchartsEasy.vue";
 import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
+import {request} from "@/plugins/z-request";
 // globalThis.CnChar = CnChar
 //
 // globalThis.sortCnCharStroke = function (chars = []) {
@@ -430,6 +431,16 @@ export default defineComponent({
           storeName: global_pageStoreName,
           data: cachedPageControlModel
         })
+
+        // try {
+        //   let res = await request.post('/api-assess/assess_json/json', JSON.stringify(obj.props))
+        //   obj.metas = {
+        //     form_data: res.data
+        //   }
+        //   onChange()
+        // } catch (e) {
+        //   console.log(e)
+        // }
       },
       ['call:save:file'](e) {
         // console.log(e)
