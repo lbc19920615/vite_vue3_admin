@@ -41,6 +41,9 @@ export default {
       ui: {
         label: '',
         hiddenLabel: true,
+        widgetConfig: {
+          html_content: `{content:[{type:'paragraph',children:[{text:'图文展示'}]}],html:'<div class="w-e-content-container">\\r\\n <p>图文展示</p>\\r\\n</div>'}`
+        }
       }
     }
   },
