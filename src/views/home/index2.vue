@@ -29,6 +29,8 @@ import HttpComponent from "@/components/HttpComponent.vue";
 import {defineComponent} from "vue";
 import {extendControl2Page, PageControlMixin, useAppPageControl, useControl} from "@/mixins/framework";
 import {APP_STORE_NAME} from "@/vars";
+
+
 export default defineComponent({
   components: {HttpComponent},
   mixins: [

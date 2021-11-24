@@ -10,6 +10,7 @@ import CusRichEditor from "@/components/CustomForm/CusRichEditor.vue"
 import CusCascader from "@/components/CustomForm/CusCascader.vue"
 import CusRate from "@/components/CustomForm/CusRate.vue";
 import CusSlider from "@/components/CustomForm/CusSlider.vue";
+import CusStyleEditor from "@/components/CustomForm/CusStyleEditor.vue";
 import CusColorPicker from "@/components/CustomForm/CusColorPicker.vue";
 import CusInputNumber from "@/components/CustomForm/CusInputNumber.vue";
 import CusInput from "@/components/CustomForm/CusInput.vue";
@@ -65,6 +66,7 @@ const plugin = {
         CustomVueComponent.register(CusDragXml)
         CustomVueComponent.register(CusOneOrMany)
         CustomVueComponent.register(CusUploader)
+        CustomVueComponent.register(CusStyleEditor)
 
         CustomVueComponent.register(MyVueTab)
         CustomVueComponent.register(MyVueTabPane)

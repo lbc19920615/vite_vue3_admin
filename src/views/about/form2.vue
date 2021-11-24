@@ -293,6 +293,10 @@ export default defineComponent({
   },
   setup(props, ctx) {
 
+    let Lib;
+    import('__remote/public/message.js').then(res => {
+      Lib = res
+    })
     // ZY.PinYin.initDict()
     let cachedPageControlModel = null
     let { currentRoute, router } = useRouter2()
@@ -431,7 +435,9 @@ export default defineComponent({
           storeName: global_pageStoreName,
           data: cachedPageControlModel
         })
+        // console.log(Lib)
 
+        window.parent.postMessage(new Lib.CommandMessage('form:submit', 1111), '*')
         // try {
         //   let res = await Req.post('/api-assess/assess_json/json', JSON.stringify(obj.props))
         //   obj.metas = {

@@ -91,6 +91,8 @@
 
 <!--    <z-wang-editor></z-wang-editor>-->
 
+<!--    <z-style-editor></z-style-editor>-->
+
     <template v-if="store.model.textarea_step">
       <!--      {{store.computedModel}}-->
       <HttpComponent
@@ -244,9 +246,10 @@ import ZEchartsEasy from "@/plugins/z-frame/components/ZEchartsEasy.vue";
 import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
 
 
-import { request, context } from '@/plugins/z-request/index.js'
+// import { request, context } from '@/plugins/z-request/index.js'
 import ZWangEditor from "@/plugins/z-frame/components/ZWangEditor.vue";
-console.log(import.meta.env)
+import ZStyleEditor from "@/plugins/z-frame/components/ZStyleEditor.vue";
+// console.log(import.meta.env)
 
 // globalThis.CnChar = CnChar
 //
@@ -286,6 +289,7 @@ export default defineComponent({
     }
   },
   components: {
+    ZStyleEditor,
     ZWangEditor,
     ZQuickDialog,
     ZEchartsEasy,

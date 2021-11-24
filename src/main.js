@@ -83,6 +83,19 @@ import '@/components/WebElements/index'
 import {ElMessage} from "element-plus";
 globalThis.ElMessage = ElMessage
 
+class ZShadow extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+  }
+  setContent(css, html) {
+    console.log(css, html)
+
+    this.shadowRoot.innerHTML = `<style>:host {display: block} ${css}</style>${html}`
+  }
+}
+window.customElements.define('z-shadow', ZShadow);
+
 // vant
 
 import UrlPattern from 'url-pattern';

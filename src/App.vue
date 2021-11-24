@@ -184,6 +184,17 @@ export default defineComponent({
       }
       return []
     },
+    getui_css(styles) {
+      // console.log(styles)
+      try {
+        let o = ZY.JSON5.parse(styles)
+        // console.log('styles', styles, o)
+        return o.css
+      } catch (e) {
+        //
+      }
+      return ''
+    },
     getCusJsxEditor(jsx) {
       try {
         // let o = ZY.JSON5.parse(jsx)

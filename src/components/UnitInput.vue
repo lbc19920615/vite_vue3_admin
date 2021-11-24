@@ -45,6 +45,9 @@ export default {
       default() {
         return {}
       }
+    },
+    defaultUnit: {
+      type: String
     }
   },
   data() {
@@ -67,6 +70,9 @@ export default {
   },
   mounted() {
     // this.resolveValue()
+    if (this.defaultUnit) {
+      this.unit = this.defaultUnit
+    }
   },
   watch: {
     modelValue: {
@@ -84,9 +90,10 @@ export default {
         this.num = v
       }
       // console.log(newVal, typeof newVal)
-      if (newVal === 'undefined') {
+      if (newVal === 'undefined' || typeof newVal === 'undefined') {
         this.unit = ''
-        return
+        this.num = 0
+        return;
       }
       if (newVal && newVal.replace) {
         this.unit = newVal.replace(this.num, '')
@@ -106,7 +113,7 @@ export default {
       this.unit = ''
       // this.$emit('update:modelValue', '')
       this.$emit('change', '')
-      this.$emit('fchange', v)
+      this.$emit('fchange', '')
     }
   }
 }

@@ -1637,6 +1637,15 @@ export default {
       let widgetConfigProps = {
         disabled: QuickBooleanWithNull('禁用'),
         readonly: QuickBooleanWithNull('只读'),
+        css_style: {
+          type: 'string',
+          computedProp: 'ui_css',
+          ui: {
+            widgetConfig: {
+              type: 'textarea'
+            }
+          }
+        }
       }
       if (com.DRAG_CONFIG) {
         let _config  = com.DRAG_CONFIG() ?? {}
@@ -1743,7 +1752,7 @@ export default {
               label: "UI 配置"
             },
             properties: widgetConfigProps
-          }
+          },
         }
       }
       let base_server_props = {
@@ -1761,7 +1770,7 @@ export default {
                 readonly: true
               }
             }
-          }
+          },
         }
       }
       let base_form_props = {
@@ -1825,13 +1834,30 @@ export default {
           ui: base_ui_props,
           ...base_form_props,
           server: base_server_props,
+          css: {
+            type: 'string',
+            wrap_start: '<xy-tab-content label="样式">',
+            wrap_end: '</xy-tab-content>',
+            ui: {
+              label: '',
+              widget: 'CusStyleEditor',
+              hiddenLabel: true,
+              form_item: {
+                labelWidth: '0px'
+              },
+              widgetConfig: {
+
+              }
+            }
+          }
         }
       }
 
       // console.log(widgetConfigProps)
       let computed = {
         srules: `A.getRulesFromRulesArr(MODEL('rulesArr'))`,
-        get_computedFunIns: `A.get_computedFunIns(MODEL('computedFunIns'))`
+        get_computedFunIns: `A.get_computedFunIns(MODEL('computedFunIns'))`,
+        ui_css: `A.getui_css(MODEL('css'))`,
       }
       let formDef = {
         type: 'object',

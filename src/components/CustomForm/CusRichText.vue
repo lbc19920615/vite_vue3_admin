@@ -2,8 +2,10 @@
   <template v-if="inited">
     <!--    {{widgetConfig.enums}}-->
 <!--    {{state.OPT.widgetConfig}}-->
+<!--    {{getCss()}}-->
 <!--    {{ state.value}}-->
-    <div v-html="getHtml()"></div>
+<!--    <div v-html="getHtml()"></div>-->
+    <z-shadow :ref="mainRef" :id="id"></z-shadow>
   </template>
 </template>
 
@@ -11,6 +13,7 @@
 import {CUSOM_RENDER_FROM_TYPES, CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import {createAbleProp, createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
 import {QuickNumber, setPROPS} from "@/hooks/props";
+import {onMounted, watch} from "vue";
 
 
 export default {
@@ -35,7 +38,7 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx, {
+    let { data, methods, listeners, init, widgetConfig2,buildGetRef, getRef } = defineCustomRender(props, ctx, {
       handleValueInit(v, from) {
         // console.log('widgetConfig2?.defaultVal', v)
         if (from === CUSOM_RENDER_FROM_TYPES.init) {
@@ -46,13 +49,20 @@ export default {
         return v
       }
     })
+    let mainRef = buildGetRef('main')
     // console.log(widgetConfig2)
     let state = data({
 
     })
     init(props)
+    let id = ZY.rid()
 
     // let widgetConfig = props?.ui?.widgetConfig ?? {}
+
+    let _getContext = null
+    function getContext(e) {
+      _getContext = e.detail[0]
+    }
 
     function getHtml() {
       let html = ''
@@ -68,10 +78,43 @@ export default {
       return html
     }
 
+    function getCss() {
+      let css = ''
+      if (state.OPT.widgetConfig.html_content) {
+        try {
+          css = state.OPT.widgetConfig.css_style
+        } catch (e) {
+          //
+        }
+      }
+      return css
+    }
+
+    function getShadow() {
+      return  document.getElementById(id)
+      // return _getContext
+    }
+
+    watch(state, (newVal) => {
+      // console.log('sdsdsds', document.getElementById(id))
+      getShadow().setContent(getCss(), getHtml())
+    })
+
+    onMounted(() => {
+      setTimeout(() => {
+        console.dir(getShadow())
+        getShadow().setContent(getCss(), getHtml())
+      }, 300)
+    })
+
     return {
       state,
       widgetConfig: widgetConfig2,
       getHtml,
+      mainRef,
+      getContext,
+      id,
+      getCss,
       methods,
       listeners,
     }
