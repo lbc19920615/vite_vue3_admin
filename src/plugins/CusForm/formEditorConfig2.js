@@ -148,8 +148,8 @@ let formDef = {
             reflectTpl: `A.getDragProps($VAL)`,
             ui: {
               styles: [
-                // ['height', 0],
-                // ['overflow', 'hidden'],
+                ['height', 0],
+                ['overflow', 'hidden'],
               ],
               widgetConfig: {
                 type: 'textarea',
@@ -163,8 +163,8 @@ let formDef = {
             reflectTpl: `A.getDragMetas($VAL)`,
             ui: {
               styles: [
-                // ['height', 0],
-                // ['overflow', 'hidden'],
+                ['height', 0],
+                ['overflow', 'hidden'],
               ],
               widgetConfig: {
                 type: 'textarea',

@@ -58,13 +58,13 @@ export default {
                             ui: {
                                 label: '表单名',
                                 form_item: {
-                                    labelWidth: '60px',
+                                    labelWidth: '80px',
                                 },
-                                widget: 'CusSuggest',
-                                widgetConfig: {
-                                    mode: 'select',
-                                    enums: "ROOT_STATE('tools.constVars_processSteps', [])",
-                                }
+                                // widget: 'CusSuggest',
+                                // widgetConfig: {
+                                //     mode: 'select',
+                                //     enums: "ROOT_STATE('tools.constVars_processSteps', [])",
+                                // }
                             }
                         },
                         value: {
@@ -72,8 +72,9 @@ export default {
                             tag: 'div',
                             ui: {
                                 label: '表单值',
+                                hiddenLabel: true,
                                 form_item: {
-                                    labelWidth: '60px',
+                                    labelWidth: '0px',
                                 },
                                 widget: 'CusForm',
                                 widgetConfig: {

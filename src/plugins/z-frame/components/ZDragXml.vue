@@ -1642,7 +1642,8 @@ export default {
           computedProp: 'ui_css',
           ui: {
             widgetConfig: {
-              type: 'textarea'
+              type: 'textarea',
+              readonly: true,
             }
           }
         }
