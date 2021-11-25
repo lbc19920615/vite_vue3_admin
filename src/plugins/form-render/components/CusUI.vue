@@ -57,20 +57,23 @@
 
         <template v-if="state.value.control.propsV2">
 <!--          sdsdsdsds 属性 {{state.value.control.propsV2}}-->
-          <z-cell-item label-width="max-content" label="标题位置(left, top)">
-<!--            <el-input v-model="state.value.control.propsV2['label-position']"-->
-<!--                      @change="setPropVal(state.value.control.propsV2, 'label-position', $event)"-->
-<!--                      @blur="onBlur"-->
-<!--            ></el-input>-->
+            <div>
+              <z-cell-item label-width="max-content" label="标题位置(left, top)">
+                <el-select  v-model="state.value.control.propsV2['label-position']"
+                            @change="setPropVal(state.value.control.propsV2, 'label-position', $event)"
 
-            <el-select  v-model="state.value.control.propsV2['label-position']"
-                        @change="setPropVal(state.value.control.propsV2, 'label-position', $event)"
-
-            >
-              <el-option label="left" value="left"></el-option>
-              <el-option label="top" value="top"></el-option>
-            </el-select>
-          </z-cell-item>
+                >
+                  <el-option label="left" value="left"></el-option>
+                  <el-option label="top" value="top"></el-option>
+                </el-select>
+              </z-cell-item>
+              <z-cell-item label-width="max-content" label="标题长度">
+                <unit-input v-model="state.value.control.propsV2['label-width']"
+                            default-unit="px"
+                            @change="setPropVal(state.value.control.propsV2, 'label-width', $event)"
+                ></unit-input>
+              </z-cell-item>
+            </div>
         </template>
 
       </el-row>
@@ -111,10 +114,11 @@ import ZProps from "@/plugins/z-frame/components/ZProps.vue";
 import ZStyles from "@/plugins/z-frame/components/ZStyles.vue";
 import ZCellItem from "@/plugins/z-frame/components/ZCellItem.vue";
 import {nextTick, reactive, toRaw} from "vue";
+import UnitInput from "@/components/UnitInput.vue";
 
 export default {
   name: 'CusUI',
-  components: {ZCellItem, ZStyles, ZProps, EwSuggest},
+  components: {UnitInput, ZCellItem, ZStyles, ZProps, EwSuggest},
   mixins: [
     CustomRenderControlMixin
   ],
