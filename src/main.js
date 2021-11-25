@@ -89,7 +89,7 @@ class ZShadow extends HTMLElement {
     this.attachShadow({mode: 'open'});
   }
   setContent(css, html) {
-    console.log(css, html)
+    // console.log(css, html)
 
     this.shadowRoot.innerHTML = `<style>:host {display: block} ${css}</style>${html}`
   }
