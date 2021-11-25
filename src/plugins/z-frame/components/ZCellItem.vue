@@ -60,7 +60,7 @@ export default {
       return null
     },
     labelStyle() {
-      console.log(this.labelWidth)
+      // console.log(this.labelWidth)
       let labelWidth = this.label ? this.labelWidth : ''
       return {
         width: labelWidth
