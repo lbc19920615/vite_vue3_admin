@@ -639,7 +639,7 @@ export default defineComponent({
       ['remove:events'](e) {
         // console.log('sdsdsdsdsdsds', e)
         let { parts, partName, fromPath, indexKey } = e
-        parts[partName].appSplice(fromPath, indexKey)
+        parts[partName].arrSplice(fromPath, indexKey)
       },
       ['submit:form'](e) {
         let { scope, parts } = e

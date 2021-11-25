@@ -436,7 +436,7 @@ export function extendCommonArrEventHandler(page) {
       } else {
       }
 
-      parts[partName].appSplice(s_path, indexKey)
+      parts[partName].arrSplice(s_path, indexKey)
       if (_bindFun) {
         _bindFun(EVENT_NAMES.ARR_REMOVE_COMMON, e)
       }
