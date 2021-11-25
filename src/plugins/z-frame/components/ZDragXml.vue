@@ -105,7 +105,7 @@ mobile: 375px,
   <div class="z-drag-xml" @mousemove="onMouseMove" >
 <!--    {{state}}-->
     <el-row class="a-space-mb-10" justify="space-between" align="middle">
-      <el-col :span="toolState.spans[0]">编辑标题</el-col>
+      <el-col :span="toolState.spans[0]"><slot name="title"></slot>&nbsp;标题</el-col>
       <el-col :span="toolState.spans[1]">
         <el-row  justify="center">
           <el-radio-group size="small" v-model="toolState.type">
@@ -1727,7 +1727,7 @@ export default {
       }
 
       let com_def = CustomVueComponent.resolve(com.name)
-      console.log(com_def)
+      // console.log(com_def)
       if (com_def.DRAG_DEFAULT_VAL) {
         base_type_props.defaultVal = com_def.DRAG_DEFAULT_VAL()
       }
