@@ -435,20 +435,20 @@ export default defineComponent({
       },
       async ['call:save'](e) {
 
-        console.log(cachedPageControlModel)
-
         try {
           let value = ZY.JSON5.parse(cachedPageControlModel.value)
           let form = value.parts[0]
           let props = ZY.JSON5.parse(form.properties)
 
-          try {
-            let res = await Req.post('/api-assess/assess_json/json', JSON.stringify(props))
-            form.metas = {
-              form_data: JSON.stringify(res.data)
-            }
-          } catch (e) {
-            console.log(e)
+          let [err, res] = await ZY.awaitTo(
+              Req.post('/api-assess/assess_json/json', JSON.stringify(props))
+          )
+          if (err) {
+            console.log('assess_json err', err)
+            return;
+          }
+          form.metas = {
+            form_data: JSON.stringify(res.data)
           }
 
           cachedPageControlModel.value = ZY.JSON5.stringify(value)
