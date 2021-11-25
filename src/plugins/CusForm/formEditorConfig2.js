@@ -162,8 +162,8 @@ let formDef = {
           },
           metas: {
             type: 'string',
-            reflect: 'drag_props',
-            reflectTpl: `A.getDragMetas($VAL)`,
+            // reflect: 'drag_props',
+            // reflectTpl: `A.getDragMetas($VAL)`,
             ui: {
               styles: [
                 ['height', 0],

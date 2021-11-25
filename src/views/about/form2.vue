@@ -434,13 +434,35 @@ export default defineComponent({
         location.reload()
       },
       async ['call:save'](e) {
-        await page.dispatchRoot('SetStoreLocal', {
-          storeName: global_pageStoreName,
-          data: cachedPageControlModel
-        })
-        // console.log(Lib)
 
-        window.parent.postMessage(new Lib.CommandMessage('form:submit', 1111), '*')
+        console.log(cachedPageControlModel)
+
+        try {
+          let value = ZY.JSON5.parse(cachedPageControlModel.value)
+          let form = value.parts[0]
+          let props = ZY.JSON5.parse(form.properties)
+
+          try {
+            let res = await Req.post('/api-assess/assess_json/json', JSON.stringify(props))
+            form.metas = {
+              form_data: JSON.stringify(res.data)
+            }
+          } catch (e) {
+            console.log(e)
+          }
+
+          cachedPageControlModel.value = ZY.JSON5.stringify(value)
+          console.log(value, props, cachedPageControlModel)
+          await page.dispatchRoot('SetStoreLocal', {
+            storeName: global_pageStoreName,
+            data: cachedPageControlModel
+          })
+          // console.log(Lib)
+
+          window.parent.postMessage(new Lib.CommandMessage('form:submit', 1111), '*')
+        } catch (e) {
+          console.log('JSON5 parse err', e, cachedPageControlModel)
+        }
         // try {
         //   let res = await Req.post('/api-assess/assess_json/json', JSON.stringify(obj.props))
         //   obj.metas = {

@@ -90,17 +90,17 @@ export default {
       let ctx = getRef('main')
       obj.props = ctx.getZprops()
       obj.memos = ctx.getMemo()
-      try {
-        let res = await request.post('/api-assess/assess_json/json', JSON.stringify(obj.props))
-        obj.metas = {
-          form_data: res.data
-        }
-        onChange()
-      } catch (e) {
-        console.log(e)
-      }
-
-
+      obj.metas = {}
+      onChange()
+      // try {
+      //   let res = await Req.post('/api-assess/assess_json/json', JSON.stringify(obj.props))
+      //   obj.metas = {
+      //     form_data: res.data
+      //   }
+      //   onChange()
+      // } catch (e) {
+      //   console.log(e)
+      // }
     }
 
     function onClosed() {
