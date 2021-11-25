@@ -1,14 +1,19 @@
 <template>
   <div class="z-style-editor">
 <!--    {{value}}-->
-    <CodeMirror
-        ref="editorRef"
-        v-model="content"
-        @update:modelValue="editorChange"
-        :height="styleObj.height"
-        :mode="mode"
-        theme="monokai"
-    />
+<!--   <z-easy-popover :model-attr="{width: '300px', placement: 'left', appendToBoby: true}">-->
+
+<!--   </z-easy-popover>-->
+    <z-easy-hide title="源码">
+      <CodeMirror
+          ref="editorRef"
+          v-model="content"
+          @update:modelValue="editorChange"
+          :height="styleObj.height"
+          :mode="mode"
+          theme="monokai"
+      />
+    </z-easy-hide>
 <!--    {{styleModel}}-->
     <el-form v-model="styleModel">
       <el-form-item label="类型" >
@@ -104,9 +109,11 @@
 <script>
 import UnitInput from "@/components/UnitInput.vue";
 import {toRaw} from "vue";
+import ZEasyPopover from "@/plugins/z-frame/ZEasyPopover.vue";
+import ZEasyHide from "@/plugins/z-frame/components/ZEasyHide.vue";
 export default {
   name: 'ZStyleEditor',
-  components: {UnitInput},
+  components: {ZEasyHide, ZEasyPopover, UnitInput},
   props: {
     value: String,
     extKeys: {
