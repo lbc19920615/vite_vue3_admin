@@ -58,10 +58,18 @@
         <template v-if="state.value.control.propsV2">
 <!--          sdsdsdsds 属性 {{state.value.control.propsV2}}-->
           <z-cell-item label-width="max-content" label="标题位置(left, top)">
-            <el-input v-model="state.value.control.propsV2['label-position']"
-                      @change="setPropVal(state.value.control.propsV2, 'label-position', $event)"
-                      @blur="onBlur"
-            ></el-input>
+<!--            <el-input v-model="state.value.control.propsV2['label-position']"-->
+<!--                      @change="setPropVal(state.value.control.propsV2, 'label-position', $event)"-->
+<!--                      @blur="onBlur"-->
+<!--            ></el-input>-->
+
+            <el-select  v-model="state.value.control.propsV2['label-position']"
+                        @change="setPropVal(state.value.control.propsV2, 'label-position', $event)"
+
+            >
+              <el-option label="left" value="left"></el-option>
+              <el-option label="top" value="top"></el-option>
+            </el-select>
           </z-cell-item>
         </template>
 
@@ -102,7 +110,7 @@ import EwSuggest from "@/components/Ew/EwSuggest.vue";
 import ZProps from "@/plugins/z-frame/components/ZProps.vue";
 import ZStyles from "@/plugins/z-frame/components/ZStyles.vue";
 import ZCellItem from "@/plugins/z-frame/components/ZCellItem.vue";
-import {reactive, toRaw} from "vue";
+import {nextTick, reactive, toRaw} from "vue";
 
 export default {
   name: 'CusUI',
@@ -238,7 +246,7 @@ export default {
     }
 
     function onBlur() {
-      // console.log('onBlur')
+      console.log('onBlur')
       onChange()
     }
 
@@ -248,7 +256,10 @@ export default {
     function setPropVal(props, key, e) {
       state.value.data.attrs = Object.entries(toRaw(props))
 
-      // console.log('setPropVal', props, key, e, state.value.data.attrs )
+      console.log('setPropVal', props, key, e, state.value.data.attrs )
+      nextTick(() => {
+        onBlur()
+      })
     }
 
     return {
