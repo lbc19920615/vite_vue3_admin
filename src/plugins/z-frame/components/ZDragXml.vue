@@ -1641,6 +1641,10 @@ export default {
           type: 'string',
           computedProp: 'ui_css',
           ui: {
+            styles: [
+              ['height', 0],
+              ['overflow', 'hidden'],
+            ],
             widgetConfig: {
               type: 'textarea',
               readonly: true,
