@@ -4,8 +4,11 @@
     display: none;
   }
 }
-.page-search {
+.page-form2 {
   //--z-emoji-zoom: 0.9;
+  .cm-filed__label {
+    font-size: 16px;
+  }
 }
 .em-props-item--active {
   width: 700px;
@@ -14,7 +17,7 @@
 </style>
 
 <template>
-  <div class="page-search" v-if="page.inited">
+  <div class="page-form2" v-if="page.inited">
 <!--    {{store.model}}-->
 <!--    {{store.computedModel}}-->
 

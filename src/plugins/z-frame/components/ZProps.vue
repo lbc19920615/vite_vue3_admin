@@ -11,15 +11,15 @@
 <!--        <el-divider></el-divider>-->
       </template>
       <template #array_afterbegin="scope">
-       <div>
+       <div class="z-props__action">
 <!--         <h3>{{ scope.key }}</h3>-->
-         <el-button type="primary" size="small"
+         <el-button type="primary" size="small" class="z-props__add"
              @click="page.callEvent(EVENT_NAMES.ARR_APPEND_COMMON, scope)">添加</el-button>
        </div>
       </template>
       <template #array_con_beforeend="scope">
-        <div>
-          <el-button type="danger" size="small"
+        <div class="z-props__action">
+          <el-button type="danger" size="small" class="z-props__del"
               @click="page.callEvent(EVENT_NAMES.ARR_REMOVE_COMMON, scope)">删除</el-button>
         </div>
       </template>

@@ -4,7 +4,7 @@ let formDef = {
   type: 'object',
   ui: {
     attrs: [
-      ['label-width', '80px']
+      ['label-width', '100px']
     ],
   },
   properties: {

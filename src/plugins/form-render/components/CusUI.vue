@@ -7,7 +7,7 @@
 .cus-ui__label {
   width: 80px;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
 }
 .cus-ui__class {
   .z-form__prop:first-child {
@@ -18,6 +18,12 @@
 }
 .z-props__value {
   width: 30vw;
+}
+.z-props__del {
+  margin-left: 10px;
+}
+.z-props__add {
+  margin-bottom: 10px;
 }
 </style>
 

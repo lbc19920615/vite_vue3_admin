@@ -58,7 +58,7 @@ export default {
                             ui: {
                                 label: '表单名',
                                 form_item: {
-                                    labelWidth: '80px',
+                                    labelWidth: '100px',
                                 },
                                 // widget: 'CusSuggest',
                                 // widgetConfig: {
