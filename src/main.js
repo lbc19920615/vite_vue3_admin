@@ -91,7 +91,7 @@ class ZShadow extends HTMLElement {
   setContent(css, html) {
     // console.log(css, html)
 
-    this.shadowRoot.innerHTML = `<style>:host {display: block} ${css}</style>${html}`
+    this.shadowRoot.innerHTML = `<style>:host {display: block; overflow: hidden;} ${css}</style>${html}`
   }
 }
 window.customElements.define('z-shadow', ZShadow);

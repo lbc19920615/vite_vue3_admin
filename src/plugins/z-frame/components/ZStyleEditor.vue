@@ -21,8 +21,8 @@
                    @change="onTypeChange">
           <el-option
               v-for="(option, index) in keys"
-              :label="option"
-              :value="option"
+              :label="option.label"
+              :value="option.value"
           />
         </el-select>
       </el-form-item>
@@ -96,6 +96,12 @@
           </el-form-item>
         </el-collapse-item>
       </el-collapse>
+      <el-form-item label="overflow" >
+        <el-input v-model="styleModel.overflow"
+                  @change="onChange(['overflow'],$event)"
+                  clearable
+        ></el-input>
+      </el-form-item>
       <el-form-item label="other" >
         <el-input v-model="styleModel.other"
                   @change="onChange(['other'],$event)"
@@ -128,7 +134,12 @@ export default {
       ':host',
       ':host(:hover) ',
       ':host(:active) ',
-    ].concat(this.extKeys)
+    ].map(v => {
+      return {
+        label: v,
+        value: v,
+      }
+    }).concat(this.extKeys)
     return {
       lock: new ZY.Lock(),
       mode: 'text/css',
@@ -138,7 +149,7 @@ export default {
       styleModel: {
       },
       cached: {},
-      currentType: keys[0],
+      currentType: keys[0].value,
       keys: keys,
       activeNames: []
     }
@@ -201,7 +212,7 @@ ${value}
       let content = ''
       ZY.lodash.each(this.cached, (style, key) => {
         let c = this.buildStyleItem(style, key)
-        if (key !== this.keys[0] && c) {
+        if (key !== this.keys[0].value && c) {
           content = content + '\n'
         }
         content = content + c
@@ -228,7 +239,7 @@ ${value}
         } catch (e) {}
       }
       this.keys.forEach(key => {
-        this.cached[key] = cached[key] ?? {}
+        this.cached[key.value] = cached[key.value] ?? {}
       })
       // console.log(this.value)
       this.changeModel()

@@ -53,7 +53,7 @@ export default {
     return {
       id: ZY.rid(6),
       ui: {
-        label: '滑条',
+        label: '滑块',
         widgetConfig: {
         }
       }
