@@ -9,7 +9,7 @@
 
 <template>
   <section class="z-easy-hide">
-    <el-button @click="openModal">{{title}}</el-button>
+    <el-button @click="openModal"   v-bind="buttonAttr">{{title}}</el-button>
 <!--    <el-dialog width="90vw" v-model="opened">-->
 <!--      <div>-->
 <!--        <slot></slot>-->
@@ -31,6 +31,12 @@ export default {
     title: {
       type: String,
       default: '打开'
+    },
+    buttonAttr: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   data() {

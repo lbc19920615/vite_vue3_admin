@@ -4,7 +4,10 @@
 <!--   <z-easy-popover :model-attr="{width: '300px', placement: 'left', appendToBoby: true}">-->
 
 <!--   </z-easy-popover>-->
-    <z-easy-hide title="源码">
+    <z-easy-hide title="源码"
+                 :button-attr="{size: 'small'}"
+    class="a-space-mb-10"
+    >
       <CodeMirror
           ref="editorRef"
           v-model="content"
