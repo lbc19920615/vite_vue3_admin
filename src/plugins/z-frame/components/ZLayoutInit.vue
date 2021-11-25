@@ -309,7 +309,7 @@ export default {
         if (com.DRAG_CONFIG) {
           DRAG_CONFIG = com.DRAG_CONFIG
         }
-        console.log('buildAppend', com, DRAG_CONFIG)
+        // console.log('buildAppend', com, DRAG_CONFIG)
         config =  DRAG_CONFIG()?? {}
         if (def.length < props.columnMax) {
           let itemUUID =  'z_layout_item__' + ZY.rid(10)

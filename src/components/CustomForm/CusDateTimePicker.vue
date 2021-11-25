@@ -1,16 +1,17 @@
 <template>
   <template v-if="inited">
+<!--    {{getConfig()}}-->
     <el-date-picker v-model="state.value"
-                    type="datetime"
-                    v-bind="state.OPT.widgetConfig"
+                    v-bind="getConfig()"
                     @change="methods.onChange"
     ></el-date-picker>
   </template>
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils";
+import {CUSOM_RENDER_FROM_TYPES, CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils";
 import {createAbleProp, createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
+import {nextTick} from "vue";
 
 export default {
   name: 'CusDateTimePicker',
@@ -58,12 +59,47 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods } = defineCustomRender(props, ctx)
+    let { data, methods, init, widgetConfig2 } = defineCustomRender(props, ctx, {
+      handleValueInit(v, from) {
+        console.log(v, state.OPT.propConfig.defaultVal)
+        // if (from === CUSOM_RENDER_FROM_TYPES.init) {
+        //   if (typeof v === 'undefined') {
+        //     return state.OPT.propConfig.defaultVal
+        //   }
+        // }
+        return v
+      }
+    })
     let state = data()
+
+    function getConfig() {
+      let obj = state.OPT.widgetConfig
+      if (!obj.type) {
+        obj.type = 'datetime'
+      }
+      obj.type = 'datetime'
+      // console.log(obj)
+      return obj
+    }
+
+    init(props)
+    nextTick(() => {
+      setTimeout(() => {
+        let v = state.OPT.propConfig.defaultVal
+        // console.log('defaultVal', v)
+        if (typeof v !== 'undefined') {
+          state.value =  v
+          ctx.emit('fchange', v)
+        }
+      }, 100)
+    })
+
+
     return {
       state,
-      widgetConfig: props.ui.widgetConfig,
-      methods
+      widgetConfig: widgetConfig2,
+      methods,
+      getConfig
     }
   },
 }

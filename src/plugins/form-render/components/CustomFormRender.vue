@@ -78,7 +78,7 @@ export default defineComponent({
     }
 
     function onFchange(e) {
-      // console.log('fchange', e)
+      console.log('fchange', e)
       emit('fchange', e)
     }
 

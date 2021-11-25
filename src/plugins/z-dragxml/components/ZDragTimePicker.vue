@@ -32,6 +32,22 @@ export default {
 <div class="z-dragxml-label__name">时间选择器</div>
 </div>`
   },
+  DRAG_DEFAULT_VAL() {
+    return {
+      type: 'string',
+      ui: {
+        label: '默认值',
+        widget: 'CusTimePicker',
+        widgetConfig: {
+        }
+      },
+      rules: [
+        {
+          type: 'any'
+        }
+      ]
+    }
+  },
   mixins: [
     ZDragCommonMixin
   ],

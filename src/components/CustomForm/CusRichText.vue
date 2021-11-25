@@ -102,7 +102,7 @@ export default {
 
     onMounted(() => {
       setTimeout(() => {
-        console.dir(getShadow())
+        // console.dir(getShadow())
         getShadow().setContent(getCss(), getHtml())
       }, 300)
     })

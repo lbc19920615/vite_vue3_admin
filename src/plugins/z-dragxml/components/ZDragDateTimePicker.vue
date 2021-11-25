@@ -32,6 +32,22 @@ export default {
 <div class="z-dragxml-label__name">日期选择器</div>
 </div>`
   },
+  DRAG_DEFAULT_VAL() {
+    return {
+      type: 'string',
+      ui: {
+        label: '默认值',
+        widget: 'CusDateTimePicker',
+        widgetConfig: {
+        }
+      },
+      rules: [
+        {
+          type: 'any'
+        }
+      ]
+    }
+  },
   mixins: [
     ZDragCommonMixin
   ],
@@ -54,7 +70,7 @@ export default {
       id: ZY.rid(6),
       ui: {
         widgetConfig: {
-          type: 'string',
+          type: 'datetime',
           // sub_type: 'datetime'
         }
       }

@@ -1153,7 +1153,7 @@ export default {
         trueDom = getNestRenderDom(currentToTarget)
       }
 
-      console.log(trueDom)
+      // console.log(trueDom)
 
       if (trueDom && trueDom.parentElement && trueDom.parentElement.hasAttribute('z-drag-layout__column')) {
         let columnMax = parseInt(trueDom.parentElement.getAttribute('z-drag-layout__column'))
@@ -1724,6 +1724,12 @@ export default {
             label: '默认值',
           }
         },
+      }
+
+      let com_def = CustomVueComponent.resolve(com.name)
+      console.log(com_def)
+      if (com_def.DRAG_DEFAULT_VAL) {
+        base_type_props.defaultVal = com_def.DRAG_DEFAULT_VAL()
       }
       let base_ui_props =  {
         type: 'object',
