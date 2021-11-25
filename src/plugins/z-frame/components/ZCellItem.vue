@@ -31,8 +31,10 @@
 <template>
 <!--  {{labelPosition + ''}}-->
   <el-row :vertical="vertical" align="middle"
-          class="z-cell-item" :class="{'has-label': label}" type="flex">
-    <div class="z-cell-item__label" :style="labelStyle">{{label}}</div>
+          class="z-cell-item" :class="{'has-label': label}"
+          type="flex">
+    <div class="z-cell-item__label"
+         :style="labelStyle">{{label}}</div>
     <div class="z-cell-item__content">
       <div class="z-cell-item__con"><slot></slot></div>
       <div class="z-cell-item__desc">{{desc}}</div>
@@ -58,6 +60,7 @@ export default {
       return null
     },
     labelStyle() {
+      console.log(this.labelWidth)
       let labelWidth = this.label ? this.labelWidth : ''
       return {
         width: labelWidth

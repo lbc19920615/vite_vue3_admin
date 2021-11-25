@@ -120,9 +120,8 @@ export default {
       ]
       if (CusFormExpose && CusFormExpose.getPartModel) {
         model = CusFormExpose.getPartModel()
-        // console.log(model)
         let ui = JSON5.parse(model.ui)
-        // console.log(ui)
+        console.log('CusFormExpose', ui)
         if (Array.isArray(ui.attrs)) {
           form_config = Object.fromEntries(ui.attrs)
         }

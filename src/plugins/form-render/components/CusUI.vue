@@ -46,19 +46,42 @@
           class="cus-ui__class-props" v-model:value="state.value.control.classObj" @form:input:blur="onBlur" @props-change="onClassChange"></ZProps>
     </el-row>
 
-    <el-row  class="a-space-mb-10">
-      <div class="cus-ui__label">属性
-      <z-window class="a-space-ml-5"
-                url="https://element-plus.gitee.io/zh-CN/component/form.html#form-%E6%96%B9%E6%B3%95">
-        <i class="fa fa-book"></i>
-      </z-window>
-      </div>
-      <ZProps
-          style="flex: 1"
-          v-model:value="state.value.control.attrsObj"
-          @form:input:blur="onBlur"
-          @props-change="onAttrsChange"></ZProps>
-    </el-row>
+    <template v-if="widgetConfig.propsV2">
+      <el-row  class="a-space-mb-10">
+        <div class="cus-ui__label">属性
+          <z-window class="a-space-ml-5"
+                    url="https://element-plus.gitee.io/zh-CN/component/form.html#form-%E6%96%B9%E6%B3%95">
+            <i class="fa fa-book"></i>
+          </z-window>
+        </div>
+
+        <template v-if="state.value.control.propsV2">
+<!--          sdsdsdsds 属性 {{state.value.control.propsV2}}-->
+          <z-cell-item label-width="max-content" label="标题位置(left, top)">
+            <el-input v-model="state.value.control.propsV2['label-position']"
+                      @change="setPropVal(state.value.control.propsV2, 'label-position', $event)"
+                      @blur="onBlur"
+            ></el-input>
+          </z-cell-item>
+        </template>
+
+      </el-row>
+    </template>
+    <template v-else>
+      <el-row  class="a-space-mb-10">
+        <div class="cus-ui__label">属性
+          <z-window class="a-space-ml-5"
+                    url="https://element-plus.gitee.io/zh-CN/component/form.html#form-%E6%96%B9%E6%B3%95">
+            <i class="fa fa-book"></i>
+          </z-window>
+        </div>
+        <ZProps
+            style="flex: 1"
+            v-model:value="state.value.control.attrsObj"
+            @form:input:blur="onBlur"
+            @props-change="onAttrsChange"></ZProps>
+      </el-row>
+    </template>
 
 
     <el-row  class="a-space-mb-10">
@@ -78,10 +101,12 @@ import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-rende
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
 import ZProps from "@/plugins/z-frame/components/ZProps.vue";
 import ZStyles from "@/plugins/z-frame/components/ZStyles.vue";
+import ZCellItem from "@/plugins/z-frame/components/ZCellItem.vue";
+import {reactive, toRaw} from "vue";
 
 export default {
   name: 'CusUI',
-  components: {ZStyles, ZProps, EwSuggest},
+  components: {ZCellItem, ZStyles, ZProps, EwSuggest},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -98,7 +123,9 @@ export default {
           newVal = {
             // classObj: {},
             // attrsObj: {},
-            control: {},
+            control: {
+              propsV2: {}
+            },
             data: {}
           }
           return newVal
@@ -106,14 +133,16 @@ export default {
         if (newVal) {
           try {
             obj = JSON5.parse(newVal)
+            console.log(obj)
             if (!obj.data) {
               obj.data = {}
             }
             if (!obj.control) {
-              obj.control = {}
+              obj.control = {
+                propsV2: {}
+              }
             }
             // delete obj.data.classObj;
-
             if (obj.data.attrs) {
               let props = []
               for (let [key, value] of obj.data.attrs) {
@@ -124,6 +153,12 @@ export default {
               }
               obj.control.attrsObj = {
                 props
+              }
+              obj.control.propsV2 = Object.fromEntries(obj.data.attrs)
+            } else {
+
+              obj.control.attrsObj = {
+                props: []
               }
             }
 
@@ -148,7 +183,7 @@ export default {
 
             return obj
           } catch (e) {
-            // console.log(e)
+            console.log(e)
           }
         }
         return {}
@@ -170,7 +205,7 @@ export default {
 
 
     function onAttrsChange(e) {
-      // console.log('onAttrsChange', e.props)
+      console.log('onAttrsChange', e.props)
       // state.value.attrsObj = e
 
       state.value.data.attrs = e.props.filter(v => {
@@ -203,8 +238,17 @@ export default {
     }
 
     function onBlur() {
-      console.log('onBlur')
+      // console.log('onBlur')
       onChange()
+    }
+
+    let propsState = reactive({
+      props: {}
+    })
+    function setPropVal(props, key, e) {
+      state.value.data.attrs = Object.entries(toRaw(props))
+
+      // console.log('setPropVal', props, key, e, state.value.data.attrs )
     }
 
     return {
@@ -212,8 +256,10 @@ export default {
       widgetConfig: widgetConfig2,
       onChange,
       methods,
+      propsState,
       onAttrsChange,
       onClassChange,
+      setPropVal,
       onStylesChange,
       onBlur,
       save,

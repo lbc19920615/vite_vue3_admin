@@ -56,6 +56,9 @@ let formDef = {
             ui: {
               widget: 'CusUI',
               label: 'UI编辑',
+              widgetConfig: {
+                propsV2: true
+              }
             }
           },
           computed2: {

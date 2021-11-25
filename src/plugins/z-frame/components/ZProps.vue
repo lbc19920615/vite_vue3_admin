@@ -9,6 +9,7 @@
     >
       <template #array_con_afterbegin="scope">
 <!--        <el-divider></el-divider>-->
+
       </template>
       <template #array_afterbegin="scope">
        <div class="z-props__action">
@@ -93,7 +94,7 @@ export default {
         }
       },
       ['cmfield:blur'](e) {
-        console.log('cmfield:blur', e)
+        // console.log('cmfield:blur', e)
         ctx.emit('form:input:blur', e)
       }
     })
