@@ -163,6 +163,7 @@
               <el-button type="primary" @click="page.callEvent('call:save', scope)">保存</el-button>
               <el-button type="primary" @click="page.callEvent('call:save:file', scope)">保存文件</el-button>
               <el-button type="primary" @click="page.callEvent('load:file')">加载文件</el-button>
+              <el-button type="primary" @click="page.callEvent('get:xml:file', scope)">获取文件</el-button>
             </el-space>
           </div>
         </template>
@@ -243,33 +244,8 @@ import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
 import ZEchartsEasy from "@/plugins/z-frame/components/ZEchartsEasy.vue";
 import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
 import {request} from "@/plugins/z-request";
-// globalThis.CnChar = CnChar
-//
-// globalThis.sortCnCharStroke = function (chars = []) {
-//   return chars.sort(function (a, b) {
-//     let ret =  CnChar.compareStroke(a, b)
-//     if (ret === 'more') {
-//       return 1
-//     }
-//     else if (ret === 'less') {
-//       return -1
-//     }
-//     return 0
-//   })
-// }
-//
-// globalThis.sortCnCharSpell = function (chars = []) {
-//   return chars.sort(function (a, b) {
-//     let ret =  CnChar.compareSpell(a, b)
-//     if (ret === 'more') {
-//       return 1
-//     }
-//     else if (ret === 'less') {
-//       return -1
-//     }
-//     return 0
-//   })
-// }
+import {formsToDef} from "@/plugins/z-frame/hooks/form";
+import {fetchVueTpl} from "@/hooks/remote";
 
 
 export default defineComponent({
@@ -441,7 +417,7 @@ export default defineComponent({
           let props = ZY.JSON5.parse(form.properties)
 
           let [err, res] = await ZY.awaitTo(
-              Req.post('/api-assess/assess_json/json', JSON.stringify(props))
+              Req.post('/json', JSON.stringify(props))
           )
           if (err) {
             console.log('assess_json err', err)
@@ -459,7 +435,9 @@ export default defineComponent({
           })
           // console.log(Lib)
 
-          window.parent.postMessage(new Lib.CommandMessage('form:submit', 1111), '*')
+          window.parent.postMessage(
+              new Lib.CommandMessage('form:save', 1111),
+              '*')
         } catch (e) {
           console.log('JSON5 parse err', e, cachedPageControlModel)
         }
@@ -495,6 +473,35 @@ export default defineComponent({
         console.log('call:save:file', saved)
         // ZY_EXT.saveObjAsJson5File(saved, `page_${fileName}_${time}_${d.getTime()}`)
         ZY_EXT.saveJSONFile({data: saved, fileName, prefix: 'form2_'})
+      },
+      async ['get:xml:file'](e) {
+        let {partName, parts} = e
+        let model = parts[partName].getModel()
+        let obj = toRaw(
+            model
+        )
+        let forms = ZY.JSON5.parse(obj.value)
+        let def = formsToDef(
+            forms
+        );
+        let res = await fetchVueTpl({
+          def,
+          args: {
+            src: 'comformscr2.twig'
+          }
+        })
+        // ZY_EXT.saveStrAs(res.data, {
+        //   file: 'test.vue'
+        // })
+        await ZY_EXT.saveStrUseFS(res, {
+          fileName: obj.name + '.vue',
+          extensions: ['.vue'],
+          type: 'text/plain',
+          options: {
+            mimeTypes: ['text/*'],
+          }
+        })
+        console.log(forms, def)
       },
       ['add:part'](e) {
         let { parts, partName, selfpath, process } = e

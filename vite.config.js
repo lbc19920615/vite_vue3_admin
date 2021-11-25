@@ -44,7 +44,7 @@ export default (({mode}) => {
         // 字符串简写写法
         // '/api': 'http://192.168.1.51:10010',
         '/api': {
-          target: 'http://192.168.1.51:10010',
+          target: 'http://192.168.1.51:8085',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
         },

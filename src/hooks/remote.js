@@ -16,12 +16,18 @@ let templateSfc = function (sfc) {
  * @param onReady
  * @returns {Promise<void>}
  */
-export async function fetchTwigComponent(comName = '', {def, args, handleScript, styles = [] } = {}) {
+export async function fetchTwigComponent(comName = '', {def, args, handleScript, styles = [], cached_tpl = '' } = {}) {
     try {
         // console.log('this.formDef', this.formDef)
         let data = new FormData()
         data.append('source', JSON.stringify(def))
-        let tpl = await fetchContentV3(data, args)
+        let tpl;
+        // console.log('cached_tpl', cached_tpl)
+        if (!cached_tpl) {
+            tpl = await fetchContentV3(data, args)
+        } else {
+            tpl = cached_tpl
+        }
         let sfc = parseComponent(tpl)
         const templateId = comName + '-tpl';
         // console.log(sfc)

@@ -172,73 +172,74 @@ comPlugin.install = function (app) {
   CustomVueComponent.app = app
   CustomVueComponent.register(EmProps)
   CustomVueComponent.register(EmPropsItem)
-}
+};
 
 
-
-globalThis.chinaAreaManager = await initChinaAreaManangerFromUrl(
+;(async function () {
+  globalThis.chinaAreaManager = await initChinaAreaManangerFromUrl(
     ZY.REMOTE_ORIGIN + '/public/area.json'
-)
+  )
 
-await init_router_start()
+  await init_router_start()
 
-window.startApp = function () {
+  window.startApp = function () {
 
-  const storeApp = Vue.createApp(StoreApp)
-  const app = Vue.createApp(App)
+    const storeApp = Vue.createApp(StoreApp)
+    const app = Vue.createApp(App)
 
-  globalThis.getAppContext = function () {
-    return app._context
-  }
-
-  app.config.compilerOptions.isCustomElement = tag => {
-    return tag === 'app-loading'
-  }
-  app.config.devtools = true
-
-  storeApp.use({
-    install(_a) {
-      _a.config.globalProperties.$mainApp = app
+    globalThis.getAppContext = function () {
+      return app._context
     }
-  })
 
-  // app.use(moduleConfig)
-  app.use(remote)
-  app.use(ElementPlus, {
-    size: 'medium',
-    locale
-  })
-  app.use(comPlugin)
-  app.use(ZformMana)
-  app.use(CustomFormRenderPlugin)
-  app.use(CodeMirrorPlugin)
-  app.use(ZFramePlugin)
-  app.use(ZDragPlugin)
-  app.use(eventBus)
-  app.use(icons)
-  app.use(router)
-  app.use(store)
-  // import JsonViewer from "vue3-json-viewer";
-  import("vue3-json-viewer").then(res => {
-    // app.use(res.default)
-    // console.log(res)
-    let JsonViewer = res.JsonViewer
-    app.component('v-json-viewer',JsonViewer )
-  })
-  // import * as highlightPlugin from '@/plugins/highlight'
-  // import('@/plugins/highlight').then(highlightPlugin => {
-  //   app.use(highlightPlugin)
-  // })
-  // import('vant/es/index').then(res => {
-  //   // console.log(res.default)
-  //   app.use(res.default)
-  // })
-  initStoreApp(storeApp)
+    app.config.compilerOptions.isCustomElement = tag => {
+      return tag === 'app-loading'
+    }
+    app.config.devtools = true
 
-  app.mount('#app')
+    storeApp.use({
+      install(_a) {
+        _a.config.globalProperties.$mainApp = app
+      }
+    })
+
+    // app.use(moduleConfig)
+    app.use(remote)
+    app.use(ElementPlus, {
+      size: 'medium',
+      locale
+    })
+    app.use(comPlugin)
+    app.use(ZformMana)
+    app.use(CustomFormRenderPlugin)
+    app.use(CodeMirrorPlugin)
+    app.use(ZFramePlugin)
+    app.use(ZDragPlugin)
+    app.use(eventBus)
+    app.use(icons)
+    app.use(router)
+    app.use(store)
+    // import JsonViewer from "vue3-json-viewer";
+    import("vue3-json-viewer").then(res => {
+      // app.use(res.default)
+      // console.log(res)
+      let JsonViewer = res.JsonViewer
+      app.component('v-json-viewer',JsonViewer )
+    })
+    // import * as highlightPlugin from '@/plugins/highlight'
+    // import('@/plugins/highlight').then(highlightPlugin => {
+    //   app.use(highlightPlugin)
+    // })
+    // import('vant/es/index').then(res => {
+    //   // console.log(res.default)
+    //   app.use(res.default)
+    // })
+    initStoreApp(storeApp)
+
+    app.mount('#app')
 
 
-  return app
-}
+    return app
+  }
 
-globalThis.app = window.startApp()
+  globalThis.app = window.startApp()
+})()

@@ -30,7 +30,7 @@ export function baseConfig({defaultVal = {}, def = {}, computed = {}} = {}) {
 
 export function formsToDef(model = {}) {
     let ret = model
-    console.log(model)
+    // console.log(model)
     let tureParts  = model.parts.map(v => {
         return {
             type: v.type,

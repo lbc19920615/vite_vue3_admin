@@ -463,6 +463,12 @@ ${item.value}
       return prefix + ZY.nid(6)
     }
 
+    function getBserviceCache() {
+      let ret = document.getElementById('bserviceTpl').innerHTML
+          .replace('[REMOTE]', ZY.REMOTE_ORIGIN)
+      // console.log('getBserviceCache', ret)
+      return ret
+    }
 
 
     globalThis.createServiceComFromCache = function (id = globalThis.ServiceID()) {
@@ -480,12 +486,15 @@ ${item.value}
          if (cachedServiceDef) {
            run(cachedServiceDef.script)
          } else {
+
+
            fetchTwigComponent( id, {
              def: {},
              args: {
                src: 'bservice.twig',
                args: {}
              },
+             cached_tpl: getBserviceCache()
            }).then(res => {
              cachedServiceDef = res
              run(cachedServiceDef.script)
@@ -507,6 +516,7 @@ ${item.value}
      */
     globalThis.createServiceCom = async function ({def = {}, args = {}} = {}, serviceID = ZY.nid()) {
       def.$SELF_NAME = serviceID
+      // console.log('sdsds', getBserviceCache())
       let [err, res] = await ZY.awaitTo(
           fetchTwigComponent( serviceID, {
             def: def,
@@ -514,6 +524,7 @@ ${item.value}
               src: 'bservice.twig',
               ...args
             },
+            cached_tpl: getBserviceCache()
           })
       )
       if (err) {

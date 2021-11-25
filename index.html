@@ -137,6 +137,25 @@ style="zoom: ${zoom}" class="s_face">&nbsp;</a>`
 
   window.customElements.define('z-emoji', ZEmoji);
 </script>
+<template id="bserviceTpl">
+  <script>
+    import { baseServiceDef, baseServiceMixin } from '[REMOTE]/public/services/baseService.js';
+
+    export function install(vue) {
+      // const ZY = global.ZY;
+      return {
+        template: '<div></div>',
+        mixins: [
+          baseServiceMixin,
+        ],
+        setup(props, ctx) {
+          const config = ZY.JSON5.parse(`{$SELF_NAME:'ServicePage'}`);
+          return baseServiceDef({ props, ctx, vue, config });
+        },
+      };
+    }
+  </script>
+</template>
     <div id="app"></div>
 
     <div id="storeApp"></div>

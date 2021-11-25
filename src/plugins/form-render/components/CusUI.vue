@@ -145,7 +145,7 @@ export default {
         if (newVal) {
           try {
             obj = JSON5.parse(newVal)
-            console.log(obj)
+            // console.log(obj)
             if (!obj.data) {
               obj.data = {}
             }
