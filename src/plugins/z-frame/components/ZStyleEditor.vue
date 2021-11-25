@@ -21,6 +21,20 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="背景色" >
+        <el-color-picker v-model="styleModel.backgroundColor"
+                  @change="onChange(['backgroundColor'],$event)"
+                  clearable
+                         show-alpha
+        ></el-color-picker>
+      </el-form-item>
+      <el-form-item label="颜色" >
+        <el-color-picker v-model="styleModel.color"
+                         @change="onChange(['color'],$event)"
+                         clearable
+                         show-alpha
+        ></el-color-picker>
+      </el-form-item>
       <el-form-item label="宽度" >
         <unit-input v-model="styleModel.width"
                     default-unit="px"
@@ -31,12 +45,52 @@
                     default-unit="px"
                     @change="onChange(['height'],$event)"></unit-input>
       </el-form-item>
-      <el-form-item label="背景色" >
-        <el-color-picker v-model="styleModel.backgroundColor"
-                  @change="onChange(['backgroundColor'],$event)"
-                  clearable
-        ></el-color-picker>
-      </el-form-item>
+      <el-collapse v-model="activeNames" >
+        <el-collapse-item title="margin" name="1">
+          <el-form-item label="marginLeft" >
+            <unit-input v-model="styleModel.marginLeft"
+                        default-unit="px"
+                        @change="onChange(['marginLeft'],$event)"></unit-input>
+          </el-form-item>
+          <el-form-item label="marginTop" >
+            <unit-input v-model="styleModel.marginTop"
+                        default-unit="px"
+                        @change="onChange(['marginTop'],$event)"></unit-input>
+          </el-form-item>
+          <el-form-item label="marginBottom" >
+            <unit-input v-model="styleModel.marginBottom"
+                        default-unit="px"
+                        @change="onChange(['marginBottom'],$event)"></unit-input>
+          </el-form-item>
+          <el-form-item label="marginRight" >
+            <unit-input v-model="styleModel.marginRight"
+                        default-unit="px"
+                        @change="onChange(['marginRight'],$event)"></unit-input>
+          </el-form-item>
+        </el-collapse-item>
+        <el-collapse-item title="padding" name="2">
+          <el-form-item label="paddingLeft" >
+            <unit-input v-model="styleModel.paddingLeft"
+                        default-unit="px"
+                        @change="onChange(['paddingLeft'],$event)"></unit-input>
+          </el-form-item>
+          <el-form-item label="paddingTop" >
+            <unit-input v-model="styleModel.paddingTop"
+                        default-unit="px"
+                        @change="onChange(['paddingTop'],$event)"></unit-input>
+          </el-form-item>
+          <el-form-item label="paddingBottom" >
+            <unit-input v-model="styleModel.paddingBottom"
+                        default-unit="px"
+                        @change="onChange(['paddingBottom'],$event)"></unit-input>
+          </el-form-item>
+          <el-form-item label="paddingRight" >
+            <unit-input v-model="styleModel.paddingRight"
+                        default-unit="px"
+                        @change="onChange(['paddingRight'],$event)"></unit-input>
+          </el-form-item>
+        </el-collapse-item>
+      </el-collapse>
       <el-form-item label="other" >
         <el-input v-model="styleModel.other"
                   @change="onChange(['other'],$event)"
@@ -54,9 +108,20 @@ export default {
   name: 'ZStyleEditor',
   components: {UnitInput},
   props: {
-    value: String
+    value: String,
+    extKeys: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
   },
   data() {
+    let keys =  [
+      ':host',
+      ':host(:hover) ',
+      ':host(:active) ',
+    ].concat(this.extKeys)
     return {
       lock: new ZY.Lock(),
       mode: 'text/css',
@@ -66,12 +131,9 @@ export default {
       styleModel: {
       },
       cached: {},
-      currentType: ':host',
-      keys: [
-          ':host',
-          ':host:hover',
-          ':host:active',
-      ]
+      currentType: keys[0],
+      keys: keys,
+      activeNames: []
     }
   },
   watch: {
