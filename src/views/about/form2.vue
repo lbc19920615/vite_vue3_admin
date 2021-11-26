@@ -420,7 +420,7 @@ export default defineComponent({
           let props = ZY.JSON5.parse(form.properties)
 
           let [err, res] = await ZY.awaitTo(
-              Req.post('/json', JSON.stringify(props))
+              Req.post('/api/json', JSON.stringify(props))
           )
           if (err) {
             console.log('assess_json err', err)
