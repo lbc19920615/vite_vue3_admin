@@ -16,8 +16,13 @@
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender, PROPS_DEF} from "@/plugins/form-render/utils/index";
+import {
+  CUSOM_RENDER_FROM_TYPES,
+  CustomRenderControlMixin,
+  defineCustomRender,
+} from "@/plugins/form-render/utils/index";
 import {createBaseCusCONFIG, createBaseCusEnumsCONFIG} from "@/plugins/z-frame/CusBaseEditor";
+import {nextTick} from "vue";
 
 export default {
   name: 'CusRadio',
@@ -50,9 +55,14 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods, listeners, init, widgetConfig2, buildOptions } = defineCustomRender(props, ctx)
+    let { data, methods, listeners, init, widgetConfig2, buildOptions, initDefaultVal } = defineCustomRender(props, ctx, {
+
+    })
     let state = data()
     init(props)
+    nextTick(() => {
+      initDefaultVal()
+    })
 
     return {
       state,

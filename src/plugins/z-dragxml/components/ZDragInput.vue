@@ -21,6 +21,9 @@ export default {
   name: 'ZDragInput',
   components: {CusInput},
   ZDragXmlCom: true,
+  mixins: [
+      ZDragCommonMixin
+  ],
   DRAG_DATASET() {
     return {
       columnMax: 1
@@ -32,9 +35,14 @@ export default {
 <div class="z-dragxml-label__name">单行输入框</div>
 </div>`
   },
-  mixins: [
-      ZDragCommonMixin
-  ],
+  DRAG_DEFAULT_VAL() {
+    return {
+      type: 'string',
+      ui: {
+        label: '默认值',
+      }
+    }
+  },
   methods: {
     DRAG_CONFIG() {
       let obj = CusInput.CUS_EDITOR() ?? { props: {} }

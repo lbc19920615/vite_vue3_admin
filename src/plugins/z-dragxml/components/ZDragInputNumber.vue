@@ -15,10 +15,31 @@
 import {ZDragCommonMixin} from "@/plugins/z-dragxml/mixins";
 import CusInputNumber from "@/components/CustomForm/CusInputNumber.vue";
 
+let InputConfig = function () {
+  return {
+    type: 'number',
+    ui: {
+      widgetConfig: {
+        type: 'number'
+      }
+    },
+    rulesArr: [
+      {
+        value: ZY.JSON5.stringify( {
+          type: 'any'
+        })
+      }
+    ]
+  }
+}
+
 export default {
   name: 'ZDragInputNumber',
   components: {CusInputNumber},
   ZDragXmlCom: true,
+  mixins: [
+      ZDragCommonMixin
+  ],
   DRAG_DATASET() {
     return {
       columnMax: 1
@@ -30,9 +51,16 @@ export default {
 <div class="z-dragxml-label__name">数字输入框</div>
 </div>`
   },
-  mixins: [
-      ZDragCommonMixin
-  ],
+  DRAG_DEFAULT_VAL() {
+    let v = InputConfig()
+    v.ui.label = '默认值'
+    v.rules = [
+      {
+        type: 'any'
+      }
+    ]
+    return v
+  },
   methods: {
     DRAG_CONFIG() {
       return {
@@ -41,6 +69,7 @@ export default {
     DRAG_EXPORT() {
       return {
         ui: {
+          label: '数字输入',
           widget: 'CusInputNumber'
         }
       }
@@ -49,21 +78,7 @@ export default {
   data() {
     return {
       id: ZY.rid(6),
-      self_config: {
-        type: 'number',
-        ui: {
-          widgetConfig: {
-            type: 'number'
-          }
-        },
-        rulesArr: [
-          {
-            value: ZY.JSON5.stringify( {
-              type: 'any'
-            })
-          }
-        ]
-      },
+      self_config: InputConfig(),
       ui: {
         label: '数字',
         widgetConfig: {

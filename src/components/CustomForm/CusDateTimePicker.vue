@@ -59,9 +59,9 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods, init, widgetConfig2 } = defineCustomRender(props, ctx, {
+    let { data, methods, init, widgetConfig2, initDefaultVal } = defineCustomRender(props, ctx, {
       handleValueInit(v, from) {
-        console.log(v, state.OPT.propConfig.defaultVal)
+        // console.log(v, state.OPT.propConfig.defaultVal)
         // if (from === CUSOM_RENDER_FROM_TYPES.init) {
         //   if (typeof v === 'undefined') {
         //     return state.OPT.propConfig.defaultVal
@@ -84,14 +84,7 @@ export default {
 
     init(props)
     nextTick(() => {
-      setTimeout(() => {
-        let v = state.OPT.propConfig.defaultVal
-        // console.log('defaultVal', v)
-        if (typeof v !== 'undefined') {
-          state.value =  v
-          ctx.emit('fchange', v)
-        }
-      }, 100)
+      initDefaultVal()
     })
 
 

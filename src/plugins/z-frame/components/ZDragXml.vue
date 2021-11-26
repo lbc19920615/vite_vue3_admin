@@ -1722,12 +1722,12 @@ export default {
             }
           }
         },
-        defaultVal: {
-          type: 'string',
-          ui: {
-            label: '默认值',
-          }
-        },
+        // defaultVal: {
+        //   type: 'string',
+        //   ui: {
+        //     label: '默认值',
+        //   }
+        // },
       }
 
       let com_def = CustomVueComponent.resolve(com.name)

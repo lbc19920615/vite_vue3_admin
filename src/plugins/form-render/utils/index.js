@@ -282,7 +282,16 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
         return options
     }
 
-
+    function initDefaultVal() {
+        setTimeout(() => {
+            let v = model.OPT.propConfig.defaultVal
+            // console.log('defaultVal', v)
+            if (typeof v !== 'undefined') {
+                model.value =  v
+                ctx.emit('fchange', v)
+            }
+        }, 100)
+    }
 
 
     return {
@@ -298,6 +307,7 @@ export function defineCustomRender(props = {}, ctx, {handleValueInit} = {}) {
         selfpath,
         dxValueEval,
         onJSONChange,
+        initDefaultVal,
         init,
         listeners,
         methods,

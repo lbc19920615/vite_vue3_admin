@@ -34,6 +34,14 @@ export default {
 <div class="z-dragxml-label__name">多行输入框</div>
 </div>`
   },
+  DRAG_DEFAULT_VAL() {
+    return {
+      type: 'string',
+      ui: {
+        label: '默认值',
+      }
+    }
+  },
   data() {
     return {
       id: ZY.rid(6),

@@ -88,22 +88,15 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx, {
-      handleValueInit(v, from) {
-        // console.log('widgetConfig2?.defaultVal', v)
-        if (from === CUSOM_RENDER_FROM_TYPES.init) {
-          if (typeof v === 'undefined') {
-            return state.OPT.propConfig.defaultVal
-          }
-        }
-        return v
-      }
+    let { data, methods, listeners, init, widgetConfig2, initDefaultVal } = defineCustomRender(props, ctx, {
+
     })
     // console.log(widgetConfig2)
     let state = data({
 
     })
-    init(props)
+    init(props);
+    initDefaultVal();
 
     // let widgetConfig = props?.ui?.widgetConfig ?? {}
 

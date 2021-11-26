@@ -73,7 +73,7 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx, {
+    let { data, methods, listeners, init, initDefaultVal, widgetConfig2 } = defineCustomRender(props, ctx, {
       handleValueInit(v) {
         return v
       }
@@ -81,6 +81,7 @@ export default {
     let state = data({
     })
     init(props)
+    initDefaultVal()
 
     return {
       state,
