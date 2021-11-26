@@ -60,6 +60,9 @@ export default {
                                 form_item: {
                                     labelWidth: '100px',
                                 },
+                                styles: [
+                                    ['width', '60vw']
+                                ],
                                 // widget: 'CusSuggest',
                                 // widgetConfig: {
                                 //     mode: 'select',
@@ -78,7 +81,7 @@ export default {
                                 },
                                 widget: 'CusForm',
                                 widgetConfig: {
-                                    configUrl: '/src/plugins/CusForm/formEditorConfig2.js',
+                                    configUrl: '/src/plugins/CusForm/formEditorConfig3.js',
                                     enums: "ROOT_STATE('tools.propTypes', [])",
                                 },
                             }

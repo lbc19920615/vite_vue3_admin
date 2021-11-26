@@ -115,7 +115,7 @@ mobile: 375px,
         </el-row>
       </el-col>
       <el-col :span="toolState.spans[2]">
-        <el-row style="flex: 1" justify="end">
+        <el-row style="flex: 1" justify="end" align="middle">
           <z-easy-modal title="数据展示" :buttonAttr="{size: 'small'}" :model-attr="{width: '60vw'}">
             <template #button-content>打开数据展示</template>
             <template #default>

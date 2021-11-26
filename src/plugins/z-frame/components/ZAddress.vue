@@ -35,7 +35,7 @@ export default {
         lazy: true,
         lazyLoad(node, resolve) {
           const { level } = node
-          console.log(level, node)
+          // console.log(level, node)
           setTimeout(() => {
             let nodes = []
             let data = node.data

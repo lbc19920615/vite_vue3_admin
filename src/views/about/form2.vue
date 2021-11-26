@@ -21,76 +21,6 @@
 <!--    {{store.model}}-->
 <!--    {{store.computedModel}}-->
 
-<!--    <my-fixed>-->
-<!--      <el-card class="box-card" v-show="page.dxValue('ZY_ARRAY_NOT_EMPTY(MODEL(\'domes\'))')">-->
-<!--        <template #header>-->
-<!--          <div class="card-header">-->
-<!--            <span>跳转</span>-->
-<!--          </div>-->
-<!--        </template>-->
-<!--       <el-space direction="vertical">-->
-<!--         <div v-for="o in store.model.domes"-->
-<!--              style="cursor: pointer;"-->
-<!--              @click="jumpTo(o)"-->
-<!--              :key="o" class="text item">-->
-<!--           {{o && o.getAttribute('scroll-control')}}-->
-<!--         </div>-->
-<!--       </el-space>-->
-<!--      </el-card>-->
-<!--    </my-fixed>-->
-<!--    <z-quick-dialog title="编辑" :modelAttr="{width: '100vw'}">-->
-<!--      <template #button-content>打开数据展示</template>-->
-<!--      <template #default>-->
-<!--        <z-drag-xml></z-drag-xml>-->
-<!--      </template>-->
-<!--    </z-quick-dialog>-->
-
-<!--    <z-drag-xml></z-drag-xml>-->
-
-    <CustomElement is="my-vue-dialog" name="form-event-dialog"
-                   :params="{sstyle: 'width: 60vw; min-width: 720px;'}">
-      <template #default="scope">
-        <FormsEventSelect
-            com-name="form-event-select"
-            @select-form="page.callEvent('forms:select-event', {
-              scope,
-              value: $event
-            })"></FormsEventSelect>
-      </template>
-    </CustomElement>
-
-    <CustomElement is="my-vue-dialog" name="form-mana-dialog"
-                   :params="{sstyle: 'width: 60vw; min-width: 720px;'}">
-      <template #default="scope">
-<!--        {{scope}}-->
-        <FormsManaSelect
-            com-name="form-mana-select"
-            @select-form="page.callEvent('forms:select-form', {
-              scope,
-              value: $event
-            })"></FormsManaSelect>
-      </template>
-    </CustomElement>
-
-
-    <CustomElement is="my-vue-dialog" name="form-layout-dialog"
-                   :params="{sstyle: 'width: 60vw; min-width: 720px;'}">
-      <template #default="scope">
-<!--                {{scope}}-->
-        <FormsLayoutSelect
-            com-name="form-layout-select"
-            @select-form="page.callEvent('forms:select-layout', {
-              scope,
-              value: $event
-            })"></FormsLayoutSelect>
-      </template>
-    </CustomElement>
-
-<!--    <z-cascader></z-cascader>-->
-
-<!--    <z-options-manager></z-options-manager>-->
-
-<!--   <z-echarts-easy></z-echarts-easy>-->
 
     <template v-if="store.model.textarea_step">
       <!--      {{store.computedModel}}-->
@@ -214,7 +144,7 @@
 <script>
 
 import '@/plugins/form-render/ext.js';
-import {defineComponent, toRaw, onMounted} from "vue";
+import {defineComponent, toRaw, onMounted, provide} from "vue";
 import {
   extendControl2Page,
   useControl,
@@ -229,14 +159,7 @@ import FormManager from "@/views/about/components/FormManager.vue";
 import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
 import FormsLayoutSelect from "@/plugins/z-frame/components/FormsLayoutSelect.vue";
 import {FormsLayout} from "@/plugins/z-frame/formsLayout";
-
-// import 'ipinyinjs'
 import EwMathJax from "@/components/Ew/EwMathjax.vue";
-
-// import CnChar from 'cnchar'
-// import 'cnchar-poly'
-// import 'cnchar-order'
-
 import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 import ZEasyModal from "@/plugins/z-frame/ZEasyModal.vue";
 import ZCascader from "@/plugins/z-frame/components/ZCascader.vue";
@@ -246,7 +169,6 @@ import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
 import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
 import ZEchartsEasy from "@/plugins/z-frame/components/ZEchartsEasy.vue";
 import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
-import {request} from "@/plugins/z-request";
 import {formsToDef} from "@/plugins/z-frame/hooks/form";
 import {fetchVueTpl} from "@/hooks/remote";
 
@@ -286,6 +208,13 @@ export default defineComponent({
     let global_pageStoreName
     let global_path = currentRoute.query.path
     global_pageStoreName = currentRoute.query.storeName ?? VARS_PAGE_MODEL_NAME
+
+    let comMap = new Map();
+    provide('formPage', {
+      registerCom(key, value) {
+        comMap.set(key, value)
+      }
+    })
 
     function onInited({storeControl}) {
       page.commonLoadStep(
@@ -413,8 +342,24 @@ export default defineComponent({
         location.reload()
       },
       async ['call:save'](e) {
-
+        let { parts, partName, pathArr, process } = e
         try {
+          console.log(parts[partName],  page, comMap)
+          let pArr = []
+          comMap.forEach(function (value) {
+            if (value && value.saveData) {
+              pArr.push(
+                  new Promise (function(resolve, reject) {
+                    value.saveData().then((res) => {
+                      resolve(res)
+                    })
+                  })
+              )
+            }
+          })
+          Promise.all(pArr).then((resArr) => {
+            console.log(resArr)
+          })
           // let value = ZY.JSON5.parse(cachedPageControlModel.value)
           // let form = value.parts[0]
           // let props = ZY.JSON5.parse(form.properties)
@@ -432,15 +377,15 @@ export default defineComponent({
           //
           // cachedPageControlModel.value = ZY.JSON5.stringify(value)
           // console.log(value, props, cachedPageControlModel)
-          await page.dispatchRoot('SetStoreLocal', {
-            storeName: global_pageStoreName,
-            data: cachedPageControlModel
-          })
+          // await page.dispatchRoot('SetStoreLocal', {
+          //   storeName: global_pageStoreName,
+          //   data: cachedPageControlModel
+          // })
           // console.log(Lib)
 
-          window.parent.postMessage(
-              new Lib.CommandMessage('form:save', 1111),
-              '*')
+          // window.parent.postMessage(
+          //     new Lib.CommandMessage('form:save', 1111),
+          //     '*')
         } catch (e) {
           console.log('JSON5 parse err', e, cachedPageControlModel)
         }

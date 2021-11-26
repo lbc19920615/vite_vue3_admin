@@ -1,37 +1,41 @@
 <template>
   <template v-if="inited">
-    <z-easy-modal title="编辑"
-                  @opened="onOpened"
-                  @closed="onClosed"
-                  :modelAttr="{
+<!--    {{state.OPT.widgetConfig}}-->
+    <template v-if="state.OPT.widgetConfig && state.OPT.widgetConfig.flat">
+      <z-drag-xml :ins-vars="state.insVars" :ref="mainRef"></z-drag-xml>
+    </template>
+    <template v-else>
+      <z-easy-modal title="编辑"
+                    @opened="onOpened"
+                    @closed="onClosed"
+                    :modelAttr="{
                     width: '96vw',
                      appendToBody: true,
                      top: '10vh',
                      modalClass: 'el-dialog--no-modal'
                   }"
-                  :button-attr="{
+                    :button-attr="{
 
                     size: 'small'
                   }"
 
-    >
-      <template #button-content>编辑</template>
-      <template #default>
-<!--        {{state.insVars}}-->
-        <el-row>
-          <el-button type="primary" size="small"
-                     @click="saveData">保存</el-button>
-        </el-row>
-        <z-drag-xml :ins-vars="state.insVars" :ref="mainRef"></z-drag-xml>
-      </template>
-    </z-easy-modal>
-<!--    <z-drag-xml></z-drag-xml>-->
+      >
+        <template #button-content>编辑</template>
+        <template #default>
+          <el-row>
+            <el-button type="primary" size="small"
+                       @click="saveData">更新表结构</el-button>
+          </el-row>
+          <z-drag-xml :ins-vars="state.insVars" :ref="mainRef"></z-drag-xml>
+        </template>
+      </z-easy-modal>
+    </template>
   </template>
 
 </template>
 
 <script>
-import {inject, provide, toRaw} from 'vue'
+import {inject, onMounted, provide, toRaw} from 'vue'
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
 import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
 import ZEasyModal from "@/plugins/z-frame/components/ZEasyModal.vue";
@@ -49,6 +53,7 @@ export default {
     let JSON5 = ZY.JSON5
     let CusFormExpose = inject('CusFormExpose')
     let form_config = {}
+    let drag_xml_uuid = ZY.rid()
     provide('cusDragXml', {
       getFormConfig() {
         return Object.assign({
@@ -86,13 +91,10 @@ export default {
       methods.on_change(value)
     }
 
-    async function saveData() {
+    async function saveServer() {
       let ctx = getRef('main')
-      obj.props = ctx.getZprops()
-      obj.memos = ctx.getMemo()
-      obj.metas = {}
       let serverProps = ctx.getZprops(true)
-      console.log(serverProps)
+      // console.log(serverProps)
       // onChange()
       try {
         let res = await Req.post('/api/json', ZY.JSON5.stringify(serverProps))
@@ -103,6 +105,19 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    }
+
+    /**
+     * 保存
+     * @returns {Promise<void>}
+     */
+    async function saveData() {
+      let ctx = getRef('main')
+      obj.props = ctx.getZprops()
+      obj.memos = ctx.getMemo()
+      obj.metas = {}
+       await saveServer()
+      return obj
     }
 
     function onClosed() {
@@ -123,7 +138,7 @@ export default {
       if (CusFormExpose && CusFormExpose.getPartModel) {
         model = CusFormExpose.getPartModel()
         let ui = JSON5.parse(model.ui)
-        console.log('CusFormExpose', ui)
+        // console.log('CusFormExpose', ui)
         if (Array.isArray(ui.attrs)) {
           form_config = Object.fromEntries(ui.attrs)
         }
@@ -134,8 +149,9 @@ export default {
       }
     }
 
-    return {
+    let ret =  {
       onChange,
+      drag_xml_uuid,
       state,
       mainRef,
       onClosed,
@@ -145,6 +161,17 @@ export default {
       methods,
       listeners,
     }
+
+    onMounted(() => {
+      let formPage = inject('formPage')
+      if (formPage) {
+
+        formPage.registerCom(drag_xml_uuid, ret)
+      }
+    })
+
+
+    return ret
   },
 }
 </script>
