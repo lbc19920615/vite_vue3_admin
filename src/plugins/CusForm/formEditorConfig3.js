@@ -56,6 +56,7 @@ let formDef = {
               widget: 'CusDragXml',
               widgetConfig: {
                 // flat: true
+                hiddenAction: true
               }
             }
           },

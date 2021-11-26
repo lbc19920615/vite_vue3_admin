@@ -14,6 +14,7 @@ import CusStyleEditor from "@/components/CustomForm/CusStyleEditor.vue";
 import CusColorPicker from "@/components/CustomForm/CusColorPicker.vue";
 import CusInputNumber from "@/components/CustomForm/CusInputNumber.vue";
 import CusInput from "@/components/CustomForm/CusInput.vue";
+import CusAddress from "@/components/CustomForm/CusAddress.vue";
 import CusSwitch from "@/components/CustomForm/CusSwitch.vue";
 import CusOneOrMany from "@/components/CustomForm/CusOneOrMany.vue";
 import CusProps from "@/components/CustomForm/CusProps.vue";

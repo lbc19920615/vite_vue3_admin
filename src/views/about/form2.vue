@@ -156,21 +156,22 @@ import {FormsMana, useFormsMana} from "@/plugins/z-frame/formsMana";
 import {FormsEvent} from "@/plugins/z-frame/formsEvent";
 import FormsManaSelect from "@/plugins/z-frame/components/FormsManaSelect.vue";
 import FormManager from "@/views/about/components/FormManager.vue";
-import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
+// import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
 import FormsLayoutSelect from "@/plugins/z-frame/components/FormsLayoutSelect.vue";
 import {FormsLayout} from "@/plugins/z-frame/formsLayout";
-import EwMathJax from "@/components/Ew/EwMathjax.vue";
+// import EwMathJax from "@/components/Ew/EwMathjax.vue";
 import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
-import ZEasyModal from "@/plugins/z-frame/ZEasyModal.vue";
-import ZCascader from "@/plugins/z-frame/components/ZCascader.vue";
+// import ZEasyModal from "@/plugins/z-frame/ZEasyModal.vue";
+// import ZCascader from "@/plugins/z-frame/components/ZCascader.vue";
 import {useRouter2} from "@/hooks/router";
 import {VARS_PAGE_MODEL_NAME} from "@/vars";
-import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
-import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
-import ZEchartsEasy from "@/plugins/z-frame/components/ZEchartsEasy.vue";
-import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
+// import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
+// import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
+// import ZEchartsEasy from "@/plugins/z-frame/components/ZEchartsEasy.vue";
+// import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
 import {formsToDef} from "@/plugins/z-frame/hooks/form";
 import {fetchVueTpl} from "@/hooks/remote";
+import {useToolApi} from "@/hooks/api";
 
 
 export default defineComponent({
@@ -182,18 +183,18 @@ export default defineComponent({
     }
   },
   components: {
-    ZQuickDialog,
-    ZEchartsEasy,
-    ZOptionsManager,
-    ZDragXml,
-    ZCascader,
-    ZEasyModal,
-    EwMathJax,
+    // ZQuickDialog,
+    // ZEchartsEasy,
+    // ZOptionsManager,
+    // ZDragXml,
+    // ZCascader,
+    // ZEasyModal,
+    // EwMathJax,
     FormsLayoutSelect,
-    ZLayoutEditor,
+    // ZLayoutEditor,
     FormManager,
     FormsManaSelect,
-    CustomElement,
+    // CustomElement,
   },
   setup(props, ctx) {
 
@@ -208,6 +209,8 @@ export default defineComponent({
     let global_pageStoreName
     let global_path = currentRoute.query.path
     global_pageStoreName = currentRoute.query.storeName ?? VARS_PAGE_MODEL_NAME
+
+    let toolApi = useToolApi()
 
     let comMap = new Map();
     provide('formPage', {
@@ -345,47 +348,37 @@ export default defineComponent({
         let { parts, partName, pathArr, process } = e
         try {
           console.log(parts[partName],  page, comMap)
-          let pArr = []
-          comMap.forEach(function (value) {
-            if (value && value.saveData) {
-              pArr.push(
-                  new Promise (function(resolve, reject) {
-                    value.saveData().then((res) => {
-                      resolve(res)
-                    })
-                  })
-              )
-            }
-          })
-          Promise.all(pArr).then((resArr) => {
-            console.log(resArr)
-          })
-          // let value = ZY.JSON5.parse(cachedPageControlModel.value)
-          // let form = value.parts[0]
-          // let props = ZY.JSON5.parse(form.properties)
-          //
-          // let [err, res] = await ZY.awaitTo(
-          //     Req.post('/api/json', JSON.stringify(props))
-          // )
-          // if (err) {
-          //   console.log('assess_json err', err)
-          //   return;
-          // }
-          // form.metas = {
-          //   form_data: JSON.stringify(res.data)
-          // }
-          //
-          // cachedPageControlModel.value = ZY.JSON5.stringify(value)
-          // console.log(value, props, cachedPageControlModel)
-          // await page.dispatchRoot('SetStoreLocal', {
-          //   storeName: global_pageStoreName,
-          //   data: cachedPageControlModel
+          // let pArr = []
+          // comMap.forEach(function (value) {
+          //   if (value && value.saveData) {
+          //     pArr.push(
+          //         new Promise (function(resolve, reject) {
+          //           value.saveData().then((res) => {
+          //             resolve(res)
+          //           })
+          //         })
+          //     )
+          //   }
           // })
-          // console.log(Lib)
+          // Promise.all(pArr).then((resArr) => {
+          //   console.log(resArr)
+          // })
+          let value = ZY.JSON5.parse(cachedPageControlModel.value)
+          let form = value.parts[0]
+          let res = await toolApi.saveJson(form.properties)
+          form.metas = {
+            form_data: res
+          }
+          cachedPageControlModel.value = ZY.JSON5.stringify(value)
 
-          // window.parent.postMessage(
-          //     new Lib.CommandMessage('form:save', 1111),
-          //     '*')
+          console.log(form, res, cachedPageControlModel)
+          await page.dispatchRoot('SetStoreLocal', {
+            storeName: global_pageStoreName,
+            data: cachedPageControlModel
+          })
+          window.parent.postMessage(
+              new Lib.CommandMessage('form:save', 1111),
+              '*')
         } catch (e) {
           console.log('JSON5 parse err', e, cachedPageControlModel)
         }

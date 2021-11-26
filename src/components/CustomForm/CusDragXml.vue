@@ -22,10 +22,14 @@
       >
         <template #button-content>编辑</template>
         <template #default>
-          <el-row>
-            <el-button type="primary" size="small"
-                       @click="saveData">更新表结构</el-button>
-          </el-row>
+
+          <template v-if="state.OPT.widgetConfig && state.OPT.widgetConfig.hiddenAction"></template>
+          <template v-else>
+            <el-row>
+              <el-button type="primary" size="small"
+                         @click="saveData">更新表结构</el-button>
+            </el-row>
+          </template>
           <z-drag-xml :ins-vars="state.insVars" :ref="mainRef"></z-drag-xml>
         </template>
       </z-easy-modal>
@@ -41,6 +45,7 @@ import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
 import ZEasyModal from "@/plugins/z-frame/components/ZEasyModal.vue";
 
 import { request, context } from '@/plugins/z-request/index.js'
+import {useToolApi} from "@/hooks/api";
 
 export default {
   name: 'CusDragXml',
@@ -91,21 +96,7 @@ export default {
       methods.on_change(value)
     }
 
-    async function saveServer() {
-      let ctx = getRef('main')
-      let serverProps = ctx.getZprops(true)
-      // console.log(serverProps)
-      // onChange()
-      try {
-        let res = await Req.post('/api/json', ZY.JSON5.stringify(serverProps))
-        obj.metas = {
-          form_data: res.data
-        }
-        onChange()
-      } catch (e) {
-        console.log(e)
-      }
-    }
+    let toolApi = useToolApi()
 
     /**
      * 保存
@@ -116,7 +107,9 @@ export default {
       obj.props = ctx.getZprops()
       obj.memos = ctx.getMemo()
       obj.metas = {}
-       await saveServer()
+      obj.metas.form_data  = await toolApi.saveJson(ZY.JSON5.stringify(obj.props))
+
+      onChange()
       return obj
     }
 

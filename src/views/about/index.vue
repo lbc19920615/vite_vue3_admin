@@ -92,7 +92,7 @@
 <!--    <z-wang-editor></z-wang-editor>-->
 
 <!--    <z-style-editor></z-style-editor>-->
-    <z-address></z-address>
+<!--    <z-address></z-address>-->
 
     <template v-if="store.model.textarea_step">
       <!--      {{store.computedModel}}-->
