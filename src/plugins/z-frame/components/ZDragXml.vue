@@ -123,7 +123,7 @@ mobile: 375px,
               <v-json-viewer
                   :expand-depth=10  :expanded="true"
                   boxed
-                  :value="getZprops()"></v-json-viewer>
+                  :value="getZprops(false)"></v-json-viewer>
             </template>
           </z-easy-modal>
 <!--          <el-button class="a-space-ml-10" size="small" @click="exportFile">导出</el-button>-->
@@ -663,6 +663,7 @@ export default {
       //   wrap_config.ins = deepMerge(export_data,
       //       ins)
       // }
+      // console.log(wrap_config)
       return wrap_config
     }
 
@@ -675,7 +676,20 @@ export default {
       return field_key
     }
 
-    function traveralTree(data = [], context, pathArr = []) {
+    function resolveServerConfig(config) {
+      // console.log('resolveServerConfig', config)
+      if (config.ins) {
+        if (config.ins.ui) {
+          Reflect.deleteProperty(config.ins, 'ui')
+        }
+        // if (config.ins.ui) {
+        //   Reflect.deleteProperty(config.ins, 'ui')
+        // }
+      }
+      return config
+    }
+
+    function traveralTree(data = [], context, pathArr = [], options = {}) {
       // console.log(pathArr)
       let s_path = ZY.getObjPathFromPathArr(pathArr)
       let target = ZY.deepGet(context.res, s_path)
@@ -688,9 +702,15 @@ export default {
             let gridItem = item.children.find(v => v.gridItemUUID === propKey)
             if (gridItem) {
               let wrap_config = getParsedConfig(propKey)
+              if (options.isServer) {
+                wrap_config = resolveServerConfig(wrap_config)
+              }
               // console.log(wrap_config)
               propKey = gridItem.itemUUID
               let config =  getParsedConfig(propKey)
+              if (options.isServer) {
+                config = resolveServerConfig(config)
+              }
               // console.log(propKey)
               target[propKey] = {
                 type: 'string',
@@ -712,6 +732,9 @@ export default {
               isObjectItem
           ) {
             let config = getParsedConfig(propKey, item)
+            if (options.isServer) {
+              config = resolveServerConfig(config)
+            }
             let field_key = getZpropsFieldKey(config, 'subform__')
             let properties = {}
             target[field_key] = {
@@ -726,9 +749,12 @@ export default {
 
             context.pathArr = pathArr.concat( [field_key, 'properties'] )
 
-            traveralTree(item.children, context, context.pathArr)
+            traveralTree(item.children, context, context.pathArr, options)
           } else {
             let config = getParsedConfig(propKey, item)
+            if (options.isServer) {
+              config = resolveServerConfig(config)
+            }
             let field_key = getZpropsFieldKey(config)
             // console.log( field_key)
             if (target) {
@@ -752,7 +778,7 @@ export default {
       })
     }
 
-    function getZprops() {
+    function getZprops(isServer =false) {
       let dragConfig = treeState.dragConfig
       // console.log(dragConfig)
       let context = {
@@ -778,7 +804,7 @@ export default {
         }
       }
       if (Array.isArray(treeState.data)) {
-        traveralTree(treeState.data, context, [])
+        traveralTree(treeState.data, context, [], {isServer})
         // console.log(context.res)
         // return context.res
         propsDef.properties = context.res

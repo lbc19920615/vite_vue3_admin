@@ -415,23 +415,23 @@ export default defineComponent({
       async ['call:save'](e) {
 
         try {
-          let value = ZY.JSON5.parse(cachedPageControlModel.value)
-          let form = value.parts[0]
-          let props = ZY.JSON5.parse(form.properties)
-
-          let [err, res] = await ZY.awaitTo(
-              Req.post('/api/json', JSON.stringify(props))
-          )
-          if (err) {
-            console.log('assess_json err', err)
-            return;
-          }
-          form.metas = {
-            form_data: JSON.stringify(res.data)
-          }
-
-          cachedPageControlModel.value = ZY.JSON5.stringify(value)
-          console.log(value, props, cachedPageControlModel)
+          // let value = ZY.JSON5.parse(cachedPageControlModel.value)
+          // let form = value.parts[0]
+          // let props = ZY.JSON5.parse(form.properties)
+          //
+          // let [err, res] = await ZY.awaitTo(
+          //     Req.post('/api/json', JSON.stringify(props))
+          // )
+          // if (err) {
+          //   console.log('assess_json err', err)
+          //   return;
+          // }
+          // form.metas = {
+          //   form_data: JSON.stringify(res.data)
+          // }
+          //
+          // cachedPageControlModel.value = ZY.JSON5.stringify(value)
+          // console.log(value, props, cachedPageControlModel)
           await page.dispatchRoot('SetStoreLocal', {
             storeName: global_pageStoreName,
             data: cachedPageControlModel

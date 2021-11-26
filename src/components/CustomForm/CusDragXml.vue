@@ -91,16 +91,18 @@ export default {
       obj.props = ctx.getZprops()
       obj.memos = ctx.getMemo()
       obj.metas = {}
-      onChange()
-      // try {
-      //   let res = await Req.post('/api-assess/assess_json/json', JSON.stringify(obj.props))
-      //   obj.metas = {
-      //     form_data: res.data
-      //   }
-      //   onChange()
-      // } catch (e) {
-      //   console.log(e)
-      // }
+      let serverProps = ctx.getZprops(true)
+      console.log(serverProps)
+      // onChange()
+      try {
+        let res = await Req.post('/api/json', ZY.JSON5.stringify(serverProps))
+        obj.metas = {
+          form_data: res.data
+        }
+        onChange()
+      } catch (e) {
+        console.log(e)
+      }
     }
 
     function onClosed() {
