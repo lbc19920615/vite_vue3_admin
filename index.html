@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{TITLE}}</title>
+    <title><%= TITLE %></title>
 <!--  <script async  src="es-module-shims.js"></script>-->
 
 
@@ -13,8 +13,9 @@
 <!--      href="https://cdn.jsdelivr.net/npm/vant@next/lib/index.css"-->
 <!--    />-->
 <!--    <link rel="stylesheet" href="./fFace.css">-->
-      <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <script src="/pinyin_dict_withtone.js"></script>
+    <script src="twig.min.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+<!--    <script src="/pinyin_dict_withtone.js"></script>-->
 <!--    <script src="/pinyin_dict_polyphone.js"></script>-->
 <!--    <script id="MathJax-script" async src="mathjax/tex-chtml.js"></script>-->
 <!--    <script src="pinyin_dict_firstletter.js"></script>-->
@@ -26,7 +27,230 @@
     </style>
   </head>
   <body>
-{% include './src/htmls/template.html' %}
+  <template id="apptpl">
+    <style>
+        .prop-selected {
+            border: 1px solid;
+            background: aliceblue;
+        }
+
+        [current-to-move] {
+            /*background-color: #0d84ff;*/
+            border: 1px dashed #0d84ff;
+            /*border-bottom: 2px solid;*/
+            /*border-bottom-color: #0d84ff;*/
+            pointer-events: none;
+            position: relative;
+            background-color: #eeeeee;
+            opacity: .5;
+        }
+    </style>
+
+    <template>
+      <div class="z-page">
+        <template v-if="page.inited">
+          {% verbatim %}
+          <template v-if="renderC.state.refresh">
+            <render-layout :map="renderC.state.currentLayoutMap"
+                           :id="renderC.state.rootId"
+                           :handleNext="renderC.handleNext"
+                           :handleDefMap="handleDefMap"
+                           :page="page">
+              {% endverbatim %}
+              {{CONFIG.layoutSlots}}
+              {% verbatim %}
+            </render-layout>
+          </template>
+          {% endverbatim %}
+
+        </template>
+        <div id="debug"></div>
+      </div>
+    </template>
+
+    <script>
+      window.Z_PAGE_VERSION = '1.0.0'
+
+      export default {
+        setup() {
+          const { reactive } = global.Vue;
+          let stepMap = reactive({
+
+          })
+
+          const 循环 = ZY.lodash.each;
+          const 获取 = ZY.lodash.get;
+          const 默认值 = ZY.lodash.defaultTo;
+
+          class 工具 {
+            static 设置函数(events = []) {
+              let obj = {}
+              events.forEach(event => {
+                obj[event.name] = new ZY.AsyncFunction('e', event.code)
+              })
+              page.setEventHandler(obj)
+            }
+
+            /**
+             * 初始化
+             * @param eventModel
+             */
+            static 初始化(eventModel = {events: [], forms: []}) {
+              // console.log(eventModel)
+              this.设置函数(eventModel.events);
+              let forms = eventModel.forms;
+
+              循环(forms, form=> {
+                let {value, name} = form
+                let obj = ZY.JSON5.parse(value)
+                let formDef = buildFormDep(obj, name, {
+                  src: 'comformscr2.twig'
+                });
+                setDefMap(formDef, name)
+              })
+            }
+
+            static 打开弹窗(refName = '') {
+              if (refName) {
+                let context = page.modalManRef.find(refName)
+
+                // console.log('sdsdsdsdsdsds', context)
+                if (context && context.toggle) {
+                  context.toggle(true)
+                }
+              }
+            }
+
+            static 设置步骤(defMap = {}){
+              // let defMap = {
+              //   test: 'process-step1'
+              // }
+              // console.log('设置步骤', defMap)
+              for (let [key, value] of Object.entries(defMap)) {
+                stepMap[key] = defMap[key]
+              }
+            }
+          }
+          globalThis.工具 = 工具
+          globalThis.T = 工具
+
+          let renderC = useRenderControl()
+          {{ CONFIG.pageProperties }}
+          {{ CONFIG.beforeScript }}
+
+          let computed = {}
+          let page = useControl({properties, computed}, {
+            onInited
+          })
+          page = extendControl2Page(page)
+          page = useAppPageControl(page)
+          let { EVENT_NAMES } = extendCommonArrEventHandler(page)
+
+          useGlobalEasy(page)
+
+          function setDefMap(obj, name = obj.name) {
+            page.defMap.set(name, obj)
+          }
+
+          function handleDefMap(partName) {
+            let is = stepMap[partName]
+            // console.log(partName)
+            if (page.defMap.has(is)) {
+              return page.defMap.get(is)
+            }
+            return '{}'
+          }
+
+          // console.log(EVENT_NAMES)
+          let callEvent = page.callEvent
+
+          async function onInited({storeControl}) {
+            renderC.detectLayout()
+            renderC.detectEvent((events, PAGE_CONTEXT = {}) => {
+              const CURRENT_DATA = PAGE_CONTEXT.currentData
+              const IS_FIRST_RENDER = PAGE_CONTEXT.isFirst
+              {{ CONFIG.onInited }}
+              // console.log('sdsds', PAGE_CONTEXT)
+            })
+          }
+
+          page.stepMap = stepMap
+
+          return {
+            EVENT_NAMES,
+            stepMap,
+            callEvent,
+            handleDefMap,
+            page,
+            renderC
+          }
+        }
+      }
+    </script>
+  </template>
+
+  <script>
+    ;(function () {
+      setTimeout(() => {
+        let apptpl = document.getElementById('apptpl').innerHTML
+        let t = Twig.twig({
+          id: 'apptpl',
+          // data: apptpl,
+          data: 'The {{ baked_good }} is a lie.'
+          // allowInlineIncludes: true
+        });
+        let ret = t.render({
+          baked_good: 'cupcake',
+          // CONFIG: {
+          //   onInited: "T.设置步骤({\n  test: '表单1',\n  test2: 'form-F3hXin___mcd'\n}); \nT.初始化(CURRENT_DATA);"
+          // }
+        })
+        console.log(apptpl)
+      }, 1000)
+    })();
+  </script>
+
+  <script>
+    globalThis.importScripts = function (p = '') {
+      return import(p)
+    }
+  </script>
+  <template id="loading-tpl">
+    <div
+        style="position: fixed; left: 0; top: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"
+    >
+      <div style="font-size: 60px;"><a face="fuck" class="s_face">&nbsp;</a>Loading...</div>
+    </div>
+  </template>
+
+  <script>
+    class AppLoading extends HTMLElement {
+      constructor() {
+        super();
+        let tmpl = document.getElementById('loading-tpl')
+        let shadowRoot = this.attachShadow({mode: 'open'});
+        shadowRoot.appendChild(tmpl.content.cloneNode(true));
+      }
+    }
+    window.customElements.define('app-loading', AppLoading);
+
+    class ZMath extends HTMLElement {
+      get name() {
+        return this.getAttribute('name');
+      }
+
+      constructor() {
+        super();
+        let shadowRoot = this.attachShadow({mode: 'open'});
+        shadowRoot.innerHTML = `<xy-text mark>${this.name}</xy-text><slot></slot><xy-text mark>)</xy-text>`
+      }
+    }
+
+    window.customElements.define('z-math', ZMath);
+
+
+  </script>
+
 <script>
   {
     const COMMON_EVAL_FUNS = {
