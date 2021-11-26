@@ -2,7 +2,7 @@
   <template v-if="inited">
 <!--    {{widgetConfig.enums}}-->
 <!--{{state.value}}-->
-   <z-style-editor :value="state.value" @val:change="onChange" :ref="mainRef"></z-style-editor>
+   <z-style-editor :ext-keys="extKeys" :value="state.value" @val:change="onChange" :ref="mainRef"></z-style-editor>
   </template>
 
 </template>
@@ -41,11 +41,18 @@ export default {
       // console.log('onChange', e)
       methods.on_change(e)
     }
+    let extKeys = [
+      {
+        label: 'w-e-content-container',
+        value: '.w-e-content-container'
+      }
+    ]
 
     return {
       state,
       widgetConfig: widgetConfig2,
       mainRef,
+      extKeys,
       onChange,
       methods,
       listeners,
