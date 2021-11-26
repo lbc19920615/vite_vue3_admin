@@ -195,17 +195,15 @@
         let apptpl = document.getElementById('apptpl').innerHTML
         let t = Twig.twig({
           id: 'apptpl',
-          // data: apptpl,
-          data: 'The {{ baked_good }} is a lie.'
-          // allowInlineIncludes: true
+          data: apptpl,
+          allowInlineIncludes: true
         });
         let ret = t.render({
-          baked_good: 'cupcake',
-          // CONFIG: {
-          //   onInited: "T.设置步骤({\n  test: '表单1',\n  test2: 'form-F3hXin___mcd'\n}); \nT.初始化(CURRENT_DATA);"
-          // }
+          CONFIG: {
+            onInited: "T.设置步骤({\n  test: '表单1',\n  test2: 'form-F3hXin___mcd'\n}); \nT.初始化(CURRENT_DATA);"
+          }
         })
-        console.log(apptpl)
+        console.log(ret)
       }, 1000)
     })();
   </script>
