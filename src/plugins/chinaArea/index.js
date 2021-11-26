@@ -1,3 +1,8 @@
+/**
+ * initChinaAreaManangerFromUrl
+ * @param url
+ * @returns {Promise<{}>}
+ */
 export async function initChinaAreaManangerFromUrl(url = '') {
     let obj = {}
     let manager = {}

@@ -176,9 +176,7 @@ comPlugin.install = function (app) {
 
 
 ;(async function () {
-  globalThis.chinaAreaManager = await initChinaAreaManangerFromUrl(
-    ZY.REMOTE_ORIGIN + '/public/area.json'
-  )
+
 
   await init_router_start()
 
@@ -240,6 +238,12 @@ comPlugin.install = function (app) {
 
     return app
   }
+
+  initChinaAreaManangerFromUrl(
+    ZY.REMOTE_ORIGIN + '/public/area.json'
+  ).then((res) => {
+    globalThis.chinaAreaManager = res
+  })
 
   globalThis.app = window.startApp()
 })()

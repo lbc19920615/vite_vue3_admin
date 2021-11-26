@@ -92,6 +92,7 @@
 <!--    <z-wang-editor></z-wang-editor>-->
 
 <!--    <z-style-editor></z-style-editor>-->
+    <z-address></z-address>
 
     <template v-if="store.model.textarea_step">
       <!--      {{store.computedModel}}-->
@@ -228,13 +229,7 @@ import FormManager from "@/views/about/components/FormManager.vue";
 import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
 import FormsLayoutSelect from "@/plugins/z-frame/components/FormsLayoutSelect.vue";
 import {FormsLayout} from "@/plugins/z-frame/formsLayout";
-
-// import 'ipinyinjs'
 import EwMathJax from "@/components/Ew/EwMathjax.vue";
-
-// import CnChar from 'cnchar'
-// import 'cnchar-poly'
-// import 'cnchar-order'
 import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 import ZEasyModal from "@/plugins/z-frame/ZEasyModal.vue";
 import ZCascader from "@/plugins/z-frame/components/ZCascader.vue";
@@ -244,40 +239,9 @@ import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
 import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
 import ZEchartsEasy from "@/plugins/z-frame/components/ZEchartsEasy.vue";
 import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
-
-
-// import { request, context } from '@/plugins/z-request/index.js'
-import ZWangEditor from "@/plugins/z-frame/components/ZWangEditor.vue";
-import ZStyleEditor from "@/plugins/z-frame/components/ZStyleEditor.vue";
-// console.log(import.meta.env)
-
-// globalThis.CnChar = CnChar
-//
-// globalThis.sortCnCharStroke = function (chars = []) {
-//   return chars.sort(function (a, b) {
-//     let ret =  CnChar.compareStroke(a, b)
-//     if (ret === 'more') {
-//       return 1
-//     }
-//     else if (ret === 'less') {
-//       return -1
-//     }
-//     return 0
-//   })
-// }
-//
-// globalThis.sortCnCharSpell = function (chars = []) {
-//   return chars.sort(function (a, b) {
-//     let ret =  CnChar.compareSpell(a, b)
-//     if (ret === 'more') {
-//       return 1
-//     }
-//     else if (ret === 'less') {
-//       return -1
-//     }
-//     return 0
-//   })
-// }
+// import ZWangEditor from "@/plugins/z-frame/components/ZWangEditor.vue";
+// import ZStyleEditor from "@/plugins/z-frame/components/ZStyleEditor.vue";
+import ZAddress from "@/plugins/z-frame/components/ZAddress.vue";
 
 
 export default defineComponent({
@@ -289,8 +253,9 @@ export default defineComponent({
     }
   },
   components: {
-    ZStyleEditor,
-    ZWangEditor,
+    ZAddress,
+    // ZStyleEditor,
+    // ZWangEditor,
     ZQuickDialog,
     ZEchartsEasy,
     ZOptionsManager,
