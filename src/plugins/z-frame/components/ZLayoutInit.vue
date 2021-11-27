@@ -310,7 +310,14 @@ export default {
         if (com.DRAG_CONFIG) {
           DRAG_CONFIG = com.DRAG_CONFIG
         }
-        // console.log('buildAppend', com, DRAG_CONFIG)
+        // console.log('buildAppend', def, com)
+        if(def[0] && def[0]?.com?.DRAG_SUB_FORM) {
+          console.log('this has subform', com.DRAG_SUB_FORM)
+          //  子表单不能插入子表单
+          if (com.DRAG_SUB_FORM) {
+            return ;
+          }
+        }
         config =  DRAG_CONFIG()?? {}
         if (def.length < props.columnMax) {
           let itemUUID =  'z_layout_item__' + ZY.rid(10)

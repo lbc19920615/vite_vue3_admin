@@ -1192,6 +1192,7 @@ export default {
       }
 
       if (currentDragEnterContext) {
+        console.log(currentDragEnterContext, com, trueDom)
         currentDragEnterContext.append(com, trueDom)
       }
     }
