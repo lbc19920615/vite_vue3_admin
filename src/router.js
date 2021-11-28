@@ -2,8 +2,8 @@ import { createWebHistory, createRouter, createRouterMatcher } from "vue-router"
 
 
 import Layout from './views/layout/Layout.vue'
-import {loadPage} from "@/remote";
-import store from "@/store";
+import {loadPage} from "@/remote.js";
+import store from "@/store/index";
 import {VARS_PAGE_MODEL_NAME, APP_STORE_NAME} from "@/vars";
 import {app_buildDeepTree, app_initRoutesFromJSON5} from "@/hooks/app";
 
