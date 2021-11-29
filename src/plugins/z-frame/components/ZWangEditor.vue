@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import '@wangeditor/editor/dist/css/style.css'
-import { createEditor, createToolbar } from '@wangeditor/editor'
+// import '@wangeditor/editor/dist/css/style.css'
+// import { createEditor, createToolbar } from '@wangeditor/editor'
 import {onBeforeUnmount, onMounted, watch} from "vue";
 
 export default {
@@ -17,7 +17,7 @@ export default {
     value: String
   },
   setup(props, ctx) {
-
+    const {createEditor, createToolbar } = window.wangEditor
 
     let editorID = 'z_editor_e__' + ZY.rid()
     let toolbarID = 'z_editor_t__' + ZY.rid()

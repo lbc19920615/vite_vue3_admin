@@ -84,6 +84,7 @@ export async function fetchVueComponent({def, args}) {
     // data.append('source', JSON.stringify(def))
     // let tpl = await fetchContentV3(data, args)
     let tpl = await fetchVueTpl({def, args})
+    console.log(tpl)
     return parseComponent(tpl)
 }
 
@@ -116,7 +117,11 @@ export async function loadComponent(p, comName = '', {handleScript, handleTpl, s
     if (handleTpl) {
         tpl = handleTpl(tpl)
     }
-    console.log(tpl)
+    console.log({
+        name: comName,
+        template: tpl,
+        ...script.default
+    })
     return {
         name: comName,
         template: tpl,

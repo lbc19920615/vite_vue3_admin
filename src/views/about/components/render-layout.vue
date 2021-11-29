@@ -1,15 +1,15 @@
 <template>
   <div class="render-layout" :class="['render-layout-level-' + level]">
+<!--     {{curObj.type}}-->
       <grid-column :class="levelItemCls" v-if="curObj.type === 'column'"
                 :layout="curObj.items"
                 :attrs="curObj.data.attrs"
       >
         <template v-slot:default="{item}">
-<!--          {{getNext(item)}}-->
           <render-layout :level="level + 1" :map="map" :handle-next="handleNext"
                          :handle-def-map="handleDefMap"
                          :page="page"
-                         :slotContent="innerSlots"
+                         :slot-content="innerSlots"
                          :id="getNext(item)">
           </render-layout>
         </template>
@@ -23,7 +23,7 @@
           <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"
                          :handle-def-map="handleDefMap"
                          :page="page"
-                         :slotContent="innerSlots"
+                         :slot-content="innerSlots"
                          :id="getNext(item)">
           </render-layout>
         </template>
@@ -39,7 +39,7 @@
             <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"
                            :handle-def-map="handleDefMap"
                            :page="page"
-                           :slotContent="innerSlots"
+                           :slot-content="innerSlots"
                            :id="getNext(item)">
             </render-layout>
           </template>
@@ -56,7 +56,7 @@
           <render-layout :level="level + 1" :map="map"  :handle-next="handleNext"
                          :handle-def-map="handleDefMap"
                          :page="page"
-                         :slotContent="innerSlots"
+                         :slot-content="innerSlots"
                          :id="getNext(item)">
           </render-layout>
         </template>
@@ -77,13 +77,13 @@
 
           <template  v-if="getShow(getObj(curObj, 'data.partName', 'UNDEFINED'))">
 <!--{{getDef(getObj(curObj, 'data.partName', 'UNDEFINED'))}}-->
-            <AutoHttpCom
-                :slotContent="innerSlots"
+            <auto-http-com
+                :slot-content="innerSlots"
                 :page="page"
                 :def="getDef(getObj(curObj, 'data.partName', 'UNDEFINED'))"
                 :is="getObj(page.stepMap, getObj(curObj, 'data.partName', 'UNDEFINED'))"
             >
-            </AutoHttpCom>
+            </auto-http-com>
           </template>
 
 

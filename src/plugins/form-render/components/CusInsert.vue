@@ -193,23 +193,6 @@
         :append-to-body="true"
     >
       <div  class="cus-insert-keyboard" tabindex="-1"   @keydown="onPopupkeyup">
-<!--        <div style="border: 1px solid #eee; min-height: 40px; display: flex; align-items: center; flex-wrap: nowrap;">-->
-<!--          <template v-if="state.parsedText"><div-->
-<!--              v-for="item in state.parsedText">{{item}}</div></template>-->
-<!--          <span>{{state.pingyin}}</span>-->
-<!--        </div>-->
-<!--        <div v-if="state.parsedList && state.parsedList[0]">-->
-<!--          <div style="width: 100%; overflow: auto" >-->
-<!--            <div style="display: flex; align-items: center; flex-wrap: nowrap">-->
-<!--        <span @click="selectCnText(item)" class="a-space-ph-10"-->
-<!--             v-for="item in sortSuggest(state.parsedList[0])">{{item}}</span>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <el-row >input输入：-->
-<!--                  <div style="flex: 1" contenteditable="true" tabindex="-1" autofocus></div>-->
-<!--          <el-button>插入</el-button>-->
-<!--        </el-row>-->
        <div> 变量：
          <template v-for="item in insertedVars">
            <el-popover trigger="hover" width="450" placement="top">
@@ -765,10 +748,6 @@ export default {
       }
     }
 
-    function sortSuggest(arr = []) {
-      // console.log('sortSuggest', arr)
-       return globalThis.sortCnCharSpell(arr)
-    }
 
     function onInsertkeyup(e) {
       handleKeyUP(e)
@@ -964,7 +943,6 @@ export default {
       backStep,
       hid,
       lifeTimes,
-      sortSuggest,
       insertedText,
       insertedFun,
       insertTVars,

@@ -52,8 +52,9 @@ export function useRenderControl() {
     })
 
     function handleNext(item) {
-        let fromId = item.id
-        let connections = state.currentLinks.filter(v => v.from === fromId)
+        let fromId = item.id;
+        // console.log(state);
+        let connections = state.currentLinks.filter(v => v.from === fromId);
         if (Array.isArray(connections)) {
             // return connection.toPID
             if (connections[0]) {

@@ -166,12 +166,18 @@ import {initChinaAreaManangerFromUrl} from "@/plugins/chinaArea";
 
 import EmProps from "@/components/EmProps.vue";
 import EmPropsItem from "@/components/EmPropsItem.vue";
+import RenderLayout from '@/views/about/components/render-layout.vue'
 function comPlugin() {
 }
 comPlugin.install = function (app) {
   CustomVueComponent.app = app
   CustomVueComponent.register(EmProps)
   CustomVueComponent.register(EmPropsItem)
+
+  // CustomVueComponent.register(GridRow)
+  // CustomVueComponent.register(GridColumn)
+
+  CustomVueComponent.register(RenderLayout)
 };
 
 
@@ -246,4 +252,20 @@ comPlugin.install = function (app) {
   })
 
   globalThis.app = window.startApp()
+
+  // ;(function () {
+  //   setTimeout(async () => {
+  //     let CONFIG = await ZY_EXT.store.getItem("name-page-store")
+  //     let apptpl = document.getElementById('apptpl').innerHTML
+  //     let t = Twig.twig({
+  //       id: 'apptpl',
+  //       data: apptpl,
+  //       allowInlineIncludes: true
+  //     });
+  //     let ret = t.render({
+  //       CONFIG: CONFIG
+  //     })
+  //     console.log(ret)
+  //   }, 1000)
+  // })();
 })()

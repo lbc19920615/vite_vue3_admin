@@ -32,7 +32,6 @@ import ZPagination from "@/plugins/z-table/components/ZPagination.vue";
 import jsxCom from '@/components/jsxcom.vue'
 
 import HttpComponent from '@/components/HttpComponent.vue'
-import RenderLayout from '@/views/about/components/render-layout.vue'
 
 let cachedApp = null
 
@@ -42,7 +41,6 @@ const plugin = {
     install(app) {
         cachedApp = app
         CustomVueComponent.app = app
-        CustomVueComponent.register(RenderLayout)
 
 
         CustomVueComponent.register(CustomFormRender)
