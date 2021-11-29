@@ -184,7 +184,15 @@ comPlugin.install = function (app) {
 
 
 ;(async function () {
-
+  fetch(ZY.REMOTE_ORIGIN + '/public/render/comformscr2.twig').then(res => {
+    return res.text()
+  }).then((str) => {
+    let tpl = document.createElement('script');
+    tpl.id="tpl_comformscr2";
+    tpl.type = 'template';
+    tpl.innerHTML = str
+    document.body.append(tpl)
+  })
 
   await init_router_start()
 
@@ -257,6 +265,8 @@ comPlugin.install = function (app) {
 
   ;(function () {
     setTimeout(async () => {
+
+
       let CONFIG = await ZY_EXT.store.getItem("name-page-store")
       let form = CONFIG.forms[0]
       let formCONFIG = ZY.JSON5.parse(form.value);
