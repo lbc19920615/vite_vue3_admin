@@ -168,6 +168,11 @@ function appendConfigRouters(routes = []) {
 export async function init_router_start() {
 
   let APP_MODEL =  await ZY_EXT.store.getItem(APP_STORE_NAME)
+  if (!APP_MODEL) {
+    APP_MODEL = {
+      routers: []
+    }
+  }
   try {
     let str = app_buildDeepTree(APP_MODEL.routers)
     let arr = app_initRoutesFromJSON5(str)
