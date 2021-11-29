@@ -168,6 +168,7 @@ import EmProps from "@/components/EmProps.vue";
 import EmPropsItem from "@/components/EmPropsItem.vue";
 import RenderLayout from '@/views/about/components/render-layout.vue'
 import {renderForm} from "@/utils/tpllib";
+import {buildFormDep} from "@/plugins/z-page/build";
 function comPlugin() {
 }
 comPlugin.install = function (app) {
@@ -258,6 +259,11 @@ comPlugin.install = function (app) {
     setTimeout(async () => {
       let CONFIG = await ZY_EXT.store.getItem("name-page-store")
       let form = CONFIG.forms[0]
+      let formCONFIG = ZY.JSON5.parse(form.value);
+      let formDef = buildFormDep(formCONFIG, form.name, {
+        src: 'comformscr2.twig'
+      })
+      console.log(formDef)
       // let apptpl = document.getElementById('apptpl').innerHTML
       // let t = Twig.twig({
       //   id: 'apptpl',
@@ -276,9 +282,7 @@ comPlugin.install = function (app) {
       }
 
 
-      function renderCOM(form) {
-        let formCONFIG = ZY.JSON5.parse(form.value);
-        console.log(formCONFIG)
+      function renderCOM(formCONFIG) {
         let partStr = {};
         if (Array.isArray(formCONFIG.parts)) {
           formCONFIG.parts.forEach((part, index) => {
@@ -286,16 +290,17 @@ comPlugin.install = function (app) {
             //   depth: null
             // });
             const modelKey = 'parts.' + part.name + '.model';
-            const partConfigKey = 'config.parts[' + index + ']';
+            const partConfigKey = 'config.parts[' + index + '].def';
 
-            partStr[part.name]  = BASE_renderForm(part, modelKey, partConfigKey,
+            partStr[part.name]  = BASE_renderForm(part.def, modelKey, partConfigKey,
               { part, BASE_PATH: modelKey, CONFIG, partKey: `parts.${part.name}` })
           })
         }
         console.log(partStr)
       }
 
-      renderCOM(form)
+
+      renderCOM(      formDef.init.def)
     }, 1000)
   })();
 })()

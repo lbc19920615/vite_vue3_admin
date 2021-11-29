@@ -84,6 +84,19 @@ function attr2Str(attrs = [], context = {}) {
   return str.trim();
 }
 
+/**
+ * attrStr
+ * @param p {{}}  config
+ * @param k {string} key
+ * @param context
+ * @return {string}
+ */
+function attrStr(p, k = 'ui.attrs', context = {}) {
+  const attrs = lodash.get(p, k);
+  return attr2Str(attrs, context)
+}
+
+
 function getSelfPath(basePath, BASE_PATH) {
   let fromPath = basePath.replace(BASE_PATH, '');
   if (fromPath.startsWith('.')) {
@@ -93,7 +106,7 @@ function getSelfPath(basePath, BASE_PATH) {
 }
 
 /**
- * attrStr
+ * attrStyles
  * @param p {{}}  config
  * @param k {string} key
  * @param context
