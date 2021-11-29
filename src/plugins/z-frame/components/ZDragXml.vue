@@ -1917,7 +1917,7 @@ export default {
         server: {
         }
       }, _cached?.ins ?? {})
-      // console.log('defaultVal',  _cached?.ins, defaultVal)
+      console.log('defaultVal',  _cached?.ins, defaultVal)
       return {
         default: createCusWidgetEditorConfig(formDef,
             computed,

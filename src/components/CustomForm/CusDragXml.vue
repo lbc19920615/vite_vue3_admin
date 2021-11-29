@@ -68,7 +68,7 @@ export default {
     })
 
     let obj = {}
-    let { data, methods, listeners, init, widgetConfig2, buildGetRef, getRef } = defineCustomRender(props, ctx, {
+    let { data, methods, listeners, init, widgetConfig2, buildGetRef, getRef, curFormCon } = defineCustomRender(props, ctx, {
       handleValueInit
     })
     let state = data({
@@ -102,6 +102,18 @@ export default {
      * 保存
      * @returns {Promise<void>}
      */
+    async function save() {
+      let ctx = getRef('main')
+      obj.props = ctx.getZprops()
+      obj.memos = ctx.getMemo()
+      onChange()
+      return obj
+    }
+
+    /**
+     * 保存
+     * @returns {Promise<void>}
+     */
     async function saveData() {
       let ctx = getRef('main')
       obj.props = ctx.getZprops()
@@ -113,8 +125,10 @@ export default {
       return obj
     }
 
-    function onClosed() {
-      // saveData()
+    function onClosed(e) {
+      curFormCon.callPageEvent('dragxml:closed', {
+        save
+      }, e)
     }
 
     function onOpened() {
@@ -148,6 +162,7 @@ export default {
       state,
       mainRef,
       onClosed,
+      save,
       onOpened,
       saveData,
       widgetConfig: widgetConfig2,

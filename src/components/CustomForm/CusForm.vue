@@ -69,7 +69,7 @@ export default {
     let locks = true
     let cached = null
     let cachedModel = null
-    let { methods, init, data, widgetConfig2 } = defineCustomRender(props, ctx, {
+    let { methods, init, data, widgetConfig2, curFormCon } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
         // console.log('handleValueInit', newVal, typeof newVal)
         if (typeof newVal !== 'undefined') {
@@ -140,6 +140,14 @@ export default {
         }
       },
     })
+
+    page.onOtherEventHandler = function (type, e) {
+      // console.log('sdsdsdsdsds',)
+      curFormCon.callPageEvent('cursform:event', {
+        type,
+        e
+      })
+    }
 
 
     provide('CusFormExpose', {

@@ -65,6 +65,7 @@ export let ZDragCommonMixin = {
       // let ui_cached_common = this.ui_cached.common
       // console.log(ui_cached_common)
       let _s = Object.assign({
+        ...this.INIT_CONFIG ?? {},
         ui: this.ui ?? {
           widgetConfig: {}
         },

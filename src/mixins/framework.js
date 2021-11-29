@@ -484,6 +484,9 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
         if (control.eventHandleMap[type]) {
           control.eventHandleMap[type](e)
         }
+        if (control.onOtherEventHandler) {
+          control.onOtherEventHandler(type, e)
+        }
       }
     }
   })

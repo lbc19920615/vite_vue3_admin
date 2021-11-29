@@ -68,7 +68,12 @@ export default {
   data() {
     return {
       id: ZY.rid(6),
+      INIT_CONFIG: {
+        type: 'string',
+        sub_type: 'datetime',
+      },
       ui: {
+        label: '时间日期选择',
         widgetConfig: {
           type: 'datetime',
           // sub_type: 'datetime'

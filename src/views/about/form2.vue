@@ -28,6 +28,7 @@
           :defs="allDef"
           :is="store.model.textarea_step"
           :debug="false"
+          @dragxml:closed="onClosed"
       >
         <template #array_beforebegin="scope">
           <template v-if="scope.key === 'events'">
@@ -190,10 +191,10 @@ export default defineComponent({
     // ZCascader,
     // ZEasyModal,
     // EwMathJax,
-    FormsLayoutSelect,
+    // FormsLayoutSelect,
     // ZLayoutEditor,
-    FormManager,
-    FormsManaSelect,
+    // FormManager,
+    // FormsManaSelect,
     // CustomElement,
   },
   setup(props, ctx) {
@@ -250,7 +251,7 @@ export default defineComponent({
       onInited,
       extendContext: {
       },
-      servicePrefix: 'PageDemoIndexService'
+      servicePrefix: 'PageDemoForm2Service'
     })
     page = extendControl2Page(page)
     page = useAppPageControl(page)
@@ -344,34 +345,43 @@ export default defineComponent({
         await ZY.sleep(300)
         location.reload()
       },
+      async ['cursform:event'](e) {
+        // console.log('cursform:event', e)
+        let scope = e.scope
+        if (scope.type === 'dragxml:closed') {
+          scope.e.scope.save()
+        }
+      },
       async ['call:save'](e) {
         let { parts, partName, pathArr, process } = e
         try {
-          console.log(parts[partName],  page, comMap)
+          // console.log(parts[partName],  page, comMap)
           // let pArr = []
           // comMap.forEach(function (value) {
-          //   if (value && value.saveData) {
+          //   if (value && value.save) {
           //     pArr.push(
           //         new Promise (function(resolve, reject) {
-          //           value.saveData().then((res) => {
+          //           value.save().then((res) => {
           //             resolve(res)
           //           })
           //         })
           //     )
           //   }
           // })
-          // Promise.all(pArr).then((resArr) => {
-          //   console.log(resArr)
+          // console.log(pArr)
+          // Promise.all(pArr).then(async (resArr) => {
+          //   // console.log(resArr)
+          //
           // })
-          let value = ZY.JSON5.parse(cachedPageControlModel.value)
-          let form = value.parts[0]
-          let res = await toolApi.saveJson(form.properties)
-          form.metas = {
-            form_data: res
-          }
-          cachedPageControlModel.value = ZY.JSON5.stringify(value)
-
-          console.log(form, res, cachedPageControlModel)
+          // let value = ZY.JSON5.parse(cachedPageControlModel.value)
+          // let form = value.parts[0]
+          // let res = await toolApi.saveJson(form.properties)
+          // form.metas = {
+          //   form_data: res
+          // }
+          // cachedPageControlModel.value = ZY.JSON5.stringify(value)
+          //
+          // console.log(form, res, cachedPageControlModel)
           await page.dispatchRoot('SetStoreLocal', {
             storeName: global_pageStoreName,
             data: cachedPageControlModel
@@ -715,16 +725,23 @@ export default defineComponent({
       // console.log('onMounted')
     })
 
-    let formula = `x^{y^z}=(1+{\\rm e}^x)^{-2xy^w}`
+    // let formula = `x^{y^z}=(1+{\\rm e}^x)^{-2xy^w}`
 
     let layoutStorePrefix = global_pageStoreName + '-play'
+
+
+    function onClosed() {
+      console.log('sdsdsds')
+    }
+
 
     return {
       layoutRef,
       store: page.store,
       onSaveLayout,
-      formula,
+      // formula,
       getPreviewUrl,
+      onClosed,
       layoutStorePrefix,
       // jumpTo,
       page,
