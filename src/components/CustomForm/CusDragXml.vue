@@ -107,7 +107,7 @@ export default {
       obj.props = ctx.getZprops()
       obj.memos = ctx.getMemo()
       obj.metas = {}
-      obj.metas.form_data  = await toolApi.saveJson(ZY.JSON5.stringify(obj.props))
+      obj.metas.form_data  = await toolApi.saveJson(JSON.stringify(obj.props))
 
       onChange()
       return obj
