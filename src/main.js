@@ -167,6 +167,7 @@ import {initChinaAreaManangerFromUrl} from "@/plugins/chinaArea";
 import EmProps from "@/components/EmProps.vue";
 import EmPropsItem from "@/components/EmPropsItem.vue";
 import RenderLayout from '@/views/about/components/render-layout.vue'
+import {renderForm} from "@/utils/tpllib";
 function comPlugin() {
 }
 comPlugin.install = function (app) {
@@ -253,19 +254,48 @@ comPlugin.install = function (app) {
 
   globalThis.app = window.startApp()
 
-  // ;(function () {
-  //   setTimeout(async () => {
-  //     let CONFIG = await ZY_EXT.store.getItem("name-page-store")
-  //     let apptpl = document.getElementById('apptpl').innerHTML
-  //     let t = Twig.twig({
-  //       id: 'apptpl',
-  //       data: apptpl,
-  //       allowInlineIncludes: true
-  //     });
-  //     let ret = t.render({
-  //       CONFIG: CONFIG
-  //     })
-  //     console.log(ret)
-  //   }, 1000)
-  // })();
+  ;(function () {
+    setTimeout(async () => {
+      let CONFIG = await ZY_EXT.store.getItem("name-page-store")
+      let form = CONFIG.forms[0]
+      // let apptpl = document.getElementById('apptpl').innerHTML
+      // let t = Twig.twig({
+      //   id: 'apptpl',
+      //   data: apptpl,
+      //   allowInlineIncludes: true
+      // });
+      // let ret = t.render({
+      //   CONFIG: CONFIG
+      // })
+      // console.log(ret)
+
+
+      function BASE_renderForm(config, basePath, configPath, append) {
+        // append.BASE_PATH = basePath;
+        return renderForm(config, basePath, configPath, append);
+      }
+
+
+      function renderCOM(form) {
+        let formCONFIG = ZY.JSON5.parse(form.value);
+        console.log(formCONFIG)
+        let partStr = {};
+        if (Array.isArray(formCONFIG.parts)) {
+          formCONFIG.parts.forEach((part, index) => {
+            // console.dir(part.def, {
+            //   depth: null
+            // });
+            const modelKey = 'parts.' + part.name + '.model';
+            const partConfigKey = 'config.parts[' + index + ']';
+
+            partStr[part.name]  = BASE_renderForm(part, modelKey, partConfigKey,
+              { part, BASE_PATH: modelKey, CONFIG, partKey: `parts.${part.name}` })
+          })
+        }
+        console.log(partStr)
+      }
+
+      renderCOM(form)
+    }, 1000)
+  })();
 })()
