@@ -167,8 +167,9 @@ import {initChinaAreaManangerFromUrl} from "@/plugins/chinaArea";
 import EmProps from "@/components/EmProps.vue";
 import EmPropsItem from "@/components/EmPropsItem.vue";
 import RenderLayout from '@/views/about/components/render-layout.vue'
-import {renderForm} from "@/utils/tpllib";
-import {buildFormDep} from "@/plugins/z-page/build";
+// import {renderForm} from "@/utils/tpllib";
+// import {buildFormDep} from "@/plugins/z-page/build";
+import {initCompile} from "@/hooks/compile";
 function comPlugin() {
 }
 comPlugin.install = function (app) {
@@ -185,80 +186,13 @@ comPlugin.install = function (app) {
 
 ;(async function () {
 
-  fetch(ZY.REMOTE_ORIGIN + '/public/render/comformscr2.twig').then(res => {
-    return res.text()
-  }).then((str) => {
-    let tpl = document.createElement('script');
-    tpl.id="tpl_comformscr2";
-    tpl.type = 'template';
-    tpl.innerHTML = str
-    document.body.append(tpl)
-  })
 
-  /**
-   *
-   * @param compileData
-   * @param CONFIG
-   * @param tplDom
-   * @param args
-   * @returns {*}
-   */
-  _global.renderComForm = function ({
-    compileData = {},
-    CONFIG = {},
-    tplDom = document.getElementById( 'tpl_comformscr2'),
-  } = {}, args) {
-    let JSON5 = ZY.JSON5;
-    if (!compileData) {
-      compileData = {}
-    }
-    compileData.APP_CONFIG = {
-      server_origin: ZY.REMOTE_ORIGIN
-    }
-    compileData.CONFIG = CONFIG
-    compileData.CONFIG_SOURCE_JSON5 = JSON5.stringify(CONFIG)
-
-
-    function BASE_renderForm(config, basePath, configPath, append) {
-      // append.BASE_PATH = basePath;
-      return renderForm(config, basePath, configPath, append);
-    }
-
-
-    function renderCOM(formCONFIG) {
-      let partStr = {};
-      if (Array.isArray(formCONFIG.parts)) {
-        formCONFIG.parts.forEach((part, index) => {
-          // console.dir(part.def, {
-          //   depth: null
-          // });
-          const modelKey = 'parts.' + part.name + '.model';
-          const partConfigKey = 'config.parts[' + index + '].def';
-
-          partStr[part.name]  = BASE_renderForm(part.def, modelKey, partConfigKey,
-            { part, BASE_PATH: modelKey, CONFIG, partKey: `parts.${part.name}` })
-        })
-      }
-      return partStr
-    }
-
-
-    compileData.partStr = renderCOM(CONFIG)
-
-    // console.log(compileData)
-    let tpl = tplDom.innerHTML
-    let t = Twig.twig({
-      // id: tplID,
-      data: tpl,
-      allowInlineIncludes: true
-    });
-    let html = t.render(compileData)
-    return html
-  }
 
   await init_router_start()
 
   window.startApp = function () {
+
+    globalThis.renderComForm = initCompile()
 
     const storeApp = Vue.createApp(StoreApp)
     const app = Vue.createApp(App)
