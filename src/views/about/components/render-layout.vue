@@ -200,12 +200,12 @@ export default {
     },
     getDef(partName) {
       if (!this.lock.isLocked) {
-        console.log('reload start')
+        // console.log('reload start')
        this.lock.lock(async () => {
          this.cachedMap[partName] = false
          await ZY.sleep(500)
          this.cachedMap[partName] = true
-         console.log('reload end')
+         // console.log('reload end')
        }, 3000)
       }
       if (this.handleDefMap) {

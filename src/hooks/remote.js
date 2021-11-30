@@ -19,12 +19,16 @@ let templateSfc = function (sfc) {
 export async function fetchTwigComponent(comName = '', {def, args, handleScript, styles = [], cached_tpl = '' } = {}) {
     try {
         // console.log('this.formDef', this.formDef)
-        let data = new FormData()
-        data.append('source', JSON.stringify(def))
+        // console.log(def)
+        // let data = new FormData()
+        // data.append('source', JSON.stringify(def))
         let tpl;
         // console.log('cached_tpl', cached_tpl)
         if (!cached_tpl) {
-            tpl = await fetchContentV3(data, args)
+            // tpl = await fetchContentV3(data, args)
+            tpl = globalThis.renderComForm({
+                CONFIG: def
+            }, args);
         } else {
             tpl = cached_tpl
         }
@@ -117,11 +121,11 @@ export async function loadComponent(p, comName = '', {handleScript, handleTpl, s
     if (handleTpl) {
         tpl = handleTpl(tpl)
     }
-    console.log({
-        name: comName,
-        template: tpl,
-        ...script.default
-    })
+    // console.log({
+    //     name: comName,
+    //     template: tpl,
+    //     ...script.default
+    // })
     return {
         name: comName,
         template: tpl,

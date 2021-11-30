@@ -184,6 +184,7 @@ comPlugin.install = function (app) {
 
 
 ;(async function () {
+
   fetch(ZY.REMOTE_ORIGIN + '/public/render/comformscr2.twig').then(res => {
     return res.text()
   }).then((str) => {
@@ -193,6 +194,67 @@ comPlugin.install = function (app) {
     tpl.innerHTML = str
     document.body.append(tpl)
   })
+
+  /**
+   *
+   * @param compileData
+   * @param CONFIG
+   * @param tplDom
+   * @param args
+   * @returns {*}
+   */
+  _global.renderComForm = function ({
+    compileData = {},
+    CONFIG = {},
+    tplDom = document.getElementById( 'tpl_comformscr2'),
+  } = {}, args) {
+    let JSON5 = ZY.JSON5;
+    if (!compileData) {
+      compileData = {}
+    }
+    compileData.APP_CONFIG = {
+      server_origin: ZY.REMOTE_ORIGIN
+    }
+    compileData.CONFIG = CONFIG
+    compileData.CONFIG_SOURCE_JSON5 = JSON5.stringify(CONFIG)
+
+
+    function BASE_renderForm(config, basePath, configPath, append) {
+      // append.BASE_PATH = basePath;
+      return renderForm(config, basePath, configPath, append);
+    }
+
+
+    function renderCOM(formCONFIG) {
+      let partStr = {};
+      if (Array.isArray(formCONFIG.parts)) {
+        formCONFIG.parts.forEach((part, index) => {
+          // console.dir(part.def, {
+          //   depth: null
+          // });
+          const modelKey = 'parts.' + part.name + '.model';
+          const partConfigKey = 'config.parts[' + index + '].def';
+
+          partStr[part.name]  = BASE_renderForm(part.def, modelKey, partConfigKey,
+            { part, BASE_PATH: modelKey, CONFIG, partKey: `parts.${part.name}` })
+        })
+      }
+      return partStr
+    }
+
+
+    compileData.partStr = renderCOM(CONFIG)
+
+    // console.log(compileData)
+    let tpl = tplDom.innerHTML
+    let t = Twig.twig({
+      // id: tplID,
+      data: tpl,
+      allowInlineIncludes: true
+    });
+    let html = t.render(compileData)
+    return html
+  }
 
   await init_router_start()
 
@@ -266,51 +328,262 @@ comPlugin.install = function (app) {
   ;(function () {
     setTimeout(async () => {
 
-
-      let CONFIG = await ZY_EXT.store.getItem("name-page-store")
-      let form = CONFIG.forms[0]
-      let formCONFIG = ZY.JSON5.parse(form.value);
-      let formDef = buildFormDep(formCONFIG, form.name, {
-        src: 'comformscr2.twig'
-      })
-      console.log(formDef)
-      // let apptpl = document.getElementById('apptpl').innerHTML
-      // let t = Twig.twig({
-      //   id: 'apptpl',
-      //   data: apptpl,
-      //   allowInlineIncludes: true
-      // });
-      // let ret = t.render({
-      //   CONFIG: CONFIG
-      // })
-      // console.log(ret)
-
-
-      function BASE_renderForm(config, basePath, configPath, append) {
-        // append.BASE_PATH = basePath;
-        return renderForm(config, basePath, configPath, append);
-      }
-
-
-      function renderCOM(formCONFIG) {
-        let partStr = {};
-        if (Array.isArray(formCONFIG.parts)) {
-          formCONFIG.parts.forEach((part, index) => {
-            // console.dir(part.def, {
-            //   depth: null
-            // });
-            const modelKey = 'parts.' + part.name + '.model';
-            const partConfigKey = 'config.parts[' + index + '].def';
-
-            partStr[part.name]  = BASE_renderForm(part.def, modelKey, partConfigKey,
-              { part, BASE_PATH: modelKey, CONFIG, partKey: `parts.${part.name}` })
-          })
+let def = {
+  "constants": {},
+  "parts": [
+    {
+      "type": "form",
+      "name": "form_N1q3vS",
+      "serviceTpl": {
+        "def": {},
+        "args": {
+          "src": "bservice.twig"
         }
-        console.log(partStr)
-      }
+      },
+      "def": {
+        "type": "object",
+        "ui": {
+          "attrs": [
+            [
+              "label-width",
+              "100px"
+            ],
+            [
+              "label-position",
+              "top"
+            ]
+          ],
+          "class": [
+            "sdsdsdsds"
+          ],
+          "styles": [
+            [
+              "text-align",
+              "left"
+            ],
+            [
+              "font-weight",
+              "normal"
+            ],
+            [
+              "font-family",
+              "Arial,Helvetica,微软雅黑"
+            ],
+            [
+              "color",
+              null
+            ],
+            [
+              "additive-symbols",
+              ""
+            ]
+          ]
+        },
+        "properties": {
+          "field__OUgaWCjyZq": {
+            "type": "string",
+            "ui": {
+              "widget": "CusSelect",
+              "label": "选择类型",
+              "widgetConfig": {
+                "options2": "[{label:'选项1',value:'option1'},{label:'选项2',value:'option2'}]",
+                "clearable": null,
+                "filterable": null,
+                "multiple": null,
+                "collapseTags": null
+              }
+            },
+            "computedFun": "",
+            "rules": [
+              {
+                "required": true,
+                "message": "必填"
+              }
+            ],
+            "server": {
+              "field_name": "field__OUgaWCjyZq"
+            },
+            "rules_json": "[{required:true,message:'必填'}]"
+          },
+          "field__cov27IMEbX": {
+            "type": "string",
+            "ui": {
+              "widget": "CusDateTimePicker",
+              "widgetConfig": {
+                "type": "datetime"
+              },
+              "label": "开始时间"
+            },
+            "computedFun": "",
+            "defaultVal": "2021-11-17T16:00:00.000Z",
+            "rules": [
+              {
+                "required": true,
+                "message": "必填"
+              }
+            ],
+            "server": {
+              "field_name": "field__cov27IMEbX"
+            },
+            "rules_json": "[{required:true,message:'必填'}]"
+          },
+          "field__qgsoZ4pmYD": {
+            "type": "string",
+            "ui": {
+              "widget": "CusDateTimePicker",
+              "widgetConfig": {
+                "type": "datetime"
+              },
+              "label": "结束时间"
+            },
+            "computedFun": "",
+            "defaultVal": "2021-11-29T16:00:00.000Z",
+            "rules": [
+              {
+                "required": true,
+                "message": "必填"
+              }
+            ],
+            "server": {
+              "field_name": "field__qgsoZ4pmYD"
+            },
+            "rules_json": "[{required:true,message:'必填'}]"
+          },
+          "field__fVS_6s9Edk": {
+            "type": "number",
+            "ui": {
+              "widget": "CusInput",
+              "label": "间隔(小时)",
+              "widgetConfig": {
+                "type": "number"
+              }
+            },
+            "computedFun": "时间间隔(MODEL('field__qgsoZ4pmYD'),MODEL('field__cov27IMEbX'))",
+            "rules": [
+              {
+                "type": "number",
+                "min": 1
+              }
+            ],
+            "server": {
+              "field_name": "field__fVS_6s9Edk"
+            },
+            "rules_json": "[{type:'number',min:1}]"
+          },
+          "field__V_5Y4bZ8hJ": {
+            "type": "string",
+            "ui": {
+              "widget": "CusInput",
+              "label": "请假描述",
+              "widgetConfig": {
+                "type": "textarea"
+              }
+            },
+            "computedFun": "",
+            "defaultVal": "请假",
+            "rules": [],
+            "server": {
+              "field_name": "field__V_5Y4bZ8hJ"
+            },
+            "rules_json": "[]"
+          },
+          "field__NsExhpbStv": {
+            "type": "string",
+            "ui": {
+              "widget": "CusInput",
+              "label": "请假人",
+              "widgetConfig": {
+                "defaultVal": "实打实打算"
+              }
+            },
+            "computedFun": "",
+            "defaultVal": "十九点回家睡大觉",
+            "rules": [],
+            "server": {
+              "field_name": "field__NsExhpbStv"
+            },
+            "rules_json": "[]"
+          },
+          "field__TKZIOSTpSm": {
+            "type": "string",
+            "ui": {
+              "widget": "CusRadio",
+              "label": "单选",
+              "widgetConfig": {
+                "options2": "[{label:'选项1',value:'radio1'},{label:'选项2',value:'radio2'}]"
+              }
+            },
+            "computedFun": "",
+            "defaultVal": "",
+            "rules": [],
+            "server": {
+              "field_name": "field__TKZIOSTpSm"
+            },
+            "rules_json": "[]"
+          },
+          "field__gCKjNzeCUa": {
+            "type": "number",
+            "ui": {
+              "label": "数值",
+              "widget": "CusInputNumber",
+              "widgetConfig": {
+                "type": "number"
+              }
+            },
+            "computedFun": "",
+            "defaultVal": 11,
+            "rules": [
+              {
+                "type": "any"
+              }
+            ],
+            "server": {
+              "field_name": "field__gCKjNzeCUa"
+            },
+            "rules_json": "[{type:'any'}]"
+          },
+          "field__wW7vGZKC7H": {
+            "type": "string",
+            "ui": {
+              "widget": "CusRichText",
+              "label": "",
+              "hiddenLabel": true,
+              "widgetConfig": {
+                "html_content": "{content:[{type:'header2',children:[{text:'实打实打算'}]},{type:'paragraph',children:[{text:'撒旦撒旦实打实'}]},{type:'paragraph',children:[{text:'撒旦撒旦实打实'}]}],html:'<div class=\"w-e-content-container\">\\r\\n    <h2>实打实打算</h2>\\r\\n    <p>撒旦撒旦实打实</p>\\r\\n    <p>撒旦撒旦实打实</p>\\r\\n</div>'}",
+                "css_style": ":host {\n background-color: #40CF7C;\n}\n:host(:hover)  {\n background-color: #4FED86;\n}\n.w-e-content-container {\n background-color: rgba(120, 225, 27, 1);\n}"
+              }
+            },
+            "computedFun": "",
+            "rules": [],
+            "server": {
+              "field_name": "field__wW7vGZKC7H"
+            },
+            "css": "{cached:{':host':{width:'',backgroundColor:'#40CF7C'},':host(:hover) ':{backgroundColor:'#4FED86'},':host(:active) ':{},'.w-e-content-container':{backgroundColor:'rgba(120, 225, 27, 1)',overflow:''}},css:':host {\\n background-color: #40CF7C;\\n}\\n:host(:hover)  {\\n background-color: #4FED86;\\n}\\n.w-e-content-container {\\n background-color: rgba(120, 225, 27, 1);\\n}'}",
+            "hiddenLabel": true,
+            "rules_json": "[]"
+          }
+        },
+        "metas": {}
+      },
+      "computed": {
+        "full2": "MODEL('firstName','')+MODEL('lastName','')",
+        "root2": "ROOT_STATE('tools.propTypes',[])",
+        "full3": "MODEL('o2.o2_p1','')  +'sds'"
+      },
+      "service": "ServiceHWXbVRxRBzS5kv1Ufezd1"
+    }
+  ],
+  "process": "表单1",
+  "servicePartLink": {
+    "form_N1q3vS": "ServiceHWXbVRxRBzS5kv1Ufezd1"
+  }
+}
 
+      let tpl = _global.renderComForm({
+        CONFIG: def
+      });
+// console.log(tpl.trim());
 
-      renderCOM(      formDef.init.def)
     }, 1000)
   })();
 })()

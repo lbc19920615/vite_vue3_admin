@@ -38,7 +38,7 @@ export default defineComponent( {
             fromDefModel = createFormModel(partConfig.def)
           }
           defaultObj = Object.assign(defaultObj, fromDefModel)
-          console.log('autohttp', config, partName, partConfig, fromDefModel)
+          // console.log('autohttp', config, partName, partConfig, fromDefModel)
           // console.log(self.currentEditDep, depPath, ZY.lodash.get( self.currentEditDep, depPath))
           page.setPartModel( config.name, partName,
               defaultObj

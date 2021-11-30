@@ -6,7 +6,7 @@ export function useToolApi() {
    */
   async function saveJson(serverProps = '' ) {
 
-    console.log(serverProps)
+    // console.log(serverProps)
     // onChange()
     try {
       let res = await Req.post('/api/json', serverProps)
