@@ -58,7 +58,8 @@ export default {
     let JSON5 = ZY.JSON5
     let CusFormExpose = inject('CusFormExpose')
     let form_config = {}
-    let drag_xml_uuid = ZY.rid()
+    let drag_xml_uuid = ZY.rid();
+    let oldObj = '{}'
     provide('cusDragXml', {
       getFormConfig() {
         return Object.assign({
@@ -104,8 +105,9 @@ export default {
      */
     async function save() {
       let ctx = getRef('main')
-      obj.props = ctx.getZprops()
-      obj.memos = ctx.getMemo()
+      obj.props = ctx.getZprops();
+      obj.memos = ctx.getMemo();
+      obj.oldProps = JSON5.parse(oldObj).props
       onChange()
       return obj
     }
@@ -118,8 +120,15 @@ export default {
       let ctx = getRef('main')
       obj.props = ctx.getZprops()
       obj.memos = ctx.getMemo()
+      obj.oldProps = JSON5.parse(oldObj).props
       obj.metas = {}
-      obj.metas.form_data  = await toolApi.saveJson(JSON.stringify(obj.props))
+      obj.metas.form_data  = await toolApi.saveJson(
+          JSON5.stringify(obj.props), drag_xml_uuid + '.json5',
+          {
+            newProps: obj.props,
+            oldProps: obj.oldProps,
+          }
+      )
 
       onChange()
       return obj
@@ -135,7 +144,8 @@ export default {
       let model = {}
       let ctx = getRef('main')
       // console.log(obj, ctx)
-      state.insVars =  [
+      oldObj = JSON5.stringify(obj)
+          state.insVars =  [
         [
           '爱你11',
           'xy-text',

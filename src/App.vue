@@ -138,6 +138,16 @@ export default defineComponent({
       }
       return ''
     },
+    getDragDatas(v) {
+      try {
+        let o = ZY.JSON5.parse(v)
+        // console.log('getDragProps', o)
+        return ZY.JSON5.stringify(o)
+      } catch (e) {
+        //
+      }
+      return '{}'
+    },
     getDragProps(v) {
       try {
         let o = ZY.JSON5.parse(v)

@@ -373,15 +373,25 @@ export default defineComponent({
           //   // console.log(resArr)
           //
           // })
+          // console.log(cachedPageControlModel)
           let value = ZY.JSON5.parse(cachedPageControlModel.value)
           let form = value.parts[0]
-          let res = await toolApi.saveJson(form.properties)
+          let drag_cached = ZY.JSON5.parse(form.drag_cached)
+          console.log(drag_cached)
+
+          let res = await toolApi.saveJson(form.properties,
+              cachedPageControlModel.name + '.json5',
+              {
+                newProps: ZY.JSON5.parse(form.properties),
+                oldProps: drag_cached.oldProps
+              }
+          )
           form.metas = {
             form_data: res
           }
           cachedPageControlModel.value = ZY.JSON5.stringify(value)
 
-          console.log(form, res, cachedPageControlModel)
+          // console.log(form, res, cachedPageControlModel)
           await page.dispatchRoot('SetStoreLocal', {
             storeName: global_pageStoreName,
             data: cachedPageControlModel

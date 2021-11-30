@@ -39,6 +39,7 @@ export default {
         label: '默认值',
         widget: 'CusTimePicker',
         widgetConfig: {
+          valueFormat: 'HH:mm:ss',
         }
       },
       rules: [
@@ -75,6 +76,7 @@ export default {
       ui: {
         label: '时间选择',
         widgetConfig: {
+          valueFormat: 'HH:mm:ss',
         }
       }
     }

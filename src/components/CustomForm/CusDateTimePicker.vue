@@ -79,6 +79,7 @@ export default {
       }
       obj.type = 'datetime'
       // console.log(obj)
+      obj.valueFormat = 'YYYY-MM-DD HH:mm:ss'
       return obj
     }
 

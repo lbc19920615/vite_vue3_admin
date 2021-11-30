@@ -1,7 +1,7 @@
 <template>
   <template v-if="inited">
     <el-time-picker v-model="state.value"
-                    v-bind="state.OPT.widgetConfig"
+                    v-bind="getConfig()"
                     @change="methods.onChange"
     ></el-time-picker>
   </template>
@@ -37,11 +37,17 @@ export default {
     }
   },
   setup(props, ctx) {
-    let { data, methods } = defineCustomRender(props, ctx)
-    let state = data()
+    let { data, methods, widgetConfig2 } = defineCustomRender(props, ctx)
+    let state = data();
+    function getConfig() {
+      let obj = state.OPT.widgetConfig
+      obj.valueFormat = 'HH:mm:ss'
+      return obj
+    }
     return {
       state,
-      widgetConfig: props.ui.widgetConfig,
+      widgetConfig: widgetConfig2,
+      getConfig,
       methods
     }
   },

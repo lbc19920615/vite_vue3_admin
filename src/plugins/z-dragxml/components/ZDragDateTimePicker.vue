@@ -39,6 +39,7 @@ export default {
         label: '默认值',
         widget: 'CusDateTimePicker',
         widgetConfig: {
+          valueFormat: 'YYYY-MM-DD HH:mm:ss',
         }
       },
       rules: [
@@ -76,6 +77,7 @@ export default {
         label: '时间日期选择',
         widgetConfig: {
           type: 'datetime',
+          valueFormat: 'YYYY-MM-DD HH:mm:ss',
           // sub_type: 'datetime'
         }
       }

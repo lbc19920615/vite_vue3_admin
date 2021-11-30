@@ -256,7 +256,10 @@ export default {
                                                         label: '数组添加',
                                                         value: `G.数组添加(e)`
                                                     }
-                                                ]
+                                                ],
+                                                style: {
+                                                    height: '600px'
+                                                }
                                             }
                                         }
                                     },

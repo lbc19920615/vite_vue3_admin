@@ -26,6 +26,9 @@ export function useGlobalEasy(page) {
         static 成功消息(v = '') {
             return ElMessage.success(v)
         }
+        static 失败消息(v = '') {
+            return ElMessage.error(v)
+        }
     }
     globalThis.G = G
 }

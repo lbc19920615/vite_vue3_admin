@@ -184,7 +184,21 @@ let formDef = {
               }
             }
           },
-
+          drag_cached: {
+            type: 'string',
+            reflect: 'drag_props',
+            reflectTpl: `A.getDragDatas($VAL)`,
+            ui: {
+              // styles: [
+              //   ['height', 0],
+              //   ['overflow', 'hidden'],
+              // ],
+              widgetConfig: {
+                type: 'textarea',
+                disabled: true,
+              }
+            }
+          },
           // properties: {
           //   type: 'string',
           //   reflect: 'props',
