@@ -22,7 +22,7 @@ export function useToolApi() {
       // console.log(serverProps)
       let formdata = new FormData();
       formdata.append('file', file);
-      formdata.append('diffed', file)
+      formdata.append('diffed', diffed);
       let res = await Req.post('/api/json5', formdata, {
         headers: {
           'Content-Type': 'multipart/form-data;charset=UTF-8'
