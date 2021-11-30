@@ -736,17 +736,17 @@ export default {
       // }
     }
 
-    function selectCnText(cn = '') {
-      // console.log('selectCnText', cn, state.parsedList[2])
-      state.parsedText.push(cn)
-      if (state.parsedList[2]) {
-        state.pingyin = state.parsedList[2]
-        state.parsedList = ZY.PinYin._getHanzi(state.parsedList[2])
-      } else {
-        state.pingyin = ''
-        state.parsedList = [[], '']
-      }
-    }
+    // function selectCnText(cn = '') {
+    //   // console.log('selectCnText', cn, state.parsedList[2])
+    //   state.parsedText.push(cn)
+    //   if (state.parsedList[2]) {
+    //     state.pingyin = state.parsedList[2]
+    //     state.parsedList = ZY.PinYin._getHanzi(state.parsedList[2])
+    //   } else {
+    //     state.pingyin = ''
+    //     state.parsedList = [[], '']
+    //   }
+    // }
 
 
     function onInsertkeyup(e) {
@@ -932,7 +932,7 @@ export default {
       insertText,
       insertQute,
       isArray,
-      selectCnText,
+      // selectCnText,
       onCursorcompositionstart,
       onCursorcompositionend,
       onCursorChange,

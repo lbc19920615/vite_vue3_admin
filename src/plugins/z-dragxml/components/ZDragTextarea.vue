@@ -61,6 +61,9 @@ export default {
     },
     DRAG_EXPORT() {
       return {
+        INIT_CONFIG: {
+          type: 'string',
+        },
         ui: {
           widget: 'CusInput'
         }

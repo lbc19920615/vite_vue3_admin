@@ -52,6 +52,9 @@ export default {
   data() {
     return {
       id: ZY.rid(6),
+      INIT_CONFIG: {
+        type: 'number',
+      },
       ui: {
         label: '滑块',
         widgetConfig: {

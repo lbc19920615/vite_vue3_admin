@@ -1700,6 +1700,7 @@ export default {
               // inputStyle: 'width: 350px',
               enums: "ROOT_STATE('tools.propTypes', [])",
               mode: 'select',
+              readonly: true,
             },
             events: {
             }
@@ -1715,6 +1716,7 @@ export default {
               // inputStyle: 'width: 350px',
               enums: "ROOT_GETTERS('subTypes', [MODEL('type', '')])",
               mode: 'select',
+              // readonly: true,
             },
             events: {
             }

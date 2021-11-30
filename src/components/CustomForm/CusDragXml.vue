@@ -117,16 +117,22 @@ export default {
      * @returns {Promise<void>}
      */
     async function saveData() {
+      let oldObjParsed =  JSON5.parse(oldObj)
+      let tableName;
+      if (oldObjParsed.metas) {
+        tableName = oldObjParsed.metas.form_data
+      }
       let ctx = getRef('main')
       obj.props = ctx.getZprops()
       obj.memos = ctx.getMemo()
-      obj.oldProps = JSON5.parse(oldObj).props
+      obj.oldProps = oldObjParsed.props
       obj.metas = {}
       obj.metas.form_data  = await toolApi.saveJson(
           JSON5.stringify(obj.props), drag_xml_uuid + '.json5',
           {
             newProps: obj.props,
             oldProps: obj.oldProps,
+            tableName,
           }
       )
 

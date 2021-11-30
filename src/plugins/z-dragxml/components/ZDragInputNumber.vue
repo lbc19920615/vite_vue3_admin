@@ -19,6 +19,7 @@ let InputConfig = function () {
   return {
     type: 'number',
     ui: {
+      label: '数字输入',
       widgetConfig: {
         type: 'number'
       }
@@ -79,12 +80,12 @@ export default {
     return {
       id: ZY.rid(6),
       self_config: InputConfig(),
-      ui: {
-        label: '数字',
-        widgetConfig: {
-          type: 'number'
-        }
-      }
+      // ui: {
+      //   label: '数字输入',
+      //   widgetConfig: {
+      //     type: 'number'
+      //   }
+      // }
     }
   }
 }

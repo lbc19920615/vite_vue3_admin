@@ -5,10 +5,11 @@ export function useToolApi() {
    * @param fileName
    * @param newProps
    * @param oldProps
+   * @param tableName
    * @returns {Promise<*>}
    */
   async function saveJson(serverProps = '', fileName = '',
-                          {newProps, oldProps} = {} ) {
+                          {newProps, oldProps, tableName = ''} = {} ) {
 
     let detailedDiff = ZY.detailedDiff(oldProps ?? {}, newProps ?? {});
     // console.log(detailedDiff, oldProps, newProps)
@@ -16,11 +17,12 @@ export function useToolApi() {
       let file = new File([serverProps], fileName, {
         type: "text/plain",
       });
-      let diffed = new File([detailedDiff], fileName, {
+      let diffed = new File([ZY.JSON5.stringify(detailedDiff)], fileName, {
         type: "text/plain",
       });
       // console.log(serverProps)
       let formdata = new FormData();
+      formdata.append('tableName', tableName)
       formdata.append('file', file);
       formdata.append('diffed', diffed);
       let res = await Req.post('/api/json5', formdata, {

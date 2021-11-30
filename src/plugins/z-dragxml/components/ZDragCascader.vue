@@ -55,6 +55,9 @@ export default {
     return {
       id: ZY.rid(6),
       ui: {
+        INIT_CONFIG: {
+          type: 'string',
+        },
         widgetConfig: {
           tree_options: ZY.JSON5.stringify(
               [

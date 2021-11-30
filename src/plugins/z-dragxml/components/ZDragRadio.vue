@@ -60,6 +60,9 @@ export default {
     // console.log(this.uuid)
     return {
       id: ZY.rid(6),
+      INIT_CONFIG: {
+        type: 'string',
+      },
       ui: {
         label: '单选',
         widgetConfig: {
