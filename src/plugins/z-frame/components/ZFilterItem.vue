@@ -1,12 +1,12 @@
 <template>
-  <el-scrollbar :max-height="maxHeight">
+  <div class="z-filter-item">
     <slot></slot>
-  </el-scrollbar>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'ZFilterList',
+  name: 'ZFilterItem',
   props: {
     maxHeight: {
       type: String,

@@ -57,8 +57,8 @@ export default {
                         },
                         forms: {
                             type: 'array',
-                            tag: 'my-vue-tab',
-                            con_tag: 'my-vue-tab-pane',
+                            tag: 'z-filter-list',
+                            // con_tag: 'my-vue-tab-pane',
                             wrap: 'em-props-item',
                             ui: {
                                 label: '表单',
@@ -66,10 +66,10 @@ export default {
                                     ['scroll-control', 'page_forms'],
                                 ],
                                 conAttrs: [
-                                    {
-                                        prefixValue: '"表单"+',
-                                        handler: ['c', 'return [":name", c.indexKey]']
-                                    }
+                                    // {
+                                    //     prefixValue: '"表单"+',
+                                    //     handler: ['c', 'return [":name", c.indexKey]']
+                                    // }
                                 ],
                                 class: [
                                 ],
