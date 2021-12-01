@@ -1622,7 +1622,7 @@ export default {
     }
 
     function handleNodeClick(e) {
-      console.log('handleNodeClick', e)
+      // console.log('handleNodeClick', e)
       let {config = {}} = e
       treeState.current = {
         origin: e,
@@ -1919,7 +1919,7 @@ export default {
         server: {
         }
       }, _cached?.ins ?? {})
-      console.log('defaultVal',  _cached?.ins, defaultVal)
+      // console.log('defaultVal',  _cached?.ins, defaultVal)
       return {
         default: createCusWidgetEditorConfig(formDef,
             computed,

@@ -130,7 +130,7 @@ export default defineComponent({
     get_computedFunIns(d) {
       try {
         let o = ZY.JSON5.parse(d)
-        console.log('get_computedFunIns', o)
+        // console.log('get_computedFunIns', o)
         let r = o.textContent ?? ''
         return r
       } catch (e) {
