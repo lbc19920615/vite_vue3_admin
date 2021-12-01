@@ -163,7 +163,7 @@ export function renderForm(p, basePath, configPath, append = {}) {
       const fromPath = getSelfPath(basePath, append.BASE_PATH);
 
       if (wrap_tag) {
-        context.tpl = context.tpl + `<${wrap_tag} :binds="{ pathArr: [${pathArrStr.slice(1)}] }" ${attrStr(p, 'wrapAttrs')}>`;
+        context.tpl = context.tpl + `<${wrap_tag} :binds="{ pathArr: [${pathArrStr.slice(1)}], label: '${getLabel(append.CONFIG, configPath, key)}',   config: getUI_CONFIG('${configPath}'),  }" ${attrStr(p, 'wrapAttrs')}>`;
       }
 
 
@@ -230,7 +230,7 @@ ${attrStr(p, 'wrapAttrs')}>`;
  <slot-com :defs="slotContent" :attrs="{parts}"
            :binds="{key: '${key}', partName: '${append.part.name}', configPath: '${configPath}',   pathArr: [${pathArrStr.slice(1)}], label: '${getLabel(append.CONFIG, configPath, key)}', selfpath: '${fromPath}',  CONFIG: '${append.CONFIG}', process: '${append.CONFIG.process}', parts: parts, BASE_PATH:'${append.BASE_PATH}' }"
               name="array_beforebegin"></slot-com>                   
-<${array_tag} class="level_${level} z-form__array ${buildCls(p)}" :binds="{ pathArr: [${pathArrStr.slice(1)}] }" ${attrStr(p)}>
+<${array_tag} class="level_${level} z-form__array ${buildCls(p)}" :binds="{ pathArr: [${pathArrStr.slice(1)}], label: '${getLabel(append.CONFIG, configPath, key)}',   config: getUI_CONFIG('${configPath}'),  }" ${attrStr(p)}>
  <slot-com :defs="slotContent" :attrs="{parts}"
            :binds="{key: '${key}', partName: '${append.part.name}', configPath: '${configPath}', pathArr: [${pathArrStr.slice(1)}],   label: '${getLabel(append.CONFIG, configPath, key)}', selfpath: '${fromPath}',  CONFIG: '${append.CONFIG}', process: '${append.CONFIG.process}', parts: parts, BASE_PATH:'${append.BASE_PATH}' }"
               name="array_afterbegin"></slot-com>              

@@ -1,5 +1,6 @@
 <template>
   <el-scrollbar :max-height="maxHeight">
+    {{binds}}
     <slot></slot>
   </el-scrollbar>
 </template>
@@ -11,6 +12,12 @@ export default {
     maxHeight: {
       type: String,
       default: '1000px'
+    },
+    binds: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   }
 }
