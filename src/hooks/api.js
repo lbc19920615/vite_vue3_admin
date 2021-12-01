@@ -1,4 +1,33 @@
 export function useToolApi() {
+  let lodash = ZY.lodash;
+  function travel(o = {}, {obj ={ }, path = [],  keys = []} = {}) {
+    if (o.type === 'object') {
+      lodash.each(o.properties, function (item, key) {
+        travel(item, {
+          obj,
+          path: path.concat(['properties', key]),
+          keys,
+        })
+      })
+    }
+    else if (o.type === 'array') {
+
+    }
+    else {
+      let s_path = ZY.getObjPathFromPathArr(path);
+      let pickedProp = lodash.pick(o, keys);
+      // console.log(s_path, o, keys, pickedProp)
+      lodash.set(obj, s_path, pickedProp)
+    }
+  }
+
+  function purfyObj(o = {}, keys = []) {
+    let obj = {}
+    let path = []
+    travel(o, {obj, path, keys});
+    return obj;
+  }
+
   /**
    * saveJson
    * @param serverProps
@@ -9,10 +38,13 @@ export function useToolApi() {
    * @returns {Promise<*>}
    */
   async function saveJson(serverProps = '', fileName = '',
-                          {newProps, oldProps, tableName = ''} = {} ) {
+                          {newProps = {}, oldProps = {}, tableName = ''} = {} ) {
 
-    let detailedDiff = ZY.detailedDiff(oldProps ?? {}, newProps ?? {});
-    // console.log(detailedDiff, oldProps, newProps)
+    const PICKED_PROPS = ['type', 'sub_type', 'rules']
+    let oldPur = purfyObj(oldProps, PICKED_PROPS);
+    let newPur = purfyObj(newProps, PICKED_PROPS);
+    let detailedDiff = ZY.detailedDiff(oldPur, newPur);
+    console.log(detailedDiff)
     try {
       let file = new File([serverProps], fileName, {
         type: "text/plain",
@@ -33,10 +65,9 @@ export function useToolApi() {
       // obj.metas = {
       //   form_data: res.data
       // }
-      return res.data
-
+      return res.data;
     } catch (e) {
-      console.log(e)
+      console.log('saveJson err', e)
     }
   }
 
