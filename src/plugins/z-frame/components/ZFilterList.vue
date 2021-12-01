@@ -1,6 +1,6 @@
 <template>
   <el-scrollbar :max-height="maxHeight">
-    {{binds}}
+<!--    {{binds}}-->
     <slot></slot>
   </el-scrollbar>
 </template>
