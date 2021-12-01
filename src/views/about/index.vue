@@ -166,7 +166,7 @@
               <el-button type="primary" @click="page.callEvent('call:save:file', scope)">保存文件</el-button>
               <el-button type="primary" @click="page.callEvent('load:file')">加载文件</el-button>
               <el-button type="primary" @click="page.callEvent('preview')">打开预览</el-button>
-              <el-button ><router-link class="el-link" to="/form" >跳转Form</router-link></el-button>
+<!--              <el-button ><router-link class="el-link" to="/form" >跳转Form</router-link></el-button>-->
             </el-space>
           </div>
         </template>
