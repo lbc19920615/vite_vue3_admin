@@ -122,7 +122,7 @@ import * as ZPageBuild from "@/plugins/z-page/build";
 globalThis.ZPageBuild = ZPageBuild
 
 import * as ZFramePlugin from "@/plugins/z-frame/index";
-import * as ZDragPlugin from "@/plugins/z-dragxml/index";
+// import * as ZDragPlugin from "@/plugins/z-dragxml/index";
 
 import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
 import * as tabNodePlugin from '@/plugins/ComEditor/tabNode.plugin'
@@ -152,7 +152,7 @@ import eventBus from 'vue3-eventbus'
 import * as remote from '@/plugins/remote'
 import StoreApp from "./StoreApp.vue";
 
-import CodeMirrorPlugin from '@/plugins/CodeMirrorEditor/index'
+// import CodeMirrorPlugin from '@/plugins/CodeMirrorEditor/index'
 
 import CustomFormRenderPlugin from "@/plugins/form-render";
 import {initStoreApp} from "@/storeApp";
@@ -166,7 +166,8 @@ import {initChinaAreaManangerFromUrl} from "@/plugins/chinaArea";
 
 import EmProps from "@/components/EmProps.vue";
 import EmPropsItem from "@/components/EmPropsItem.vue";
-import RenderLayout from '@/views/about/components/render-layout.vue'
+// import RenderLayout from '@/views/about/components/render-layout.vue'
+// import RenderXml from "@/views/about/components/RenderXml.vue";
 // import {renderForm} from "@/utils/tpllib";
 // import {buildFormDep} from "@/plugins/z-page/build";
 import {initCompile} from "@/hooks/compile";
@@ -180,7 +181,8 @@ comPlugin.install = function (app) {
   // CustomVueComponent.register(GridRow)
   // CustomVueComponent.register(GridColumn)
 
-  CustomVueComponent.register(RenderLayout)
+  // CustomVueComponent.register(RenderXml)
+  // CustomVueComponent.register(RenderLayout)
 };
 
 
@@ -221,20 +223,15 @@ comPlugin.install = function (app) {
     app.use(comPlugin)
     app.use(ZformMana)
     app.use(CustomFormRenderPlugin)
-    app.use(CodeMirrorPlugin)
+    // app.use(CodeMirrorPlugin)
     app.use(ZFramePlugin)
-    app.use(ZDragPlugin)
+    // app.use(ZDragPlugin)
     app.use(eventBus)
     app.use(icons)
     app.use(router)
     app.use(store)
     // import JsonViewer from "vue3-json-viewer";
-    import("vue3-json-viewer").then(res => {
-      // app.use(res.default)
-      // console.log(res)
-      let JsonViewer = res.JsonViewer
-      app.component('v-json-viewer',JsonViewer )
-    })
+
     // import * as highlightPlugin from '@/plugins/highlight'
     // import('@/plugins/highlight').then(highlightPlugin => {
     //   app.use(highlightPlugin)

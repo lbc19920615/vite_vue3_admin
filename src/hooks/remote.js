@@ -92,6 +92,23 @@ export async function fetchVueComponent({def, args}) {
     return parseComponent(tpl)
 }
 
+async function importComs(arr = []) {
+    return new Promise(resolve => {
+        /* @vite-ignore */
+        Promise.all(
+          arr.map(v => {
+              return import(v)
+          })
+        ).then(modules => {
+            // console.log(CustomVueComponent)
+            ZY.lodash.each(modules, function (module) {
+                CustomVueComponent.register(module.default)
+            })
+            resolve(modules);
+        })
+    })
+}
+
 /**
  * loadComponent
  * @param comName
@@ -115,6 +132,18 @@ export async function loadComponent(p, comName = '', {handleScript, handleTpl, s
     let scriptStr = sfc.script.content
     if (handleScript) {
         scriptStr = handleScript(scriptStr)
+    }
+    // console.log(sfc)
+    if (Array.isArray(sfc.customBlocks)) {
+        let componentsCustomBlock = sfc.customBlocks.find(v => v.type === 'components');
+        if (componentsCustomBlock) {
+            // console.log(componentsCustomBlock)
+            let content = JSON.parse(componentsCustomBlock.content);
+            // console.log(content);
+            if (Array.isArray(content.imports)) {
+                await importComs(content.imports)
+            }
+        }
     }
     let script = await ZY.importJsStr(scriptStr)
     let tpl = sfc.template.content

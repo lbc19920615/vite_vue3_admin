@@ -12,6 +12,7 @@ export default () => {
         name: 'html-transform',
         async transformIndexHtml(html) {
             const config = getEnvConfig()
+            let ret = ejs.render(html, config);
 
             let matches = [...html.matchAll(/\[\[\[(.+)\]\]\]/g)]
 
@@ -25,10 +26,10 @@ export default () => {
 
             // console.log(cwd, datas)
             datas.forEach(data => {
-                html = html.replace(data.key, data.data)
+                ret = ret.replace(data.key, data.data)
             })
 
-            let ret = ejs.render(html, config);
+
             return ret
 
            // return new Promise(resolve => {

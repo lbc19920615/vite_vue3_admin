@@ -243,7 +243,12 @@ import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
 // import ZStyleEditor from "@/plugins/z-frame/components/ZStyleEditor.vue";
 import ZAddress from "@/plugins/z-frame/components/ZAddress.vue";
 
-
+import("vue3-json-viewer").then(res => {
+  // app.use(res.default)
+  // console.log(res)
+  let JsonViewer = res.JsonViewer
+  CustomVueComponent.app.component('v-json-viewer',JsonViewer )
+})
 export default defineComponent({
   mixins: [
     PageControlMixin,
@@ -270,6 +275,7 @@ export default defineComponent({
     CustomElement,
   },
   setup(props, ctx) {
+
 
     // ZY.PinYin.initDict()
     let cachedPageControlModel = null

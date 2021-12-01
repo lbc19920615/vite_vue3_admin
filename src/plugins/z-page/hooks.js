@@ -1,8 +1,51 @@
 import {reactive,  toRaw} from "vue";
 import {VARS_PAGE_MODEL_NAME} from "@/vars";
 import {useRouter} from 'vue-router';
-import {COMMAND, setCommandHandler, setMessageHandler} from "@/channel";
+import {COMMAND, setCommandHandler} from "@/channel";
 import {createDebugTool, inspectDOM} from "@/hooks/tools";
+
+import AutoHttpCom from "@/components/AutoHttpCom.vue";
+// import '@/views/about/components/LayRow.vue'
+
+export let buildPageCommonMixin = function () {
+    CustomVueComponent.register(AutoHttpCom);
+
+    return {
+        components: {
+
+        },
+        data() {
+            return {
+                comReady: false
+            }
+        },
+        beforeMount() {
+            // let promiseImport = deps.map(v => {
+            //     return import(v)
+            // })
+            console.log('pageCommonMixin beforeMount');
+
+            let self = this
+            Promise.all(
+              [
+                  import('@/views/about/components/LayRow.vue')
+              ]
+            ).then(modules => {
+                ZY.lodash.each(modules, function (module) {
+                    CustomVueComponent.register(module.default)
+                })
+                setTimeout(() => {
+                    self.comReady = true
+                }, 30);
+            })
+
+
+        },
+        mounted() {
+            // console.log('pageCommonMixin')
+        }
+    }
+}
 
 export function useGlobalEasy(page) {
     class G {

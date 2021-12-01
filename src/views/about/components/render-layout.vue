@@ -15,6 +15,7 @@
         </template>
       </grid-column>
     <template v-else-if="curObj.type === 'row'">
+<!--      {{curObj.items}}-->
       <grid-row :class="levelItemCls"
                 :layout="curObj.items"
                 :attrs="curObj.data.attrs"

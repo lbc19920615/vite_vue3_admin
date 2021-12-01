@@ -1,3 +1,15 @@
+<!--                <template v-if="renderC.state.refresh">-->
+<!--                    <render-layout :map="renderC.state.currentLayoutMap"-->
+<!--                                   :id="renderC.state.rootId"-->
+<!--                                   :handle-next="renderC.handleNext"-->
+<!--                                   :handle-def-map="handleDefMap"-->
+<!--                                   :page="page">-->
+<!--                        {% endverbatim %}-->
+<!--                        {{CONFIG.layoutSlots}}-->
+<!--                        {% verbatim %}-->
+<!--                    </render-layout>-->
+<!--                </template>-->
+
 <template id="apptpl">
     <style>
         .prop-selected {
@@ -20,29 +32,72 @@
     <template>
         <div class="z-page">
             <template v-if="page.inited">
-                {% verbatim %}
-                <template v-if="renderC.state.refresh">
-                    <render-layout :map="renderC.state.currentLayoutMap"
-                                   :id="renderC.state.rootId"
-                                   :handle-next="renderC.handleNext"
-                                   :handle-def-map="handleDefMap"
-                                   :page="page">
-                        {% endverbatim %}
+                <template v-if="renderC.state.refresh && comReady">
+                    {% verbatim %}
+                    <load_page__render_xml__def_render_tag
+                            :page="page"
+                            :handle-def-map="handleDefMap">
+                    {% endverbatim %}
                         {{CONFIG.layoutSlots}}
-                        {% verbatim %}
-                    </render-layout>
+                    {% verbatim %}
+                    </load_page__render_xml__def_render_tag>
+                    {% endverbatim %}
                 </template>
-                {% endverbatim %}
-
             </template>
             <div id="debug"></div>
         </div>
     </template>
 
+    <components>{
+        "imports": ["/src/views/about/components/LayRow.vue"]
+        }</components>
+
     <script>
         window.Z_PAGE_VERSION = '1.0.0'
 
+
+        const cm_field_html = ZY.getHereDoc(function() { /*
+        <div class="z-page__render_xml"
+        z-page__render_xml="load_page__render_xml__def_render_tag"
+        >
+        {{C_XML}}
+        </div>
+        */ });
+        // console.log(cm_field_html)
+
+
+        CustomVueComponent.register({
+          name: 'load_page__render_xml__def_render_tag',
+          template:  cm_field_html,
+          props: {
+            handleDefMap: {
+              type: Function,
+              default: null
+            },
+            page: null,
+            slotContent: null,
+          },
+          data() {
+            return {
+              innerSlots: this.slotContent ? this.slotContent : this.$slots,
+            }
+          },
+          methods: {
+            getObj(...args) {
+              return ZY.lodash.get(...args)
+            },
+            getDef(partName = '') {
+              let r = this.handleDefMap(partName)
+              // console.log(partName, r)
+              return ZY.JSON5.stringify(r)
+            }
+          }
+        })
+
         export default {
+            mixins: [
+              buildPageCommonMixin()
+            ],
             setup() {
                 const { reactive } = global.Vue;
                 let stepMap = reactive({
@@ -141,14 +196,26 @@
                         const CURRENT_DATA = PAGE_CONTEXT.currentData
                         const IS_FIRST_RENDER = PAGE_CONTEXT.isFirst
                         {{ CONFIG.onInited }}
-                        // console.log('sdsds', PAGE_CONTEXT)
+                        // console.log('onInited', CURRENT_DATA)
                     })
                 }
 
                 page.stepMap = stepMap
 
+                function getObj(...args) {
+                  return ZY.lodash.get(...args)
+                }
+
+                function getDef(partName = '') {
+                  let r = handleDefMap(partName)
+                  console.log(partName, r)
+                  return ZY.JSON5.stringify(r)
+                }
+
                 return {
                     EVENT_NAMES,
+                    getObj,
+                    getDef,
                     stepMap,
                     callEvent,
                     handleDefMap,

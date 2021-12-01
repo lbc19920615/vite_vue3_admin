@@ -17,16 +17,16 @@ import CusInput from "@/components/CustomForm/CusInput.vue";
 import CusAddress from "@/components/CustomForm/CusAddress.vue";
 import CusSwitch from "@/components/CustomForm/CusSwitch.vue";
 import CusOneOrMany from "@/components/CustomForm/CusOneOrMany.vue";
-import CusProps from "@/components/CustomForm/CusProps.vue";
-import CusUploader from "@/components/CustomForm/CusUploader.vue";
-import CusDragXml from "@/components/CustomForm/CusDragXml.vue";
-import CusForm from "@/components/CustomForm/CusForm.vue";
-import CusSuggest from "@/components/CustomForm/CusSuggest.vue";
-import CusSubmitButton from "@/components/CustomForm/CusSubmitButton.vue";
-import MyVueTab from "@/components/MyVueTab.vue";
-import MyVueTabPane from "@/components/MyVueTabPane.vue";
 
-import ZPagination from "@/plugins/z-table/components/ZPagination.vue";
+import CusUploader from "@/components/CustomForm/CusUploader.vue";
+
+
+import CusSuggest from "@/components/CustomForm/CusSuggest.vue";
+// import CusSubmitButton from "@/components/CustomForm/CusSubmitButton.vue";
+// import MyVueTab from "@/components/MyVueTab.vue";
+// import MyVueTabPane from "@/components/MyVueTabPane.vue";
+
+// import ZPagination from "@/plugins/z-table/components/ZPagination.vue";
 
 
 import jsxCom from '@/components/jsxcom.vue'
@@ -48,8 +48,6 @@ const plugin = {
         CustomVueComponent.register(CusDateTimePicker)
         CustomVueComponent.register(CusTimePicker)
         CustomVueComponent.register(CusSelect)
-        CustomVueComponent.register(CusProps)
-        CustomVueComponent.register(CusForm)
         CustomVueComponent.register(CusSuggest)
         CustomVueComponent.register(CusRadio)
         CustomVueComponent.register(CusCheckbox)
@@ -62,17 +60,16 @@ const plugin = {
         CustomVueComponent.register(CusInputNumber)
         CustomVueComponent.register(CusRichEditor)
         CustomVueComponent.register(CusInput)
-        CustomVueComponent.register(CusDragXml)
         CustomVueComponent.register(CusOneOrMany)
         CustomVueComponent.register(CusUploader)
         CustomVueComponent.register(CusStyleEditor)
 
-        CustomVueComponent.register(MyVueTab)
-        CustomVueComponent.register(MyVueTabPane)
-        CustomVueComponent.register(ZPagination)
+        // CustomVueComponent.register(MyVueTab)
+        // CustomVueComponent.register(MyVueTabPane)
+        // CustomVueComponent.register(ZPagination)
 
 
-        CustomVueComponent.register(CusSubmitButton)
+        // CustomVueComponent.register(CusSubmitButton)
         CustomVueComponent.register(jsxCom)
         CustomVueComponent.register(HttpComponent)
     }

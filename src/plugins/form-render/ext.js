@@ -17,7 +17,14 @@ import CusStyle from "@/plugins/form-render/components/CusStyle.vue";
 import CusOptManager from "@/plugins/form-render/components/CusOptManager.vue";
 import CusAttr from "@/plugins/form-render/components/CusAttr.vue";
 import CusInsert from "@/plugins/form-render/components/CusInsert.vue";
+import CusProps from "@/components/CustomForm/CusProps.vue";
+import CusForm from "@/components/CustomForm/CusForm.vue";
+import CusDragXml from "@/components/CustomForm/CusDragXml.vue";
+import CodeMirror from "@/plugins/CodeMirrorEditor/CodeMirror.vue";
 
+CustomVueComponent.register(CusProps)
+CustomVueComponent.register(CusForm)
+CustomVueComponent.register(CusDragXml)
 CustomVueComponent.register(CusFormRules)
 CustomVueComponent.register(CusComEvents)
 CustomVueComponent.register(CusUI)
@@ -35,3 +42,7 @@ CustomVueComponent.register(CusFormAttr)
 CustomVueComponent.register(CusPropsEditor)
 CustomVueComponent.register(CusComputed)
 CustomVueComponent.register(CusXmlShower)
+CustomVueComponent.register(CodeMirror, 'CodeMirror')
+
+import * as ZDragPlugin from "@/plugins/z-dragxml/index";
+CustomVueComponent.app.use(ZDragPlugin);

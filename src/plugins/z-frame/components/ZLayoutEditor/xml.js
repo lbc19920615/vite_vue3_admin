@@ -29,13 +29,23 @@ export function buildAttrs(arr = []) {
   return str
 }
 
-function buildRootXmlLink(curContext, context) {
+/**
+ *
+ * @param curContext
+ * @param context
+ * @param extCtx
+ * @returns {string}
+ */
+function buildRootXmlLink(curContext, context, extCtx) {
   let {append, id} = curContext
   let {linkFroms,links, eleDeps} = append
   let ele = eleDeps.find(v => v.id === id)
-  // console.log('id', id, ele)
+  // console.log('id', id, ele, extCtx)
   let {data, items} = ele
-  let rawData = toRaw(data)
+  let rawData = toRaw(data);
+  if (extCtx && extCtx.resolveData) {
+    rawData = extCtx.resolveData({data, ele, id})
+  }
 
   let rawItems = toRaw(items)
   let toDepContext = []
@@ -60,12 +70,17 @@ function buildRootXmlLink(curContext, context) {
   let innerText = ''
   toDepContext.forEach(toDepContextItem => {
     if (toDepContextItem) {
-      innerText = innerText + buildRootXmlLink(toDepContextItem, context)
+      innerText = innerText + buildRootXmlLink(toDepContextItem, context, extCtx)
     }
   })
 
 
-  let attrStr = buildAttrs(rawData.attrs)
+  // console.log(rawData)
+  let rawData_attrs = []
+  if (Array.isArray(rawData.attrs)) {
+    rawData_attrs = rawData.attrs
+  }
+  let attrStr = buildAttrs(rawData_attrs)
   let afterAttrs = rawData.afterAttrs ?? ''
   let beforeAttrs = rawData.beforeAttrs ?? ''
   // console.log('rawData', rawData)
@@ -89,12 +104,24 @@ function buildRootXmlLink(curContext, context) {
   return str
 }
 
-export function buildXml(data) {
+/**
+ * buildXml
+ * @param data
+ * @param filterEle { boolean }
+ * @param version { string }
+ * @param extCtx
+ * @returns {string}
+ */
+export function buildXml(data, {filterEle = true, version = 'v1', extCtx = {}} = {}) {
   let context = {}
-  let { deps, links } = data
+  let { deps = [], links = [] } = data
   // console.log(deps, links)
   let eleDeps  = []
-  eleDeps = deps.filter(dep => dep.type === 'ele')
+  if (filterEle) {
+    eleDeps = deps.filter(dep => dep.type === 'ele')
+  } else {
+    eleDeps = deps
+  }
   let multiRoots = []
   let linkFromPIDS = links.map((item) => item.fromPID)
   let linkToPIDS = links.map((item) => item.toPID)
@@ -141,7 +168,7 @@ export function buildXml(data) {
 // }
 
   multiRoots.forEach((multiRoot) => {
-    str = str + buildRootXmlLink(context[multiRoot.id], context)
+    str = str + buildRootXmlLink(context[multiRoot.id], context, extCtx)
   })
 
 
@@ -451,13 +478,17 @@ ${needStr}
   return str
 }
 
-export function commonBuildDeepTree(startFun, {handleStr}) {
+export function commonBuildDeepTree(startFun, {handleStr, typeEle = true} = {}) {
   return function (data) {
     let context = {}
     let { deps, links } = data
     // console.log(deps, links)
     let eleDeps  = []
-    eleDeps = deps.filter(dep => dep.type === 'ele')
+    if (typeEle) {
+      eleDeps = deps.filter(dep => dep.type === 'ele')
+    } else {
+      eleDeps = deps
+    }
     let multiRoots = []
     let linkFromPIDS = links.map((item) => item.fromPID)
     let linkToPIDS = links.map((item) => item.toPID)
@@ -500,7 +531,6 @@ export function commonBuildDeepTree(startFun, {handleStr}) {
     let str = ''
     let mutlis = []
 
-
     multiRoots.forEach((multiRoot) => {
       mutlis.push(startFun(context[multiRoot.id], context))
     })
@@ -511,6 +541,10 @@ export function commonBuildDeepTree(startFun, {handleStr}) {
   }
 }
 
+/**
+ *
+ * @type {function(*): *|string}
+ */
 export let buildDeepTree = commonBuildDeepTree(
   buildRootDeepTreeLink,
   {
@@ -518,5 +552,20 @@ export let buildDeepTree = commonBuildDeepTree(
       // console.log(mutlis)
       return '[' + mutlis.join('\n,\n') + ']'
     }
+  }
+)
+
+/**
+ *
+ * @type {function(*): *|string}
+ */
+export let buildDeepTree2 = commonBuildDeepTree(
+  buildRootDeepTreeLink,
+  {
+    handleStr(mutlis) {
+      // console.log(mutlis)
+      return '[' + mutlis.join('\n,\n') + ']'
+    },
+    typeEle: false
   }
 )

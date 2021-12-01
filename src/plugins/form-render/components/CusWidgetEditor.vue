@@ -69,6 +69,14 @@ import {useReloadMan} from "@/views/home/hooks";
 import ZRadioButtons from "@/plugins/z-frame/components/ZRadioButtons.vue";
 import ZWindow from "@/plugins/z-frame/components/ZWindow.vue";
 
+if (!window.loadedWangEditorCSS) {
+  let link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = '/public/wangEditor.css';
+  document.body.append(link);
+  window.loadedWangEditorCSS = true;
+}
+
 export default {
   name: 'CusWidgetEditor',
   components: {ZWindow, ZRadioButtons, ZHttpCom, EwSuggest},
