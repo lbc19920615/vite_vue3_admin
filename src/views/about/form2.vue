@@ -17,7 +17,7 @@
 </style>
 
 <template>
-  <div class="page-form2" v-if="page.inited">
+  <div class="page-form2" v-if="page.inited" v-loading="state.loading">
 <!--    {{store.model}}-->
 <!--    {{store.computedModel}}-->
 
@@ -145,7 +145,7 @@
 <script>
 
 import '@/plugins/form-render/ext.js';
-import {defineComponent, toRaw, onMounted, provide} from "vue";
+import {defineComponent, toRaw, onMounted, provide, reactive} from "vue";
 import {
   extendControl2Page,
   useControl,
@@ -211,7 +211,10 @@ export default defineComponent({
     let global_path = currentRoute.query.path
     global_pageStoreName = currentRoute.query.storeName ?? VARS_PAGE_MODEL_NAME
 
-    let toolApi = useToolApi()
+    let toolApi = useToolApi();
+    let state = reactive({
+      loading: false
+    })
 
     let comMap = new Map();
     provide('formPage', {
@@ -374,10 +377,11 @@ export default defineComponent({
           //
           // })
           // console.log(cachedPageControlModel)
+          state.loading = true
           let value = ZY.JSON5.parse(cachedPageControlModel.value)
           let form = value.parts[0]
           let drag_cached = ZY.JSON5.parse(form.drag_cached)
-          console.log(drag_cached)
+          // console.log(drag_cached)
 
           let res = await toolApi.saveJson(form.properties,
               cachedPageControlModel.name + '.json5',
@@ -399,6 +403,8 @@ export default defineComponent({
           window.parent.postMessage(
               new Lib.CommandMessage('form:save', 1111),
               '*')
+
+          state.loading = false
         } catch (e) {
           console.log('JSON5 parse err', e, cachedPageControlModel)
         }
@@ -658,7 +664,7 @@ export default defineComponent({
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e
         if (config.process === page.store.model.textarea_step) {
-          // console.log('page about model:update:all', model)
+          console.log('page about model:update:all', model)
           cachedPageControlModel = model
         }
       },
@@ -750,6 +756,7 @@ export default defineComponent({
       store: page.store,
       onSaveLayout,
       // formula,
+      state,
       getPreviewUrl,
       onClosed,
       layoutStorePrefix,
