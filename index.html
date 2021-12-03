@@ -16,6 +16,7 @@
 <!--      <link href="/public/wangEditor.css" rel="stylesheet">-->
 
     <script src="/public/twig.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
     <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 <!--    <script src="/pinyin_dict_withtone.js"></script>-->
 <!--    <script src="/pinyin_dict_polyphone.js"></script>-->
@@ -165,6 +166,27 @@ style="zoom: ${zoom}" class="s_face">&nbsp;</a>`
     }
   </script>
 </template>
+  <script id="formTpl" type="text/html">
+    <div class="http-com comformscr2">
+      {% verbatim %}{{ {% endverbatim %} parts {% verbatim %} }} {% endverbatim %}
+      {% for part in CONFIG.parts %}
+      {% set partConfigKey = 'config.parts[' ~ loop.index0 ~ '].def' %}
+      {% set pathKey = "parts." ~ part.name %}
+      {% set pathSKey = "'parts." ~ part.name ~ "'" %}
+      {% set modelKey = pathKey ~ ".model"  %}
+      {% if part.type == 'form' %}
+      <view class="z-form http-com-part http-com-part__{{ part.name }}"
+               ref="comformscr2__{{ part.name }}" :model="{{ pathKey }}.model"
+      >
+        {{ partStr[part.name] }}
+        <slot-com :defs="slotContent" :attrs="{parts}"
+                  :binds="{name: '{{ part.name }}', ctx: exportCtx,  partName: '{{ part.name }}', parts, process: '{{ CONFIG.process}}' }"
+                  name="form_afterend"></slot-com>
+      </view>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </script>
     <div id="app"></div>
 
     <div id="storeApp"></div>

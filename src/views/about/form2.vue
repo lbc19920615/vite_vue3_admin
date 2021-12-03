@@ -97,7 +97,7 @@
                          @click="page.callEvent('call:save:file', scope)">保存本地文件</el-button>
               <el-button type="primary"
                          @click="page.callEvent('load:file')">加载本地文件</el-button>
-<!--              <el-button type="primary" @click="page.callEvent('get:xml:file', scope)">获取文件</el-button>-->
+              <el-button type="primary" @click="page.callEvent('get:xml:file', scope)">获取文件</el-button>
             </el-space>
           </div>
         </template>
@@ -172,9 +172,32 @@ import {VARS_PAGE_MODEL_NAME} from "@/vars";
 // import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
 import {formsToDef} from "@/plugins/z-frame/hooks/form";
 import {fetchVueTpl} from "@/hooks/remote";
+import tpllib from '@/utils/tpllib'
 import {useToolApi} from "@/hooks/api";
 import {buildFormDep} from "@/plugins/z-page/build";
 
+/**
+ *
+ * @param name
+ * @param fileMap { Map<String, String> }
+ * @param saveAs
+ */
+function downloadFiles(name, fileMap, saveAs = ZY_EXT.saveAs) {
+  if (globalThis.JSZip) {
+    let zip = new globalThis.JSZip();
+    fileMap.forEach((fileContent, fileName) => {
+      zip.file(fileName, fileContent);
+    })
+    // zip.file("1.in", "1 1");
+    // zip.file("1.out","2");
+    zip.generateAsync({type:"blob"})
+        .then(function(content) {
+          // see FileSaver.js
+          saveAs(content, name);
+        });
+  }
+}
+globalThis.downloadFiles = downloadFiles
 
 export default defineComponent({
   mixins: [
@@ -449,32 +472,28 @@ export default defineComponent({
       },
       async ['get:xml:file'](e) {
         let {partName, parts} = e
-        let model = parts[partName].getModel()
-        let obj = toRaw(
-            model
-        )
-        let forms = ZY.JSON5.parse(obj.value)
-        let def = formsToDef(
-            forms
-        );
-        let res = await fetchVueTpl({
-          def,
-          args: {
-            src: 'comformscr2.twig'
+        if (cachedPageControlModel && cachedPageControlModel.def) {
+          let partStrArr = tpllib.getPartStrArr(cachedPageControlModel.def, tpllib.renderWeappForm);
+          let partStrArrFirst = partStrArr[0]
+
+          let  partStr = {
+            [partStrArrFirst.name]: partStrArrFirst.value
           }
-        })
+
+          console.log(partStr)
+        }
         // ZY_EXT.saveStrAs(res.data, {
         //   file: 'test.vue'
         // })
-        await ZY_EXT.saveStrUseFS(res, {
-          fileName: obj.name + '.vue',
-          extensions: ['.vue'],
-          type: 'text/plain',
-          options: {
-            mimeTypes: ['text/*'],
-          }
-        })
-        console.log(forms, def)
+        // await ZY_EXT.saveStrUseFS(res, {
+        //   fileName: obj.name + '.vue',
+        //   extensions: ['.vue'],
+        //   type: 'text/plain',
+        //   options: {
+        //     mimeTypes: ['text/*'],
+        //   }
+        // })
+        // console.log(forms, def)
       },
       ['add:part'](e) {
         let { parts, partName, selfpath, process } = e

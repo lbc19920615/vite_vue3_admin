@@ -156,7 +156,7 @@ export function renderForm(p, basePath, configPath, append = {}) {
   };
   function render(p, key, context, level, basePath, configPath, pathArrStr, ext) {
     if (p.type === 'object') {
-      const obj_tag = p.tag ? p.tag : 'div';
+      const obj_tag = p.tag ? p.tag : 'view';
       const wrap_tag = p.wrap ? p.wrap : '';
       const wrap_start = p.wrap_start ? p.wrap_start : '';
       const wrap_end = p.wrap_end ? p.wrap_end : '';
@@ -209,11 +209,11 @@ v-if="${basePath}"
       const itemKey = 'item' + level;
       const indexKey = 'index' + level;
       const fromPath = getSelfPath(basePath, append.BASE_PATH);
-      const array_tag = p.tag ? p.tag : 'div';
+      const array_tag = p.tag ? p.tag : 'view';
       const wrap_tag = p.wrap ? p.wrap : '';
       const wrap_start = p.wrap_start ? p.wrap_start : '';
       const wrap_end = p.wrap_end ? p.wrap_end : '';
-      const array_con_tag = p.con_tag ? p.con_tag : 'div';
+      const array_con_tag = p.con_tag ? p.con_tag : 'view';
       const con_attr = attrStr(p, 'ui.conAttrs', {
         itemKey,
         indexKey,
@@ -273,7 +273,7 @@ ${attrStr(p, 'wrapAttrs')}>`;
     } else {
       // console.log(p, key);
       if (!p.hidden) {
-        const col_tag = p.tag ? p.tag : 'div';
+        const col_tag = p.tag ? p.tag : 'view';
         const field_tag = p.field_tag ? p.field_tag : 'cm-field';
         const wrap_tag = p.wrap ? p.wrap : '';
         const wrap_start = p.wrap_start ? p.wrap_start : '';
@@ -363,8 +363,209 @@ part_key="${append.partKey}"
   return context.tpl;
 }
 
+
+function renderWeappForm(p, basePath, configPath, append = {}) {
+  const context = {
+    tpl: '',
+  };
+  function render(p, key, context, level, basePath, configPath, pathArrStr, ext) {
+    if (p.type === 'object') {
+      const obj_tag = p.tag ? p.tag : 'view';
+      const wrap_tag = p.wrap ? p.wrap : '';
+      const wrap_start = p.wrap_start ? p.wrap_start : '';
+      const wrap_end = p.wrap_end ? p.wrap_end : '';
+      const fromPath = getSelfPath(basePath, append.BASE_PATH);
+
+      if (wrap_tag) {
+        context.tpl = context.tpl + `<${wrap_tag} ${attrStr(p, 'wrapAttrs')}>`;
+      }
+
+
+      if (wrap_start) {
+        context.tpl = context.tpl + wrap_start;
+      }
+
+      context.tpl = context.tpl + `
+         
+<${obj_tag} class="level_${level} z-form__object ${buildCls(p)}" ${attrStr(p)} 
+binds="{{ {a: 1} }}"
+wx:if="{{${basePath}}}"
+>
+
+`;
+      for (const [ key, value ] of Object.entries(p.properties)) {
+        ext.parentModel = `${basePath}`;
+        render(value, key, context, level + 1,
+          `${basePath}.${key}`, `${configPath}.properties.${key}`, `${pathArrStr},'${key}'`, ext);
+      }
+      context.tpl = context.tpl + `
+
+</${obj_tag}>
+`;
+
+      if (wrap_end) {
+        context.tpl = context.tpl + wrap_end;
+      }
+
+
+      if (wrap_tag) {
+        context.tpl = context.tpl + `</${wrap_tag}>`;
+      }
+
+    } else if (p.type === 'array') {
+      const itemKey = 'item' + level;
+      const indexKey = 'index' + level;
+      const fromPath = getSelfPath(basePath, append.BASE_PATH);
+      const array_tag = p.tag ? p.tag : 'view';
+      const wrap_tag = p.wrap ? p.wrap : '';
+      const wrap_start = p.wrap_start ? p.wrap_start : '';
+      const wrap_end = p.wrap_end ? p.wrap_end : '';
+      const array_con_tag = p.con_tag ? p.con_tag : 'view';
+      const con_attr = attrStr(p, 'ui.conAttrs', {
+        itemKey,
+        indexKey,
+      });
+      const con_cls = buildCls(p, 'ui.conClass');
+      // console.dir(append.CONFIG)
+      if (wrap_tag) {
+        context.tpl = context.tpl + `<${wrap_tag} 
+${attrStr(p, 'wrapAttrs')}>
+`;
+      }
+
+      context.tpl = context.tpl + `
+                 
+<${array_tag} class="level_${level} z-form__array ${buildCls(p)}" 
+${attrStr(p)}>
+            
+<${array_con_tag} v-for="(${itemKey}, ${indexKey}) in ${basePath}" class="z-form__array-con ${con_cls}"  ${con_attr} 
+
+>
+         
+`;
+      if (p.items.type === 'object') {
+        for (const [ key, value ] of Object.entries(p.items.properties)) {
+          ext.parentModel = `${basePath}[${indexKey}]`;
+          render(value, key, context, level + 1,
+            `${basePath}[${indexKey}].${key}`, `${configPath}.items.properties.${key}`, `${pathArrStr}, ${indexKey}, '${key}'`, ext);
+        }
+      }
+
+      context.tpl = context.tpl + `
+          
+</${array_con_tag}>
+          
+</${array_tag}>
+
+`;
+
+      if (wrap_end) {
+        context.tpl = context.tpl + wrap_end;
+      }
+
+      if (wrap_tag) {
+        context.tpl = context.tpl + `</${wrap_tag}>`;
+      }
+
+    } else {
+      // console.log(p, key);
+      if (!p.hidden) {
+        const col_tag = p.tag ? p.tag : 'view';
+        const field_tag = p.field_tag ? p.field_tag : 'cm-field';
+        const wrap_tag = p.wrap ? p.wrap : '';
+        const wrap_start = p.wrap_start ? p.wrap_start : '';
+        const wrap_end = p.wrap_end ? p.wrap_end : '';
+        const fromPath = getSelfPath(basePath, append.BASE_PATH);
+        const col_style = attrStyles(p).trim();
+        // console.log(col_style)
+        // const attrs2 = styleAddToAttr(p.ui.attrs, col_style);
+
+        const attrs = lodash.get(p, 'ui.attrs', []);
+        const attrs2Str = attr2Str(attrs);
+        // console.log(attrs);
+
+        if (wrap_tag) {
+          context.tpl = context.tpl + `<${wrap_tag}
+>`;
+        }
+
+        if (wrap_start) {
+          context.tpl = context.tpl + wrap_start;
+        }
+
+
+        context.tpl = context.tpl + `
+
+<${col_tag} class="level_${level} z-form__prop ${buildCls(p)}" ${attrs2Str}
+
+
+style="${col_style}"
+>`;
+
+        context.tpl = context.tpl +
+          `<${field_tag}
+label="${key}" 
+prop="${key}" 
+type="${p.type}"
+sub_type="${p.sub_type}"
+path-arr="{{[${pathArrStr.slice(1)}]}}"
+part_key="${append.partKey}"
+form-id="{{comUUID}}"
+>
+
+</${field_tag}>`;
+
+
+        context.tpl = context.tpl + `
+            
+</${col_tag}>
+`;
+
+        if (wrap_end) {
+          context.tpl = context.tpl + wrap_end;
+        }
+
+        if (wrap_tag) {
+          context.tpl = context.tpl + `</${wrap_tag}>`;
+        }
+
+      } else {
+        //
+      }
+    }
+  }
+
+  render(p, '', context, 1, basePath, configPath, '', { arrIndexes: {} });
+  return context.tpl;
+}
+
+function getPartStrArr(formCONFIG = {}, renderEngine = renderForm) {
+  let partStr = [];
+  if (Array.isArray(formCONFIG.parts)) {
+    formCONFIG.parts.forEach((part, index) => {
+      // console.dir(part.def, {
+      //   depth: null
+      // });
+      // const modelKey = 'parts.' + part.name + '.model';
+      const modelKey = 'model';
+      const partConfigKey = 'config.parts[' + index + '].def';
+
+      partStr.push({
+        name: part.name,
+        value: renderEngine(part.def, modelKey, partConfigKey,
+          { part, BASE_PATH: modelKey, CONFIG: formCONFIG, partKey: `parts.${part.name}` })
+      })
+    })
+  }
+  // console.log(partStr)
+  return partStr;
+}
+
+
 export default {
   attr2Str,
+  renderWeappForm,
+  getPartStrArr,
   getStrIfIsNotEmpty,
   getSelfPath,
   buildCls,
