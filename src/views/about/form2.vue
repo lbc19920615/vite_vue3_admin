@@ -173,6 +173,7 @@ import {VARS_PAGE_MODEL_NAME} from "@/vars";
 import {formsToDef} from "@/plugins/z-frame/hooks/form";
 import {fetchVueTpl} from "@/hooks/remote";
 import {useToolApi} from "@/hooks/api";
+import {buildFormDep} from "@/plugins/z-page/build";
 
 
 export default defineComponent({
@@ -383,17 +384,22 @@ export default defineComponent({
           let drag_cached = ZY.JSON5.parse(form.drag_cached)
           // console.log(drag_cached)
 
-          let res = await toolApi.saveJson(form.properties,
-              cachedPageControlModel.name + '.json5',
-              {
-                newProps: ZY.JSON5.parse(form.properties),
-                oldProps: drag_cached.oldProps
-              }
-          )
-          form.metas = {
-            form_data: res
-          }
+          // let res = await toolApi.saveJson(form.properties,
+          //     cachedPageControlModel.name + '.json5',
+          //     {
+          //       newProps: ZY.JSON5.parse(form.properties),
+          //       oldProps: drag_cached.oldProps
+          //     }
+          // )
+          // form.metas = {
+          //   form_data: res
+          // }
           cachedPageControlModel.value = ZY.JSON5.stringify(value)
+          let formDef = buildFormDep(value, value.name, {
+            src: 'comformscr2.twig'
+          });
+          // console.log(value, formDef)
+          cachedPageControlModel.def = formDef.init.def
 
           // console.log(form, res, cachedPageControlModel)
           await page.dispatchRoot('SetStoreLocal', {
