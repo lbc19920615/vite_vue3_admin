@@ -30,6 +30,33 @@ import {getDeepConfigFromLinksAndDeps} from "@/views/about/components/DeepPropEd
 import {buildObjAttrs, buildXml, buildJsx, buildDeepTree} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
 import {parseFormAttrToObj, parseRulesArrToStr, parseEventsToStr} from "@/plugins/form-render/utils/CusFormAttr";
 import {useStore} from "vuex";
+import {parseComponent} from "vue-sfc-parser";
+
+globalThis.createParseComponentMan = function (s) {
+  let o = parseComponent(s);
+  let map = new Map();
+  map.set('styles', o.styles)
+  map.set('script', o.script);
+  map.set('template', o.template);
+  if (Array.isArray(o.customBlocks)) {
+    o.customBlocks.forEach(item =>  {
+      // console.log(item)
+      map.set(item.type, item)
+    })
+  }
+  return map;
+}
+
+globalThis.twigRender = function (template, data) {
+  let t = Twig.twig({
+    // id: tplID,
+    data: template,
+    allowInlineIncludes: true
+  });
+  let html = t.render(data)
+  return html
+}
+
 
 const rootStore = useStore()
 

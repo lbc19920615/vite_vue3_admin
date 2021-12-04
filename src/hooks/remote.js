@@ -1,21 +1,6 @@
 import {fetchContentV3} from '@expose/main.js'
 import {parseComponent} from "vue-sfc-parser";
 
-globalThis.createParseComponentMan = function (s) {
-    let o = parseComponent(s);
-    let map = new Map();
-    map.set('styles', o.styles)
-    map.set('script', o.script);
-    map.set('template', o.template);
-    if (Array.isArray(o.customBlocks)) {
-        o.customBlocks.forEach(item =>  {
-            // console.log(item)
-            map.set(item.type, item)
-        })
-    }
-    return map;
-}
-
 let templateSfc = function (sfc) {
     if (sfc.template) {
         return sfc.template.content

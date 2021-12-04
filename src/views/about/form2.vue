@@ -477,9 +477,12 @@ export default defineComponent({
       async ['get:xml:file'](e) {
         let {partName, parts} = e
         if (cachedPageControlModel && cachedPageControlModel.def) {
-          let partStrArr = tpllib.getPartStrArr(cachedPageControlModel.def, tpllib.renderWeappForm);
+          let man = globalThis.createParseComponentMan(
+              document.getElementById('output-form-tpl').innerHTML
+          );
+          let formConfig = cachedPageControlModel.def
+          let partStrArr = tpllib.getPartStrArr(formConfig, tpllib.renderWeappForm);
           let partStrArrFirst = partStrArr[0]
-
           // let  partStr = {
           //   [partStrArrFirst.name]: partStrArrFirst.value
           // }
@@ -487,6 +490,14 @@ export default defineComponent({
           // console.log(partStr)
           let fileMap = new Map();
           fileMap.set(cachedPageControlModel.name + '.wxml',  partStrArrFirst.value)
+          let scriptContent = man.get('script').content
+          scriptContent = globalThis.twigRender(scriptContent, {
+            json5_config: ZY.JSON5.stringify(formConfig)
+          })
+          fileMap.set(cachedPageControlModel.name + '.js', scriptContent)
+          fileMap.set(cachedPageControlModel.name + '.json', man.get('config').content)
+
+          console.log(man, fileMap)
 
           downloadFiles(cachedPageControlModel.name, fileMap)
         }
