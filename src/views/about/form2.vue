@@ -181,21 +181,25 @@ import {buildFormDep} from "@/plugins/z-page/build";
  * @param name
  * @param fileMap { Map<String, String> }
  * @param saveAs
+ * @returns {Promise<unknown>}
  */
 function downloadFiles(name, fileMap, saveAs = ZY_EXT.saveAs) {
-  if (globalThis.JSZip) {
-    let zip = new globalThis.JSZip();
-    fileMap.forEach((fileContent, fileName) => {
-      zip.file(fileName, fileContent);
-    })
-    // zip.file("1.in", "1 1");
-    // zip.file("1.out","2");
-    zip.generateAsync({type:"blob"})
-        .then(function(content) {
-          // see FileSaver.js
-          saveAs(content, name);
-        });
-  }
+  return new Promise(resolve => {
+    if (globalThis.JSZip) {
+      let zip = new globalThis.JSZip();
+      fileMap.forEach((fileContent, fileName) => {
+        zip.file(fileName, fileContent);
+      })
+      // zip.file("1.in", "1 1");
+      // zip.file("1.out","2");
+      zip.generateAsync({type:"blob"})
+          .then(function(content) {
+            // see FileSaver.js
+            saveAs(content, name);
+            resolve()
+          });
+    }
+  })
 }
 globalThis.downloadFiles = downloadFiles
 
@@ -476,12 +480,19 @@ export default defineComponent({
           let partStrArr = tpllib.getPartStrArr(cachedPageControlModel.def, tpllib.renderWeappForm);
           let partStrArrFirst = partStrArr[0]
 
-          let  partStr = {
-            [partStrArrFirst.name]: partStrArrFirst.value
-          }
+          // let  partStr = {
+          //   [partStrArrFirst.name]: partStrArrFirst.value
+          // }
 
-          console.log(partStr)
+          // console.log(partStr)
+          let fileMap = new Map();
+          fileMap.set(cachedPageControlModel.name + '.wxml',  partStrArrFirst.value)
+
+          downloadFiles(cachedPageControlModel.name, fileMap)
         }
+
+
+
         // ZY_EXT.saveStrAs(res.data, {
         //   file: 'test.vue'
         // })

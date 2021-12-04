@@ -1,6 +1,6 @@
 // import { moduleConfig } from '__remote/public/vue-bs-loader.js'
 
-import {fetchVueComponent} from "@/hooks/remote";
+// import {fetchVueComponent} from "@/hooks/remote";
 
 const getGlobal = function() {
   if (typeof self !== 'undefined') { return self; }
