@@ -1,11 +1,10 @@
 <template id="output-form-tpl" type="text/html">
 <script>
     import { createFormComponent } from './zform/zform.js'
-    import { parseConfigJSON5 } from './zform/utils.js'
 
-    const formDef = parseConfigJSON5(function() {/*{{json5_config}}*/})
+    const formDef = {{json5_config}}
 
-    createFormComponent({
+    ;createFormComponent({
         formDef
     });
 </script>

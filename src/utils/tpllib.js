@@ -510,7 +510,7 @@ type="${p.type}"
 sub_type="${p.sub_type}"
 path-arr="{{[${pathArrStr.slice(1)}]}}"
 part_key="${append.partKey}"
-form-id="{{comUUID}}"
+form-id="{{uuid}}"
 >
 
 </${field_tag}>`;

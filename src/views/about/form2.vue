@@ -180,22 +180,23 @@ import {buildFormDep} from "@/plugins/z-page/build";
  *
  * @param name
  * @param fileMap { Map<String, String> }
- * @param saveAs
+ * @param fileSave
  * @returns {Promise<unknown>}
  */
-function downloadFiles(name, fileMap, saveAs = ZY_EXT.saveAs) {
+function downloadFiles(name, fileMap, fileSave = ZY_EXT.FS.fileSave) {
   return new Promise(resolve => {
     if (globalThis.JSZip) {
       let zip = new globalThis.JSZip();
       fileMap.forEach((fileContent, fileName) => {
         zip.file(fileName, fileContent);
       })
-      // zip.file("1.in", "1 1");
-      // zip.file("1.out","2");
+      console.log(name)
       zip.generateAsync({type:"blob"})
           .then(function(content) {
             // see FileSaver.js
-            saveAs(content, name);
+            fileSave(content, {
+              fileName: name
+            });
             resolve()
           });
     }
@@ -421,12 +422,15 @@ export default defineComponent({
           // form.metas = {
           //   form_data: res
           // }
-          cachedPageControlModel.value = ZY.JSON5.stringify(value)
-          let formDef = buildFormDep(value, value.name, {
-            src: 'comformscr2.twig'
-          });
-          // console.log(value, formDef)
-          cachedPageControlModel.def = formDef.init.def
+          console.log(import.meta.env)
+          if (import.meta.env !== 'development') {
+            cachedPageControlModel.value = ZY.JSON5.stringify(value)
+            let formDef = buildFormDep(value, value.name, {
+              src: 'comformscr2.twig'
+            });
+            // console.log(value, formDef)
+            cachedPageControlModel.def = formDef.init.def
+          }
 
           // console.log(form, res, cachedPageControlModel)
           await page.dispatchRoot('SetStoreLocal', {
@@ -470,12 +474,13 @@ export default defineComponent({
         let fileName = obj.name ??  ZY.rid(6)
         // let time = ZY.Time.formatDateTime(d, 'YYYY-MM-DD__HH')
 
-        console.log('call:save:file', saved)
+        // console.log('call:save:file', saved)
         // ZY_EXT.saveObjAsJson5File(saved, `page_${fileName}_${time}_${d.getTime()}`)
         ZY_EXT.saveJSONFile({data: saved, fileName, prefix: 'form2_'})
       },
       async ['get:xml:file'](e) {
         let {partName, parts} = e
+        let prefix = ZY.Time.formatDateTime(new Date(), 'YYYY-MM-DD__HH_mm_ss')
         if (cachedPageControlModel && cachedPageControlModel.def) {
           let man = globalThis.createParseComponentMan(
               document.getElementById('output-form-tpl').innerHTML
@@ -497,9 +502,9 @@ export default defineComponent({
           fileMap.set(cachedPageControlModel.name + '.js', scriptContent)
           fileMap.set(cachedPageControlModel.name + '.json', man.get('config').content)
 
-          console.log(man, fileMap)
+          console.log(cachedPageControlModel)
 
-          downloadFiles(cachedPageControlModel.name, fileMap)
+          downloadFiles(cachedPageControlModel.name + '__' + prefix, fileMap)
         }
 
 
