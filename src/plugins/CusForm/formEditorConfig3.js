@@ -83,7 +83,12 @@ let formDef = {
                   type: 'string',
                   ui: {
                     label: '片段名',
+                    widget: 'CusSuggest',
                     widgetConfig: {
+                      useLabelTip: 'labelTip',
+                      mode: 'select',
+                      enums: "ROOT_STATE('tools.slotTypes', [])",
+                      listStyle: 'height: 300px; overflow: auto;'
                     }
                   }
                 },
