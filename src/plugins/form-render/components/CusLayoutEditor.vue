@@ -206,7 +206,7 @@ export default {
     function onPlumbDelDep() {
       let v = layoutRef.getToolsData()
       let ret = JSON5.stringify(v)
-      console.log(ret)
+      // console.log(ret)
       state.value = ret
     }
 

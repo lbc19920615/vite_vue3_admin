@@ -70,6 +70,57 @@ let formDef = {
               }
             }
           },
+          slots: {
+            type: 'array',
+            ui: {
+              label: '片段',
+              showAddBtn: true,
+            },
+            items: {
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string',
+                  ui: {
+                    label: '片段名',
+                    widgetConfig: {
+                    }
+                  }
+                },
+                layouts: {
+                  type: 'string',
+                  tag: 'div',
+                  ui: {
+                    label: '片段XML',
+                    widget: 'CusLayoutEditor',
+                    widgetConfig: {
+                      // suffix: 'slayout',
+                      mode: 'xml'
+                    }
+                  }
+                },
+                value: {
+                  type: 'string',
+                  reflect: 'layouts',
+                  reflectOptions: {
+                    v2: true
+                  },
+                  reflectTpl: `A.buildXML($VAL)`,
+                  ui: {
+                    styles: [
+                      // ['height', 0],
+                      // ['overflow', 'hidden'],
+                    ],
+                    widget: 'CusXmlShower',
+                    widgetConfig: {
+                      type: 'textarea',
+                      disabled: true,
+                    }
+                  }
+                },
+              }
+            }
+          },
           computed2: {
             type: 'string',
             ui: {
@@ -237,7 +288,8 @@ let _config = baseConfig({
           ui: '{}',
           props: '{links: [], deps: [], posMap: []}',
           properties: '{}',
-          defaultVal: '{}',
+          // defaultVal: '{}',
+          slots: []
         }
       ]
     }

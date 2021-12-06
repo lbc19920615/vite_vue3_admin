@@ -36,10 +36,13 @@
         :is="store.model.editor_step"
     >
       <template #array_con_afterbegin="scope">
-        <!--            <h3>{{getArrItemBeforeKey(scope)}}</h3>-->
+<!--                    <h3>{{getArrItemBeforeKey(scope)}}</h3>-->
       </template>
       <template #array_afterbegin="scope">
-        <!--        <el-button  @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>-->
+        <template v-if="showAddBtn(scope)">
+          <el-button
+              @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>
+        </template>
       </template>
     </HttpComponent>
   </div>
@@ -122,9 +125,10 @@ export default {
       //   let {model, key, newVal, config} = e
       // },
       ['add:part'](e) {
-        let { parts, partName, selfpath, process } = e
-        // console.log('add:event', e, model)
-        parts[partName].arrAppend(selfpath)
+        let { parts, partName, pathArr, process } = e
+        // console.log('add:events', e, model)
+        let s_path = ZY.getObjPathFromPathArr(pathArr)
+        parts[partName].arrAppend(s_path)
       },
       async ['model:update:all'](e) {
         let { model, key, newVal, config } = e
@@ -238,10 +242,21 @@ export default {
       return label
     }
 
+    function showAddBtn(scope) {
+      // console.log(scope)
+      let {parts, partName, configPath} = scope
+      // console.log(scope)
+      // let partPath = configPath.replace('config.parts[0].def.', '')
+      let def = parts[partName].getPartConfig(configPath);
+      // console.log(parts[partName].rowDef, def)
+      return def?.ui?.showAddBtn
+    }
+
     return {
       dialogName,
       widgetConfig: props.ui.widgetConfig,
       page,
+      showAddBtn,
       openDialog,
       getArrItemBeforeKey,
       useDrag,
