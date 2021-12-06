@@ -100,7 +100,8 @@ let formDef = {
                     widget: 'CusLayoutEditor',
                     widgetConfig: {
                       // suffix: 'slayout',
-                      mode: 'xml'
+                      mode: 'xml',
+                      weapp: true
                     }
                   }
                 },
@@ -110,7 +111,7 @@ let formDef = {
                   reflectOptions: {
                     v2: true
                   },
-                  reflectTpl: `A.buildXML($VAL)`,
+                  reflectTpl: `A.buildAllXml($VAL)`,
                   ui: {
                     styles: [
                       // ['height', 0],
@@ -123,6 +124,25 @@ let formDef = {
                     }
                   }
                 },
+                // value2: {
+                //   type: 'string',
+                //   reflect: 'layouts',
+                //   reflectOptions: {
+                //     v2: true
+                //   },
+                //   reflectTpl: `A.buildWeappXML($VAL)`,
+                //   ui: {
+                //     styles: [
+                //       // ['height', 0],
+                //       // ['overflow', 'hidden'],
+                //     ],
+                //     widget: 'CusXmlShower',
+                //     widgetConfig: {
+                //       type: 'textarea',
+                //       disabled: true,
+                //     }
+                //   }
+                // },
               }
             }
           },

@@ -33,7 +33,7 @@ export default {
     let {part_key} = props.defs;
     let obj;
     let JSON5 = ZY.JSON5;
-    let { data, methods, listeners, init } = defineCustomRender(props, ctx, {
+    let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
         if (!newVal) {
           newVal = {}
@@ -71,7 +71,7 @@ export default {
 
     return {
       state,
-      widgetConfig: props.ui.widgetConfig,
+      widgetConfig: widgetConfig2,
       onChange,
       methods,
       typeSuggest,

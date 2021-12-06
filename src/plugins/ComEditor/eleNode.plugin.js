@@ -1,103 +1,108 @@
 import {baseConfig} from "@/plugins/ComEditor/editorConfig";
 import {registerEditorConfig} from "@/plugins/ComEditor/nodes";
 
-export let EditorConfig = function ( { properties = {}, computed = {} } = {}, defaultVal = {}) {
-    return baseConfig( {
-            type: 'object',
-            ui: {
-                attrs: [
-                    ['label-width', '100px']
-                ],
+const CUS_BASE_DEF = function (properties) {
+    return {
+        type: 'object',
+        ui: {
+            attrs: [
+                ['label-width', '100px']
+            ],
+        },
+        properties: {
+            name: {
+                type: 'string',
+                hidden: true,
+                ui: {
+                    label: '名称'
+                },
             },
-            properties: {
-                name: {
-                    type: 'string',
-                    hidden: true,
-                    ui: {
-                        label: '名称'
-                    },
+            tagName: {
+                type: 'string',
+                ui: {
+                    label: '标签名'
                 },
-                tagName: {
-                    type: 'string',
-                    ui: {
-                        label: '标签名'
-                    },
-                },
-                editText: {
-                    type: 'string',
-                    ui: {
-                        label: '文字',
-                        widgetConfig: {
-                            type: 'textarea'
-                        }
-                    },
-                    computedProp: 'text'
-                },
-                ...properties,
-                events: {
-                    type: 'array',
-                    ui: {
-                        label: '事件'
-                    },
-                    items: {
-                        type: "object",
-                        properties: {
-                            value: {
-                                type: 'string',
-                                ui: {
-                                    label: '事件',
-                                    widget: 'CusComEvents',
-                                    widgetConfig: {
-                                    }
-                                },
-                            },
-                        }
+            },
+            editText: {
+                type: 'string',
+                ui: {
+                    label: '文字',
+                    widgetConfig: {
+                        type: 'textarea'
                     }
                 },
-                attrs: {
-                    type: 'array',
-                    ui: {
-                      label: '属性'
-                    },
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            name: {
-                                type: 'string',
-                                ui: {
-                                    widget: 'CusSuggest',
-                                    widgetConfig: {
-                                        placement: 'top'
-                                    }
-                                },
-                            },
-                            value: {
-                                type: 'string',
-                                ui: {
-                                },
-                            },
-                        }
-                    }
+                computedProp: 'text'
+            },
+            ...properties,
+            events: {
+                type: 'array',
+                ui: {
+                    label: '事件'
                 },
+                items: {
+                    type: "object",
+                    properties: {
+                        value: {
+                            type: 'string',
+                            ui: {
+                                label: '事件',
+                                widget: 'CusComEvents',
+                                widgetConfig: {
+                                }
+                            },
+                        },
+                    }
+                }
+            },
+            attrs: {
+                type: 'array',
+                ui: {
+                    label: '属性'
+                },
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        name: {
+                            type: 'string',
+                            ui: {
+                                widget: 'CusSuggest',
+                                widgetConfig: {
+                                    placement: 'top'
+                                }
+                            },
+                        },
+                        value: {
+                            type: 'string',
+                            ui: {
+                            },
+                        },
+                    }
+                }
+            },
 
-                textContent: {
-                    type: 'string',
-                    // hidden: true,
-                    ui: {
-                        attrs: [
-                            ['style', 'height: 0; overflow: hidden']
-                        ],
-                        label: 'text',
-                        widgetConfig: {
-                            type: 'textarea',
-                            rows: 1,
-                            disabled: true,
-                        }
-                    },
-                    computedProp: 'computedEditText'
+            textContent: {
+                type: 'string',
+                // hidden: true,
+                ui: {
+                    attrs: [
+                        ['style', 'height: 0; overflow: hidden']
+                    ],
+                    label: 'text',
+                    widgetConfig: {
+                        type: 'textarea',
+                        rows: 1,
+                        disabled: true,
+                    }
                 },
-            }
-        }, {
+                computedProp: 'computedEditText'
+            },
+        }
+    }
+}
+
+export let EditorConfig = function ( { baseDefCreate, properties = {}, computed = {} } = {}, defaultVal = {}) {
+    let baseDef = baseDefCreate(properties)
+    return baseConfig( baseDef, {
           computedEditText: "MODEL('editText', '')",
           ...computed
         },
@@ -114,14 +119,34 @@ export let EditorConfig = function ( { properties = {}, computed = {} } = {}, de
 //     })
 // }
 
-registerEditorConfig('ele',  function (dep) {
-    console.log('eleNode buildConfig', dep)
-    return EditorConfig({
+registerEditorConfig('ele',  function (dep, options) {
+    // console.log('eleNode buildConfig', dep, options)
+    let ret = EditorConfig({
+        baseDefCreate(properties) {
+          let obj = CUS_BASE_DEF(properties);
+          // console.log( obj.properties.events.items.properties.value.ui.widgetConfig)
+            if (options.weapp) {
+                obj.properties.events.items.properties.value.ui.widgetConfig.weapp = true
+            }
+          return obj
+        },
         properties: {
             beforeAttrs: {
                 type: 'string',
                 // hidden: true,
                 computedProp: 'computedProp1',
+                ui: {
+                    widgetConfig: {
+                        type: 'textarea',
+                        rows: 1,
+                        disabled: true,
+                    }
+                },
+            },
+            attrsMap: {
+                type: 'string',
+                // hidden: true,
+                computedProp: 'computedProp2',
                 ui: {
                     widgetConfig: {
                         type: 'textarea',
@@ -160,12 +185,15 @@ registerEditorConfig('ele',  function (dep) {
             }
         },
         computed: {
-            computedProp1: "A.calcBeforeAttrs(MODEL('inputEdit', ''), MODEL('rules', []), MODEL('events', []) )"
+            computedProp1: "A.calcBeforeAttrs(MODEL('inputEdit', ''), MODEL('rules', []), MODEL('events', []) )",
+            computedProp2: "A.calcAttrsMap(MODEL('inputEdit', ''), MODEL('rules', []), MODEL('events', []) )"
         },
     },{
         form2: {
         }
     })
+    // console.log(ret)
+    return ret;
 })
 
 export function install({

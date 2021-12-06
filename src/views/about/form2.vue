@@ -501,12 +501,24 @@ export default defineComponent({
           let formComName = cachedPageControlModel.name;
           let formSlotComName = formComName + '-slots';
 
+
+
           // 处理form slots的导出
           ;( function () {
             let templateArr = form.slots.map(slot => {
+              console.log(slot.value)
+              let obj = {
+                web: '',
+                weapp: '',
+              }
+              try {
+                obj = ZY.JSON5.parse(slot.value)
+              } catch (e) {
+              //
+              }
               return `
 <template name="${slot.name}">
-${slot.value}
+${obj.weapp}
 </template>
 `
             })

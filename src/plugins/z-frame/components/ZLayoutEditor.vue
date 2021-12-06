@@ -178,7 +178,9 @@ let depManagerMixin = {
         }
         if (Array.isArray(dep.editorTpl)) {
           let [name] = dep.editorTpl
-          let editor = NodeDefMap.getEditorConfig(name)(dep)
+          let editor = NodeDefMap.getEditorConfig(name)(dep, {
+            weapp: this.weapp
+          })
           // console.log('sdsdsdsdsds', name, editor)
           await this.loadStepByContent(editor, 'editor_step')
         }
@@ -339,7 +341,11 @@ export default defineComponent({
       type: Boolean,
       default: true
     },
-    handleList1: null
+    handleList1: null,
+    weapp:{
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {

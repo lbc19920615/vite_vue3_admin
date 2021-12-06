@@ -44,7 +44,7 @@ function buildRootXmlLink(curContext, context, extCtx) {
   let {data, items} = ele
   let rawData = toRaw(data);
   if (extCtx && extCtx.resolveData) {
-    rawData = extCtx.resolveData({data, ele, id})
+    rawData = extCtx.resolveData({data: rawData, ele, id})
   }
 
   let rawItems = toRaw(items)

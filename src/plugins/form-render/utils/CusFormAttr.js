@@ -85,3 +85,27 @@ export function parseEventsToStr(events = []) {
     return ''
   }
 }
+
+/**
+ * parseEventsToWeappStr
+ * @param events
+ * @returns {string|*}
+ */
+export function parseEventsToWeappStr(events = []) {
+  let _ = ZY.lodash
+  let JSON5 = ZY.JSON5
+  try {
+    let arr = JSON5.parse(JSON5.stringify(events))
+
+    let filtedArr = arr.map(v => {
+      let obj = JSON5.parse(v.value)
+      return `bind:${obj.type}="callEvent" data-event-name="${obj.eventName}" `
+    })
+
+    // console.log('parseEventsToStr', events, filtedArr)
+
+    return filtedArr.join(' ')
+  } catch (e) {
+    return ''
+  }
+}

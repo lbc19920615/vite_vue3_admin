@@ -74,6 +74,7 @@
               @mode:update:all="onPlumbUpdate"
               @del-dep="onPlumbDelDep"
               @save-layout="onSaveLayout"
+              :weapp="widgetConfig.weapp"
           ></ZLayoutEditor>
         </div>
       </el-dialog>

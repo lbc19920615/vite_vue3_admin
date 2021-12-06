@@ -28,7 +28,12 @@ import {useRouter} from "vue-router";
 import {fetchTwigComponent} from "@/hooks/remote.js";
 import {getDeepConfigFromLinksAndDeps} from "@/views/about/components/DeepPropEditor/utils";
 import {buildObjAttrs, buildXml, buildJsx, buildDeepTree} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
-import {parseFormAttrToObj, parseRulesArrToStr, parseEventsToStr} from "@/plugins/form-render/utils/CusFormAttr";
+import {
+  parseFormAttrToObj,
+  parseRulesArrToStr,
+  parseEventsToStr,
+  parseEventsToWeappStr
+} from "@/plugins/form-render/utils/CusFormAttr";
 import {useStore} from "vuex";
 import {parseComponent} from "vue-sfc-parser";
 
@@ -353,6 +358,48 @@ ${item.value}
       }
       return ''
     },
+    buildAllXml(data) {
+      let ret = {
+        web: this.buildXML(data) ?? '',
+        weapp: this.buildWeappXML(data) ?? ''
+      }
+      return ZY.JSON5.stringify(ret)
+    },
+    buildWeappXML(data) {
+      if (data) {
+        let obj = ZY.JSON5.parse(data)
+        let str = buildXml(obj.data, {
+          extCtx: {
+            resolveData({data, ele, id}) {
+              if (data.attrsMap) {
+                let d = ZY.JSON5.parse(data.attrsMap)
+                let {commonFormAttr, rules, events} = d
+                let obj = parseFormAttrToObj(commonFormAttr)
+                // console.log(obj, buildObjAttrs(obj))
+                let formAttr = buildObjAttrs(obj).trim()
+
+                let ruleStr = parseRulesArrToStr(rules)
+                let rulesAttr = ''
+                if (ruleStr) {
+                  rulesAttr = `:rules='${ruleStr}'`
+                }
+
+                let eventStr = parseEventsToWeappStr(events);
+                let ret = [
+                  formAttr, rulesAttr, eventStr
+                ].join(' ')
+                console.log(ret)
+                data.beforeAttrs = ret
+              }
+              return data
+            }
+          }
+        })
+        // console.log('buildXML', obj, str)
+        return str
+      }
+      return ''
+    },
     buildJSX(data) {
       if (data) {
         let obj = ZY.JSON5.parse(data)
@@ -400,7 +447,7 @@ ${item.value}
       return obj
     },
     calcBeforeAttrs(commonFormAttr, rules = [], events = []) {
-      // console.log('calcBeforeAttrs', rules)
+      // console.log('calcBeforeAttrs', rules, isWeapp)
       let obj = parseFormAttrToObj(commonFormAttr)
       // console.log(obj, buildObjAttrs(obj))
       let formAttr = buildObjAttrs(obj).trim()
@@ -415,7 +462,13 @@ ${item.value}
 
       return formAttr + ' ' + rulesAttr + ' ' + eventStr
     },
-
+    calcAttrsMap(commonFormAttr, rules = [], events = []) {
+      return ZY.JSON5.stringify({
+        commonFormAttr,
+        rules,
+        events
+      })
+    },
     parseUIObj(uiJSON5 = '') {
 
       try {
