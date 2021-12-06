@@ -412,25 +412,26 @@ export default defineComponent({
           let drag_cached = ZY.JSON5.parse(form.drag_cached)
           // console.log(drag_cached)
 
-          // let res = await toolApi.saveJson(form.properties,
-          //     cachedPageControlModel.name + '.json5',
-          //     {
-          //       newProps: ZY.JSON5.parse(form.properties),
-          //       oldProps: drag_cached.oldProps
-          //     }
-          // )
-          // form.metas = {
-          //   form_data: res
-          // }
-          console.log(import.meta.env)
-          if (import.meta.env !== 'development') {
-            cachedPageControlModel.value = ZY.JSON5.stringify(value)
-            let formDef = buildFormDep(value, value.name, {
-              src: 'comformscr2.twig'
-            });
-            // console.log(value, formDef)
-            cachedPageControlModel.def = formDef.init.def
+          // console.log(import.meta.env)
+          if (import.meta.env.MODE !== 'development') {
+            // let res = await toolApi.saveJson(form.properties,
+            //     cachedPageControlModel.name + '.json5',
+            //     {
+            //       newProps: ZY.JSON5.parse(form.properties),
+            //       oldProps: drag_cached.oldProps
+            //     }
+            // )
+            // form.metas = {
+            //   form_data: res
+            // }
           }
+
+          cachedPageControlModel.value = ZY.JSON5.stringify(value)
+          let formDef = buildFormDep(value, value.name, {
+            src: 'comformscr2.twig'
+          });
+          // console.log(value, formDef)
+          cachedPageControlModel.def = formDef.init.def
 
           // console.log(form, res, cachedPageControlModel)
           await page.dispatchRoot('SetStoreLocal', {
@@ -479,12 +480,14 @@ export default defineComponent({
         ZY_EXT.saveJSONFile({data: saved, fileName, prefix: 'form2_'})
       },
       async ['get:xml:file'](e) {
-        let {partName, parts} = e
+        // let {partName, parts} = e
+        const ZFORM_RELATIVE_PATH = './zform';
         let prefix = ZY.Time.formatDateTime(new Date(), 'YYYY-MM-DD__HH_mm_ss')
         if (cachedPageControlModel && cachedPageControlModel.def) {
-          let man = globalThis.createParseComponentMan(
-              document.getElementById('output-form-tpl').innerHTML
-          );
+
+          let value = ZY.JSON5.parse(cachedPageControlModel.value)
+          let form = value.parts[0]
+
           let formConfig = cachedPageControlModel.def
           let partStrArr = tpllib.getPartStrArr(formConfig, tpllib.renderWeappForm);
           let partStrArrFirst = partStrArr[0]
@@ -494,15 +497,70 @@ export default defineComponent({
 
           // console.log(partStr)
           let fileMap = new Map();
-          fileMap.set(cachedPageControlModel.name + '.wxml',  partStrArrFirst.value)
-          let scriptContent = man.get('script').content
-          scriptContent = globalThis.twigRender(scriptContent, {
-            json5_config: ZY.JSON5.stringify(formConfig)
-          })
-          fileMap.set(cachedPageControlModel.name + '.js', scriptContent)
-          fileMap.set(cachedPageControlModel.name + '.json', man.get('config').content)
 
-          console.log(cachedPageControlModel)
+          let formComName = cachedPageControlModel.name;
+          let formSlotComName = formComName + '-slots';
+
+          // 处理form slots的导出
+          ;( function () {
+            let templateArr = form.slots.map(slot => {
+              return `
+<template name="${slot.name}">
+${slot.value}
+</template>
+`
+            })
+
+            let slotman = globalThis.createParseComponentMan(
+                document.getElementById('output-form-slot-com-tpl').innerHTML
+            );
+            let templateContent = slotman.get('template').content;
+            let xmlContent =  globalThis.twigRender(templateContent, {
+              ZFORM_RELATIVE_PATH,
+              slots_str: templateArr.join()
+            });
+            console.log(xmlContent)
+            fileMap.set(formSlotComName + '.wxml',  xmlContent);
+            let scriptContent = slotman.get('script').content
+            scriptContent = globalThis.twigRender(scriptContent, {
+              ZFORM_RELATIVE_PATH,
+            })
+            fileMap.set(formSlotComName + '.js', scriptContent)
+            let configContent = slotman.get('config').content
+            fileMap.set(formSlotComName + '.json', configContent)
+          })();
+
+
+          // 处理form的导出
+          ( function() {
+            let man = globalThis.createParseComponentMan(
+                document.getElementById('output-form-tpl').innerHTML
+            );
+            let templateContent = man.get('template').content
+            let xmlContent =  globalThis.twigRender(templateContent, {
+              ZFORM_RELATIVE_PATH,
+              form_tpl:partStrArrFirst.value
+            });
+            // console.log(xmlContent)
+            fileMap.set(formComName + '.wxml',  xmlContent)
+            let scriptContent = man.get('script').content
+            scriptContent = globalThis.twigRender(scriptContent, {
+              ZFORM_RELATIVE_PATH,
+              json5_config: ZY.JSON5.stringify(formConfig.parts[0]),
+            })
+            fileMap.set(formComName + '.js', scriptContent);
+            let configContent = man.get('config').content;
+            configContent = globalThis.twigRender(configContent, {
+              ZFORM_RELATIVE_PATH,
+              slot_com_name: formSlotComName,
+              cm_field_name: 'cm-field',
+            })
+            fileMap.set(formComName + '.json', configContent)
+          })();
+
+          // 处理slot的导出
+
+          console.log(cachedPageControlModel, form)
 
           downloadFiles(cachedPageControlModel.name + '__' + prefix, fileMap)
         }

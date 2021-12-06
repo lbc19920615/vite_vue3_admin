@@ -1,6 +1,21 @@
 <template id="output-form-tpl" type="text/html">
-<script>
-    import { createFormComponent } from './zform/zform.js'
+<template>
+  <view class="http-com comformscr2">
+    <view class="z-form http-com-part http-com-part__{{ part.name }}"
+    >
+      <slot-com
+          binds="{% verbatim %}{{ {% endverbatim %} { a: 1 } {% verbatim %} }} {% endverbatim %}"
+          name="form_afterbegin"></slot-com>
+      {{ form_tpl }}
+      <slot-com
+          binds="{% verbatim %}{{ {% endverbatim %} { a: 1 } {% verbatim %} }} {% endverbatim %}"
+          name="form_afterend"></slot-com>
+    </view>
+  </view>
+</template>
+
+  <script>
+    import { createFormComponent } from '{{ZFORM_RELATIVE_PATH}}/zform.js'
 
     const formDef = {{json5_config}}
 
@@ -13,8 +28,8 @@
     {
         "component": true,
         "usingComponents": {
-            "slot-com": "tpl-slot",
-            "cm-field": "cm-field"
+            "slot-com": "{{slot_com_name}}",
+            "cm-field": "{{cm_field_name}}"
         }
     }
 </config>
@@ -22,6 +37,25 @@
 
 
 <template id="output-form-slot-com-tpl" type="text/html">
+  <template>
+    <wxs src="{{ZFORM_RELATIVE_PATH}}/utils.wxs" module="utils" ></wxs>
+
+    {{slots_str}}
+
+    <template is="{% verbatim %} {{ {% endverbatim %} name {% verbatim %} }} {% endverbatim %}"
+              data="{% verbatim %} {{ {% endverbatim %} binds {% verbatim %} }} {% endverbatim %}"></template>
+  </template>
+  <script>
+    import { createSlotComponent } from '{{ZFORM_RELATIVE_PATH}}/zslot';
+    createSlotComponent();
+  </script>
+  <config type="application/json">
+    {
+      "component": true,
+      "usingComponents": {
+      }
+    }
+  </config>
 </template>
 
 <template id="output-form-cm-field-tpl" type="text/html">
