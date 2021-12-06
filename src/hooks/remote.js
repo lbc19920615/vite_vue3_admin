@@ -97,7 +97,7 @@ async function importComs(arr = []) {
         /* @vite-ignore */
         Promise.all(
           arr.map(v => {
-              return import(v)
+              return  globalThis.importScripts(v)
           })
         ).then(modules => {
             // console.log(CustomVueComponent)

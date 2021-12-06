@@ -170,7 +170,8 @@ export default {
         _configUrl = widgetConfig2.configUrl
       }
       page.commonLoadStep(
-          import(_configUrl),
+          /* @vite-ignore */
+          globalThis.importScripts(_configUrl),
           'editor_step',
           {
             async onMounted(config, {setPartModel}) {

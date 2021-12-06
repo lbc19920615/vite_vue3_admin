@@ -107,7 +107,7 @@ export async function loadPage(comName, storeName = VARS_PAGE_MODEL_NAME, tplID 
 
           Promise.all(
             deps.map(v => {
-              return import(v)
+              return  globalThis.importScripts(v)
             })
           ).then(res => {
             // console.log(res)
