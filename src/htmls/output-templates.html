@@ -7,11 +7,15 @@
     >
       <slot-com
           binds="{% verbatim %}{{ {% endverbatim %} { a: 1 } {% verbatim %} }} {% endverbatim %}"
-          name="form_afterbegin"></slot-com>
+          name="form_afterbegin"
+          form-id="{% verbatim %}{{ {% endverbatim %} uuid  {% verbatim %} }} {% endverbatim %}"
+      ></slot-com>
       {{ form_tpl }}
       <slot-com
           binds="{% verbatim %}{{ {% endverbatim %} { a: 1 } {% verbatim %} }} {% endverbatim %}"
-          name="form_afterend"></slot-com>
+          name="form_afterend"
+          form-id="{% verbatim %}{{ {% endverbatim %} uuid  {% verbatim %} }} {% endverbatim %}"
+      ></slot-com>
     </view>
   </view>
 </template>
