@@ -439,7 +439,10 @@ export default defineComponent({
             data: cachedPageControlModel
           })
           window.parent.postMessage(
-              new Lib.CommandMessage('form:save', 1111),
+              new Lib.CommandMessage('form:save', {
+                metas: form.metas,
+                form
+              }),
               '*')
 
           state.loading = false
