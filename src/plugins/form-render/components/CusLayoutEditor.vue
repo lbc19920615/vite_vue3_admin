@@ -193,7 +193,7 @@ export default {
     }
 
     function getXMLDisplay(v) {
-      return getApp().buildXML(v)
+      return getApp().buildAllXml(v)
     }
 
     function onPlumbUpdate(e) {
