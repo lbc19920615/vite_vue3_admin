@@ -414,16 +414,16 @@ export default defineComponent({
 
           // console.log(import.meta.env)
           if (import.meta.env.MODE !== 'development') {
-            // let res = await toolApi.saveJson(form.properties,
-            //     cachedPageControlModel.name + '.json5',
-            //     {
-            //       newProps: ZY.JSON5.parse(form.properties),
-            //       oldProps: drag_cached.oldProps
-            //     }
-            // )
-            // form.metas = {
-            //   form_data: res
-            // }
+            let res = await toolApi.saveJson(form.properties,
+                cachedPageControlModel.name + '.json5',
+                {
+                  newProps: ZY.JSON5.parse(form.properties),
+                  oldProps: drag_cached.oldProps
+                }
+            )
+            form.metas = {
+              form_data: res
+            }
           }
 
           cachedPageControlModel.value = ZY.JSON5.stringify(value)
