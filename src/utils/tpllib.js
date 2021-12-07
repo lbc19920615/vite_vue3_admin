@@ -504,6 +504,7 @@ style="${col_style}"
 
         context.tpl = context.tpl +
           `<${field_tag}
+class="z-form__field"
 label="${key}" 
 prop="${key}" 
 type="${p.type}"
