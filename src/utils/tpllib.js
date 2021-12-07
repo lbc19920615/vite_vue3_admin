@@ -510,7 +510,9 @@ type="${p.type}"
 sub_type="${p.sub_type}"
 path-arr="{{[${pathArrStr.slice(1)}]}}"
 part_key="${append.partKey}"
+form-path="${basePath}"
 form-id="{{uuid}}"
+config-path="${configPath}"
 >
 
 </${field_tag}>`;
@@ -548,7 +550,8 @@ function getPartStrArr(formCONFIG = {}, renderEngine = renderForm) {
       // });
       // const modelKey = 'parts.' + part.name + '.model';
       const modelKey = 'model';
-      const partConfigKey = 'config.parts[' + index + '].def';
+      // const partConfigKey = 'config.parts[' + index + '].def';
+      const partConfigKey = 'def';
 
       partStr.push({
         name: part.name,

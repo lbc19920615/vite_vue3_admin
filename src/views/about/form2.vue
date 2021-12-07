@@ -481,7 +481,7 @@ export default defineComponent({
       },
       async ['get:xml:file'](e) {
         // let {partName, parts} = e
-        const ZFORM_RELATIVE_PATH = './zform';
+        const ZFORM_RELATIVE_PATH = '../zform';
         let prefix = ZY.Time.formatDateTime(new Date(), 'YYYY-MM-DD__HH_mm_ss')
         if (cachedPageControlModel && cachedPageControlModel.def) {
 
