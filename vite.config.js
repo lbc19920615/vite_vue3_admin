@@ -40,6 +40,7 @@ export default (({mode}) => {
       vueJsx(),
     ],
     server: {
+      // https: true,
       proxy: {
         // 字符串简写写法
         // '/api': 'http://192.168.1.51:10010',
