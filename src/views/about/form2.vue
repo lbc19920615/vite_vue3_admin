@@ -484,7 +484,16 @@ export default defineComponent({
 
         // console.log('call:save:file', saved)
         // ZY_EXT.saveObjAsJson5File(saved, `page_${fileName}_${time}_${d.getTime()}`)
-        ZY_EXT.saveJSONFile({data: saved, fileName, prefix: 'form2_'})
+        ZY_EXT.saveJSONFile({data: saved, fileName, prefix: 'form2_',
+          saveFun(str, {file} ={}) {
+            // console.log('saveDesignFile', str)
+            return ZY_EXT.saveStrUseFS(str, {
+              extensions: ['.json5'],
+              fileName: file,
+              type: 'text/plain',
+            })
+          }
+        })
       },
       async ['get:xml:file'](e) {
         // let {partName, parts} = e
