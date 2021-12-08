@@ -1,7 +1,9 @@
 <template>
   <z-easy-modal title="导出选项"
                 :ref="getRef"
-                :button-attr="{style: 'display: none;'}">
+                :button-attr="{style: 'display: none;'}"
+                :model-attr="{width: '60vw'}"
+  >
     <auto-http-com
                     :def="state.def"
                     :page="page"
