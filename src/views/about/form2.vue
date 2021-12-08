@@ -97,7 +97,7 @@
                          @click="page.callEvent('call:save:file', scope)">保存本地文件</el-button>
               <el-button type="primary"
                          @click="page.callEvent('load:file')">加载本地文件</el-button>
-              <el-button type="primary" @click="page.callEvent('get:xml:file', scope)">获取文件</el-button>
+              <el-button type="primary" @click="page.callEvent('get:xml:file', scope)">导出小程序文件</el-button>
             </el-space>
           </div>
         </template>
