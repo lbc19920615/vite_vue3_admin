@@ -530,9 +530,10 @@ ${obj.weapp}
                 document.getElementById('output-form-slot-com-tpl').innerHTML
             );
             let templateContent = slotman.get('template').content;
+
             let xmlContent =  globalThis.twigRender(templateContent, {
               ZFORM_RELATIVE_PATH,
-              slots_str: templateArr.join()
+              slots_str: templateArr.join('\n')
             });
             console.log(xmlContent)
             fileMap.set(formSlotComName + '.wxml',  xmlContent);

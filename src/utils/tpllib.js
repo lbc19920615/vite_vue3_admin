@@ -386,12 +386,14 @@ function renderWeappForm(p, basePath, configPath, append = {}) {
       }
 
       context.tpl = context.tpl + `
-         
+<slot-com  name="object_beforebegin"  
+form-id="{{uuid}}" config-path="${configPath}"></slot-com>          
 <${obj_tag} class="level_${level} z-form__object ${buildCls(p)}" ${attrStr(p)} 
 binds="{{ {a: 1} }}"
 wx:if="{{${basePath}}}"
 >
-
+<slot-com  name="object_afterbegin"  
+form-id="{{uuid}}" config-path="${configPath}"></slot-com> 
 `;
       for (const [ key, value ] of Object.entries(p.properties)) {
         ext.parentModel = `${basePath}`;
@@ -399,8 +401,11 @@ wx:if="{{${basePath}}}"
           `${basePath}.${key}`, `${configPath}.properties.${key}`, `${pathArrStr},'${key}'`, ext);
       }
       context.tpl = context.tpl + `
-
+<slot-com  name="object_beforeend"  
+form-id="{{uuid}}" config-path="${configPath}"></slot-com> 
 </${obj_tag}>
+<slot-com  name="object_afterend"  
+form-id="{{uuid}}" config-path="${configPath}"></slot-com> 
 `;
 
       if (wrap_end) {
@@ -434,14 +439,17 @@ ${attrStr(p, 'wrapAttrs')}>
       }
 
       context.tpl = context.tpl + `
-                 
+<slot-com  name="array_beforebegin"  
+form-id="{{uuid}}" config-path="${configPath}"></slot-com>                  
 <${array_tag} class="level_${level} z-form__array ${buildCls(p)}" 
 ${attrStr(p)}>
-            
+<slot-com  name="array_afterbegin"  
+form-id="{{uuid}}" config-path="${configPath}"></slot-com>             
 <${array_con_tag} v-for="(${itemKey}, ${indexKey}) in ${basePath}" class="z-form__array-con ${con_cls}"  ${con_attr} 
 
 >
-         
+<slot-com  name="array_con_afterbegin"  
+form-id="{{uuid}}" config-path="${configPath}"></slot-com>          
 `;
       if (p.items.type === 'object') {
         for (const [ key, value ] of Object.entries(p.items.properties)) {
@@ -452,11 +460,14 @@ ${attrStr(p)}>
       }
 
       context.tpl = context.tpl + `
-          
+<slot-com  name="array_con_beforeend"  
+form-id="{{uuid}}" config-path="${configPath}"></slot-com>            
 </${array_con_tag}>
-          
+<slot-com  name="array_beforeend"  
+form-id="{{uuid}}" config-path="${configPath}"></slot-com>             
 </${array_tag}>
-
+<slot-com  name="array_aftereend"  
+form-id="{{uuid}}" config-path="${configPath}"></slot-com>   
 `;
 
       if (wrap_end) {
@@ -495,12 +506,14 @@ ${attrStr(p)}>
 
 
         context.tpl = context.tpl + `
-
+<slot-com  name="prop_beforebegin"  
+form-id="{{uuid}}" config-path="${configPath}"></slot-com>   
 <${col_tag} class="level_${level} z-form__prop ${buildCls(p)}" ${attrs2Str}
-
-
 style="${col_style}"
->`;
+>
+<slot-com  name="prop_afterbegin"  
+form-id="{{uuid}}" config-path="${configPath}"></slot-com>
+`;
 
         context.tpl = context.tpl +
           `<${field_tag}
@@ -520,8 +533,11 @@ config-path="${configPath}"
 
 
         context.tpl = context.tpl + `
-            
+<slot-com  name="prop_beforeend"  
+form-id="{{uuid}}" config-path="${configPath}"></slot-com>            
 </${col_tag}>
+<slot-com  name="prop_afterend"  
+form-id="{{uuid}}" config-path="${configPath}"></slot-com>   
 `;
 
         if (wrap_end) {

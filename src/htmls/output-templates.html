@@ -44,12 +44,12 @@
 
 <template id="output-form-slot-com-tpl" type="text/html">
   <template>
-    <wxs src="{{ZFORM_RELATIVE_PATH}}/utils.wxs" module="utils" ></wxs>
-
-    {{slots_str}}
-
-    <template is="{% verbatim %} {{ {% endverbatim %} name {% verbatim %} }} {% endverbatim %}"
-              data="{% verbatim %} {{ {% endverbatim %} binds {% verbatim %} }} {% endverbatim %}"></template>
+<wxs src="{{ZFORM_RELATIVE_PATH}}/utils.wxs" module="utils" ></wxs>
+{{slots_str}}
+<block wx:if="{% verbatim %} {{ {% endverbatim %} inited {% verbatim %} }} {% endverbatim %}">
+<template is="{% verbatim %} {{ {% endverbatim %} name {% verbatim %} }} {% endverbatim %}"
+          data="{% verbatim %} {{ {% endverbatim %} name, config, binds {% verbatim %} }} {% endverbatim %}"></template>
+</block>
   </template>
   <script>
     import { createSlotComponent } from '{{ZFORM_RELATIVE_PATH}}/zslot';
