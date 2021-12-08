@@ -115,8 +115,8 @@ let formDef = {
                   reflectTpl: `A.buildAllXml($VAL)`,
                   ui: {
                     styles: [
-                      // ['height', 0],
-                      // ['overflow', 'hidden'],
+                      ['height', 0],
+                      ['overflow', 'hidden'],
                     ],
                     widget: 'CusXmlShower',
                     widgetConfig: {
