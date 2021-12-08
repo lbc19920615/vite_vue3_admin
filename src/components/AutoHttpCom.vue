@@ -13,7 +13,8 @@ export default defineComponent( {
     def: String,
     slotContent: null,
     page: null,
-    is: String
+    is: String,
+    debug: Boolean
   },
   setup(props, ctx) {
     let page = props.page
@@ -72,7 +73,7 @@ export default defineComponent( {
         defs: page.defMap,
         is:  step.value,
         slotContent: props.slotContent ? props.slotContent : ctx.slots,
-        debug: true,
+        debug: props.debug,
       })
       return httpCtx
     }
