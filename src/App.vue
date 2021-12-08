@@ -388,7 +388,7 @@ ${item.value}
                 let ret = [
                   formAttr, rulesAttr, eventStr
                 ].join(' ')
-                console.log(ret)
+                // console.log(ret)
                 data.beforeAttrs = ret
               }
               return data
