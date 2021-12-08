@@ -325,7 +325,7 @@ import {createPlumbConfig} from "@/plugins/PlumbLayout/utils";
 import draggable from 'vuedraggable'
 import {toRaw} from "vue";
 import {getXmlData} from "@/views/about/components/PlumbLayout/xmlData";
-import {Fold, Remove, Plus, Edit} from '@element-plus/icons'
+import {Edit, Fold, Plus, Remove} from '@element-plus/icons'
 
 let UIMixin = {
   components: {
@@ -374,12 +374,12 @@ let UIMixin = {
     }
   },
   methods: {
-    onDropStart(e) {
+    onDropStart() {
       // console.log('onDropEnd', e)
       this.isDragging = true
       this.disableDrag = true
     },
-    onDropEnd(e) {
+    onDropEnd() {
       // console.log('onDropEnd', e)
       this.isDragging = false
     },
@@ -554,7 +554,7 @@ export default {
      */
     insDep(id, instance, items = []) {
       let self = this
-      let config = this.config
+      // let config = this.config
       self.addEndpoint(id + '-top' , {
         anchors: ['Left']
       }, id)
@@ -571,8 +571,7 @@ export default {
       let config = this.config
       let instance = self.instance
       if (document.getElementById(id)) {
-        let endpoint = instance.addEndpoint(id , options, config.baseStyle)
-        this.pointsMap[depId][id + suffix] = endpoint
+        this.pointsMap[depId][id + suffix] = instance.addEndpoint(id, options, config.baseStyle)
       }
       // console.log(id, depId, this.pointsMap)
     },
