@@ -25,14 +25,15 @@ export default defineComponent( {
     let fromDefModel
 
     function load(newDef) {
-      config = ZY.JSON5.parse(newDef)
+      let JSON5 = ZY.JSON5;
+      config = JSON5.parse(newDef);
 
       // console.log(config, typeof config)
       page.setDef(config, function ({done}) {
         // console.log('autohttp com load', config)
 
         for (let [partName, data] of Object.entries(config.defaultVal)) {
-          let defaultObj = ZY.JSON5.parse(ZY.JSON5.stringify(data))
+          let defaultObj = JSON5.parse(JSON5.stringify(data))
           partConfig = config.init.def.parts.find(v => v.name === partName)
           if (partConfig.def) {
             fromDefModel = createFormModel(partConfig.def)
@@ -50,7 +51,7 @@ export default defineComponent( {
     }
 
     watch(() => props.def, (newVal) => {
-      // console.log('is change', oldIs, props.is)
+      // console.log('auto http com', newVal)
       if (typeof oldIs === 'undefined') {
 
         load(newVal)

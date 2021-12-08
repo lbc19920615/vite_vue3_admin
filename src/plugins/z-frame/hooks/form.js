@@ -28,6 +28,50 @@ export function baseConfig({defaultVal = {}, def = {}, computed = {}} = {}) {
     return obj
 }
 
+/**
+ *
+ * @param process
+ * @param defaultVal
+ * @param def
+ * @param computed
+ * @returns {{init: {args: {src: string}, def: {parts: [{def: {}, computed: {}, name: string, serviceTpl: {args: {src: string}, def: {}}, type: string}], constants: {}}}, defaultVal: {}, name}}
+ */
+export function baseConfig2(process,
+                            {
+                                defaultVal = {},
+                                def = {},
+                                computed = {},
+                                partName = 'form2'
+                            } = {}) {
+    let obj = {
+        name: process,
+        defaultVal: defaultVal,
+        init: {
+            def: {
+                constants: {},
+                parts: [
+                    {
+                        type: "form",
+                        name: partName,
+                        serviceTpl: {
+                            def: {},
+                            args: {
+                                src: "bservice.twig"
+                            }
+                        },
+                        def: def,
+                        computed: computed
+                    },
+                ],
+            },
+            args: {
+                src: 'comformscr2.twig'
+            }
+        }
+    }
+    return obj
+}
+
 export function formsToDef(model = {}) {
     let ret = model
     // console.log(model)

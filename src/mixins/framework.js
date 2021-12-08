@@ -461,6 +461,14 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
 
   control.httpComContext = httpComContext
 
+  let processEventHandler = new Map();
+  control.setProcessEventHandler = function (name, value) {
+    processEventHandler.set(name, value)
+  }
+  control.removeProcessEventHandler = function (name) {
+    processEventHandler.delete(name)
+  }
+
   let refsManager = provideRefManager({
     async eventHandler({type, e}) {
       // console.log('page eventHandler', type, e)
@@ -481,6 +489,16 @@ export function extendControl2Page(control = {eventHandleMap: {}}) {
         }
       } else {
         // console.log(control.eventHandleMap, type)
+        // console.log(e.config)
+        if (e.config && e.config.process) {
+          if (processEventHandler.has(e.config.process)) {
+            let obj = processEventHandler.get(e.config.process)
+            if (obj && obj.handler) {
+
+              obj.handler(type, e)
+            }
+          }
+        }
         if (control.eventHandleMap[type]) {
           control.eventHandleMap[type](e)
         }

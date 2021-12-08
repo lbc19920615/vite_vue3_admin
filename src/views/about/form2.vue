@@ -24,6 +24,9 @@
 <!--    {{store.model}}-->
 <!--    {{store.computedModel}}-->
 
+    <wechat-export-dialog :ref="wechatDialogRef" :page="page"
+    @submit="page.callEvent('get:xml:file', $event)"
+    ></wechat-export-dialog>
 
     <template v-if="store.model.textarea_step">
       <!--      {{store.computedModel}}-->
@@ -101,7 +104,7 @@
               <el-button type="primary"
                          @click="page.callEvent('load:file')">加载本地文件</el-button>
               <el-button type="primary"
-                         @click="page.callEvent('get:xml:file', scope)">导出小程序文件</el-button>
+                         @click="page.callEvent('open:dialog')">导出小程序文件</el-button>
             </el-space>
           </div>
         </template>
@@ -174,11 +177,12 @@ import {VARS_PAGE_MODEL_NAME} from "@/vars";
 // import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
 // import ZEchartsEasy from "@/plugins/z-frame/components/ZEchartsEasy.vue";
 // import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
-import {formsToDef} from "@/plugins/z-frame/hooks/form";
-import {fetchVueTpl} from "@/hooks/remote";
+// import {formsToDef} from "@/plugins/z-frame/hooks/form";
+// import {fetchVueTpl} from "@/hooks/remote";
 import tpllib from '@/utils/tpllib'
 import {useToolApi} from "@/hooks/api";
 import {buildFormDep} from "@/plugins/z-page/build";
+import WechatExportDialog from "@/views/about/components/WechatExportDialog.vue";
 
 /**
  *
@@ -217,6 +221,7 @@ export default defineComponent({
     }
   },
   components: {
+    WechatExportDialog
     // ZQuickDialog,
     // ZEchartsEasy,
     // ZOptionsManager,
@@ -248,6 +253,7 @@ export default defineComponent({
     let state = reactive({
       loading: false
     })
+
 
     let comMap = new Map();
     provide('formPage', {
@@ -291,7 +297,7 @@ export default defineComponent({
     })
     page = extendControl2Page(page)
     page = useAppPageControl(page)
-
+    let wechatDialogRef = page.setRef('wechatDialogRef')
     let formsMana = useFormsMana();
 
     let currentFromDialog = null
@@ -353,6 +359,15 @@ export default defineComponent({
       return pattern.stringify(obj)
     }
 
+    let comEventHandler = new Map();
+    page.setComEventHandler = function (name, value) {
+      comEventHandler.set(name, value)
+    }
+    page.execComEventHandler = function (name, e) {
+      if (comEventHandler.has(name)) {
+        comEventHandler.get(name)(e)
+      }
+    }
 
     page.setEventHandler({
       ['add:arr:common'](e) {
@@ -495,9 +510,13 @@ export default defineComponent({
           }
         })
       },
+      async ['open:dialog'](e) {
+        let wechatDialog = page.getRef('wechatDialogRef')
+        wechatDialog.show();
+      },
       async ['get:xml:file'](e) {
-        // let {partName, parts} = e
-        const ZFORM_RELATIVE_PATH = '../zform';
+        let {model = {}} = e;
+        const ZFORM_RELATIVE_PATH = model?.libPath ?? '../zform';
         let prefix = ZY.Time.formatDateTime(new Date(), 'YYYY-MM-DD__HH_mm_ss')
         if (cachedPageControlModel && cachedPageControlModel.def) {
 
@@ -593,21 +612,6 @@ ${obj.weapp}
 
           downloadFiles(cachedPageControlModel.name + '__' + prefix, fileMap)
         }
-
-
-
-        // ZY_EXT.saveStrAs(res.data, {
-        //   file: 'test.vue'
-        // })
-        // await ZY_EXT.saveStrUseFS(res, {
-        //   fileName: obj.name + '.vue',
-        //   extensions: ['.vue'],
-        //   type: 'text/plain',
-        //   options: {
-        //     mimeTypes: ['text/*'],
-        //   }
-        // })
-        // console.log(forms, def)
       },
       ['add:part'](e) {
         let { parts, partName, selfpath, process } = e
@@ -803,8 +807,10 @@ ${obj.weapp}
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e
         if (config.process === page.store.model.textarea_step) {
-          console.log('page about model:update:all', model)
+          // console.log('page about model:update:all', model)
           cachedPageControlModel = model
+        } else {
+          page.execComEventHandler('model:update:all', e)
         }
       },
       ['preview']() {
@@ -895,6 +901,7 @@ ${obj.weapp}
       store: page.store,
       onSaveLayout,
       // formula,
+      wechatDialogRef,
       state,
       getPreviewUrl,
       onClosed,
