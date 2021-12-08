@@ -34,7 +34,7 @@
 <!--    <el-row>-->
 <!--      <el-button @click="save">保存</el-button>-->
 <!--    </el-row>-->
-    <el-row class="a-space-mb-10">
+    <el-row class="a-space-mb-10 cus-ui__item-title">
       <div class="cus-ui__label">标题</div>
       <el-input  style="width: auto; flex: 1"
                 v-model="state.value.data.label" @blur="onBlur"></el-input>

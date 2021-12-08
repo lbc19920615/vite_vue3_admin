@@ -40,7 +40,7 @@
       </template>
       <template #array_afterbegin="scope">
         <template v-if="showAddBtn(scope)">
-          <el-button
+          <el-button size="small"
               @click="page.callEvent('add:part', scope)">添加{{ scope.key }}</el-button>
         </template>
       </template>

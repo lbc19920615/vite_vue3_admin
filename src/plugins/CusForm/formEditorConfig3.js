@@ -266,10 +266,10 @@ let formDef = {
             reflect: 'drag_props',
             reflectTpl: `A.getDragDatas($VAL)`,
             ui: {
-              // styles: [
-              //   ['height', 0],
-              //   ['overflow', 'hidden'],
-              // ],
+              styles: [
+                ['height', 0],
+                ['overflow', 'hidden'],
+              ],
               widgetConfig: {
                 type: 'textarea',
                 disabled: true,
