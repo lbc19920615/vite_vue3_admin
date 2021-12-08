@@ -75,6 +75,7 @@
               @del-dep="onPlumbDelDep"
               @save-layout="onSaveLayout"
               :weapp="widgetConfig.weapp"
+              :handle-list1="handleList1"
           ></ZLayoutEditor>
         </div>
       </el-dialog>
@@ -83,11 +84,12 @@
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils";
 import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
 import {onBeforeUnmount} from "vue";
 import {clearPlumbLayoutStorage} from "@/plugins/PlumbLayout/mixin";
 import EwXmlShower from "@/components/Ew/EwXmlShower.vue";
+import {getXmlData, getMiniAppXmlData, getHtmlXmlData} from "@/views/about/components/PlumbLayout/xmlData";
 
 async function cachedArrOperate(key = '', fun = () => {} ) {
   let cachedKeys = await ZY_EXT.store.getItem(key)
@@ -199,16 +201,21 @@ export default {
     function onPlumbUpdate(e) {
       // let { model, key, newVal, config } = e
       let v = layoutRef.getToolsData()
-      let ret = JSON5.stringify(v)
       // console.log(ret)
-      state.value = ret
+      state.value = JSON5.stringify(v)
     }
 
     function onPlumbDelDep() {
       let v = layoutRef.getToolsData()
-      let ret = JSON5.stringify(v)
       // console.log(ret)
-      state.value = ret
+      state.value = JSON5.stringify(v)
+    }
+
+    function handleList1() {
+      if (widgetConfig2.dragLib === 'base') {
+        return getHtmlXmlData().concat(getMiniAppXmlData())
+      }
+      return getXmlData()
     }
 
     onBeforeUnmount(() => {
@@ -229,6 +236,7 @@ export default {
       storePrefix,
       save,
       setLayoutRef,
+      handleList1,
       onPlumbUpdate,
       getXMLDisplay,
       onPlumbDelDep,

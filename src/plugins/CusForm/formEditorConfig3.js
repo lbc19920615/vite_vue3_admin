@@ -101,7 +101,8 @@ let formDef = {
                     widgetConfig: {
                       // suffix: 'slayout',
                       mode: 'xml',
-                      weapp: true
+                      weapp: true,
+                      dragLib: 'base'
                     }
                   }
                 },

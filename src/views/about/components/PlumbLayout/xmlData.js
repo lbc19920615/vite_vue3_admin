@@ -44,11 +44,40 @@ function generateHtmlTags() {
     return tags
 }
 
+function generateWechatMiniappHtmlTags() {
+    let tags = []
+    let tagNames = ['view', 'text', 'image', 'icon', 'button', 'match-media']
+    tagNames.forEach(tagName => {
+        tags.push(
+          {
+              name: tagName,
+              value: '',
+              id: ZY.rid(),
+              data: {
+                  tagName: tagName
+              },
+              lib: 'wxml'
+          },
+        )
+    });
+    return tags
+}
+
 /**
  * 获取miniapp PlumbLayout 侧边栏data
  * @returns {({data: {tagName: string}, lib: string, name: string, id: *, value: string}|{data: {tagName: string}, lib: string, name: string, id: *, value: string})[]}
  */
 export function getMiniAppXmlData() {
+    let eleTags = []
+    let htmlTags = generateWechatMiniappHtmlTags()
+    return htmlTags.concat(eleTags)
+}
+
+/**
+ * 获取 web PlumbLayout 侧边栏data
+ * @returns {{data: {tagName: string}, lib: string, name: string, id: *, value: string}[]}
+ */
+export function getHtmlXmlData() {
     let eleTags = []
     let htmlTags = generateHtmlTags()
     return htmlTags.concat(eleTags)
