@@ -214,14 +214,11 @@ let formDef = {
           ui: {
             type: 'string',
             reflect: 'ui2',
-            reflectTpl: 'A.parseUIObj($VAL)',
+            reflectTpl: 'A.parseUIObj2($VAL)',
             ui: {
-              // attrs: [
-              //   ['style', 'height: 0; overflow: hidden']
-              // ],
               styles: [
-                ['height', 0],
-                ['overflow', 'hidden'],
+                // ['height', 0],
+                // ['overflow', 'hidden'],
               ],
               label: 'UI',
               // widget: 'JsonCodeEditor',

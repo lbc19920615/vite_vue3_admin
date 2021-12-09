@@ -491,6 +491,38 @@ ${item.value}
 
       return '{}'
     },
+    parseUIObj2(uiJSON5 = '') {
+      let JSON5 = ZY.JSON5
+      try {
+        if (uiJSON5) {
+          let ret = {}
+          let obj = ZY.JSON5.parse(uiJSON5)
+          let classes = obj.data.class ?? []
+          let attrs = obj.data.attrs ?? []
+          let styleSheets = obj.data.styles ?? '{}'
+          // console.log(styles)
+          ret.attrs = attrs
+          ret.class = classes
+          ret.styleSheets = []
+          try {
+            let obj = JSON5.parse(styleSheets);
+            // console.log(obj)
+            ret.styleSheets = Object.entries(obj.cached).filter(v => {
+              return v[1] && Object.keys(v[1]).length > 0
+            })
+          } catch (e) {
+            console.log('parseUIObj2 parse err', e)
+          }
+          // ret.styles = styles
+          return JSON5.stringify(ret, null, 2)
+        }
+      } catch (e) {
+        console.error(e);
+        console.log(uiJSON5)
+      }
+
+      return '{}'
+    },
     JSON5_stringify(v, tab = 2) {
       return ZY.JSON5.stringify(v, null, tab)
     },

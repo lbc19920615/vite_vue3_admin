@@ -1,3 +1,14 @@
+<style lang="scss">
+.z-style-editor {
+  .el-form-item {
+    margin-bottom: 10px;
+  }
+  .el-form-item__content {
+    line-height: 1;
+  }
+}
+</style>
+
 <template>
   <div class="z-style-editor">
 <!--    {{value}}-->
@@ -53,52 +64,54 @@
                     default-unit="px"
                     @change="onChange(['height'],$event)"></unit-input>
       </el-form-item>
-      <el-collapse v-model="activeNames" >
-        <el-collapse-item title="margin" name="1">
-          <el-form-item label="marginLeft" >
-            <unit-input v-model="styleModel.marginLeft"
-                        default-unit="px"
-                        @change="onChange(['marginLeft'],$event)"></unit-input>
-          </el-form-item>
-          <el-form-item label="marginTop" >
-            <unit-input v-model="styleModel.marginTop"
-                        default-unit="px"
-                        @change="onChange(['marginTop'],$event)"></unit-input>
-          </el-form-item>
-          <el-form-item label="marginBottom" >
-            <unit-input v-model="styleModel.marginBottom"
-                        default-unit="px"
-                        @change="onChange(['marginBottom'],$event)"></unit-input>
-          </el-form-item>
-          <el-form-item label="marginRight" >
-            <unit-input v-model="styleModel.marginRight"
-                        default-unit="px"
-                        @change="onChange(['marginRight'],$event)"></unit-input>
-          </el-form-item>
-        </el-collapse-item>
-        <el-collapse-item title="padding" name="2">
-          <el-form-item label="paddingLeft" >
-            <unit-input v-model="styleModel.paddingLeft"
-                        default-unit="px"
-                        @change="onChange(['paddingLeft'],$event)"></unit-input>
-          </el-form-item>
-          <el-form-item label="paddingTop" >
-            <unit-input v-model="styleModel.paddingTop"
-                        default-unit="px"
-                        @change="onChange(['paddingTop'],$event)"></unit-input>
-          </el-form-item>
-          <el-form-item label="paddingBottom" >
-            <unit-input v-model="styleModel.paddingBottom"
-                        default-unit="px"
-                        @change="onChange(['paddingBottom'],$event)"></unit-input>
-          </el-form-item>
-          <el-form-item label="paddingRight" >
-            <unit-input v-model="styleModel.paddingRight"
-                        default-unit="px"
-                        @change="onChange(['paddingRight'],$event)"></unit-input>
-          </el-form-item>
-        </el-collapse-item>
-      </el-collapse>
+      <div class="a-space-mb-10">
+        <el-collapse v-model="activeNames" >
+          <el-collapse-item title="margin" name="1">
+            <el-form-item label="marginLeft" >
+              <unit-input v-model="styleModel.marginLeft"
+                          default-unit="px"
+                          @change="onChange(['marginLeft'],$event)"></unit-input>
+            </el-form-item>
+            <el-form-item label="marginTop" >
+              <unit-input v-model="styleModel.marginTop"
+                          default-unit="px"
+                          @change="onChange(['marginTop'],$event)"></unit-input>
+            </el-form-item>
+            <el-form-item label="marginBottom" >
+              <unit-input v-model="styleModel.marginBottom"
+                          default-unit="px"
+                          @change="onChange(['marginBottom'],$event)"></unit-input>
+            </el-form-item>
+            <el-form-item label="marginRight" >
+              <unit-input v-model="styleModel.marginRight"
+                          default-unit="px"
+                          @change="onChange(['marginRight'],$event)"></unit-input>
+            </el-form-item>
+          </el-collapse-item>
+          <el-collapse-item title="padding" name="2">
+            <el-form-item label="paddingLeft" >
+              <unit-input v-model="styleModel.paddingLeft"
+                          default-unit="px"
+                          @change="onChange(['paddingLeft'],$event)"></unit-input>
+            </el-form-item>
+            <el-form-item label="paddingTop" >
+              <unit-input v-model="styleModel.paddingTop"
+                          default-unit="px"
+                          @change="onChange(['paddingTop'],$event)"></unit-input>
+            </el-form-item>
+            <el-form-item label="paddingBottom" >
+              <unit-input v-model="styleModel.paddingBottom"
+                          default-unit="px"
+                          @change="onChange(['paddingBottom'],$event)"></unit-input>
+            </el-form-item>
+            <el-form-item label="paddingRight" >
+              <unit-input v-model="styleModel.paddingRight"
+                          default-unit="px"
+                          @change="onChange(['paddingRight'],$event)"></unit-input>
+            </el-form-item>
+          </el-collapse-item>
+        </el-collapse>
+      </div>
       <el-form-item label="overflow" >
         <el-input v-model="styleModel.overflow"
                   @change="onChange(['overflow'],$event)"
@@ -106,7 +119,7 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="other" >
-        <el-input v-model="styleModel.other"
+        <el-input type="textarea" v-model="styleModel.other"
                   @change="onChange(['other'],$event)"
                   clearable
         ></el-input>
@@ -124,6 +137,7 @@ export default {
   name: 'ZStyleEditor',
   components: {ZEasyHide, ZEasyPopover, UnitInput},
   props: {
+    // "{cached: null, css: ''}"
     value: String,
     extKeys: {
       type: Array,

@@ -155,34 +155,34 @@ registerEditorConfig('ele',  function (dep, options) {
                     }
                 },
             },
-            inputEdit: {
-                type: 'string',
-                ui: {
-                    label: '表单属性',
-                    widget: 'CusFormAttr',
-                    widgetConfig: {
-                    }
-                },
-            },
-            rules: {
-                type: 'array',
-                ui: {
-                    label: '校验'
-                },
-                items: {
-                    type: "object",
-                    properties: {
-                        value: {
-                            type: 'string',
-                            ui: {
-                                widget: 'CusFormRules',
-                                widgetConfig: {
-                                }
-                            },
-                        },
-                    }
-                }
-            }
+            // inputEdit: {
+            //     type: 'string',
+            //     ui: {
+            //         label: '表单属性',
+            //         widget: 'CusFormAttr',
+            //         widgetConfig: {
+            //         }
+            //     },
+            // },
+            // rules: {
+            //     type: 'array',
+            //     ui: {
+            //         label: '校验'
+            //     },
+            //     items: {
+            //         type: "object",
+            //         properties: {
+            //             value: {
+            //                 type: 'string',
+            //                 ui: {
+            //                     widget: 'CusFormRules',
+            //                     widgetConfig: {
+            //                     }
+            //                 },
+            //             },
+            //         }
+            //     }
+            // }
         },
         computed: {
             computedProp1: "A.calcBeforeAttrs(MODEL('inputEdit', ''), MODEL('rules', []), MODEL('events', []) )",

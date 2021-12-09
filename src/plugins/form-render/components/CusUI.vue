@@ -25,6 +25,14 @@
 .z-props__add {
   margin-bottom: 10px;
 }
+.cus-ui__style-editor {
+  width: var(--cus-ui__style-editor-width, 700px);
+}
+.cus-ui__style-editor-con {
+  overflow: auto;
+  height: var(--cus-ui__style-editor-con-height, 500px);
+  overflow-x: hidden;
+}
 </style>
 
 <template>
@@ -94,14 +102,26 @@
       </el-row>
     </template>
 
-
-    <el-row  class="a-space-mb-10">
-      <div class="cus-ui__label">样式</div>
-      <ZStyles
-          style="flex: 1"
-          :value="state.value.control.stylesObj" @form:input:blur="onBlur"
-          @props-change="onStylesChange"></ZStyles>
-    </el-row>
+    <template v-if="widgetConfig.propsV2">
+      <el-row  class="a-space-mb-10">
+        <div class="cus-ui__label">样式</div>
+<!--        {{state.value.control.stylesObj}}-->
+        <div class="cus-ui__style-editor-con">
+          <z-style-editor class="cus-ui__style-editor"
+                          :value="state.value.control.stylesObj"
+                          @val:change="onStyleChange2"></z-style-editor>
+        </div>
+      </el-row>
+    </template>
+    <template v-else>
+      <el-row  class="a-space-mb-10">
+        <div class="cus-ui__label">样式</div>
+        <ZStyles
+            style="flex: 1"
+            :value="state.value.control.stylesObj" @form:input:blur="onBlur"
+            @props-change="onStylesChange"></ZStyles>
+      </el-row>
+    </template>
 
   </template>
 
@@ -115,10 +135,11 @@ import ZStyles from "@/plugins/z-frame/components/ZStyles.vue";
 import ZCellItem from "@/plugins/z-frame/components/ZCellItem.vue";
 import {nextTick, reactive, toRaw} from "vue";
 import UnitInput from "@/components/UnitInput.vue";
+import ZStyleEditor from "@/plugins/z-frame/components/ZStyleEditor.vue";
 
 export default {
   name: 'CusUI',
-  components: {UnitInput, ZCellItem, ZStyles, ZProps, EwSuggest},
+  components: {ZStyleEditor, UnitInput, ZCellItem, ZStyles, ZProps, EwSuggest},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -127,7 +148,7 @@ export default {
     let {part_key} = props.defs;
     let obj;
     let JSON5 = ZY.JSON5;
-    let { data, methods, listeners, init, widgetConfig2 } = defineCustomRender(props, ctx, {
+    let { data, methods, listeners, init, widgetConfig2, buildGetRef } = defineCustomRender(props, ctx, {
       handleValueInit(newVal) {
 
         // console.log('CusUI', newVal, typeof  newVal)
@@ -187,7 +208,7 @@ export default {
               }
             }
 
-            obj.control.stylesObj = []
+            obj.control.stylesObj = "{cached: null, css: ''}"
 
             if (obj.data.styles) {
               obj.control.stylesObj = obj.data.styles
@@ -241,7 +262,12 @@ export default {
       // console.log('onStylesChange', e)
       // state.value.control.stylesObj = e
       state.value.data.styles = e
-      //
+      onChange()
+    }
+
+    function onStyleChange2(e) {
+// console.log('onStyleChange2', e)
+      state.value.data.styles = e
       onChange()
     }
 
@@ -275,6 +301,7 @@ export default {
       onAttrsChange,
       onClassChange,
       setPropVal,
+      onStyleChange2,
       onStylesChange,
       onBlur,
       save,
