@@ -75,7 +75,7 @@ export function parseEventsToStr(events = []) {
 
     let filtedArr = arr.map(v => {
       let obj = JSON5.parse(v.value)
-      return `@${obj.type}="callEvent('${obj.eventName}', scope)"`
+      return `@${obj.type}="callEvent('${obj.eventName}', scope, $event)"`
     })
 
     // console.log('parseEventsToStr', events, filtedArr)
