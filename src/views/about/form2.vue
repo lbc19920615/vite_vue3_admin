@@ -183,7 +183,13 @@ import tpllib from '@/utils/tpllib'
 import {useToolApi} from "@/hooks/api";
 import {buildFormDep} from "@/plugins/z-page/build";
 import WechatExportDialog from "@/views/about/components/WechatExportDialog.vue";
-
+import {createDeepTraverl} from "@/hooks/deep";
+import("vue3-json-viewer").then(res => {
+  // app.use(res.default)
+  // console.log(res)
+  let JsonViewer = res.JsonViewer
+  CustomVueComponent.app.component('v-json-viewer',JsonViewer )
+})
 /**
  *
  * @param name
@@ -198,7 +204,7 @@ function downloadFiles(name, fileMap, fileSave = ZY_EXT.FS.fileSave) {
       fileMap.forEach((fileContent, fileName) => {
         zip.file(fileName, fileContent);
       })
-      console.log(name)
+      // console.log(name)
       zip.generateAsync({type:"blob"})
           .then(function(content) {
             // see FileSaver.js
@@ -433,16 +439,16 @@ export default defineComponent({
 
           // console.log(import.meta.env)
           if (import.meta.env.MODE !== 'development') {
-            let res = await toolApi.saveJson(form.properties,
-                cachedPageControlModel.name + '.json5',
-                {
-                  newProps: ZY.JSON5.parse(form.properties),
-                  oldProps: drag_cached.oldProps
-                }
-            )
-            form.metas = {
-              form_data: res
-            }
+            // let res = await toolApi.saveJson(form.properties,
+            //     cachedPageControlModel.name + '.json5',
+            //     {
+            //       newProps: ZY.JSON5.parse(form.properties),
+            //       oldProps: drag_cached.oldProps
+            //     }
+            // )
+            // form.metas = {
+            //   form_data: res
+            // }
           }
 
           cachedPageControlModel.value = ZY.JSON5.stringify(value)
@@ -516,16 +522,68 @@ export default defineComponent({
       },
       async ['get:xml:file'](e) {
         let {model = {}} = e;
+        let JSON5 = ZY.JSON5;
+        let lodash = ZY.lodash;
+
         const ZFORM_RELATIVE_PATH = model?.libPath ?? '../zform';
+        const FORM_SLOT_TPL_ID = 'output-form-slot-com-tpl';
+        const FORM_TPL_ID = 'output-form-tpl';
+        const CM_FIELD_NAME = 'cm-field';
+        const CM_FIELD_PREFIX = 'cm-field--';
+
         let prefix = ZY.Time.formatDateTime(new Date(), 'YYYY-MM-DD__HH_mm_ss')
         if (cachedPageControlModel && cachedPageControlModel.def) {
 
-          let value = ZY.JSON5.parse(cachedPageControlModel.value)
-          let form = value.parts[0]
+          let value = JSON5.parse(cachedPageControlModel.value);
+          let form = value.parts[0];
+          let formProperties = JSON5.parse(form.properties);
+          console.log(formProperties)
 
-          let formConfig = cachedPageControlModel.def
+          let deepTraverl = createDeepTraverl({
+            handleProp({obj, s_path, path, ext}) {
+              let fieldKey = path[path.length - 1]
+              let config = lodash.get(formProperties, s_path);
+              // console.log(config, key)
+              if (config.css) {
+                let cssarr = []
+                let parsed = JSON5.parse(config.css);
+                lodash.each(parsed.cached, function (item, key) {
+                  let selector = (`.${CM_FIELD_PREFIX}${fieldKey} ` + key.replaceAll(':host', 'rich-text')
+                      .replace('(', '')
+                      .replace(')', ''));
+                  cssarr.push(
+                      [
+                        selector,
+                        ZY.CSS.parseObj(item, {
+                          split: ';\n',
+                        }).trim()
+                      ]
+                  )
+                })
+                // console.log(parsed, cssarr)
+                obj[fieldKey] = cssarr.map(([selector, css]) => {
+                if (css) {
+                  return `${selector} {
+${css}
+}`
+                }
+                return ''
+                }).filter(v => v).join('\n')
+              }
+
+            }
+          });
+          let wsxxobj =deepTraverl.run(formProperties);
+          let wsxxstr = Object.entries(wsxxobj).map(v => {
+            return v[1]
+          }).join('\n')
+          // console.log(wsxxstr);
+
+
+          let formConfig = cachedPageControlModel.def;
           let partStrArr = tpllib.getPartStrArr(formConfig, tpllib.renderWeappForm);
-          let partStrArrFirst = partStrArr[0]
+          let partStrArrFirst = partStrArr[0];
+          // console.log(partStrArrFirst)
           // let  partStr = {
           //   [partStrArrFirst.name]: partStrArrFirst.value
           // }
@@ -541,13 +599,13 @@ export default defineComponent({
           // 处理form slots的导出
           ;( function () {
             let templateArr = form.slots.map(slot => {
-              console.log(slot.value)
+              // console.log(slot.value)
               let obj = {
                 web: '',
                 weapp: '',
               }
               try {
-                obj = ZY.JSON5.parse(slot.value)
+                obj = JSON5.parse(slot.value)
               } catch (e) {
               //
               }
@@ -559,19 +617,21 @@ ${obj.weapp}
             })
 
             let slotman = globalThis.createParseComponentMan(
-                document.getElementById('output-form-slot-com-tpl').innerHTML
+                document.getElementById(FORM_SLOT_TPL_ID).innerHTML
             );
             let templateContent = slotman.get('template').content;
 
             let xmlContent =  globalThis.twigRender(templateContent, {
               ZFORM_RELATIVE_PATH,
+              formComName,
               slots_str: templateArr.join('\n')
             });
-            console.log(xmlContent)
+            // console.log(xmlContent)
             fileMap.set(formSlotComName + '.wxml',  xmlContent);
             let scriptContent = slotman.get('script').content
             scriptContent = globalThis.twigRender(scriptContent, {
               ZFORM_RELATIVE_PATH,
+              formComName
             })
             fileMap.set(formSlotComName + '.js', scriptContent)
             let configContent = slotman.get('config').content
@@ -582,11 +642,12 @@ ${obj.weapp}
           // 处理form的导出
           ( function() {
             let man = globalThis.createParseComponentMan(
-                document.getElementById('output-form-tpl').innerHTML
+                document.getElementById(FORM_TPL_ID).innerHTML
             );
             let templateContent = man.get('template').content
             let xmlContent =  globalThis.twigRender(templateContent, {
               ZFORM_RELATIVE_PATH,
+              formComName,
               form_tpl:partStrArrFirst.value
             });
             // console.log(xmlContent)
@@ -594,23 +655,25 @@ ${obj.weapp}
             let scriptContent = man.get('script').content
             scriptContent = globalThis.twigRender(scriptContent, {
               ZFORM_RELATIVE_PATH,
-              json5_config: ZY.JSON5.stringify(formConfig.parts[0]),
+              formComName,
+              json5_config: JSON5.stringify(formConfig.parts[0]),
             })
             fileMap.set(formComName + '.js', scriptContent);
             let configContent = man.get('config').content;
             configContent = globalThis.twigRender(configContent, {
               ZFORM_RELATIVE_PATH,
+              formComName,
               slot_com_name: formSlotComName,
-              cm_field_name: 'cm-field',
+              cm_field_name: CM_FIELD_NAME,
             })
-            fileMap.set(formComName + '.json', configContent)
+            fileMap.set(formComName + '.json', configContent);
+            let cssContent = wsxxstr.trim();
+            fileMap.set(formComName + '.wxss', cssContent)
           })();
-
-          // 处理slot的导出
 
           console.log(cachedPageControlModel, form)
 
-          downloadFiles(cachedPageControlModel.name + '__' + prefix, fileMap)
+          globalThis.downloadFiles(formComName + '__' + prefix, fileMap)
         }
       },
       ['add:part'](e) {

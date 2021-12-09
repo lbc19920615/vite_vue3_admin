@@ -31,9 +31,17 @@ export default {
       // 当编辑器选区、内容变化时，即触发
       // console.log('content', editor.children)
       // console.log('html', editor.getHtml())
+      let html =  editor.getHtml();
+      let parser = new DOMParser();
+      let b = parser.parseFromString(html, 'text/html');
+      let all = b.body.getElementsByTagName("*");
+      all.forEach(ele => {
+        ele.classList.add('w-e-' + ZY.lodash.kebabCase(ele.tagName))
+      })
+
       ctx.emit('val-change', {
         content: ZY.JSON5.parse(ZY.JSON5.stringify(editor.children)),
-        html: editor.getHtml()
+        html:b.body.innerHTML
       })
     }
 
