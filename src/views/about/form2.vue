@@ -541,7 +541,8 @@ export default defineComponent({
 
         const ZFORM_RELATIVE_PATH = model?.libPath ?? '@/zform/zform';
         const FORM_TPL_ID = 'output-form-vue2-tpl';
-        let prefix = ZY.Time.formatDateTime(new Date(), 'YYYY-MM-DD__HH_mm_ss');
+        let prefix = 'vue2__';
+        let suffix = '__' + ZY.Time.formatDateTime(new Date(), 'YYYY-MM-DD__HH_mm_ss');
 
         if (cachedPageControlModel && cachedPageControlModel.def) {
           let formComName = cachedPageControlModel.name;
@@ -580,7 +581,7 @@ ${obj.weapp}
             fileMap.set(formComName + '.vue',  xmlContent);
           })();
 
-          globalThis.downloadFiles(formComName + '__' + prefix, fileMap)
+          globalThis.downloadFiles(prefix + formComName + suffix, fileMap)
         }
       },
       async ['get:xml:file'](e) {
@@ -594,7 +595,8 @@ ${obj.weapp}
         const CM_FIELD_NAME = 'cm-field';
         const CM_FIELD_PREFIX = 'cm-field--';
 
-        let prefix = ZY.Time.formatDateTime(new Date(), 'YYYY-MM-DD__HH_mm_ss')
+        let prefix = 'mp-weixin__';
+        let suffix = '__' + ZY.Time.formatDateTime(new Date(), 'YYYY-MM-DD__HH_mm_ss')
         if (cachedPageControlModel && cachedPageControlModel.def) {
 
           let value = JSON5.parse(cachedPageControlModel.value);
@@ -736,7 +738,7 @@ ${obj.weapp}
 
           console.log(cachedPageControlModel, form)
 
-          globalThis.downloadFiles(formComName + '__' + prefix, fileMap)
+          globalThis.downloadFiles(formComName + prefix, fileMap)
         }
       },
       ['add:part'](e) {
