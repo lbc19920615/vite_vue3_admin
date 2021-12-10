@@ -48,7 +48,7 @@ let formDef = {
           drag_props: {
             type: 'string',
             ui: {
-              label: '属性',
+              label: '结构',
               // hiddenLabel: true,
               // form_item: {
               //   labelWidth: '0px',
@@ -64,7 +64,7 @@ let formDef = {
             type: 'string',
             ui: {
               widget: 'CusUI',
-              label: 'UI编辑',
+              label: 'UI配置',
               widgetConfig: {
                 propsV2: true
               }
