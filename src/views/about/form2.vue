@@ -539,6 +539,7 @@ export default defineComponent({
         let JSON5 = ZY.JSON5;
         let lodash = ZY.lodash;
 
+        const ZFORM_RELATIVE_PATH = model?.libPath ?? '@/zform/zform';
         const FORM_TPL_ID = 'output-form-vue2-tpl';
         let prefix = ZY.Time.formatDateTime(new Date(), 'YYYY-MM-DD__HH_mm_ss');
 
@@ -572,6 +573,7 @@ ${obj.weapp}
 `;
             });
             let xmlContent =  globalThis.twigRender(templateContent, {
+              ZFORM_RELATIVE_PATH,
               formComName,
               slots_str: templateArr.join('\n')
             });
