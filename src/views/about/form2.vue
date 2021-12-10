@@ -5,6 +5,10 @@
   }
 }
 .page-form2 {
+  //height: 100vh;
+  //overflow: auto;
+  //overflow-x: hidden;
+  //background: #000;
   //--z-emoji-zoom: 0.9;
   .cm-filed__label {
     font-size: 16px;
@@ -212,7 +216,7 @@ function downloadFiles(name, fileMap, fileSave = ZY_EXT.FS.fileSave) {
       fileMap.forEach((fileContent, fileName) => {
         zip.file(fileName, fileContent);
       })
-      // console.log(name)
+      console.log(name)
       zip.generateAsync({type:"blob"})
           .then(function(content) {
             // see FileSaver.js
@@ -385,6 +389,7 @@ export default defineComponent({
       }
     }
 
+    console.log(window.process);
     page.setEventHandler({
       ['add:arr:common'](e) {
         let { parts, partName, pathArr, process } = e
@@ -393,24 +398,28 @@ export default defineComponent({
         parts[partName].arrAppend(s_path)
       },
       async ['load:file'](e) {
-        let obj = await ZY_EXT.fileOpenJSON5()
-        if (obj.data) {
-          await page.dispatchRoot('SetStoreLocal', {
-            storeName: global_pageStoreName,
-            data: obj.data
-          })
+        try {
+          let obj = await ZY_EXT.fileOpenJSON5()
+          if (obj.data) {
+            await page.dispatchRoot('SetStoreLocal', {
+              storeName: global_pageStoreName,
+              data: obj.data
+            })
+            await ZY.sleep(300)
+          }
+          if (obj.layout) {
+            // console.log('layout', obj.layout, obj)
+            // await page.ctx.LayoutContext.importToolsData(obj.layout)
+            await page.runRefMethod('layout', 'importToolsData', obj.layout)
+            await ZY.sleep(300)
+            // await page.ctx.LayoutContext.saveCache2Storage(obj.layout)
+            await page.runRefMethod('layout', 'saveCache2Storage', obj.layout)
+          }
           await ZY.sleep(300)
+          location.reload()
+        } catch (e) {
+          console.log(e)
         }
-        if (obj.layout) {
-          // console.log('layout', obj.layout, obj)
-          // await page.ctx.LayoutContext.importToolsData(obj.layout)
-          await page.runRefMethod('layout', 'importToolsData', obj.layout)
-          await ZY.sleep(300)
-          // await page.ctx.LayoutContext.saveCache2Storage(obj.layout)
-          await page.runRefMethod('layout', 'saveCache2Storage', obj.layout)
-        }
-        await ZY.sleep(300)
-        location.reload()
       },
       async ['cursform:event'](e) {
         // console.log('cursform:event', e)
@@ -738,7 +747,7 @@ ${obj.weapp}
 
           console.log(cachedPageControlModel, form)
 
-          globalThis.downloadFiles(formComName + prefix, fileMap)
+          globalThis.downloadFiles(prefix + formComName + suffix, fileMap)
         }
       },
       ['add:part'](e) {
