@@ -24,9 +24,14 @@
 <!--    {{store.model}}-->
 <!--    {{store.computedModel}}-->
 
-    <wechat-export-dialog :ref="wechatDialogRef" :page="page"
-    @submit="page.callEvent('get:xml:file', $event)"
+    <wechat-export-dialog
+        :ref="wechatDialogRef" :page="page"
+        @submit="page.callEvent('get:xml:file', $event)"
     ></wechat-export-dialog>
+    <vue2-export-dialog
+        :ref="vue2DialogRef" :page="page"
+        @submit="page.callEvent('get:vue:file', $event)"
+    ></vue2-export-dialog>
 
     <template v-if="store.model.textarea_step">
       <!--      {{store.computedModel}}-->
@@ -105,6 +110,8 @@
                          @click="page.callEvent('load:file')">加载本地文件</el-button>
               <el-button type="primary"
                          @click="page.callEvent('open:dialog')">导出小程序文件</el-button>
+              <el-button type="primary"
+                         @click="page.callEvent('open:vue2')">导出vue2文件</el-button>
             </el-space>
           </div>
         </template>
@@ -184,6 +191,7 @@ import {useToolApi} from "@/hooks/api";
 import {buildFormDep} from "@/plugins/z-page/build";
 import WechatExportDialog from "@/views/about/components/WechatExportDialog.vue";
 import {createDeepTraverl} from "@/hooks/deep";
+import Vue2ExportDialog from "@/views/about/components/Vue2ExportDialog.vue";
 import("vue3-json-viewer").then(res => {
   // app.use(res.default)
   // console.log(res)
@@ -227,6 +235,7 @@ export default defineComponent({
     }
   },
   components: {
+    Vue2ExportDialog,
     WechatExportDialog
     // ZQuickDialog,
     // ZEchartsEasy,
@@ -304,6 +313,7 @@ export default defineComponent({
     page = extendControl2Page(page)
     page = useAppPageControl(page)
     let wechatDialogRef = page.setRef('wechatDialogRef')
+    let vue2DialogRef = page.setRef('vue2DialogRef')
     let formsMana = useFormsMana();
 
     let currentFromDialog = null
@@ -517,8 +527,59 @@ export default defineComponent({
         })
       },
       async ['open:dialog'](e) {
-        let wechatDialog = page.getRef('wechatDialogRef')
-        wechatDialog.show();
+        let dialog = page.getRef('wechatDialogRef')
+        dialog.show();
+      },
+      async ['open:vue2'](e) {
+        let dialog = page.getRef('vue2DialogRef')
+        dialog.show();
+      },
+      async ['get:vue:file'](e) {
+        let {model = {}} = e;
+        let JSON5 = ZY.JSON5;
+        let lodash = ZY.lodash;
+
+        const FORM_TPL_ID = 'output-form-vue2-tpl';
+        let prefix = ZY.Time.formatDateTime(new Date(), 'YYYY-MM-DD__HH_mm_ss');
+
+        if (cachedPageControlModel && cachedPageControlModel.def) {
+          let formComName = cachedPageControlModel.name;
+          let value = JSON5.parse(cachedPageControlModel.value);
+          let form = value.parts[0];
+
+          let fileMap = new Map();
+          // let formProperties = JSON5.parse(form.properties);
+          // console.log(formProperties)
+
+          // 处理form slots的导出
+          ;( function () {
+            let templateContent = document.getElementById(FORM_TPL_ID).innerHTML
+            let templateArr = form.slots.map(slot => {
+              // console.log(slot.value)
+              let obj = {
+                web: '',
+                weapp: '',
+              }
+              try {
+                obj = JSON5.parse(slot.value)
+              } catch (e) {
+                //
+              }
+              return `
+<template v-slot:${slot.name}="scope">
+${obj.weapp}
+</template>
+`;
+            });
+            let xmlContent =  globalThis.twigRender(templateContent, {
+              formComName,
+              slots_str: templateArr.join('\n')
+            });
+            fileMap.set(formComName + '.vue',  xmlContent);
+          })();
+
+          globalThis.downloadFiles(formComName + '__' + prefix, fileMap)
+        }
       },
       async ['get:xml:file'](e) {
         let {model = {}} = e;
@@ -964,6 +1025,7 @@ ${obj.weapp}
       store: page.store,
       onSaveLayout,
       // formula,
+      vue2DialogRef,
       wechatDialogRef,
       state,
       getPreviewUrl,

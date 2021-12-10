@@ -67,22 +67,20 @@
 </template>
 
 <template id="output-form-vue2-tpl">
-  <template>
-    <dym-form v-if="inited" :debug="debug" :config="formDef">
-      <template v-slot:form_afterend="scope">
-        {{slots_str}}
-      </template>
-    </dym-form>
-  </template>
+<template>
+<dym-form v-if="inited" :debug="debug" :config="formDef">
+  {{slots_str}}
+</dym-form>
+</template>
 
-  <script>
-    import {zformCommon} from "@/zform/zform";
+<script>
+import {zformCommon} from "@/zform/zform";
 
-    export default {
-      name: '{{formComName}}',
-      mixins: [
-        zformCommon
-      ]
-    }
-  </script>
+export default {
+  name: '{{formComName}}',
+  mixins: [
+    zformCommon
+  ]
+}
+</script>
 </template>
