@@ -741,7 +741,14 @@ ${obj.weapp}
               cm_field_name: CM_FIELD_NAME,
             })
             fileMap.set(formComName + '.json', configContent);
-            let cssContent = wsxxstr.trim();
+            let styleContent = man.get('styles')[0].content;
+            // console.log(styleContent)
+            // let cssContent = wsxxstr.trim();
+            let cssContent = globalThis.twigRender(styleContent, {
+              css: wsxxstr.trim(),
+              ZFORM_RELATIVE_PATH,
+              formComName,
+            })
             fileMap.set(formComName + '.wxss', cssContent)
           })();
 

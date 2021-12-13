@@ -20,25 +20,31 @@
   </view>
 </template>
 
-  <script>
-    import { createFormComponent } from '{{ZFORM_RELATIVE_PATH}}/zform.js'
+<script>
+import { createFormComponent } from '{{ZFORM_RELATIVE_PATH}}/zform.js'
 
-    const formDef = {{json5_config}}
+const formDef = {{json5_config}}
 
-    ;createFormComponent({
-        formDef
-    });
+;createFormComponent({
+    formDef
+});
 </script>
 
 <config type="application/json">
-    {
-        "component": true,
-        "usingComponents": {
-            "slot-com": "{{slot_com_name}}",
-            "cm-field": "{{cm_field_name}}"
-        }
+{
+    "component": true,
+    "usingComponents": {
+        "slot-com": "{{slot_com_name}}",
+        "cm-field": "{{cm_field_name}}"
     }
+}
 </config>
+
+<style>
+@import "{{ZFORM_RELATIVE_PATH}}/zform.wxss";
+
+{{css}}
+</style>
 </template>
 
 <template id="output-form-slot-com-tpl" type="text/html">
@@ -50,17 +56,17 @@
           data="{% verbatim %} {{ {% endverbatim %} name, config, binds {% verbatim %} }} {% endverbatim %}"></template>
 </block>
   </template>
-  <script>
-    import { createSlotComponent } from '{{ZFORM_RELATIVE_PATH}}/zslot';
-    createSlotComponent();
-  </script>
-  <config type="application/json">
-    {
-      "component": true,
-      "usingComponents": {
-      }
-    }
-  </config>
+<script>
+import { createSlotComponent } from '{{ZFORM_RELATIVE_PATH}}/zslot';
+createSlotComponent();
+</script>
+<config type="application/json">
+{
+  "component": true,
+  "usingComponents": {
+  }
+}
+</config>
 </template>
 
 <template id="output-form-cm-field-tpl" type="text/html">
