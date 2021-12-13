@@ -509,6 +509,7 @@ form-id="{{uuid}}" config-path="${configPath}"></slot-com>
 <slot-com  name="prop_beforebegin"  
 form-id="{{uuid}}" config-path="${configPath}"></slot-com>   
 <${col_tag} class="level_${level} z-form__prop ${buildCls(p)}" ${attrs2Str}
+id="z-form__prop__${key}"
 style="${col_style}"
 >
 <slot-com  name="prop_afterbegin"  

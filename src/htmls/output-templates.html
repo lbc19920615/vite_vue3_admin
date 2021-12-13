@@ -3,7 +3,10 @@
   <wxs src="{{ZFORM_RELATIVE_PATH}}/utils.wxs" module="utils" ></wxs>
 
   <view class="http-com comformscr2 {{formComName}}">
-    <view class="z-form http-com-part http-com-part__{{ part.name }}"
+    <scroll-view enhanced scroll-y="true" scroll-with-animation="true"
+                 style="height: {% verbatim %}{{ {% endverbatim %} formHeight {% verbatim %} }} {% endverbatim %};"
+                 id="scrollview"
+                 class="z-form http-com-part http-com-part__{{ part.name }}"
     >
       <slot-com
           binds="{% verbatim %}{{ {% endverbatim %} { a: 1 } {% verbatim %} }} {% endverbatim %}"
@@ -16,7 +19,7 @@
           name="form_afterend"
           form-id="{% verbatim %}{{ {% endverbatim %} uuid  {% verbatim %} }} {% endverbatim %}"
       ></slot-com>
-    </view>
+    </scroll-view>
   </view>
 </template>
 
