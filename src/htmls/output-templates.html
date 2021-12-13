@@ -5,7 +5,7 @@
   <view class="http-com comformscr2 {{formComName}}">
     <scroll-view enhanced scroll-y="true" scroll-with-animation="true"
                  style="height: {% verbatim %}{{ {% endverbatim %} formHeight {% verbatim %} }} {% endverbatim %};"
-                 id="scrollview"
+                 id="{% verbatim %}{{ {% endverbatim %} scrollViewId {% verbatim %} }} {% endverbatim %}"
                  class="z-form http-com-part http-com-part__{{ part.name }}"
     >
       <slot-com
