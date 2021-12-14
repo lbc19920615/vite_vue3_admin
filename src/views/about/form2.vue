@@ -500,9 +500,9 @@ export default defineComponent({
                   // tableName: metas?.form_data ?? ''
                 }
             )
-            form.metas = {
+            form.metas = ZY.JSON5.stringify({
               form_data: res
-            }
+            })
           }
 
           cachedPageControlModel.value = ZY.JSON5.stringify(value)
@@ -519,7 +519,7 @@ export default defineComponent({
           })
           window.parent.postMessage(
               new Lib.CommandMessage('form:save', {
-                metas: form.metas,
+                metas: getMetas(form.metas),
                 formName: cachedPageControlModel.name,
                 form
               }),
