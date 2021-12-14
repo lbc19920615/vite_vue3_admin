@@ -13,21 +13,21 @@ const _global = getGlobal();
 _global.global = _global;
 
 // import { initTemplate } from '__remote/public/template-loader.js'
-_global.initTemplate = async function initTemplate(id, global, { html = '' } = {}) {
-  const document = global.document;
-  if (!document.getElementById(id)) {
-    try {
-      const template = document.createElement('template');
-      template.innerHTML = html;
-      template.id = id;
-      document.body.appendChild(template);
-    } catch (e) {
-      console.error(new Error('loadTwigComponent failed'));
-    }
-  } else {
-    //
-  }
-}
+// _global.initTemplate = async function initTemplate(id, global, { html = '' } = {}) {
+//   const document = global.document;
+//   if (!document.getElementById(id)) {
+//     try {
+//       const template = document.createElement('template');
+//       template.innerHTML = html;
+//       template.id = id;
+//       document.body.appendChild(template);
+//     } catch (e) {
+//       console.error(new Error('loadTwigComponent failed'));
+//     }
+//   } else {
+//     //
+//   }
+// }
 
 class CustomVueComponent {
   static defMap = new Map()

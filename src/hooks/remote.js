@@ -52,7 +52,7 @@ export async function fetchTwigComponent(comName = '', {def, args, handleScript,
             scriptStr = handleScript(scriptStr)
         }
         let res = await ZY.importJsStr(scriptStr)
-        globalThis.initTemplate(templateId, globalThis, {
+        ZY.DOM.initTemplate(templateId, globalThis.document, {
             html: `${templateSfc(sfc)}`,
         });
         return {

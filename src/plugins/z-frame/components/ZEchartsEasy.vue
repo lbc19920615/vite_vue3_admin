@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import * as echarts from 'echarts';
 import {getCurrentInstance, nextTick, onMounted, reactive, toRaw} from "vue";
 import HttpComponent from "@/components/HttpComponent.vue";
 import ZHttpCom from "@/plugins/z-frame/components/ZHttpCom.vue";
@@ -75,6 +74,7 @@ export default {
     let myChart;
     let option;
     let cachedModel;
+    let echarts;
 
 
     function render(config = {}) {
@@ -126,11 +126,15 @@ export default {
       }, 100)
     }
 
-    onMounted(async () => {
+    onMounted( () => {
       // render()
-      state.inited = true
-      let o = await ZY_EXT.store.getItem('test-echart')
-      renderData(o)
+      import('echarts').then(async (res) => {
+        // import * as echarts from 'echarts';
+        echarts = res
+        state.inited = true
+        let o = await ZY_EXT.store.getItem('test-echart')
+        renderData(o)
+      })
     })
 
     async function resolveConfig() {

@@ -1,7 +1,7 @@
-import lodash from 'lodash';
+// import lodash from 'lodash';
 
 function getStrIfIsNotEmpty(obj, path, defaultVal) {
-  const v = lodash.get(obj, path);
+  const v = ZY.lodash.get(obj, path);
   if (!v) {
     return defaultVal;
   }
@@ -14,7 +14,7 @@ function getStrIfIsNotEmpty(obj, path, defaultVal) {
  * @param k
  */
 function buildCls(p, k = 'ui.class') {
-  const cls = lodash.get(p, k);
+  const cls = ZY.lodash.get(p, k);
   let str = '';
   if (Array.isArray(cls)) {
     str = cls.join(' ');
@@ -30,7 +30,7 @@ function buildCls(p, k = 'ui.class') {
  */
 function attrTOStr(attrs = [], context = {}) {
   const c = Object.assign({
-    $: lodash,
+    $: ZY.lodash,
   }, context);
   let str = '';
   if (Array.isArray(attrs)) {
@@ -39,7 +39,7 @@ function attrTOStr(attrs = [], context = {}) {
         str = str + ` ${attr[0]}='${attr[1]}'`;
       } else if (typeof attr === 'string') {
         str = str + ` ${attr}`;
-      } else if (lodash.isObject(attr) && Array.isArray(attr.handler)) {
+      } else if (ZY.lodash.isObject(attr) && Array.isArray(attr.handler)) {
         // eslint-disable-next-line no-new-func
         const fun = new Function(attr.handler[0], attr.handler[1]);
         const ret = fun(c);
@@ -61,7 +61,7 @@ function attrTOStr(attrs = [], context = {}) {
  */
 function attr2Str(attrs = [], context = {}) {
   const c = Object.assign({
-    $: lodash,
+    $: ZY.lodash,
   }, context);
   let str = '';
   if (Array.isArray(attrs)) {
@@ -70,7 +70,7 @@ function attr2Str(attrs = [], context = {}) {
         str = str + ` ${attr[0]}='${attr[1]}'`;
       } else if (typeof attr === 'string') {
         str = str + ` ${attr}`;
-      } else if (lodash.isObject(attr) && Array.isArray(attr.handler)) {
+      } else if (ZY.lodash.isObject(attr) && Array.isArray(attr.handler)) {
         // eslint-disable-next-line no-new-func
         const fun = new Function(attr.handler[0], attr.handler[1]);
         const ret = fun(c);
@@ -92,7 +92,7 @@ function attr2Str(attrs = [], context = {}) {
  * @return {string}
  */
 function attrStr(p, k = 'ui.attrs', context = {}) {
-  const attrs = lodash.get(p, k);
+  const attrs = ZY.lodash.get(p, k);
   return attr2Str(attrs, context)
 }
 
@@ -115,7 +115,7 @@ function getSelfPath(basePath, BASE_PATH) {
 function attrStyles(p, k = 'ui.styles') {
 
   let str = '';
-  const attrs = lodash.get(p, k);
+  const attrs = ZY.lodash.get(p, k);
   // console.log(attrs);
   if (Array.isArray(attrs)) {
     attrs.forEach(attr => {
@@ -123,7 +123,7 @@ function attrStyles(p, k = 'ui.styles') {
         str = str + ` ${attr[0]}:${attr[1]};`;
       } else if (typeof attr === 'string') {
         // str = str + ` ${attr}`;
-      } else if (lodash.isObject(attr) && Array.isArray(attr.handler)) {
+      } else if (ZY.lodash.isObject(attr) && Array.isArray(attr.handler)) {
         // eslint-disable-next-line no-new-func
         // const fun = new Function(attr.handler[0], attr.handler[1]);
         // const ret = fun(c);
@@ -138,12 +138,12 @@ function attrStyles(p, k = 'ui.styles') {
 }
 
 function getLabel(CONFIG, configPath, key) {
-  const def = lodash.get({
+  const def = ZY.lodash.get({
     config: CONFIG,
   }, configPath);
   // console.log(def, configPath);
   if (def) {
-    const ret = lodash.get(def, 'ui.label', key);
+    const ret = ZY.lodash.get(def, 'ui.label', key);
     // console.log(ret);
     return ret;
   }
@@ -283,7 +283,7 @@ ${attrStr(p, 'wrapAttrs')}>`;
         // console.log(col_style)
         // const attrs2 = styleAddToAttr(p.ui.attrs, col_style);
 
-        const attrs = lodash.get(p, 'ui.attrs', []);
+        const attrs = ZY.lodash.get(p, 'ui.attrs', []);
         const attrs2Str = attr2Str(attrs);
         // console.log(attrs);
 
@@ -491,7 +491,7 @@ form-id="{{uuid}}" config-path="${configPath}"></slot-com>
         // console.log(col_style)
         // const attrs2 = styleAddToAttr(p.ui.attrs, col_style);
 
-        const attrs = lodash.get(p, 'ui.attrs', []);
+        const attrs = ZY.lodash.get(p, 'ui.attrs', []);
         const attrs2Str = attr2Str(attrs);
         // console.log(attrs);
 

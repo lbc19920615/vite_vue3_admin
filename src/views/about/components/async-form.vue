@@ -58,7 +58,7 @@ export default {
         let sfc = parseComponent(tpl)
         const templateId = comName + '-tpl';
 // eslint-disable-next-line no-undef
-        globalThis.initTemplate(templateId, globalThis, {
+        ZY.DOM.initTemplate(templateId, globalThis.document, {
           html: sfc.template.content,
         });
         console.log(sfc.template.content)

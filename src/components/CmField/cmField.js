@@ -2,7 +2,7 @@
 
 export default function(name, cm_field_html) {
   // console.log(globalThis.ZY)
-  const {global, lodash, initTemplate, JSON5, rid, Lock} = globalThis.ZY;
+  const {global, lodash, DOM, JSON5, rid, Lock} = globalThis.ZY;
   const templateId = name + '-tpl';
   // const cm_field_html = getHereDoc(function() { /* {{html}}*/ });
   // console.log(cm_field_html);
@@ -13,7 +13,7 @@ export default function(name, cm_field_html) {
   //   html: cm_field_html,
   // });
 
-  initTemplate(templateId, global.document, {
+  DOM.initTemplate(templateId, global.document, {
     html: cm_field_html,
   });
 
