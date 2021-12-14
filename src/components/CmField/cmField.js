@@ -1,7 +1,7 @@
 // import { global, lodash, initTemplate, JSON5, rid, Lock } from '@expose/main.js';
 
 export default function(name, cm_field_html) {
-  console.log(globalThis.ZY)
+  // console.log(globalThis.ZY)
   const {global, lodash, initTemplate, JSON5, rid, Lock} = globalThis.ZY;
   const templateId = name + '-tpl';
   // const cm_field_html = getHereDoc(function() { /* {{html}}*/ });
