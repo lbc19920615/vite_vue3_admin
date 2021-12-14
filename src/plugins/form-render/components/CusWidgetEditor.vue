@@ -72,7 +72,7 @@ import ZWindow from "@/plugins/z-frame/components/ZWindow.vue";
 if (!window.loadedWangEditorCSS) {
   let link = document.createElement('link');
   link.rel = 'stylesheet';
-  link.href = '/public/wangEditor.css';
+  link.href = '/wangEditor.css';
   document.body.append(link);
   window.loadedWangEditorCSS = true;
 }
