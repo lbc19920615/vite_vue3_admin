@@ -13,12 +13,13 @@ export function initCmField() {
     // console.log(html)
     // console.log(import.meta.env.VITE_REMOTE_LIB_ORIGIN)
     /* @vite-ignore */
-    globalThis.importScripts(import.meta.env.VITE_REMOTE_LIB_ORIGIN + '/public/cmField.js?v=' + Date.now())
+    // globalThis.importScripts(import.meta.env.VITE_REMOTE_LIB_ORIGIN + '/public/cmField.js?v=' + Date.now())
+    import('@/components/CmField/cmField.js')
       .then(res => {
-      // console.log(res)
-      if (res.default) {
-        resolve( res.default('CmField', html) )
-      }
-    })
+        // console.log(res)
+        if (res.default) {
+          resolve( res.default('CmField', html) )
+        }
+      })
   })
 }
