@@ -66,6 +66,7 @@
     "marked": "^2.0.1",
     "node-fetch": "^2.6.1",
     "postcss": "^7.0.35",
+    "rollup-plugin-visualizer": "^5.5.2",
     "sass": "^1.32.8",
     "vite": "^2.4.4",
     "yargs": "^17.3.0"

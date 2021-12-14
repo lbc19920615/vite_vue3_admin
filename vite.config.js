@@ -3,7 +3,8 @@ import vue from '@vitejs/plugin-vue'
 import { md } from './plugins/md'
 // import path from 'path'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import htmlPlugin from './plugins/html'
+import htmlPlugin from './plugins/html';
+import visualizer from "rollup-plugin-visualizer";
 // const projectRootDir = path.resolve(__dirname);
 import {initEnvConfig} from "./config";
 
@@ -19,6 +20,25 @@ const rawTransform =  (fileRegex) => {
   }
 }
 
+let plugins = [
+  md({}),
+  htmlPlugin(),
+  vue(),
+  rawTransform([/\.bpmn$/]),
+  vueJsx(),
+]
+
+console.log(process.env.NODE_ENV )
+if (process.env.NODE_ENV === "production") {
+  plugins.push(
+    visualizer({
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+    })
+  );
+}
+
 
 export default (({mode}) => {
   // console.log('mode', mode, loadEnv(mode, process.cwd()))
@@ -32,13 +52,7 @@ export default (({mode}) => {
         { find: '__remote', replacement: config.VITE_REMOTE_LIB_ORIGIN },
       ]
     },
-    plugins: [
-      md({}),
-      htmlPlugin(),
-      vue(),
-      rawTransform([/\.bpmn$/]),
-      vueJsx(),
-    ],
+    plugins: plugins,
     server: {
       // https: true,
       proxy: {
