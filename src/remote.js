@@ -127,7 +127,7 @@ export async function loadPage(comName, storeName = VARS_PAGE_MODEL_NAME, tplID 
         script = `
   globalThis.PAGE_STORE_NAME = '${storeName}';
   const { buildFormDep } = globalThis.ZPageBuild;
-  const { extendControl2Page, useAppPageControl, useControl, extendCommonArrEventHandler } = globalThis.Framework;
+  const { extendControl2Page, useAppPageControl, useControl, extendCommonArrEventHandler } = globalThis.ZFramework;
   const { useRenderControl, useGlobalEasy, buildPageCommonMixin } = globalThis.ZPageHooks;
   ` + script
 

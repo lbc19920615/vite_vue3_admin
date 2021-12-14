@@ -54,6 +54,7 @@ import HttpComponent from "@/components/HttpComponent.vue";
 import {extendControl2Page, useControl} from "@/mixins/framework";
 import {getCurrentInstance, inject, nextTick, onMounted, provide} from 'vue';
 import CustomElement from "@/components/CustomElement.vue";
+// import {urlResolve} from "@/plugins/z-frame/urlResolve";
 
 export default {
   name: 'CusForm',
@@ -64,7 +65,7 @@ export default {
   props: {
     configUrl: {
       type: String,
-      default: '/src/plugins/CusForm/formEditorConfig.js'
+      default: '/formEditorConfig.js'
     }
   },
   setup(props, ctx) {
@@ -173,6 +174,9 @@ export default {
       if (widgetConfig2.configUrl) {
         _configUrl = widgetConfig2.configUrl
       }
+      // let s = urlResolve(import.meta.url, './ass.js')
+      // console.log(s);
+
       page.commonLoadStep(
           /* @vite-ignore */
           globalThis.importScripts(_configUrl),

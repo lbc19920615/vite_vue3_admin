@@ -180,7 +180,7 @@ export async function init_router_start() {
       if (!constantRouterMapNames.includes(obj.name)) {
         let clone = ZY.JSON5.parse(ZY.JSON5.stringify(obj))
         delete clone.children
-        console.log(clone)
+        // console.log(clone)
         appendConfigRouters([clone])
       }
       if (Array.isArray(obj.children)) {

@@ -81,7 +81,7 @@ export default {
                                 },
                                 widget: 'CusForm',
                                 widgetConfig: {
-                                    configUrl: '/src/plugins/CusForm/formEditorConfig3.js',
+                                    configUrl: '/formEditorConfig3.js',
                                     enums: "ROOT_STATE('tools.propTypes', [])",
                                 },
                             }

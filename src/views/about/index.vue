@@ -221,6 +221,7 @@ import {
   useAppPageControl,
   PageControlMixin,
 } from "@/mixins/framework";
+import '@alenaksu/json-viewer';
 import CustomElement from "@/components/CustomElement.vue";
 import {FormsMana, useFormsMana} from "@/plugins/z-frame/formsMana";
 import {FormsEvent} from "@/plugins/z-frame/formsEvent";
@@ -239,9 +240,9 @@ import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
 import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
 import ZEchartsEasy from "@/plugins/z-frame/components/ZEchartsEasy.vue";
 import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
-// import ZWangEditor from "@/plugins/z-frame/components/ZWangEditor.vue";
-// import ZStyleEditor from "@/plugins/z-frame/components/ZStyleEditor.vue";
 import ZAddress from "@/plugins/z-frame/components/ZAddress.vue";
+import EmProps from "@/components/EmProps.vue";
+import EmPropsItem from "@/components/EmPropsItem.vue";
 
 import("vue3-json-viewer").then(res => {
   // app.use(res.default)
@@ -276,7 +277,8 @@ export default defineComponent({
   },
   setup(props, ctx) {
 
-
+    CustomVueComponent.register(EmProps)
+    CustomVueComponent.register(EmPropsItem)
     // ZY.PinYin.initDict()
     let cachedPageControlModel = null
     let { currentRoute, router } = useRouter2()

@@ -104,7 +104,7 @@
           </el-space>
         </template>
         <template #form_beforebegin="scope">
-          <div class="mao-bo-li" style="position: sticky; top: 0; z-index: 121; padding: var(--z-size-10) var(--z-size-10)">
+          <div class="mao-bo-li" style="position: sticky; top: 0; z-index: 121; padding: var(--z-size-10) var(--z-size-10);">
             <el-space>
               <el-button type="primary"
                          @click="page.callEvent('call:save', scope)">保存</el-button>
@@ -124,16 +124,6 @@
           <template v-if="scope.selfpath === 'props'">
           </template>
           <template v-else-if="scope.selfpath === 'name'">
-<!--            <h3>组件关系</h3>-->
-<!--            <z-easy-modal>-->
-<!--              <ZLayoutEditor-->
-<!--                  :ref="layoutRef"-->
-<!--                  :controls="false"-->
-<!--                  :open-panel="false"-->
-<!--                  :store-prefix="layoutStorePrefix"-->
-<!--                  class="page-layout-editor"-->
-<!--                  @save-layout="onSaveLayout"></ZLayoutEditor>-->
-<!--            </z-easy-modal>-->
           </template>
           <template v-else>
             <!--            -->
@@ -170,38 +160,21 @@ import {
   useAppPageControl,
   PageControlMixin,
 } from "@/mixins/framework";
-import CustomElement from "@/components/CustomElement.vue";
-import {FormsMana, useFormsMana} from "@/plugins/z-frame/formsMana";
-import {FormsEvent} from "@/plugins/z-frame/formsEvent";
-import FormsManaSelect from "@/plugins/z-frame/components/FormsManaSelect.vue";
-import FormManager from "@/views/about/components/FormManager.vue";
-// import ZLayoutEditor from "@/plugins/z-frame/components/ZLayoutEditor.vue";
-import FormsLayoutSelect from "@/plugins/z-frame/components/FormsLayoutSelect.vue";
-import {FormsLayout} from "@/plugins/z-frame/formsLayout";
-// import EwMathJax from "@/components/Ew/EwMathjax.vue";
+// import {FormsMana, useFormsMana} from "@/plugins/z-frame/formsMana";
+// import {FormsEvent} from "@/plugins/z-frame/formsEvent";
+// import {FormsLayout} from "@/plugins/z-frame/formsLayout";
 import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
-// import ZEasyModal from "@/plugins/z-frame/ZEasyModal.vue";
-// import ZCascader from "@/plugins/z-frame/components/ZCascader.vue";
+
 import {useRouter2} from "@/hooks/router";
 import {VARS_PAGE_MODEL_NAME} from "@/vars";
-// import ZDragXml from "@/plugins/z-frame/components/ZDragXml.vue";
-// import ZOptionsManager from "@/plugins/z-frame/components/ZOptionsManager.vue";
-// import ZEchartsEasy from "@/plugins/z-frame/components/ZEchartsEasy.vue";
-// import ZQuickDialog from "@/plugins/z-frame/components/ZQuickDialog.vue";
-// import {formsToDef} from "@/plugins/z-frame/hooks/form";
-// import {fetchVueTpl} from "@/hooks/remote";
+
 import tpllib from '@/utils/tpllib'
 import {useToolApi} from "@/hooks/api";
 import {buildFormDep} from "@/plugins/z-page/build";
 import WechatExportDialog from "@/views/about/components/WechatExportDialog.vue";
 import {createDeepTraverl} from "@/hooks/deep";
 import Vue2ExportDialog from "@/views/about/components/Vue2ExportDialog.vue";
-import("vue3-json-viewer").then(res => {
-  // app.use(res.default)
-  // console.log(res)
-  let JsonViewer = res.JsonViewer
-  CustomVueComponent.app.component('v-json-viewer',JsonViewer )
-})
+
 /**
  *
  * @param name
@@ -278,6 +251,16 @@ export default defineComponent({
       }
     })
 
+    import('url-pattern').then(res => {
+      globalThis.ZUrlPattern = res.default
+    })
+
+    import("vue3-json-viewer").then(res => {
+      // app.use(res.default)
+      // console.log(res)
+      let JsonViewer = res.JsonViewer
+      CustomVueComponent.app.component('v-json-viewer',JsonViewer )
+    })
     // ZY.PinYin.initDict()
     let cachedPageControlModel = null
     let { currentRoute, router } = useRouter2()
@@ -336,7 +319,7 @@ export default defineComponent({
     page = useAppPageControl(page)
     let wechatDialogRef = page.setRef('wechatDialogRef')
     let vue2DialogRef = page.setRef('vue2DialogRef')
-    let formsMana = useFormsMana();
+    // let formsMana = useFormsMana();
 
     let currentFromDialog = null
 
@@ -439,13 +422,7 @@ export default defineComponent({
           console.log(e)
         }
       },
-      async ['cursform:event'](e) {
-        // console.log('cursform:event', e)
-        let scope = e.scope
-        if (scope.type === 'dragxml:closed') {
-          scope.e.scope.save()
-        }
-      },
+
       async ['call:save'](e) {
         let { parts, partName, pathArr, process } = e
 
@@ -815,21 +792,7 @@ ${obj.weapp}
         await ZY.sleep(300)
         page.webComponentRef.toggleDialog('form-mana-dialog');
       },
-      async ['load:single:forms'](e) {
-        let { parts, partName, selfpath } = e
-        // console.log(parts[partName], selfpath)
-        try {
-          let data = await FormsMana.readFile()
-          let appendData = data[0].value
-          let updatedPath = `${selfpath}.value`
-          // console.log('sdsdsds', updatedPath,
-          // ZY.JSON5.parse(appendData)
-          // )
-          parts[partName].setModelByPath(updatedPath, appendData)
-        } catch (e) {
-        //
-        }
-      },
+
       async ['load:single:layoutSlotArr'](e) {
         let { parts, partName, selfpath } = e
         // console.log(parts[partName], selfpath)
@@ -844,63 +807,9 @@ ${obj.weapp}
           console.log(e)
         }
       },
-      async ['save:single:forms'](e) {
-        let { parts, partName, selfpath } = e
-        let model = parts[partName].getModel()
-        let current = toRaw(ZY.lodash.get(model, selfpath))
-        console.log('save:single:forms', e, current)
-        await FormsMana.saveCache2File(
-           [
-             current
-           ],
-            {
-              fileName: current.name
-            }
-        )
-      },
-      ['save:forms'](e) {
-        let { parts, partName } = e
-        let model = parts[partName].getModel()
-        let forms = toRaw(
-            ZY.lodash.get(model, 'forms')
-        )
-        // console.log('save:forms', forms, formsMana)
-        formsMana.setStorage(forms)
-      },
-      async ['save:forms:file'](e) {
-        let {parts, partName} = e
-        let model = parts[partName].getModel()
-        // let forms = toRaw(
-        //     ZY.lodash.get(model, 'forms')
-        // )
-        // ZY_EXT.saveObjAsJson5File({
-        //   data: forms,
-        //   date: Date.now()
-        // }, 'forms_' + ZY.rid(6))
-        await FormsMana.saveCache2File(
-            ZY.lodash.get(model, 'forms', [])
-        )
-      },
-      ['open:forms'](e) {
-        currentFromDialog = e
-        page.refsManager.runCom('form-mana-select', 'load')
-        page.webComponentRef.toggleDialog('form-mana-dialog');
-      },
-      async ['forms:select-layout'](e) {
-        let {value, scope} = e
-        let { parts, partName, selfpath, process } = currentFromDialog
-        // console.log('forms:select-form', e, currentFromDialog)
-        // let obj = ZY.JSON5.parse(value.value)
-        let appendData = ZY.JSON5.parse(ZY.JSON5.stringify(value))
-        // let appendData = {
-        //   name: value.label,
-        //   value: value.value
-        // }
-        // // console.log(appendData)
-        parts[partName].arrAppend(selfpath, appendData)
-        await ZY.sleep(300)
-        page.webComponentRef.toggleDialog('form-layout-dialog');
-      },
+
+
+
       ['open:layoutSlotArr'](e) {
         currentFromDialog = e
         page.refsManager.runCom('form-layout-select', 'load')

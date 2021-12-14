@@ -94,3 +94,8 @@ export function formsToDef(model = {}) {
     ret.parts = tureParts
     return ret
 }
+
+globalThis.zformHelper = {
+    baseConfig,
+    formsToDef
+}
