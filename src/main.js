@@ -59,14 +59,14 @@ import * as vuex from 'vuex'
 globalThis.Vuex = vuex
 
 
-import 'normalize.css/normalize.css'
-import 'suitcss-utils-size/index.css'
+// import 'normalize.css/normalize.css'
+// import 'suitcss-utils-size/index.css'
 import App from './App.vue'
 
 // element
 // import ElementPlus from 'element-plus/dist/index.full.js';
 import ElementPlus from 'element-plus/es/index';
-import 'element-plus/theme-chalk/src/index.scss';
+// import 'element-plus/theme-chalk/src/index.scss';
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 
 import 'xy-ui/components/xy-text';

@@ -30,7 +30,7 @@
 }
 .cus-ui__style-editor-con {
   overflow: auto;
-  height: var(--cus-ui__style-editor-con-height, 500px);
+  height: var(--cus-ui__style-editor-con-height, max-content);
   overflow-x: hidden;
 }
 </style>
@@ -107,9 +107,27 @@
         <div class="cus-ui__label">样式</div>
 <!--        {{state.value.control.stylesObj}}-->
         <div class="cus-ui__style-editor-con">
-          <z-style-editor class="cus-ui__style-editor"
-                          :value="state.value.control.stylesObj"
-                          @val:change="onStyleChange2"></z-style-editor>
+          <z-easy-modal title="样式"
+                        :modelAttr="{
+                    width: '96vw',
+                     appendToBody: true,
+                     top: '10vh',
+                     modalClass: 'el-dialog--no-modal'
+                  }"
+                        :button-attr="{
+
+                    size: 'small'
+                  }"
+
+          >
+            <template #button-content>编辑</template>
+            <template #default>
+              <z-style-editor class="cus-ui__style-editor"
+                              :value="state.value.control.stylesObj"
+                              @val:change="onStyleChange2"></z-style-editor>
+            </template>
+          </z-easy-modal>
+
         </div>
       </el-row>
     </template>
@@ -128,7 +146,7 @@
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index.js";
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
 import ZProps from "@/plugins/z-frame/components/ZProps.vue";
 import ZStyles from "@/plugins/z-frame/components/ZStyles.vue";
@@ -136,10 +154,11 @@ import ZCellItem from "@/plugins/z-frame/components/ZCellItem.vue";
 import {nextTick, reactive, toRaw} from "vue";
 import UnitInput from "@/components/UnitInput.vue";
 import ZStyleEditor from "@/plugins/z-frame/components/ZStyleEditor.vue";
+import ZEasyModal from "@/plugins/z-frame/components/ZEasyModal.vue";
 
 export default {
   name: 'CusUI',
-  components: {ZStyleEditor, UnitInput, ZCellItem, ZStyles, ZProps, EwSuggest},
+  components: {ZEasyModal, ZStyleEditor, UnitInput, ZCellItem, ZStyles, ZProps, EwSuggest},
   mixins: [
     CustomRenderControlMixin
   ],

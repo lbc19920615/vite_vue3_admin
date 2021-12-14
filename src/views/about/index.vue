@@ -214,6 +214,7 @@
 <script>
 
 import '@/plugins/form-render/ext.js';
+import '@/plugins/form-render/ext2.js';
 import {defineComponent, toRaw, onMounted} from "vue";
 import {
   extendControl2Page,
@@ -706,6 +707,9 @@ export default defineComponent({
         e: {}
       })
     }
+    import('url-pattern').then(res => {
+      globalThis.ZUrlPattern = res.default
+    })
 
     let layoutRef = page.setRef('layout')
 

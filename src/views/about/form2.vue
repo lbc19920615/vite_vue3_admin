@@ -160,9 +160,6 @@ import {
   useAppPageControl,
   PageControlMixin,
 } from "@/mixins/framework";
-// import {FormsMana, useFormsMana} from "@/plugins/z-frame/formsMana";
-// import {FormsEvent} from "@/plugins/z-frame/formsEvent";
-// import {FormsLayout} from "@/plugins/z-frame/formsLayout";
 import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 
 import {useRouter2} from "@/hooks/router";
@@ -241,26 +238,21 @@ export default defineComponent({
     })
 
     window.addEventListener('message', function (e) {
-      let data = e.data
-      let isCustom = Lib.detectIsCustomMessage(data)
-      if (isCustom) {
-        let {name, value} = data.msg
-        if (name === '__iframe:ok__') {
-          iframeCached = value
+      if (Lib) {
+        let data = e.data
+        let isCustom = Lib.detectIsCustomMessage(data)
+        if (isCustom) {
+          let {name, value} = data.msg
+          if (name === '__iframe:ok__') {
+            iframeCached = value
+          }
         }
       }
     })
 
-    import('url-pattern').then(res => {
-      globalThis.ZUrlPattern = res.default
-    })
 
-    import("vue3-json-viewer").then(res => {
-      // app.use(res.default)
-      // console.log(res)
-      let JsonViewer = res.JsonViewer
-      CustomVueComponent.app.component('v-json-viewer',JsonViewer )
-    })
+
+
     // ZY.PinYin.initDict()
     let cachedPageControlModel = null
     let { currentRoute, router } = useRouter2()
@@ -370,15 +362,15 @@ export default defineComponent({
       return null
     }
 
-    function getPreviewUrl() {
-      // console.log(global_path)
-      var pattern = new ZUrlPattern(global_path);
-      let obj = {}
-      pattern.names.forEach(name => {
-        obj[name] = ZY.rid(6)
-      })
-      return pattern.stringify(obj)
-    }
+    // function getPreviewUrl() {
+    //   // console.log(global_path)
+    //   var pattern = new ZUrlPattern(global_path);
+    //   let obj = {}
+    //   pattern.names.forEach(name => {
+    //     obj[name] = ZY.rid(6)
+    //   })
+    //   return pattern.stringify(obj)
+    // }
 
     let comEventHandler = new Map();
     page.setComEventHandler = function (name, value) {
@@ -902,21 +894,21 @@ ${obj.weapp}
           page.execComEventHandler('model:update:all', e)
         }
       },
-      ['preview']() {
-        let url = getPreviewUrl()
-        let manager = ZY.BOM.createWindowManager({url: url, target: 'previewWin-' + global_pageStoreName})
-        manager.open({
-          left: window.innerWidth * .1,
-          top: 50,
-          width: 1440,
-          height: 700
-        })
-        setTimeout(() => {
-          let refernce = manager.getReference()
-          // console.log(refernce, refernce.Z_PAGE_VERSION)
-        }, 1000)
-        // router.push(url)
-      }
+      // ['preview']() {
+      //   let url = getPreviewUrl()
+      //   let manager = ZY.BOM.createWindowManager({url: url, target: 'previewWin-' + global_pageStoreName})
+      //   manager.open({
+      //     left: window.innerWidth * .1,
+      //     top: 50,
+      //     width: 1440,
+      //     height: 700
+      //   })
+      //   setTimeout(() => {
+      //     let refernce = manager.getReference()
+      //     // console.log(refernce, refernce.Z_PAGE_VERSION)
+      //   }, 1000)
+      //   // router.push(url)
+      // }
       // ['model:update'](e) {
       //   let { model, key, newVal, config } = e
       // }
@@ -981,7 +973,7 @@ ${obj.weapp}
 
 
     function onClosed() {
-      console.log('sdsdsds')
+      console.log('onClosed')
     }
 
 
@@ -993,7 +985,7 @@ ${obj.weapp}
       vue2DialogRef,
       wechatDialogRef,
       state,
-      getPreviewUrl,
+      // getPreviewUrl,
       onClosed,
       layoutStorePrefix,
       // jumpTo,

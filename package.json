@@ -6,7 +6,7 @@
     "gongsi": "vite --host 0.0.0.0 --mode gongsi",
     "build": "vite build",
     "build:gongsi": "vite build  --mode gongsi",
-    "pre:gongsi": "vite preview  --mode gongsi",
+    "pre:gongsi": "vite preview",
     "serve": "vite preview --host 0.0.0.0 --mode gongsi",
     "ser": "pm2 start server.js --name vite_vue3_admin",
     "stop:ser": "pm2 stop vite_vue3_admin",

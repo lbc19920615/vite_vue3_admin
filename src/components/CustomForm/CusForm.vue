@@ -49,16 +49,16 @@
 
 </template>
 <script>
-import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index.js";
 import HttpComponent from "@/components/HttpComponent.vue";
 import {extendControl2Page, useControl} from "@/mixins/framework";
-import {getCurrentInstance, inject, nextTick, onMounted, provide} from 'vue';
-import CustomElement from "@/components/CustomElement.vue";
+import { nextTick, onMounted, provide} from 'vue';
+// import CustomElement from "@/components/CustomElement.vue";
 // import {urlResolve} from "@/plugins/z-frame/urlResolve";
 
 export default {
   name: 'CusForm',
-  components: {CustomElement, HttpComponent},
+  components: {HttpComponent},
   mixins: [
     CustomRenderControlMixin
   ],
@@ -69,7 +69,15 @@ export default {
     }
   },
   setup(props, ctx) {
-    let instanse = getCurrentInstance()
+    // let instanse = getCurrentInstance()
+
+    import("vue3-json-viewer").then(res => {
+      // app.use(res.default)
+      // console.log(res)
+      let JsonViewer = res.JsonViewer
+      CustomVueComponent.app.component('v-json-viewer',JsonViewer )
+    })
+
     let locks = true
     let cached = null
     let cachedModel = null

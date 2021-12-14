@@ -133,9 +133,10 @@ import UnitInput from "@/components/UnitInput.vue";
 import {toRaw} from "vue";
 import ZEasyPopover from "@/plugins/z-frame/ZEasyPopover.vue";
 import ZEasyHide from "@/plugins/z-frame/components/ZEasyHide.vue";
+import CodeMirror from "@/plugins/CodeMirrorEditor/CodeMirror.vue";
 export default {
   name: 'ZStyleEditor',
-  components: {ZEasyHide, ZEasyPopover, UnitInput},
+  components: {CodeMirror, ZEasyHide, ZEasyPopover, UnitInput},
   props: {
     // "{cached: null, css: ''}"
     value: String,
