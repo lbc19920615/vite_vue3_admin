@@ -230,6 +230,8 @@ function downloadFiles(name, fileMap, fileSave = ZY_EXT.FS.fileSave) {
 }
 globalThis.downloadFiles = downloadFiles
 
+
+
 export default defineComponent({
   mixins: [
     PageControlMixin,
@@ -255,11 +257,27 @@ export default defineComponent({
     // CustomElement,
   },
   setup(props, ctx) {
-
+    let iframeCached = null
     let Lib;
     import('__remote/public/message.js').then(res => {
       Lib = res
+      window.parent.postMessage(
+          new Lib.CommandMessage('__form:inited__', {
+          }),
+          '*')
     })
+
+    window.addEventListener('message', function (e) {
+      let data = e.data
+      let isCustom = Lib.detectIsCustomMessage(data)
+      if (isCustom) {
+        let {name, value} = data.msg
+        if (name === '__iframe:ok__') {
+          iframeCached = value
+        }
+      }
+    })
+
     // ZY.PinYin.initDict()
     let cachedPageControlModel = null
     let { currentRoute, router } = useRouter2()
@@ -389,7 +407,7 @@ export default defineComponent({
       }
     }
 
-    console.log(window.process);
+    // console.log(window.process);
     page.setEventHandler({
       ['add:arr:common'](e) {
         let { parts, partName, pathArr, process } = e
@@ -458,16 +476,19 @@ export default defineComponent({
 
           // console.log(import.meta.env)
           if (import.meta.env.MODE !== 'development') {
-            // let res = await toolApi.saveJson(form.properties,
-            //     cachedPageControlModel.name + '.json5',
-            //     {
-            //       newProps: ZY.JSON5.parse(form.properties),
-            //       oldProps: drag_cached.oldProps
-            //     }
-            // )
-            // form.metas = {
-            //   form_data: res
-            // }
+            let res = await toolApi.saveJson(form.properties,
+                cachedPageControlModel.name + '.json5',
+                {
+                  headers: {
+                    'X-Access-Token': iframeCached ? iframeCached.token : '',
+                  },
+                  newProps: ZY.JSON5.parse(form.properties),
+                  oldProps: drag_cached.oldProps
+                }
+            )
+            form.metas = {
+              form_data: res
+            }
           }
 
           cachedPageControlModel.value = ZY.JSON5.stringify(value)
