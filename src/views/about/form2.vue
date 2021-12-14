@@ -448,6 +448,14 @@ export default defineComponent({
       },
       async ['call:save'](e) {
         let { parts, partName, pathArr, process } = e
+
+        function getMetas(metas) {
+          if (typeof metas === 'string') {
+            return ZY.JSON5.parse(metas)
+          }
+          return metas
+        }
+
         try {
           // console.log(parts[partName],  page, comMap)
           // let pArr = []
@@ -472,9 +480,11 @@ export default defineComponent({
           let value = ZY.JSON5.parse(cachedPageControlModel.value)
           let form = value.parts[0]
           let drag_cached = ZY.JSON5.parse(form.drag_cached)
+          let metas = getMetas(form.metas)
           // console.log(drag_cached)
 
 
+          // console.log( metas)
           if (import.meta.env.MODE !== 'development') {
             let res = await toolApi.saveJson(form.properties,
                 cachedPageControlModel.name + '.json5',
@@ -486,7 +496,8 @@ export default defineComponent({
                     formName: cachedPageControlModel.name
                   },
                   newProps: ZY.JSON5.parse(form.properties),
-                  oldProps: drag_cached.oldProps
+                  oldProps: drag_cached.oldProps,
+                  // tableName: metas?.form_data ?? ''
                 }
             )
             form.metas = {
@@ -509,6 +520,7 @@ export default defineComponent({
           window.parent.postMessage(
               new Lib.CommandMessage('form:save', {
                 metas: form.metas,
+                formName: cachedPageControlModel.name,
                 form
               }),
               '*')
