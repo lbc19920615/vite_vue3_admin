@@ -474,13 +474,16 @@ export default defineComponent({
           let drag_cached = ZY.JSON5.parse(form.drag_cached)
           // console.log(drag_cached)
 
-          // console.log(import.meta.env)
+
           if (import.meta.env.MODE !== 'development') {
             let res = await toolApi.saveJson(form.properties,
                 cachedPageControlModel.name + '.json5',
                 {
                   headers: {
                     'X-Access-Token': iframeCached ? iframeCached.token : '',
+                  },
+                  data: {
+                    formName: cachedPageControlModel.name
                   },
                   newProps: ZY.JSON5.parse(form.properties),
                   oldProps: drag_cached.oldProps

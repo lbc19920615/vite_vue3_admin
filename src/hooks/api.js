@@ -40,10 +40,11 @@ export function useToolApi() {
    * @param oldProps {{}}
    * @param tableName {string}
    * @param headers {{}}
+   * @param data {{}}
    * @returns {Promise<*>}
    */
   async function saveJson(serverProps = '', fileName = '',
-                          {headers = {}, newProps = {}, oldProps = {}, tableName = ''} = {} ) {
+                          {headers = {}, newProps = {}, oldProps = {}, tableName = '',  data = {}} = {} ) {
 
     const PICKED_PROPS = ['type', 'sub_type', 'rules']
     let oldPur = purfyObj(oldProps, PICKED_PROPS);
@@ -64,6 +65,11 @@ export function useToolApi() {
       formdata.append('tableName', tableName)
       formdata.append('file', file);
       formdata.append('diffed', diffed);
+      if (data) {
+        Object.entries(data).forEach(([key, item]) => {
+          formdata.append(key, item);
+        })
+      }
       let res = await Req.post('/api/zy-boot/json/json5', formdata, {
         headers: {
 
