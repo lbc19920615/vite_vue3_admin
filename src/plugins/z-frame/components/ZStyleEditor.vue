@@ -10,7 +10,7 @@
 </style>
 
 <template>
-  <div class="z-style-editor">
+  <div class="z-style-editor" v-if="inited">
 <!--    {{value}}-->
 <!--   <z-easy-popover :model-attr="{width: '300px', placement: 'left', appendToBoby: true}">-->
 
@@ -169,7 +169,8 @@ export default {
       cached: {},
       currentType: keys[0].value,
       keys: keys,
-      activeNames: []
+      activeNames: [],
+      inited: false
     }
   },
   watch: {
@@ -196,7 +197,10 @@ export default {
     },
     setContent(v) {
       this.content = v
-      this.$refs.editorRef.setModel( v )
+      console.log(this.$refs.editorRef )
+      if (this.$refs.editorRef && this.$refs.editorRef.setModel) {
+        this.$refs.editorRef.setModel( v )
+      }
     },
     onChange(pathArr = [], e) {
       let path =
@@ -265,6 +269,7 @@ ${value}
   },
   mounted() {
     global.initCodeMirror().then(() => {
+      this.inited = true
       this.init()
     })
 
