@@ -587,7 +587,7 @@ ${item.value}
 
     function getBserviceCache() {
       let ret = document.getElementById('bserviceTpl').innerHTML
-          .replace('[REMOTE]', ZY.REMOTE_ORIGIN)
+          .replace('[REMOTE]', location.origin)
       // console.log('getBserviceCache', ret)
       return ret
     }
