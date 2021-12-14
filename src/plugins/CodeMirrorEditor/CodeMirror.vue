@@ -2,6 +2,10 @@
   <textarea ref="editorRef" class="code-mirror" />
 </template>
 
+<script>
+
+window.CodeMirrorLoaded = true
+</script>
 <script setup>
 import {onMounted, ref, watch} from "vue";
 import CodeMirrorLib from "codemirror/lib/codemirror";

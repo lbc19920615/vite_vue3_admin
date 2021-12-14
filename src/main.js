@@ -2,6 +2,7 @@
 
 // import {fetchVueComponent} from "@/hooks/remote";
 
+
 const getGlobal = function() {
   if (typeof self !== 'undefined') { return self; }
   if (typeof window !== 'undefined') { return window; }
@@ -11,6 +12,23 @@ const getGlobal = function() {
 
 const _global = getGlobal();
 _global.global = _global;
+
+/**
+ * 初始化CodeMirror
+ * @returns {Promise<unknown>}
+ */
+_global.initCodeMirror = function () {
+  return new Promise(resolve => {
+    if (!window.CodeMirrorLoaded ) {
+      import('@/plugins/CodeMirrorEditor/CodeMirror.vue').then((res) => {
+        CustomVueComponent.register(res.default, 'CodeMirror');
+        resolve();
+      });
+    } else {
+      resolve()
+    }
+  })
+}
 
 // import { initTemplate } from '__remote/public/template-loader.js'
 // _global.initTemplate = async function initTemplate(id, global, { html = '' } = {}) {
