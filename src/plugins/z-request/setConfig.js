@@ -4,7 +4,7 @@
  */
 export default (axios, config = {}) => {
   const defaultConfig = {
-    baseURL: import.meta.env.VITE_BASEURL,
+    baseURL: import.meta.env.VITE_AXIOS_BASEURL,
     timeout: 10000,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',

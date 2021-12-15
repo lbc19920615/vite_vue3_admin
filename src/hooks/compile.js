@@ -1,7 +1,7 @@
 import {renderForm} from "@/utils/tpllib";
 
 export function initCompile() {
-  fetch(ZY.REMOTE_ORIGIN + '/public/render/comformscr2.twig').then(res => {
+  fetch(import.meta.env.VITE_REMOTE_RES_ORIGIN + '/public/render/comformscr2.twig').then(res => {
     return res.text()
   }).then((str) => {
     let tpl = document.createElement('script');
@@ -29,7 +29,7 @@ export function initCompile() {
       compileData = {}
     }
     compileData.APP_CONFIG = {
-      server_origin: ZY.REMOTE_ORIGIN
+      server_origin: location.origin
     }
     compileData.CONFIG = CONFIG
     compileData.CONFIG_SOURCE_JSON5 = JSON5.stringify(CONFIG)

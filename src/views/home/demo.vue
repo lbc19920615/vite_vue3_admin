@@ -75,7 +75,7 @@ export default {
 
 
     onMounted(() => {
-      import('__remote/public/message.js').then(res => {
+      import(location.origin + '/server1/message.js').then(res => {
         Lib = res
         let ifr = page.getRef('iframe')
         let ifrWindow = ifr.contentWindow;

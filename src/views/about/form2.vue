@@ -229,7 +229,7 @@ export default defineComponent({
   setup(props, ctx) {
     let iframeCached = null
     let Lib;
-    import('__remote/public/message.js').then(res => {
+    import(location.origin + '/server1/message.js').then(res => {
       Lib = res
       window.parent.postMessage(
           new Lib.CommandMessage('__form:inited__', {

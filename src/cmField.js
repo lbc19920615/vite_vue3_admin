@@ -11,9 +11,7 @@ export function initCmField() {
     });
     let html = t.render({})
     // console.log(html)
-    // console.log(import.meta.env.VITE_REMOTE_LIB_ORIGIN)
     /* @vite-ignore */
-    // globalThis.importScripts(import.meta.env.VITE_REMOTE_LIB_ORIGIN + '/public/cmField.js?v=' + Date.now())
     import('@/components/CmField/cmField.js')
       .then(res => {
         // console.log(res)
