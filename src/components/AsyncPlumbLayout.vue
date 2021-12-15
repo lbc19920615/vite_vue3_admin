@@ -98,7 +98,7 @@ $sel: "." + $tag;
 </template>
 
 <script>
-import {jsPlumb} from 'jsplumb'
+// import {jsPlumb} from 'jsplumb'
 import * as NodeDefMap from "@/plugins/ComEditor/nodes";
 import {createPlumbConfig} from "@/plugins/PlumbLayout/utils";
 import {plumbActionMixins, plumbLayoutMixn} from "@/plugins/PlumbLayout/mixin";

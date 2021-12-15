@@ -30,16 +30,16 @@ import "codemirror/mode/htmlmixed/htmlmixed.js";
 // theme css
 import "codemirror/theme/base16-dark.css";
 import "codemirror/theme/monokai.css";
-import "codemirror/theme/paraiso-light.css";
-import "codemirror/theme/ambiance.css";
-import "codemirror/theme/cobalt.css";
-import "codemirror/theme/base16-light.css";
-import "codemirror/theme/paraiso-dark.css";
-import "codemirror/theme/rubyblue.css";
-import "codemirror/theme/mbo.css";
-import "codemirror/theme/hopscotch.css";
-import "codemirror/theme/solarized.css";
-import "codemirror/theme/lesser-dark.css";
+// import "codemirror/theme/paraiso-light.css";
+// import "codemirror/theme/ambiance.css";
+// import "codemirror/theme/cobalt.css";
+// import "codemirror/theme/base16-light.css";
+// import "codemirror/theme/paraiso-dark.css";
+// import "codemirror/theme/rubyblue.css";
+// import "codemirror/theme/mbo.css";
+// import "codemirror/theme/hopscotch.css";
+// import "codemirror/theme/solarized.css";
+// import "codemirror/theme/lesser-dark.css";
 import "codemirror/addon/merge/merge.css";
 import "./vscode-dark.css"
 import "codemirror/addon/hint/sql-hint";
@@ -120,16 +120,16 @@ const props = defineProps({
         "vscode-dark",
         "base16-dark",
         "monokai",
-        "paraiso-light",
-        "ambiance",
-        "cobalt",
-        "base16-light",
-        "paraiso-dark",
-        "rubyblue",
-        "mbo",
-        "hopscotch",
-        "solarized light",
-        "lesser-dark",
+        // "paraiso-light",
+        // "ambiance",
+        // "cobalt",
+        // "base16-light",
+        // "paraiso-dark",
+        // "rubyblue",
+        // "mbo",
+        // "hopscotch",
+        // "solarized light",
+        // "lesser-dark",
       ];
       if (!themeArray.includes(value)) throw new Error("暂无该样式");
       return true;

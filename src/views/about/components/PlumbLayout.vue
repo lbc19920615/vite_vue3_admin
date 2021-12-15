@@ -317,7 +317,7 @@ $sel: "." + $tag;
 </template>
 
 <script>
-import {jsPlumb} from 'jsplumb'
+// import {jsPlumb} from 'jsplumb'
 import {groupManagerMixin} from "./PlumbLayout/groupDialog";
 import {createFromJSON5} from "@/plugins/ComEditor/nodes";
 import {plumbActionMixins, plumbLayoutMixn} from "@/plugins/PlumbLayout/mixin";
