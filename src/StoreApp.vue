@@ -8,7 +8,7 @@
 <script>
 import {defineComponent, getCurrentInstance, ref, inject} from "vue";
 import * as Vue from "vue";
-import { REMOTE_ORIGIN } from '@expose/main.js'
+// import { REMOTE_ORIGIN } from '@expose/main.js'
 import {createRefManager} from "@/hooks/ref";
 import {useStore} from "vuex";
 
@@ -107,7 +107,7 @@ export default defineComponent({
      */
     function installExposeServices(serviceEnties = []) {
       for (let [serviceName, path] of serviceEnties) {
-        installService(serviceName, REMOTE_ORIGIN + path)
+        installService(serviceName, import.meta.env.VITE_REMOTE_RES_ORIGIN + path)
       }
     }
 
