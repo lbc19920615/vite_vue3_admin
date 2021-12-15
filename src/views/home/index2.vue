@@ -25,12 +25,14 @@
 
 <script>
 import '@/plugins/form-render/ext.js';
+
 import HttpComponent from "@/components/HttpComponent.vue";
 import {defineComponent} from "vue";
 import {extendControl2Page, PageControlMixin, useAppPageControl, useControl} from "@/mixins/framework";
 import {APP_STORE_NAME} from "@/vars";
+import CusRoutesEditor from "@/plugins/form-render/components/CusRoutesEditor.vue";
 
-
+CustomVueComponent.register(CusRoutesEditor)
 export default defineComponent({
   components: {HttpComponent},
   mixins: [
