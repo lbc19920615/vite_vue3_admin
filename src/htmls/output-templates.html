@@ -86,10 +86,10 @@ createSlotComponent();
 import {createZformCommon} from "@/zform/zform";
 
 const formDef = {{json5_config}};
-let zformCommon = createZformCommon({formDef});
+const formComName = '{{formComName}}';
+let zformCommon = createZformCommon({formDef, formComName});
 
 export default {
-  name: '{{formComName}}',
   mixins: [
     zformCommon
   ]

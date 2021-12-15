@@ -526,6 +526,10 @@ export default defineComponent({
         let prefix = 'vue2__';
         let suffix = '__' + ZY.Time.formatDateTime(new Date(), 'YYYY-MM-DD__HH_mm_ss');
 
+        function replaceEventName(str) {
+          return str.replaceAll('@tap', '@click');
+        }
+
         if (cachedPageControlModel && cachedPageControlModel.def) {
           let formComName = cachedPageControlModel.name;
           let value = JSON5.parse(cachedPageControlModel.value);
@@ -553,7 +557,7 @@ export default defineComponent({
               }
               return `
 <template v-slot:${slot.name}="scope">
-${obj.web}
+${replaceEventName(obj.web)}
 </template>
 `;
             });
