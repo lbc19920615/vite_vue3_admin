@@ -1,5 +1,3 @@
-// import { global, lodash, initTemplate, JSON5, rid, Lock } from '@expose/main.js';
-
 export default function(name, cm_field_html) {
   // console.log(globalThis.ZY)
   const {global, lodash, DOM, JSON5, rid, Lock} = globalThis.ZY;
