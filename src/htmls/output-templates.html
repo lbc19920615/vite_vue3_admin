@@ -77,7 +77,7 @@ createSlotComponent();
 
 <template id="output-form-vue2-tpl">
 <template>
-<dym-form v-if="inited" :debug="debug">
+<dym-form v-if="inited" :debug="debug" :config="formDef">
   {{slots_str}}
 </dym-form>
 </template>
