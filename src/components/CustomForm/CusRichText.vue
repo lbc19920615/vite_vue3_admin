@@ -10,9 +10,8 @@
 </template>
 
 <script>
-import {CUSOM_RENDER_FROM_TYPES, CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
-import {createAbleProp, createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
-import {QuickNumber, setPROPS} from "@/hooks/props";
+import {CUSOM_RENDER_FROM_TYPES, CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index.js";
+import { createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
 import {onMounted, watch} from "vue";
 
 

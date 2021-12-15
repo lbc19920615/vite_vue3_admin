@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import {getCurrentInstance, nextTick, onMounted, reactive, toRaw} from "vue";
+import { nextTick, onMounted, reactive, toRaw} from "vue";
 import HttpComponent from "@/components/HttpComponent.vue";
 import ZHttpCom from "@/plugins/z-frame/components/ZHttpCom.vue";
 import {createCusWidgetEditorConfig} from "@/plugins/form-render/components/CusWidgetEditor/createConfig";
@@ -54,10 +54,11 @@ import {createEchartGrid} from "@/plugins/z-frame/components/ZEchartsEasy/config
 import {createEchartToolbox} from "@/plugins/z-frame/components/ZEchartsEasy/configs/toolbox";
 import {createEchartPolar} from "@/plugins/z-frame/components/ZEchartsEasy/configs/polar";
 import ExportDialog from "@/components/ExportDialog.vue";
+import ZJumpScrollHolder from "@/plugins/z-frame/components/ZJumpScrollHolder.vue";
 
 export default {
   name: "ZEchartsEasy",
-  components: {ExportDialog, ZHttpCom, HttpComponent},
+  components: {ZJumpScrollHolder, ExportDialog, ZHttpCom, HttpComponent},
   setup() {
 
     let JSON5 = ZY.JSON5

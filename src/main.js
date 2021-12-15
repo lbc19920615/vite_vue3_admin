@@ -118,7 +118,7 @@ globalThis.ZY_EXT = ZY_EXT
 import request from '@/requests/index.js'
 globalThis.Req = request
 
-import * as ZformMana from '@/plugins/z-frame/formsMana'
+// import * as ZformMana from '@/plugins/z-frame/formsMana'
 
 import * as Framework from "@/mixins/framework";
 globalThis.ZFramework = Framework
@@ -132,21 +132,7 @@ globalThis.ZPageBuild = ZPageBuild
 import * as ZFramePlugin from "@/plugins/z-frame/index";
 // import * as ZDragPlugin from "@/plugins/z-dragxml/index";
 
-import * as NodeDefMap from "@/plugins/ComEditor/nodes.js";
-import * as tabNodePlugin from '@/plugins/ComEditor/tabNode.plugin'
-NodeDefMap.register(tabNodePlugin)
-
-import * as v1ArrayPlugin from '@/plugins/ComEditor/v1arrayNode.plugin'
-NodeDefMap.register(v1ArrayPlugin)
-
-import * as v1objectPlugin from '@/plugins/ComEditor/v1objectNode.plugin'
-NodeDefMap.register(v1objectPlugin)
-
-import * as modalNodePlugin from '@/plugins/ComEditor/modalNode.plugin'
-NodeDefMap.register(modalNodePlugin)
-
-import * as eleNodePlugin from '@/plugins/ComEditor/eleNode.plugin'
-NodeDefMap.register(eleNodePlugin)
+import('./node');
 
 import router, {init_router_start} from './router'
 import store from './store'
@@ -228,7 +214,6 @@ comPlugin.install = function (app) {
       locale
     })
     app.use(comPlugin)
-    app.use(ZformMana)
     app.use(CustomFormRenderPlugin)
     // app.use(CodeMirrorPlugin)
     app.use(ZFramePlugin)
@@ -247,6 +232,11 @@ comPlugin.install = function (app) {
     //   // console.log(res.default)
     //   app.use(res.default)
     // })
+    import('@/plugins/z-frame/formsMana').then(res => {
+      // console.log(res)
+      app.use(res)
+    })
+
     initStoreApp(storeApp)
 
     app.mount('#app')

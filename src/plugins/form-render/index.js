@@ -17,7 +17,6 @@ import CusInput from "@/components/CustomForm/CusInput.vue";
 import CusAddress from "@/components/CustomForm/CusAddress.vue";
 import CusSwitch from "@/components/CustomForm/CusSwitch.vue";
 import CusOneOrMany from "@/components/CustomForm/CusOneOrMany.vue";
-
 import CusUploader from "@/components/CustomForm/CusUploader.vue";
 
 
@@ -61,8 +60,10 @@ const plugin = {
         CustomVueComponent.register(CusRichEditor)
         CustomVueComponent.register(CusInput)
         CustomVueComponent.register(CusOneOrMany)
+        CustomVueComponent.register(CusAddress)
         CustomVueComponent.register(CusUploader)
         CustomVueComponent.register(CusStyleEditor)
+
 
         // CustomVueComponent.register(MyVueTab)
         // CustomVueComponent.register(MyVueTabPane)

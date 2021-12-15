@@ -14,7 +14,6 @@
 
 <script>
 import {ZDragCommonMixin} from "@/plugins/z-dragxml/mixins";
-import CusRichText from "@/components/CustomForm/CusRichText.vue";
 
 export default {
   name: 'ZDragAddress',
