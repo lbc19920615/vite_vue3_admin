@@ -229,13 +229,15 @@ export default defineComponent({
   setup(props, ctx) {
     let iframeCached = null
     let Lib;
-    import(location.origin + '/server1/message.js').then(res => {
-      Lib = res
-      window.parent.postMessage(
-          new Lib.CommandMessage('__form:inited__', {
-          }),
-          '*')
-    })
+    /* @vite-ignore */
+    globalThis.importScripts(location.origin + '/server1/message.js')
+        .then(res => {
+          Lib = res
+          window.parent.postMessage(
+              new Lib.CommandMessage('__form:inited__', {
+              }),
+              '*')
+        })
 
     window.addEventListener('message', function (e) {
       if (Lib) {
