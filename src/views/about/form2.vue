@@ -537,6 +537,8 @@ export default defineComponent({
 
           // 处理form slots的导出
           ;( function () {
+            let formConfig = cachedPageControlModel.def;
+            let json5_config = JSON5.stringify(formConfig.parts[0]);
             let templateContent = document.getElementById(FORM_TPL_ID).innerHTML
             let templateArr = form.slots.map(slot => {
               // console.log(slot.value)
@@ -551,14 +553,15 @@ export default defineComponent({
               }
               return `
 <template v-slot:${slot.name}="scope">
-${obj.weapp}
+${obj.web}
 </template>
 `;
             });
             let xmlContent =  globalThis.twigRender(templateContent, {
               ZFORM_RELATIVE_PATH,
               formComName,
-              slots_str: templateArr.join('\n')
+              slots_str: templateArr.join('\n'),
+              json5_config
             });
             fileMap.set(formComName + '.vue',  xmlContent);
           })();

@@ -83,7 +83,10 @@ createSlotComponent();
 </template>
 
 <script>
-import {zformCommon} from "{{ZFORM_RELATIVE_PATH}}";
+import {createZformCommon} from "@/zform/zform";
+
+const formDef = {{json5_config}};
+let zformCommon = createZformCommon({formDef});
 
 export default {
   name: '{{formComName}}',
