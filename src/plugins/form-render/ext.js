@@ -8,9 +8,6 @@ import CusUI from "@/plugins/form-render/components/CusUI.vue";
 import CusWidgetEditor from "@/plugins/form-render/components/CusWidgetEditor.vue";
 import CusFormRules from "@/plugins/form-render/components/CusFormRules.vue";
 import CusComEvents from "@/plugins/form-render/components/CusComEvents.vue";
-import CusXmlShower from "@/plugins/form-render/components/CusXmlShower.vue";
-// import CusRoutesEditor from "@/plugins/form-render/components/CusRoutesEditor.vue";
-// import CusCodeEditor from "@/plugins/form-render/components/CusCodeEditor.vue";
 import CusJsxEditor from "@/plugins/form-render/components/CusJsxEditor.vue";
 import CusComputed from "@/plugins/form-render/components/CusComputed.vue";
 import CusOptManager from "@/plugins/form-render/components/CusOptManager.vue";
@@ -27,8 +24,6 @@ CustomVueComponent.register(CusFormRules)
 CustomVueComponent.register(CusComEvents)
 CustomVueComponent.register(CusUI)
 CustomVueComponent.register(CusWidgetEditor)
-// CustomVueComponent.register(CusCodeEditor)
-// CustomVueComponent.register(CusRoutesEditor)
 CustomVueComponent.register(CusOptManager)
 CustomVueComponent.register(CusJsxEditor)
 CustomVueComponent.register(CusInsert)
@@ -36,7 +31,10 @@ CustomVueComponent.register(CusLayoutEditor)
 CustomVueComponent.register(CusAttr)
 CustomVueComponent.register(CusFormAttr)
 CustomVueComponent.register(CusComputed)
-CustomVueComponent.register(CusXmlShower)
 
 import * as ZDragPlugin from "@/plugins/z-dragxml/index";
 CustomVueComponent.app.use(ZDragPlugin);
+
+import('@/plugins/form-render/components/CusXmlShower.vue').then(res => {
+  CustomVueComponent.register(res.default)
+})
