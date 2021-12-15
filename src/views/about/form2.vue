@@ -297,9 +297,6 @@ export default defineComponent({
       textarea_step: {
         type: String
       },
-      domes: {
-        type: Array
-      },
     }
     let computedProps = {
     }
@@ -917,29 +914,7 @@ ${obj.weapp}
     })
 
 
-    // function detectChange() {
-    //   let doms =  Array.of(
-    //       ...document.querySelectorAll('.http-com .z-form__object [scroll-control]'))
-    //   page.setData({
-    //     domes: doms
-    //   })
-    //   if (Array.isArray(doms) && doms.length > 0) {
-    //     interval1.stop()
-    //   }
-    // }
-    //
-    // let interval1 = new ZY.Interval(detectChange, 6000);
-    // interval1.start()
-    //
-    // function jumpTo(o) {
-    //   // console.log(o.getBoundingClientRect().top + window.scrollY)
-    //   let top = o.getBoundingClientRect().top + window.scrollY - 40
-    //   // ZY.U.scrollToView(o)
-    //   window.scrollTo({
-    //     top: top,
-    //     behavior: "smooth"
-    //   });
-    // }
+
 
     async function onSaveLayout(e) {
       if (cachedPageControlModel) {
