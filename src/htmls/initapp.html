@@ -1,0 +1,16 @@
+<script type="module">
+  // console.log(Vue)
+  ;(function () {
+    let jshref = new URL('element-plus.1.1.0.js', import.meta.url).href
+    // console.log(jshref)
+    globalThis.importScripts(jshref).then(function () {
+      globalThis.app = window.startApp();
+    })
+  })();
+
+
+  setTimeout(() => {
+    globalThis.importScripts('https://cdn.bootcdn.net/ajax/libs/jszip/3.6.0/jszip.min.js');
+    globalThis.importScripts('https://cdn.bootcdn.net/ajax/libs/echarts/5.1.2/echarts.min.js');
+  }, 300)
+</script>
