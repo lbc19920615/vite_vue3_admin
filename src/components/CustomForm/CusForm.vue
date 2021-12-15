@@ -49,6 +49,8 @@
 
 </template>
 <script>
+
+import {registerExt2} from "@/plugins/form-render/ext2";
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index.js";
 import HttpComponent from "@/components/HttpComponent.vue";
 import {extendControl2Page, useControl} from "@/mixins/framework";
@@ -70,7 +72,7 @@ export default {
   },
   setup(props, ctx) {
     // let instanse = getCurrentInstance()
-
+    registerExt2();
     import("vue3-json-viewer").then(res => {
       // app.use(res.default)
       // console.log(res)

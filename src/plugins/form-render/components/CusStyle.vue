@@ -1,7 +1,3 @@
-<style lang="scss">
-
-</style>
-
 <template>
   <template v-if="inited">
 <!--    {{state}}-->
@@ -18,15 +14,14 @@
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index.js";
 import EwSuggest from "@/components/Ew/EwSuggest.vue";
-import ZProps from "@/plugins/z-frame/components/ZProps.vue";
 import ZStyles from "@/plugins/z-frame/components/ZStyles.vue";
 import {onMounted, watch} from "vue";
 
 export default {
   name: 'CusStyle',
-  components: {ZStyles, ZProps, EwSuggest},
+  components: {ZStyles, EwSuggest},
   mixins: [
     CustomRenderControlMixin
   ],

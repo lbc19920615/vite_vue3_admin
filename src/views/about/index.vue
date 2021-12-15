@@ -214,7 +214,7 @@
 <script>
 
 import '@/plugins/form-render/ext.js';
-import '@/plugins/form-render/ext2.js';
+import {registerExt2} from "@/plugins/form-render/ext2.js";
 import {defineComponent, toRaw, onMounted} from "vue";
 import {
   extendControl2Page,
@@ -251,6 +251,7 @@ import("vue3-json-viewer").then(res => {
   let JsonViewer = res.JsonViewer
   CustomVueComponent.app.component('v-json-viewer',JsonViewer )
 })
+registerExt2();
 export default defineComponent({
   mixins: [
     PageControlMixin,

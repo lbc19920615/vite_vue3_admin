@@ -59,6 +59,11 @@ class CustomVueComponent {
   static register(ctx, name = ctx.name) {
     this.component(name, ctx)
   }
+  static registerOnce(ctx, name = ctx.name) {
+    if (!this.components[name]) {
+      this.component(name, ctx)
+    }
+  }
   static resolve(str) {
     let components = getAppContext().components
     let comName = ZY.lodash.upperFirst(ZY.lodash.camelCase(str))
