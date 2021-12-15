@@ -165,8 +165,9 @@ import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 import {useRouter2} from "@/hooks/router";
 import {VARS_PAGE_MODEL_NAME} from "@/vars";
 
+// import formConfig from './Form2EditorConfig';
 import tpllib from '@/utils/tpllib'
-import {useToolApi} from "@/hooks/api";
+// import {useToolApi} from "@/hooks/api";
 import {buildFormDep} from "@/plugins/z-page/build";
 import WechatExportDialog from "@/views/about/components/WechatExportDialog.vue";
 import {createDeepTraverl} from "@/hooks/deep";
@@ -263,7 +264,11 @@ export default defineComponent({
     let global_path = currentRoute.query.path
     global_pageStoreName = currentRoute.query.storeName ?? VARS_PAGE_MODEL_NAME
 
-    let toolApi = useToolApi();
+    let toolApi = null;
+    import('@/hooks/api').then(res => {
+      toolApi = res.useToolApi();
+    })
+
     let state = reactive({
       loading: false
     })
@@ -279,6 +284,11 @@ export default defineComponent({
     function onInited({storeControl}) {
       page.commonLoadStep(
           import('./Form2EditorConfig'),
+          // (async function() {
+          //   return {
+          //     default: formConfig
+          //   }
+          // })(),
           'textarea_step',
           {
             async onMounted(config) {
@@ -316,49 +326,6 @@ export default defineComponent({
 
     globalThis.getPageCachedModel = function () {
       return cachedPageControlModel
-    }
-
-    globalThis.getFormItem = function (
-        {formName = 'process-step2', depId = 'ix4c', itemId = 'ix4c-ufobWE'} = {},
-        model = cachedPageControlModel
-    ) {
-      const lodash = ZY.lodash
-      const JSON5 = ZY.JSON5
-      let formAlias = model.forms.find(form => form.name === formName)
-      let formValue = JSON5.parse(formAlias.value)
-      let part = formValue.parts[0]
-      let propsObj = JSON5.parse(part.props)
-      if (Array.isArray(propsObj.deps)) {
-        let curDep = propsObj.deps.find(dep => dep.id === depId)
-        if (curDep && Array.isArray(curDep.items)) {
-          let curItem = curDep.items.find(item => item.id === itemId)
-          if (curItem) {
-            return {
-              setData(updatedData = {}) {
-                let data = JSON5.parse(item0.data)
-                lodash.each(updatedData, function (objItem, objKey) {
-                  // data.ui.label = ZY.Time.formatDateTime()
-                  let updatedValue = objItem
-                  if (lodash.isFunction(updatedValue)) {
-                    updatedValue = objItem()
-                  }
-                  else {
-                  //
-                  }
-                  lodash.set(data, objKey, updatedValue)
-                })
-                curItem.data = JSON5.stringify(data)
-                // console.log(propsObj)
-                part.props = JSON5.stringify(propsObj)
-                formAlias.value = JSON5.stringify(formValue)
-              }
-            }
-          }
-
-          console.log('curItem', curDep, curItem)
-        }
-      }
-      return null
     }
 
     // function getPreviewUrl() {
