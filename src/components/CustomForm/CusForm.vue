@@ -50,7 +50,6 @@
 </template>
 <script>
 
-import {registerExt2} from "@/plugins/form-render/ext2";
 import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index.js";
 import HttpComponent from "@/components/HttpComponent.vue";
 import {extendControl2Page, useControl} from "@/mixins/framework";
@@ -72,12 +71,15 @@ export default {
   },
   setup(props, ctx) {
     // let instanse = getCurrentInstance()
-    registerExt2();
+
     import("vue3-json-viewer").then(res => {
       // app.use(res.default)
       // console.log(res)
       let JsonViewer = res.JsonViewer
-      CustomVueComponent.app.component('v-json-viewer',JsonViewer )
+      CustomVueComponent.app.component('v-json-viewer',JsonViewer );
+      import('@/plugins/form-render/ext2').then(res  => {
+        res.registerExt2();
+      })
     })
 
     let locks = true
@@ -268,7 +270,7 @@ export default {
 
     return {
       dialogName,
-      widgetConfig: props.ui.widgetConfig,
+      widgetConfig: widgetConfig2,
       page,
       showAddBtn,
       openDialog,

@@ -4,7 +4,6 @@
 import {defineComponent, watch, reactive, provide, ref, inject} from "vue";
 import {fetchComponent} from "@/hooks/remote.js";
 import CustomRender from "./CustomRender.vue";
-import {log} from "@/utils/logger";
 import {createRefManager, useRefsManager} from "@/hooks/ref";
 
 export default defineComponent({
@@ -97,7 +96,7 @@ export default defineComponent({
 
     async function handleIsChanged(newVal) {
       let config = props.defs.get(props.is)
-      log(['fetchComponent', props.is, props.defs, config])
+      // log(['fetchComponent', props.is, props.defs, config])
 
       if (config && config.init) {
         comName = props.comPrefix + comId

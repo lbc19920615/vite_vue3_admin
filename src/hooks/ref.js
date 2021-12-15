@@ -9,6 +9,7 @@ export function createRefManager({eventHandler}) {
    * register
    * @param context
    * @param uuid
+   * @param append
    * @returns {{emit: {<T=any>(type: EventType, event?: T): void, (type: "*", event?: any): void}, uuid: *}}
    */
   RefsManager.register = function (context, uuid = ZY.nid(), append = {}) {
