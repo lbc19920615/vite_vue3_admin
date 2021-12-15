@@ -19,6 +19,9 @@ export default {
   name: 'ZDragSelect',
   components: {CusSelect},
   ZDragXmlCom: true,
+  mixins: [
+    ZDragCommonMixin
+  ],
   DRAG_DATASET() {
     return {
       columnMax: 1
@@ -30,9 +33,14 @@ export default {
 <div class="z-dragxml-label__name">选择</div>
 </div>`
   },
-  mixins: [
-      ZDragCommonMixin
-  ],
+  DRAG_DEFAULT_VAL() {
+    return {
+      type: 'string',
+      // ui: {
+      //   label: '默认值',
+      // }
+    }
+  },
   methods: {
     setVal(v) {
       this.cus_ref.state.value = v
@@ -53,11 +61,11 @@ export default {
   data() {
     return {
       id: ZY.rid(6),
+      INIT_CONFIG: {
+        type: 'string',
+      },
       ui: {
         label: '选择',
-        INIT_CONFIG: {
-          type: 'string',
-        },
         widgetConfig: {
           options2: ZY.JSON5.stringify(
               [

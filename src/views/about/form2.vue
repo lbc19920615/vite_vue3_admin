@@ -392,75 +392,77 @@ export default defineComponent({
         }
 
         try {
-          // console.log(parts[partName],  page, comMap)
-          // let pArr = []
-          // comMap.forEach(function (value) {
-          //   if (value && value.save) {
-          //     pArr.push(
-          //         new Promise (function(resolve, reject) {
-          //           value.save().then((res) => {
-          //             resolve(res)
-          //           })
-          //         })
-          //     )
-          //   }
-          // })
-          // console.log(pArr)
-          // Promise.all(pArr).then(async (resArr) => {
-          //   // console.log(resArr)
-          //
-          // })
-          // console.log(cachedPageControlModel)
           state.loading = true
-          let value = ZY.JSON5.parse(cachedPageControlModel.value)
-          let form = value.parts[0]
-          let drag_cached = ZY.JSON5.parse(form.drag_cached)
-          let metas = getMetas(form.metas)
-          // console.log(drag_cached)
-
-
-          // console.log( metas)
-          if (import.meta.env.MODE !== 'development') {
-            let res = await toolApi.saveJson(form.properties,
-                cachedPageControlModel.name + '.json5',
-                {
-                  headers: {
-                    'X-Access-Token': iframeCached ? iframeCached.token : '',
-                  },
-                  data: {
-                    formName: cachedPageControlModel.name
-                  },
-                  newProps: ZY.JSON5.parse(form.properties),
-                  oldProps: drag_cached.oldProps,
-                  // tableName: metas?.form_data ?? ''
-                }
-            )
-            form.metas = ZY.JSON5.stringify({
-              form_data: res
-            })
-          }
-
-          cachedPageControlModel.value = ZY.JSON5.stringify(value)
-          let formDef = buildFormDep(value, value.name, {
-            src: 'comformscr2.twig'
-          });
-          // console.log(value, formDef)
-          cachedPageControlModel.def = formDef.init.def
-
-          // console.log(form, res, cachedPageControlModel)
-          await page.dispatchRoot('SetStoreLocal', {
-            storeName: global_pageStoreName,
-            data: cachedPageControlModel
+          // console.log(parts[partName],  page, comMap)
+          let pArr = []
+          comMap.forEach(function (value) {
+            if (value && value.save) {
+              pArr.push(
+                  new Promise (function(resolve, reject) {
+                    value.save().then((res) => {
+                      resolve(res)
+                    })
+                  })
+              )
+            }
           })
-          window.parent.postMessage(
-              new Lib.CommandMessage('form:save', {
-                metas: getMetas(form.metas),
-                formName: cachedPageControlModel.name,
-                form
-              }),
-              '*')
+          // console.log(pArr)
+          Promise.all(pArr).then(async (resArr) => {
+            console.log(cachedPageControlModel)
+            // console.log(resArr)
+            let value = ZY.JSON5.parse(cachedPageControlModel.value)
+            let form = value.parts[0]
+            let drag_cached = ZY.JSON5.parse(form.drag_cached)
+            let metas = getMetas(form.metas)
+            // console.log(drag_cached)
 
-          state.loading = false
+
+            // console.log( metas)
+            if (import.meta.env.MODE !== 'development') {
+              let res = await toolApi.saveJson(form.properties,
+                  cachedPageControlModel.name + '.json5',
+                  {
+                    headers: {
+                      'X-Access-Token': iframeCached ? iframeCached.token : '',
+                    },
+                    data: {
+                      formName: cachedPageControlModel.name
+                    },
+                    newProps: ZY.JSON5.parse(form.properties),
+                    oldProps: drag_cached.oldProps,
+                    // tableName: metas?.form_data ?? ''
+                  }
+              )
+              form.metas = ZY.JSON5.stringify({
+                form_data: res
+              })
+            }
+
+            cachedPageControlModel.value = ZY.JSON5.stringify(value)
+            let formDef = buildFormDep(value, value.name, {
+              src: 'comformscr2.twig'
+            });
+            // console.log(value, formDef)
+            cachedPageControlModel.def = formDef.init.def
+
+            console.log(form, cachedPageControlModel)
+            await page.dispatchRoot('SetStoreLocal', {
+              storeName: global_pageStoreName,
+              data: cachedPageControlModel
+            })
+            window.parent.postMessage(
+                new Lib.CommandMessage('form:save', {
+                  metas: getMetas(form.metas),
+                  formName: cachedPageControlModel.name,
+                  form
+                }),
+                '*')
+
+            state.loading = false
+          })
+
+
+
         } catch (e) {
           console.log('JSON5 parse err', e, cachedPageControlModel)
         }

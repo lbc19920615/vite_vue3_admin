@@ -105,10 +105,12 @@ export default {
      */
     async function save() {
       let ctx = getRef('main')
-      obj.props = ctx.getZprops();
-      obj.memos = ctx.getMemo();
-      obj.oldProps = JSON5.parse(oldObj).props
-      onChange()
+      if (ctx && ctx.getZprops) {
+        obj.props = ctx.getZprops();
+        obj.memos = ctx.getMemo();
+        obj.oldProps = JSON5.parse(oldObj).props
+        onChange()
+      }
       return obj
     }
 
