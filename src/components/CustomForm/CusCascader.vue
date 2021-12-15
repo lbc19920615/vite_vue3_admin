@@ -12,9 +12,8 @@
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
-import {createAbleProp, createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
-import {QuickNumber} from "@/hooks/props";
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index.js";
+import { createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
 import ZCascader from "@/plugins/z-frame/components/ZCascader.vue";
 
 export default {
