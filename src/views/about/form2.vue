@@ -408,7 +408,7 @@ export default defineComponent({
           })
           // console.log(pArr)
           Promise.all(pArr).then(async (resArr) => {
-            console.log(cachedPageControlModel)
+            // console.log(cachedPageControlModel)
             // console.log(resArr)
             let value = ZY.JSON5.parse(cachedPageControlModel.value)
             let form = value.parts[0]
@@ -444,6 +444,7 @@ export default defineComponent({
             });
             // console.log(value, formDef)
             cachedPageControlModel.def = formDef.init.def
+            cachedPageControlModel.metas = form.metas
 
             console.log(form, cachedPageControlModel)
             await page.dispatchRoot('SetStoreLocal', {
@@ -538,7 +539,7 @@ export default defineComponent({
           let fileMap = new Map();
           // let formProperties = JSON5.parse(form.properties);
           // console.log(formProperties)
-
+          console.log(cachedPageControlModel)
           // 处理form slots的导出
           ;( function () {
             let formConfig = cachedPageControlModel.def;
@@ -565,7 +566,8 @@ ${replaceEventName(obj.web)}
               ZFORM_RELATIVE_PATH,
               formComName,
               slots_str: templateArr.join('\n'),
-              json5_config
+              json5_config,
+              metas: cachedPageControlModel.metas
             });
             fileMap.set(formComName + '.vue',  xmlContent);
           })();

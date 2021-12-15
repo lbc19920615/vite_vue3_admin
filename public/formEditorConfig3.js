@@ -243,21 +243,21 @@ let formDef = {
               }
             }
           },
-          metas: {
-            type: 'string',
-            reflect: 'drag_props',
-            reflectTpl: `A.getDragMetas($VAL)`,
-            ui: {
-              // styles: [
-              //   ['height', 0],
-              //   ['overflow', 'hidden'],
-              // ],
-              widgetConfig: {
-                type: 'textarea',
-                disabled: true,
-              }
-            }
-          },
+          // metas: {
+          //   type: 'string',
+          //   reflect: 'drag_props',
+          //   reflectTpl: `A.getDragMetas($VAL)`,
+          //   ui: {
+          //     // styles: [
+          //     //   ['height', 0],
+          //     //   ['overflow', 'hidden'],
+          //     // ],
+          //     widgetConfig: {
+          //       type: 'textarea',
+          //       disabled: true,
+          //     }
+          //   }
+          // },
           drag_cached: {
             type: 'string',
             reflect: 'drag_props',

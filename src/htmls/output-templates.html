@@ -87,7 +87,8 @@ import {createZformCommon} from "@/zform/zform";
 
 const formDef = {{json5_config}};
 const formComName = '{{formComName}}';
-let zformCommon = createZformCommon({formDef, formComName});
+const formMetas = {{metas}};
+let zformCommon = createZformCommon({formDef, formComName, formMetas});
 
 export default {
   mixins: [
