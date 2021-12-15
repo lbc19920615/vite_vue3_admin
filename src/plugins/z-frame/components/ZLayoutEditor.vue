@@ -107,7 +107,7 @@ import {
   // PageControlMixin,
 } from "@/mixins/framework";
 import {buildFormDepContent} from "./ZLayoutEditor/build";
-import CustomElement from "@/components/CustomElement.vue";
+// import CustomElement from "@/components/CustomElement.vue";
 import {buildXml} from "@/plugins/z-frame/components/ZLayoutEditor/xml";
 
 function findMultiRoots(deps = [], links = []) {
@@ -359,7 +359,7 @@ export default defineComponent({
   components: {
     PlumbLayout,
     RenderLayout,
-    CustomElement,
+    // CustomElement,
   },
   setup(props, ctx) {
     let self = getCurrentInstance().ctx

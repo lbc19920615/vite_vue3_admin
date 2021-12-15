@@ -54,7 +54,7 @@
           title="JSX编辑" width="80vw"
           :close-on-click-modal="false"
           @closed="onClosed"
-
+          append-to-body=""
           :lock-scroll="false"
       >
         <div :mode="widgetConfig.mode">

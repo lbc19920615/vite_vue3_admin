@@ -1,8 +1,4 @@
-<style>
-.cus-form {
-  /*--my-dialog-z-index: 10;*/
-}
-</style>
+
 
 <template>
   <div class="cus-form" v-if="page.inited" :style="widgetConfig.style">
@@ -36,12 +32,12 @@ import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-rende
 import HttpComponent from "@/components/HttpComponent.vue";
 import {extendCommonArrEventHandler, extendControl2Page, useControl} from "@/mixins/framework";
 import {getCurrentInstance, inject, nextTick, onMounted, onBeforeMount, toRaw} from 'vue';
-import CustomElement from "@/components/CustomElement.vue";
+// import CustomElement from "@/components/CustomElement.vue";
 import buildEditorConfig from './CusComputed/editorConfig'
 
 export default {
   name: 'CusComputed',
-  components: {CustomElement, HttpComponent},
+  components: {HttpComponent},
   mixins: [
     CustomRenderControlMixin
   ],
