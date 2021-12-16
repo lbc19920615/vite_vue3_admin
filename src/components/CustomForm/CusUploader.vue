@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index";
+import {CustomRenderControlMixin, defineCustomRender} from "@/plugins/form-render/utils/index.js";
 import {createAbleProp, createBaseCusCONFIG} from "@/plugins/z-frame/CusBaseEditor";
 import {QuickNumber} from "@/hooks/props";
 import ZUpload from "@/plugins/z-frame/components/ZUpload.vue";
