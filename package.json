@@ -35,7 +35,6 @@
     "monaco-editor": "^0.26.1",
     "normalize.css": "^8.0.1",
     "path-to-regexp": "^6.2.0",
-    "pinyin-match": "^1.2.2",
     "pretty": "^2.0.0",
     "sortablejs": "^1.14.0",
     "suitcss-utils-size": "^2.0.1",
