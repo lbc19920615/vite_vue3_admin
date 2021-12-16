@@ -27,4 +27,17 @@ npm run gongsi
 
 1. CusInput 输入框
 2. CusTextarea 多行文本
-3. CusSelect 选择
+3. CusInputNumber 数字输入框
+4. CusSelect 选择
+5. CusRadio 单选
+6. CusCheckbox 多选
+7. CusSlider 滑块
+8. CusSwitch 选择
+9. CusTimePicker 时间选择
+10. CusDateTimePicker 时间日期选择
+11. CusCascader 级联选择
+12. CusUploader 级联选择
+
+### <a name="高级组件">高级组件</a>
+1. CusRichText 富文本
+2. CusAddress 地址选择
