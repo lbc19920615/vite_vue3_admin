@@ -32,7 +32,7 @@ npm run gongsi
 5. CusRadio 单选
 6. CusCheckbox 多选
 7. CusSlider 滑块
-8. CusSwitch 选择
+8. CusRate 打分
 9. CusTimePicker 时间选择
 10. CusDateTimePicker 时间日期选择
 11. CusCascader 级联选择
