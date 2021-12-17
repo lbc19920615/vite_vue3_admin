@@ -251,7 +251,7 @@ comPlugin.install = function (app) {
   }
 
   initChinaAreaManangerFromUrl(
-    import.meta.env.VITE_REMOTE_RES_ORIGIN +'/public/area.json'
+    globalThis.serverRes.area
   ).then((res) => {
     globalThis.chinaAreaManager = res
   })
