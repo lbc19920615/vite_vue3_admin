@@ -53,9 +53,6 @@ export let ZDragCommonMixin = {
     }
   },
   computed: {
-    zdrag__highlight() {
-      return this.zdrag__highlight_cls('itemUUID', this.uuid)
-    },
     form_config() {
       if (this.cusDragXml && this.cusDragXml.getFormConfig) {
         return this.cusDragXml.getFormConfig()
@@ -114,6 +111,9 @@ if (!_c.server.field_name) {
     }
   },
   methods: {
+    zdrag__highlight() {
+      return this.zdrag__highlight_cls('itemUUID', this.uuid)
+    },
     get_cus_ref(el) {
       this.cus_ref = el
       // console.log(this.cus_ref)
