@@ -264,6 +264,10 @@ export default defineComponent({
     let global_path = currentRoute.query.path
     global_pageStoreName = currentRoute.query.storeName ?? VARS_PAGE_MODEL_NAME
 
+    globalThis.getCachedPageControlModel =function () {
+      return cachedPageControlModel
+    }
+
     let toolApi = null;
     import('@/hooks/api').then(res => {
       toolApi = res.useToolApi();
@@ -384,6 +388,9 @@ export default defineComponent({
       async ['call:save'](e) {
         let { parts, partName, pathArr, process } = e
 
+        let value = ZY.JSON5.parse(cachedPageControlModel.value)
+        console.log(cachedPageControlModel)
+
         function getMetas(metas) {
           if (typeof metas === 'string') {
             return ZY.JSON5.parse(metas)
@@ -467,15 +474,7 @@ export default defineComponent({
         } catch (e) {
           console.log('JSON5 parse err', e, cachedPageControlModel)
         }
-        // try {
-        //   let res = await Req.post('/api-assess/assess_json/json', JSON.stringify(obj.props))
-        //   obj.metas = {
-        //     form_data: res.data
-        //   }
-        //   onChange()
-        // } catch (e) {
-        //   console.log(e)
-        // }
+
       },
       ['call:save:file'](e) {
         // console.log(e)
@@ -866,7 +865,10 @@ ${obj.weapp}
         let { model, key, newVal, config } = e
         if (config.process === page.store.model.textarea_step) {
           // console.log('page about model:update:all', model)
-          cachedPageControlModel = model
+          // cachedPageControlModel = model
+          Object.entries(model).forEach(([key, value]) => {
+            cachedPageControlModel[key] = model[key]
+          })
         } else {
           page.execComEventHandler('model:update:all', e)
         }
@@ -894,35 +896,29 @@ ${obj.weapp}
 
 
 
-    async function onSaveLayout(e) {
-      if (cachedPageControlModel) {
-
-        // await page.dispatchRoot('SetStoreEvents', cachedPageControlModel)
-
-        cachedPageControlModel.layoutDesign = e.currentData
-
-        await page.dispatchRoot('SetStoreLocal', {
-          storeName: global_pageStoreName,
-          data: cachedPageControlModel
-        })
-
-      }
-      console.log('onSaveLayout', cachedPageControlModel, e)
-      // await ZY_EXT.store.setItem('current-data', e.currentData)
-      // sendChannelMessage(COMMAND.RELOAD)
-      sendJSON5ChannelMessage({
-        type: COMMAND.RELOAD,
-        e: {}
-      })
-    }
-
-    let layoutRef = page.setRef('layout')
-
-    onMounted(() => {
-      // console.log('onMounted')
-    })
-
-    // let formula = `x^{y^z}=(1+{\\rm e}^x)^{-2xy^w}`
+    // async function onSaveLayout(e) {
+    //   if (cachedPageControlModel) {
+    //
+    //     // await page.dispatchRoot('SetStoreEvents', cachedPageControlModel)
+    //
+    //     cachedPageControlModel.layoutDesign = e.currentData
+    //
+    //     await page.dispatchRoot('SetStoreLocal', {
+    //       storeName: global_pageStoreName,
+    //       data: cachedPageControlModel
+    //     })
+    //
+    //   }
+    //   console.log('onSaveLayout', cachedPageControlModel, e)
+    //   // await ZY_EXT.store.setItem('current-data', e.currentData)
+    //   // sendChannelMessage(COMMAND.RELOAD)
+    //   sendJSON5ChannelMessage({
+    //     type: COMMAND.RELOAD,
+    //     e: {}
+    //   })
+    // }
+    //
+    // let layoutRef = page.setRef('layout')
 
     let layoutStorePrefix = global_pageStoreName + '-play'
 
@@ -933,9 +929,9 @@ ${obj.weapp}
 
 
     return {
-      layoutRef,
+      // layoutRef,
       store: page.store,
-      onSaveLayout,
+      // onSaveLayout,
       // formula,
       vue2DialogRef,
       wechatDialogRef,
