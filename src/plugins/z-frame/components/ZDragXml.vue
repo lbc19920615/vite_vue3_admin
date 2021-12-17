@@ -1684,6 +1684,12 @@ export default {
         widgetConfigProps = Object.assign(widgetConfigProps, _config.props)
       }
       let instanse = DRAG_INSTANSE.get(uuid)
+      let _uiConfigProps = {}
+      // console.log(instanse, instanse.DRAG_UI_CONFIG)
+      if (instanse.DRAG_UI_CONFIG) {
+        _uiConfigProps  = instanse.DRAG_UI_CONFIG() ?? {}
+      }
+
       if (instanse && instanse.DRAG_CONFIG) {
         widgetConfigProps = Object.assign(widgetConfigProps, instanse.DRAG_CONFIG()?.props )
       }
@@ -1786,6 +1792,7 @@ export default {
             }
           },
           hiddenLabel: QuickBooleanWithNull('隐藏标题'),
+          ..._uiConfigProps,
           widgetConfig: {
             type: 'object',
             ui: {

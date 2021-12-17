@@ -31,6 +31,16 @@ export default createZDragComponent('ZDragCustom', {
         custom: true,
       }
     }
+  },
+  DRAG_UI_CONFIG() {
+    return {
+      cusWidget: {
+        type: 'string',
+        ui: {
+          label: '自定义'
+        }
+      }
+    }
   }
 })
 </script>
