@@ -7,10 +7,12 @@
     "build": "vite build",
     "build:gongsi": "vite build  --mode gongsi",
     "pre:gongsi": "vite preview",
+    "ver:pro": "cross-env NODE_ENV=production node server.js ",
     "serve": "vite preview --host 0.0.0.0 --mode gongsi",
-    "ser": "pm2 start server.js --name vite_vue3_admin",
-    "stop:ser": "pm2 stop vite_vue3_admin",
-    "rm": "pm2 delete vite_vue3_admin",
+    "ser": "pm2 start server.js --name zform",
+    "ser:pro": "cross-env NODE_ENV=production pm2 start server.js --name zform",
+    "stop:ser": "pm2 stop zform",
+    "rm": "pm2 delete zform",
     "stop": "npm run stop:ser && npm run rm"
   },
   "dependencies": {

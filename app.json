@@ -1,0 +1,11 @@
+{
+  "dev": {
+    "command": "npm run gongsi"
+  },
+  "staging": {
+    "command": "npm run gongsi"
+  },
+  "production": {
+    "command": "npm run gongsi"
+  }
+}
