@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App PRO</title>
+<!--  <script async  src="es-module-shims.js"></script>-->
+
+
+      <!--    <link-->
+<!--      rel="stylesheet"-->
+<!--      href="https://cdn.jsdelivr.net/npm/vant@next/lib/index.css"-->
+<!--    />-->
+<!--    <link rel="stylesheet" href="./fFace.css">-->
+<!--      <link href="/wangEditor.css" rel="stylesheet">-->
+
+    <script src="/twig.min.js"></script>
+    <script src="/jsplumb.js"></script>
+   <link href="/font-awesome/css/index.css" rel="stylesheet">
+<!--    <script src="/pinyin_dict_withtone.js"></script>-->
+<!--    <script src="/pinyin_dict_polyphone.js"></script>-->
+<!--    <script id="MathJax-script" async src="mathjax/tex-chtml.js"></script>-->
+<!--    <script src="pinyin_dict_firstletter.js"></script>-->
+<!--    <script src="pinyin_dict_notone.js"></script>-->
+    <style>
+      :root {
+          --z-emoji-zoom: 0.7;
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/index.23ee6f22.js"></script>
+    <link rel="modulepreload" href="/assets/vendor.70e2a6e0.js">
+    <link rel="stylesheet" href="/assets/index.71233784.css">
+  </head>
+  <body>
+  <script>
+    ;(function () {
+      function isElectron(parent) {
+        return  globalThis.require
+        // let window = parent.window;
+        // let process = parent.process;
+        // let navigator = parent.navigator;
+        // // Renderer process
+        // // eslint-disable-next-line no-undef
+        // if (typeof window !== 'undefined' && typeof window.process === 'object' && window.process.type === 'renderer') {
+        //   return true;
+        // }
+        //
+        // // Main process
+        // if (typeof process !== 'undefined' && typeof process.versions === 'object' && !!process.versions.electron) {
+        //   return true;
+        // }
+        //
+        // // Detect the user agent when the `nodeIntegration` option is set to true
+        // // eslint-disable-next-line no-undef
+        // if (typeof navigator === 'object' && typeof navigator.userAgent === 'string' && navigator.userAgent.indexOf('Electron') >= 0) {
+        //   return true;
+        // }
+        //
+        // return false;
+      }
+      globalThis.IS_PARENT_ELECTRON = false
+      if (isElectron(parent)) {
+        globalThis.IS_PARENT_ELECTRON  = true
+      }
+    })();
+  </script>
+
+  <!--                <template v-if="renderC.state.refresh">-->
+<!--                    <render-layout :map="renderC.state.currentLayoutMap"-->
+<!--                                   :id="renderC.state.rootId"-->
+<!--                                   :handle-next="renderC.handleNext"-->
+<!--                                   :handle-def-map="handleDefMap"-->
+<!--                                   :page="page">-->
+<!--                        {% endverbatim %}-->
+<!--                        {{CONFIG.layoutSlots}}-->
+<!--                        {% verbatim %}-->
+<!--                    </render-layout>-->
+<!--                </template>-->
+
+<template id="apptpl">
+    <style>
+        .prop-selected {
+            border: 1px solid;
+            background: aliceblue;
+        }
+
+        [current-to-move] {
+            /*background-color: #0d84ff;*/
+            border: 1px dashed #0d84ff;
+            /*border-bottom: 2px solid;*/
+            /*border-bottom-color: #0d84ff;*/
+            pointer-events: none;
+            position: relative;
+            background-color: #eeeeee;
+            opacity: .5;
+        }
+    </style>
+
+    <template>
+        <div class="z-page">
+            <template v-if="page.inited">
+                <template v-if="renderC.state.refresh && comReady">
+                    {% verbatim %}
+                    <load_page__render_xml__def_render_tag
+                            :page="page"
+                            :handle-def-map="handleDefMap">
+                    {% endverbatim %}
+                        {{CONFIG.layoutSlots}}
+                    {% verbatim %}
+                    </load_page__render_xml__def_render_tag>
+                    {% endverbatim %}
+                </template>
+            </template>
+            <div id="debug"></div>
+        </div>
+    </template>
+
+    <components>{
+        "imports": ["/src/views/about/components/LayRow.vue"]
+        }</components>
+
+    <script>
+        window.Z_PAGE_VERSION = '1.0.0'
+
+
+        const cm_field_html = ZY.getHereDoc(function() { /*
+        <div class="z-page__render_xml"
+        z-page__render_xml="load_page__render_xml__def_render_tag"
+        >
+        {{C_XML}}
+        </div>
+        */ });
+        // console.log(cm_field_html)
+
+
+        CustomVueComponent.register({
+          name: 'load_page__render_xml__def_render_tag',
+          template:  cm_field_html,
+          props: {
+            handleDefMap: {
+              type: Function,
+              default: null
+            },
+            page: null,
+            slotContent: null,
+          },
+          data() {
+            return {
+              innerSlots: this.slotContent ? this.slotContent : this.$slots,
+            }
+          },
+          methods: {
+            getObj(...args) {
+              return ZY.lodash.get(...args)
+            },
+            getDef(partName = '') {
+              let r = this.handleDefMap(partName)
+              // console.log(partName, r)
+              return ZY.JSON5.stringify(r)
+            }
+          }
+        })
+
+        export default {
+            mixins: [
+              buildPageCommonMixin()
+            ],
+            setup() {
+                const { reactive } = global.Vue;
+                let stepMap = reactive({
+
+                })
+
+                const 循环 = ZY.lodash.each;
+                const 获取 = ZY.lodash.get;
+                const 默认值 = ZY.lodash.defaultTo;
+
+                class 工具 {
+                    static 设置函数(events = []) {
+                        let obj = {}
+                        events.forEach(event => {
+                            obj[event.name] = new ZY.AsyncFunction('e', event.code)
+                        })
+                        page.setEventHandler(obj)
+                    }
+
+                    /**
+                     * 初始化
+                     * @param eventModel
+                     */
+                    static 初始化(eventModel = {events: [], forms: []}) {
+                        // console.log(eventModel)
+                        this.设置函数(eventModel.events);
+                        let forms = eventModel.forms;
+
+                        循环(forms, form=> {
+                            let {value, name} = form
+                            let obj = ZY.JSON5.parse(value)
+                            let formDef = buildFormDep(obj, name, {
+                                src: 'comformscr2.twig'
+                            });
+                            setDefMap(formDef, name)
+                        })
+                    }
+
+                    static 打开弹窗(refName = '') {
+                        if (refName) {
+                            let context = page.modalManRef.find(refName)
+
+                            // console.log('sdsdsdsdsdsds', context)
+                            if (context && context.toggle) {
+                                context.toggle(true)
+                            }
+                        }
+                    }
+
+                    static 设置步骤(defMap = {}){
+                        // let defMap = {
+                        //   test: 'process-step1'
+                        // }
+                        // console.log('设置步骤', defMap)
+                        for (let [key, value] of Object.entries(defMap)) {
+                            stepMap[key] = defMap[key]
+                        }
+                    }
+                }
+                globalThis.工具 = 工具
+                globalThis.T = 工具
+
+                let renderC = useRenderControl()
+                {{ CONFIG.pageProperties }}
+                {{ CONFIG.beforeScript }}
+
+                let computed = {}
+                let page = useControl({properties, computed}, {
+                    onInited
+                })
+                page = extendControl2Page(page)
+                page = useAppPageControl(page)
+                let { EVENT_NAMES } = extendCommonArrEventHandler(page)
+
+                useGlobalEasy(page)
+
+                function setDefMap(obj, name = obj.name) {
+                    page.defMap.set(name, obj)
+                }
+
+                function handleDefMap(partName) {
+                    let is = stepMap[partName]
+                    // console.log(partName)
+                    if (page.defMap.has(is)) {
+                        return page.defMap.get(is)
+                    }
+                    return '{}'
+                }
+
+                // console.log(EVENT_NAMES)
+                let callEvent = page.callEvent
+
+                async function onInited({storeControl}) {
+                    renderC.detectLayout()
+                    renderC.detectEvent((events, PAGE_CONTEXT = {}) => {
+                        const CURRENT_DATA = PAGE_CONTEXT.currentData
+                        const IS_FIRST_RENDER = PAGE_CONTEXT.isFirst
+                        {{ CONFIG.onInited }}
+                        // console.log('onInited', CURRENT_DATA)
+                    })
+                }
+
+                page.stepMap = stepMap
+
+                function getObj(...args) {
+                  return ZY.lodash.get(...args)
+                }
+
+                function getDef(partName = '') {
+                  let r = handleDefMap(partName)
+                  console.log(partName, r)
+                  return ZY.JSON5.stringify(r)
+                }
+
+                return {
+                    EVENT_NAMES,
+                    getObj,
+                    getDef,
+                    stepMap,
+                    callEvent,
+                    handleDefMap,
+                    page,
+                    renderC
+                }
+            }
+        }
+    </script>
+</template>
+
+
+
+  <template id="output-form-tpl" type="text/html">
+<template>
+  <wxs src="{{ZFORM_RELATIVE_PATH}}/utils.wxs" module="utils" ></wxs>
+
+  <view class="http-com comformscr2 {{formComName}}">
+    <scroll-view enhanced scroll-y="true" scroll-with-animation="true"
+                 style="height: {% verbatim %}{{ {% endverbatim %} formHeight {% verbatim %} }} {% endverbatim %};"
+                 id="{% verbatim %}{{ {% endverbatim %} scrollViewId {% verbatim %} }} {% endverbatim %}"
+                 class="z-form http-com-part http-com-part__{{ part.name }}"
+    >
+      <slot-com
+          binds="{% verbatim %}{{ {% endverbatim %} { a: 1 } {% verbatim %} }} {% endverbatim %}"
+          name="form_afterbegin"
+          form-id="{% verbatim %}{{ {% endverbatim %} uuid  {% verbatim %} }} {% endverbatim %}"
+      ></slot-com>
+      {{ form_tpl }}
+      <slot-com
+          binds="{% verbatim %}{{ {% endverbatim %} { a: 1 } {% verbatim %} }} {% endverbatim %}"
+          name="form_afterend"
+          form-id="{% verbatim %}{{ {% endverbatim %} uuid  {% verbatim %} }} {% endverbatim %}"
+      ></slot-com>
+    </scroll-view>
+  </view>
+</template>
+
+<script>
+import { createFormComponent } from '{{ZFORM_RELATIVE_PATH}}/zform.js'
+
+const formDef = {{json5_config}}
+
+;createFormComponent({
+    formDef
+});
+</script>
+
+<config type="application/json">
+{
+    "component": true,
+    "usingComponents": {
+        "slot-com": "{{slot_com_name}}",
+        "cm-field": "{{cm_field_name}}"
+    }
+}
+</config>
+
+<style>
+@import "{{ZFORM_RELATIVE_PATH}}/zform.wxss";
+
+{{css}}
+</style>
+</template>
+
+<template id="output-form-slot-com-tpl" type="text/html">
+  <template>
+<wxs src="{{ZFORM_RELATIVE_PATH}}/utils.wxs" module="utils" ></wxs>
+{{slots_str}}
+<block wx:if="{% verbatim %} {{ {% endverbatim %} inited {% verbatim %} }} {% endverbatim %}">
+<template is="{% verbatim %} {{ {% endverbatim %} name {% verbatim %} }} {% endverbatim %}"
+          data="{% verbatim %} {{ {% endverbatim %} name, config, binds {% verbatim %} }} {% endverbatim %}"></template>
+</block>
+  </template>
+<script>
+import { createSlotComponent } from '{{ZFORM_RELATIVE_PATH}}/zslot';
+createSlotComponent();
+</script>
+<config type="application/json">
+{
+  "component": true,
+  "usingComponents": {
+  }
+}
+</config>
+</template>
+
+<template id="output-form-cm-field-tpl" type="text/html">
+</template>
+
+<template id="output-form-vue2-tpl">
+<template>
+<dym-form v-if="inited" :debug="debug" :config="formDef">
+  {{slots_str}}
+</dym-form>
+</template>
+
+<script>
+import {createZformCommon} from "@/zform/zform";
+
+const formDef = {{json5_config}};
+const formComName = '{{formComName}}';
+const formMetas = {{metas}};
+let zformCommon = createZformCommon({formDef, formComName, formMetas});
+
+export default {
+  mixins: [
+    zformCommon
+  ]
+}
+</script>
+</template>
+
+
+  <script>
+    globalThis.importScripts = function (p = '') {
+        return import(p)
+    }
+</script>
+<template id="loading-tpl">
+    <div
+            style="position: fixed; left: 0; top: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"
+    >
+        <div style="font-size: 60px;"><a face="fuck" class="s_face">&nbsp;</a>Loading...</div>
+    </div>
+</template>
+
+<script>
+    class AppLoading extends HTMLElement {
+        constructor() {
+            super();
+            let tmpl = document.getElementById('loading-tpl')
+            let shadowRoot = this.attachShadow({mode: 'open'});
+            shadowRoot.appendChild(tmpl.content.cloneNode(true));
+        }
+    }
+    window.customElements.define('app-loading', AppLoading);
+
+    class ZMath extends HTMLElement {
+        get name() {
+            return this.getAttribute('name');
+        }
+
+        constructor() {
+            super();
+            let shadowRoot = this.attachShadow({mode: 'open'});
+            shadowRoot.innerHTML = `<xy-text mark>${this.name}</xy-text><slot></slot><xy-text mark>)</xy-text>`
+        }
+    }
+
+    window.customElements.define('z-math', ZMath);
+
+
+</script>
+
+
+  <script id="cmFieldTpl" type="text/html">
+  <el-form-item :prop="getProp(pathArr)"
+                :x-path="formPath"
+                v-bind="ui ? ui.form_item : {}"
+                {#              :label="getLabel()"#}
+                :rules="rules"
+  >
+    {#  {% verbatim %}{{ {% endverbatim %}showLabel(ui){% verbatim %} }}{% endverbatim %}#}
+    <template v-if="showLabel(ui)" v-slot:label="scope"><div class="cm-filed__label"
+                                                             v-bind="ui ? ui.form_item_label : {}"><slot name="cmfield_label_afterbegin"></slot>
+      {% verbatim %}{{ {% endverbatim %}getLabel(){% verbatim %} }}{% endverbatim %}
+      <slot name="cmfield_label_beforeend"></div></slot>
+    </template>
+    {#{% verbatim %}{{ {% endverbatim %} ui {% verbatim %} }} {% endverbatim %}#}
+    <template v-if="ui && ui.widget">
+      {#    {{forms.custom(modelPath)}}#}
+      <custom-form-render
+          :ui="ui"
+          :selfpath="p_selfpath"
+          :formpath="p_formpath"
+          :path-arr="p_pathArr"
+          :part_key="part_key"
+          :context="context"
+          :field_uuid="cmFieldUUID"
+          v-model="value"
+          @change="onChange"
+          @fchange="onFchange"
+          :slot-content="formSlotContent"
+          :prop_config="propConfig"
+      ></custom-form-render>
+    </template>
+    <template v-else-if="ui && ui.widgetFormat">
+      {#              {% verbatim %}#}
+      {#              {{ui}}#}
+      {#              {% endverbatim %}#}
+      <template v-if="ui.widgetFormat === 'datetime'">
+        {#      {{forms.datetime(modelPath)}}#}
+        <el-date-picker
+            type="datetime"
+            v-model="value"
+            @change="onChange"
+            v-bind="ui ? ui.widgetConfig : null"
+        >
+        </el-date-picker >
+      </template>
+    </template>
+    <template v-else>
+      {#        {% verbatim %}#}
+      {#        {{ui}}#}
+      {#        {% endverbatim %}#}
+      <template v-if="type === 'string'">
+        {#      {{forms.input('value')}}#}
+        <el-input v-model="value"
+                  @input="onInput"
+                  @blur="onBlur"
+                  v-bind="widgetConfig2"
+        ></el-input>
+      </template>
+      <template v-if="type === 'number'">
+        {#      {{forms.inputNumber('value')}}#}
+        <el-input v-model.number="value"
+                  type="number"
+                  @input="onInput"
+                  @blur="onBlur"
+                  v-bind="widgetConfig2"
+        ></el-input>
+      </template>
+      <template v-if="type === 'integer'">
+        {#      {{forms.inputNumber('value')}}#}
+        <el-input v-model.number="value"
+                  type="number"
+                  @input="onInput"
+                  @blur="onBlur"
+                  v-bind="widgetConfig2"
+        ></el-input>
+      </template>
+      <template v-if="type === 'radio'">
+        {#      {{forms.radio('value')}}#}
+        <el-radio-group
+            v-model="value"
+            @change="onChange"
+        >
+          {% verbatim %}
+          <template v-if="ui && ui.widgetConfig && ui.widgetConfig.enums">
+            <el-radio v-for="(item, enumIndex) in ui.widgetConfig.enums"
+                      :label="item[0]">{{item[1]}}</el-radio>
+          </template>
+          {% endverbatim %}
+        </el-radio-group>
+      </template>
+      <template v-if="type === 'radioBoolean'">
+        {#      {{forms.radioBoolean('value')}}#}
+        <el-radio-group v-model="value"
+                        @change="onChange"
+        >
+          {% verbatim %}
+          <template v-if="ui && ui.widgetConfig && ui.widgetConfig.enums">
+            <el-radio :label="ui.widgetConfig.enums[0][0]">{{ui.widgetConfig.enums[0][1] ? ui.widgetConfig.enums[0][1] : '是'}}</el-radio>
+            <el-radio :label="ui.widgetConfig.enums[1][0]">{{ui.widgetConfig.enums[1][1] ? ui.widgetConfig.enums[1][1] : '否'}}</el-radio>
+          </template>
+          {% endverbatim %}
+        </el-radio-group>
+      </template>
+      <template v-if="type === 'boolean'">
+        <template v-if="ui.widgetConfig && ui.widgetConfig.ext === 'booleanWithClearable'">
+          {#        {{forms.BooleanWithClearable('value')}}#}
+          <el-radio-group v-model="value"
+                          @change="onChange"
+                          v-bind="widgetConfig2"
+          >
+            <el-radio :label="true">是</el-radio>
+            <el-radio :label="false">否</el-radio>
+            <el-radio :label="null">null</el-radio>
+          </el-radio-group>
+        </template>
+        <template v-else>
+          {#        {{forms.Boolean('value')}}#}
+          <el-radio-group v-model="value"
+                          @change="onChange"
+                          v-bind="widgetConfig2"
+          >
+            <el-radio :label="true">true</el-radio>
+            <el-radio :label="false">false</el-radio>
+          </el-radio-group>
+        </template>
+      </template>
+      <template v-if="type === 'checkbox'">
+        {#      {{forms.checkbox('value')}}#}
+        <el-checkbox-group v-model="value" @change="onChange"
+        >
+          {% verbatim %}
+          <template v-if="ui && ui.widgetConfig && ui.widgetConfig.enums">
+            <el-checkbox v-for="(item, enumIndex) in ui.widgetConfig.enums"
+                         :label="item[0]">{{item[1]}}</el-checkbox>
+          </template>
+          {% endverbatim %}
+        </el-checkbox-group>
+      </template>
+      <template v-if="type === 'select'">
+        {#      {{forms.select('value')}}#}
+        <el-select v-model="value" @change="onChange">
+          {% verbatim %}
+          <template v-if="ui && ui.widgetConfig && ui.widgetConfig.enums">
+            <el-option v-for="(item, enumIndex) in ui.widgetConfig.enums"
+                       :label="item[1]" :value="item[0]"></el-option>
+          </template>
+          {% endverbatim %}
+        </el-select>
+      </template>
+      <template v-if="type === 'time'">
+        {#      {{forms.time('value')}}#}
+        <el-time-picker
+            arrow-control
+            v-model="value" @change="onChange"
+            v-bind="ui ? ui.widgetConfig : null"
+        >
+        </el-time-picker>
+      </template>
+    </template>
+    <div class="cm-filed__desc"><slot name="cmfield_desc_afterbegin"></slot>
+      {% verbatim %}{{ {% endverbatim %}getDesc(){% verbatim %} }}{% endverbatim %}
+      <slot name="cmfield_desc_beforeend"></div>
+  </el-form-item>
+
+</script>
+
+
+  <script src="http://192.168.1.67:7002/public/init2.js"></script>
+<script>
+
+
+  class ZEmoji extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({mode: 'open'});
+    }
+
+    static get observedAttributes() {
+      return ['face', 'zoom'];
+    }
+
+    render() {
+
+      let style = `<style>
+
+
+:host {
+  --emoji-width: 30px;
+  --emoji-height: 30px;
+  --emoji-zoom: var(--z-emoji-zoom, 1);
+  position: relative;
+  display: inline-block;
+  width: calc(var(--emoji-width) * var(--emoji-zoom));
+  height: calc(var(--emoji-height) * var(--emoji-zoom));
+}
+
+.s_face {
+    width: 30px;
+    height: 30px;
+    background: transparent url(./fFace.png) no-repeat scroll left top;
+    position: absolute;
+    zoom: var(--emoji-zoom, 1);
+}
+
+.s_face[face="fuck"] {
+    display: inline-block;
+    color: #000;
+    font-size: 14px;
+    text-decoration: none;
+    background-position: left -300px;
+    background-size: 100%;
+}
+
+</style>`
+
+      function getZOOM(s) {
+        let v =  parseFloat(s )
+        if (Number.isNaN(v)) {
+          return undefined
+        }
+        return v
+      }
+
+
+      let face = this.getAttribute('face')
+      let zoom = getZOOM(this.getAttribute('zoom'))
+      if (typeof zoom !== 'undefined') {
+        let size = [30 * zoom, 30 * zoom]
+        this.style.width = size[0] + 'px'
+        this.style.height = size[1] + 'px'
+        this.shadowRoot.innerHTML = `${style}<a face="${face}"
+style="zoom: ${zoom}" class="s_face">&nbsp;</a>`
+      } else {
+        this.shadowRoot.innerHTML = `${style}<a face="${face}"
+ class="s_face">&nbsp;</a>`
+      }
+
+
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+      // console.log(name, oldValue, newValue)
+      this.render()
+    }
+  }
+
+  window.customElements.define('z-emoji', ZEmoji);
+</script>
+<template id="bserviceTpl">
+  <script>
+    import { baseServiceDef, baseServiceMixin } from '[REMOTE]/baseService.js';
+
+    export function install(vue) {
+      // const ZY = global.ZY;
+      return {
+        template: '<div></div>',
+        mixins: [
+          baseServiceMixin,
+        ],
+        setup(props, ctx) {
+          const config = ZY.JSON5.parse(`{$SELF_NAME:'ServicePage'}`);
+          return baseServiceDef({ props, ctx, vue, config });
+        },
+      };
+    }
+  </script>
+</template>
+  <script id="formTpl" type="text/html">
+    <div class="http-com comformscr2">
+      {% verbatim %}{{ {% endverbatim %} parts {% verbatim %} }} {% endverbatim %}
+      {% for part in CONFIG.parts %}
+      {% set partConfigKey = 'config.parts[' ~ loop.index0 ~ '].def' %}
+      {% set pathKey = "parts." ~ part.name %}
+      {% set pathSKey = "'parts." ~ part.name ~ "'" %}
+      {% set modelKey = pathKey ~ ".model"  %}
+      {% if part.type == 'form' %}
+      <view class="z-form http-com-part http-com-part__{{ part.name }}"
+               ref="comformscr2__{{ part.name }}" :model="{{ pathKey }}.model"
+      >
+        {{ partStr[part.name] }}
+        <slot-com :defs="slotContent" :attrs="{parts}"
+                  :binds="{name: '{{ part.name }}', ctx: exportCtx,  partName: '{{ part.name }}', parts, process: '{{ CONFIG.process}}' }"
+                  name="form_afterend"></slot-com>
+      </view>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </script>
+    <div id="app"></div>
+
+    <div id="storeApp"></div>
+    <div id="endofbody" style="position: fixed; left: 150px; bottom: 0; z-index: 111;"></div>
+  <!-- 引入 js -->
+  <script src="wangeditor.js" async defer></script>
+<!--  <script src="https://cdn.bootcdn.net/ajax/libs/jszip/3.6.0/jszip.min.js" async defer></script>-->
+<!--  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.2/echarts.min.js"  async defer></script>-->
+
+  
+  <script type="module">
+  // console.log(Vue)
+  setTimeout(() => {
+    let jshref = new URL('element-plus.1.1.0.js', import.meta.url).href
+    // console.log(jshref)
+    globalThis.importScripts(jshref).then(function () {
+      // ElMessage.info('sdsds')
+      globalThis.ElMessage = globalThis.ElementPlus.ElMessage;
+      globalThis.app = window.startApp();
+    })
+  }, 30)
+
+
+  setTimeout(() => {
+    globalThis.importScripts('/jszip.min.js');
+    globalThis.importScripts('/echarts.min.js');
+  }, 300)
+</script>
+
+
+  </body>
+</html>

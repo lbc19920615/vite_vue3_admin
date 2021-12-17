@@ -1,0 +1,14 @@
+.s_face {
+    width: 30px;
+    height: 30px;
+    background: transparent url(./fFace.png) no-repeat scroll left top;
+}
+
+.s_face[face="fuck"] {
+    display: inline-block;
+    color: #000;
+    font-size: 14px;
+    text-decoration: none;
+    background-position: left -300px;
+    background-size: 100%;
+}

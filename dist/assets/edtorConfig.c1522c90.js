@@ -1,0 +1,1 @@
+import{b as e}from"./form.e330999e.js";let t=e({defaultVal:{form2:{props:[]}},computed:{},def:{type:"object",ui:{attrs:[]},properties:{props:{type:"array",ui:{conAttrs:[["style","display: flex;"]]},items:{type:"object",properties:{name:{type:"string",ui:{label:"名称",class:["z-props__name"]}},value:{type:"string",ui:{label:"值",class:["z-props__value"]}}}}}}}});export{t as default};
