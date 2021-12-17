@@ -7,7 +7,7 @@
                  :label="zdrag__GET_CONFIG('ui.label', '')"
                  :desc="zdrag__GET_CONFIG('ui.desc', '')"
     >
-    custom
+    {{zdrag__GET_CONFIG('ui.cusWidget', '')}}
     </z-cell-item>
   </div>
 </template>

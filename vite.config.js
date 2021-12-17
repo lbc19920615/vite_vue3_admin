@@ -42,7 +42,8 @@ if (process.env.NODE_ENV === "production") {
 
 export default (({mode}) => {
   // console.log('mode', mode, loadEnv(mode, process.cwd()))
-  const config = initEnvConfig(mode)
+  const config = initEnvConfig(mode);
+  console.log(config)
   return defineConfig({
     // 路径代理
     resolve: {
@@ -59,7 +60,7 @@ export default (({mode}) => {
         // 字符串简写写法
         // '/api': 'http://192.168.1.51:10010',
         '/api': {
-          target: 'http://192.168.1.51:8080',
+          target: config.VITE_API_SEVER,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
         },

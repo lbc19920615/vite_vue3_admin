@@ -4,7 +4,7 @@ import dialogStyle from './dialog.scss'
 const MyVueElement = defineCustomElement({
   // normal Vue component options here
   template: `
-    <link href="//cdn.bootcdn.net/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
   <div class="dialog" :class="{'dialog--opened': opened, 'dialog--ani': ani, 'dialog--no-modal': !modal || modal === 'false'}">
     <div class="dialog-inner" v-bind:style="getStyle">
       <div class="dialog-header">

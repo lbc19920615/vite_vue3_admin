@@ -160,7 +160,7 @@ import {
   useAppPageControl,
   PageControlMixin,
 } from "@/mixins/framework";
-import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
+// import {COMMAND, sendJSON5ChannelMessage} from "@/channel";
 
 import {useRouter2} from "@/hooks/router";
 import {VARS_PAGE_MODEL_NAME} from "@/vars";
@@ -463,7 +463,8 @@ export default defineComponent({
                   )
               );
               if (err) {
-                globalThis.ElMessage.error('保存表单失败 saveJson')
+                globalThis.ElMessage.error('保存表单失败 saveJson');
+                state.loading = false
                 return;
               }
               console.log('res', res)
