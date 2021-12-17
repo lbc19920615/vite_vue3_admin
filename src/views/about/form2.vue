@@ -388,8 +388,28 @@ export default defineComponent({
       async ['call:save'](e) {
         let { parts, partName, pathArr, process } = e
 
-        let value = ZY.JSON5.parse(cachedPageControlModel.value)
-        console.log(cachedPageControlModel)
+        async function onSuccess(value, form) {
+          cachedPageControlModel.value = ZY.JSON5.stringify(value)
+          let formDef = buildFormDep(value, value.name, {
+            src: 'comformscr2.twig'
+          });
+          // console.log(value, formDef)
+          cachedPageControlModel.def = formDef.init.def
+          cachedPageControlModel.metas = form.metas
+
+          console.log(form, cachedPageControlModel)
+          await page.dispatchRoot('SetStoreLocal', {
+            storeName: global_pageStoreName,
+            data: cachedPageControlModel
+          })
+          window.parent.postMessage(
+              new Lib.CommandMessage('form:save', {
+                metas: getMetas(form.metas),
+                formName: cachedPageControlModel.name,
+                form
+              }),
+              '*')
+        }
 
         function getMetas(metas) {
           if (typeof metas === 'string') {
@@ -426,45 +446,36 @@ export default defineComponent({
 
             // console.log( metas)
             if (import.meta.env.MODE !== 'development') {
-              let res = await toolApi.saveJson(form.properties,
-                  cachedPageControlModel.name + '.json5',
-                  {
-                    headers: {
-                      'X-Access-Token': iframeCached ? iframeCached.token : '',
-                    },
-                    data: {
-                      formName: cachedPageControlModel.name
-                    },
-                    newProps: ZY.JSON5.parse(form.properties),
-                    oldProps: drag_cached.oldProps,
-                    // tableName: metas?.form_data ?? ''
-                  }
-              )
+              let [err, res] = await ZY.awaitTo(
+                  toolApi.saveJson(form.properties,
+                      cachedPageControlModel.name + '.json5',
+                      {
+                        headers: {
+                          'X-Access-Token': iframeCached ? iframeCached.token : '',
+                        },
+                        data: {
+                          formName: cachedPageControlModel.name
+                        },
+                        newProps: ZY.JSON5.parse(form.properties),
+                        oldProps: drag_cached.oldProps,
+                        // tableName: metas?.form_data ?? ''
+                      }
+                  )
+              );
+              if (err) {
+                globalThis.ElMessage.error('保存表单失败 saveJson')
+                return;
+              }
+              console.log('res', res)
               form.metas = ZY.JSON5.stringify({
                 form_data: res
               })
+              await onSuccess(value, form)
+            } else {
+              await onSuccess(value, form)
             }
 
-            cachedPageControlModel.value = ZY.JSON5.stringify(value)
-            let formDef = buildFormDep(value, value.name, {
-              src: 'comformscr2.twig'
-            });
-            // console.log(value, formDef)
-            cachedPageControlModel.def = formDef.init.def
-            cachedPageControlModel.metas = form.metas
 
-            console.log(form, cachedPageControlModel)
-            await page.dispatchRoot('SetStoreLocal', {
-              storeName: global_pageStoreName,
-              data: cachedPageControlModel
-            })
-            window.parent.postMessage(
-                new Lib.CommandMessage('form:save', {
-                  metas: getMetas(form.metas),
-                  formName: cachedPageControlModel.name,
-                  form
-                }),
-                '*')
 
             state.loading = false
           })

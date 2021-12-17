@@ -4,6 +4,8 @@
     let jshref = new URL('element-plus.1.1.0.js', import.meta.url).href
     // console.log(jshref)
     globalThis.importScripts(jshref).then(function () {
+      // ElMessage.info('sdsds')
+      globalThis.ElMessage = globalThis.ElementPlus.ElMessage;
       globalThis.app = window.startApp();
     })
   }, 30)

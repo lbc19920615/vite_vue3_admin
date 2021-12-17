@@ -83,6 +83,7 @@ export function useToolApi() {
       return res.data;
     } catch (e) {
       console.log('saveJson err', e)
+      return Promise.reject(e)
     }
   }
 
