@@ -800,48 +800,48 @@ ${obj.weapp}
             }
         )
       },
-      ['add:events'](e) {
-        let { parts, partName, selfpath } = e
-        parts[partName].arrAppend(selfpath)
-        // console.log('add:events',  parts[partName])
-      },
-      ['open:events'](e) {
-        currentFromDialog = e
-        page.refsManager.runCom('form-event-select', 'load')
-        page.webComponentRef.toggleDialog('form-event-dialog');
-      },
-      async ['save:single:events'](e) {
-        let { parts, partName, selfpath } = e
-        let model = parts[partName].getModel()
-        let current = toRaw(ZY.lodash.get(model, selfpath))
-        // console.log('save:single:events', e, current)
-        await FormsEvent.saveCache2File(
-            [
-              {
-                name: current.name,
-                value: current
-              }
-            ],
-            {
-              fileName: current.name
-            }
-        )
-      },
-      async ['forms:select-event'](e) {
-        let {value, scope} = e
-        let { parts, partName, selfpath, process } = currentFromDialog
-        // console.log('forms:select-form', e, currentFromDialog)
-        let appendData = value
-        // // console.log(appendData)
-        parts[partName].arrAppend(selfpath, appendData)
-        await ZY.sleep(300)
-        page.webComponentRef.toggleDialog('form-event-dialog');
-      },
-      ['remove:events'](e) {
-        // console.log('sdsdsdsdsdsds', e)
-        let { parts, partName, fromPath, indexKey } = e
-        parts[partName].arrSplice(fromPath, indexKey)
-      },
+      // ['add:events'](e) {
+      //   let { parts, partName, selfpath } = e
+      //   parts[partName].arrAppend(selfpath)
+      //   // console.log('add:events',  parts[partName])
+      // },
+      // ['open:events'](e) {
+      //   currentFromDialog = e
+      //   page.refsManager.runCom('form-event-select', 'load')
+      //   page.webComponentRef.toggleDialog('form-event-dialog');
+      // },
+      // async ['save:single:events'](e) {
+      //   let { parts, partName, selfpath } = e
+      //   let model = parts[partName].getModel()
+      //   let current = toRaw(ZY.lodash.get(model, selfpath))
+      //   // console.log('save:single:events', e, current)
+      //   await FormsEvent.saveCache2File(
+      //       [
+      //         {
+      //           name: current.name,
+      //           value: current
+      //         }
+      //       ],
+      //       {
+      //         fileName: current.name
+      //       }
+      //   )
+      // },
+      // async ['forms:select-event'](e) {
+      //   let {value, scope} = e
+      //   let { parts, partName, selfpath, process } = currentFromDialog
+      //   // console.log('forms:select-form', e, currentFromDialog)
+      //   let appendData = value
+      //   // // console.log(appendData)
+      //   parts[partName].arrAppend(selfpath, appendData)
+      //   await ZY.sleep(300)
+      //   page.webComponentRef.toggleDialog('form-event-dialog');
+      // },
+      // ['remove:events'](e) {
+      //   // console.log('sdsdsdsdsdsds', e)
+      //   let { parts, partName, fromPath, indexKey } = e
+      //   parts[partName].arrSplice(fromPath, indexKey)
+      // },
       ['submit:form'](e) {
         let { scope, parts } = e
         let model = parts[scope.name].getModel()
@@ -850,17 +850,17 @@ ${obj.weapp}
           // console.log('sddddddddddddd');
         }
       },
-      async ['load:plumb:layout']() {
-        if (page.ctx.LayoutContext) {
-          let obj = await ZY_EXT.fileOpenJSON5()
-          if (obj.layout) {
-            // console.log('layout', obj.layout, obj)
-            await page.ctx.LayoutContext.importToolsData(obj.layout)
-            await ZY.sleep(300)
-            await page.ctx.LayoutContext.saveCache2Storage(obj.layout)
-          }
-        }
-      },
+      // async ['load:plumb:layout']() {
+      //   if (page.ctx.LayoutContext) {
+      //     let obj = await ZY_EXT.fileOpenJSON5()
+      //     if (obj.layout) {
+      //       // console.log('layout', obj.layout, obj)
+      //       await page.ctx.LayoutContext.importToolsData(obj.layout)
+      //       await ZY.sleep(300)
+      //       await page.ctx.LayoutContext.saveCache2Storage(obj.layout)
+      //     }
+      //   }
+      // },
       ['model:update:all'](e) {
         let { model, key, newVal, config } = e
         if (config.process === page.store.model.textarea_step) {
@@ -873,54 +873,7 @@ ${obj.weapp}
           page.execComEventHandler('model:update:all', e)
         }
       },
-      // ['preview']() {
-      //   let url = getPreviewUrl()
-      //   let manager = ZY.BOM.createWindowManager({url: url, target: 'previewWin-' + global_pageStoreName})
-      //   manager.open({
-      //     left: window.innerWidth * .1,
-      //     top: 50,
-      //     width: 1440,
-      //     height: 700
-      //   })
-      //   setTimeout(() => {
-      //     let refernce = manager.getReference()
-      //     // console.log(refernce, refernce.Z_PAGE_VERSION)
-      //   }, 1000)
-      //   // router.push(url)
-      // }
-      // ['model:update'](e) {
-      //   let { model, key, newVal, config } = e
-      // }
     })
-
-
-
-
-    // async function onSaveLayout(e) {
-    //   if (cachedPageControlModel) {
-    //
-    //     // await page.dispatchRoot('SetStoreEvents', cachedPageControlModel)
-    //
-    //     cachedPageControlModel.layoutDesign = e.currentData
-    //
-    //     await page.dispatchRoot('SetStoreLocal', {
-    //       storeName: global_pageStoreName,
-    //       data: cachedPageControlModel
-    //     })
-    //
-    //   }
-    //   console.log('onSaveLayout', cachedPageControlModel, e)
-    //   // await ZY_EXT.store.setItem('current-data', e.currentData)
-    //   // sendChannelMessage(COMMAND.RELOAD)
-    //   sendJSON5ChannelMessage({
-    //     type: COMMAND.RELOAD,
-    //     e: {}
-    //   })
-    // }
-    //
-    // let layoutRef = page.setRef('layout')
-
-    let layoutStorePrefix = global_pageStoreName + '-play'
 
 
     function onClosed() {
@@ -929,17 +882,11 @@ ${obj.weapp}
 
 
     return {
-      // layoutRef,
       store: page.store,
-      // onSaveLayout,
-      // formula,
       vue2DialogRef,
       wechatDialogRef,
       state,
-      // getPreviewUrl,
       onClosed,
-      layoutStorePrefix,
-      // jumpTo,
       page,
       allDef: page.defMap,
     }
