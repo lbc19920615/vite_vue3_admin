@@ -15,7 +15,7 @@
 
 <template>
   <div class="z-dragxml-com z-drag-grid"
-       :class="drag_highlight_cls('itemUUID', uuid)"
+       :class="zdrag__highlight_cls('itemUUID', uuid)"
        @mouseenter.stop="onMouseEnter"
        @dragleave="ondragleave"
        @mouseleave="ondragleave"

@@ -1,4 +1,4 @@
-import deepMerge from 'deepmerge'
+// import deepMerge from 'deepmerge'
 
 export let ZDragHighlightMixin = {
   inject: ['dragxml'],
@@ -6,7 +6,7 @@ export let ZDragHighlightMixin = {
     return {}
   },
   methods: {
-    drag_highlight_cls(key, value) {
+    zdrag__highlight_cls(key, value) {
       let isHighLight = false
       let current = this.dragxml.getCurrent()
       if (current.origin && current.origin[key]) {
@@ -54,6 +54,12 @@ export let ZDragCommonMixin = {
   },
   computed: {
     form_config() {
+      if (this.cusDragXml && this.cusDragXml.getFormConfig) {
+        return this.cusDragXml.getFormConfig()
+      }
+      return {}
+    },
+    zdrag__form_config() {
       if (this.cusDragXml && this.cusDragXml.getFormConfig) {
         return this.cusDragXml.getFormConfig()
       }
@@ -120,13 +126,19 @@ if (!_c.server.field_name) {
     GET_CONFIG(path, defaultVal) {
       return ZY.lodash.get(this.cus_config, path, defaultVal)
     },
+    zdrag__GET_CONFIG(path, defaultVal) {
+      return ZY.lodash.get(this.cus_config, path, defaultVal)
+    },
     onMouseEnter(e) {
       // console.log('onMouseEnter', e)
       this.dragxml.onMouseEnter(e)
     },
     onMouseLeave(e) {
-
-    }
+    },
+    zdrag__onMouseEnter(e) {
+      // console.log('onMouseEnter', e)
+      this.dragxml.onMouseEnter(e)
+    },
   },
   mounted() {
     this.dragxml.register(this.uuid, this)

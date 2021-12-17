@@ -1,11 +1,11 @@
 <template>
   <div class="z-dragxml-com"
-       :class="drag_highlight_cls('itemUUID', uuid)"
-       @mouseenter.stop="onMouseEnter">
+       :class="zdrag__highlight_cls('itemUUID', uuid)"
+       @mouseenter.stop="zdrag__onMouseEnter">
 <!--    {{form_config}}-->
-    <z-cell-item v-bind="form_config"
-                 :label="GET_CONFIG('ui.label', '')"
-                 :desc="GET_CONFIG('ui.desc', '')"
+    <z-cell-item v-bind="zdrag__form_config"
+                 :label="zdrag__GET_CONFIG('ui.label', '')"
+                 :desc="zdrag__GET_CONFIG('ui.desc', '')"
     >
     custom
     </z-cell-item>

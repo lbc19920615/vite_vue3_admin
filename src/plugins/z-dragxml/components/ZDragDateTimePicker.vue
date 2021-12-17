@@ -1,6 +1,6 @@
 <template>
   <div class="z-dragxml-com z-dragxml-input"
-       :class="drag_highlight_cls('itemUUID', uuid)"
+       :class="zdrag__highlight_cls('itemUUID', uuid)"
        @mouseenter.stop="onMouseEnter"
   >
     <!--    {{uuid}}-->

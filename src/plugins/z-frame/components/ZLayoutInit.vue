@@ -50,7 +50,7 @@
 <el-row class="z-drag-layout"
         :z-layout-uuid="state.layoutUUID"
         :z-uuid="uuid"
-        :class="drag_highlight_cls('layoutUUID', state.layoutUUID)"
+        :class="zdrag__highlight_cls('layoutUUID', state.layoutUUID)"
         layout-dom="layout-dom"
         :id="initId"
 >
