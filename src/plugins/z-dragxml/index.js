@@ -15,6 +15,7 @@ import ZDragUpload from "@/plugins/z-dragxml/components/ZDragUpload.vue";
 import ZDragAddress from "@/plugins/z-dragxml/components/ZDragAddress.vue";
 import ZDragGrid from "@/plugins/z-dragxml/components/ZDragGrid.vue";
 import ZDragSubForm from "@/plugins/z-dragxml/components/ZDragSubForm.vue";
+import ZDragCustom from "@/plugins/z-dragxml/components/ZDragCustom.vue";
 
 export function install(app) {
   CustomVueComponent.app = app
@@ -28,6 +29,7 @@ export function install(app) {
   CustomVueComponent.register(ZDragCheckbox)
   CustomVueComponent.register(ZDragAddress)
   CustomVueComponent.register(ZDragUpload)
+  CustomVueComponent.register(ZDragCustom)
   CustomVueComponent.register(ZDragRichText)
   CustomVueComponent.register(ZDragInputNumber)
   CustomVueComponent.register(ZDragGrid)
