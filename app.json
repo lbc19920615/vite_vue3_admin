@@ -6,6 +6,6 @@
     "command": "npm run gongsi"
   },
   "production": {
-    "command": "npm run gongsi"
+    "command": "npm run pre:gongsi"
   }
 }

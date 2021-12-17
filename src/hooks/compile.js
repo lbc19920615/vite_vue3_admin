@@ -1,7 +1,8 @@
 import {renderForm} from "@/utils/tpllib";
 
 export function initCompile() {
-  fetch(import.meta.env.VITE_REMOTE_RES_ORIGIN + '/public/render/comformscr2.twig').then(res => {
+  fetch(globalThis.serverRes.template)
+    .then(res => {
     return res.text()
   }).then((str) => {
     let tpl = document.createElement('script');

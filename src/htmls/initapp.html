@@ -3,7 +3,10 @@
 
   {
     function ready() {
-      let jshref = new URL('element-plus.1.1.0.js', import.meta.url).href
+      let jshref = new URL('element-plus.1.1.0.js', import.meta.url).href;
+      globalThis.serverRes = {
+        template:  new URL('comformscr2.twig', import.meta.url).href
+      }
       // console.log(jshref)
       globalThis.importScripts(jshref).then(function () {
         // ElMessage.info('sdsds')

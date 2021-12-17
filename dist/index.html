@@ -28,7 +28,7 @@
           --z-emoji-zoom: 0.7;
       }
     </style>
-    <script type="module" crossorigin src="/assets/index.23ee6f22.js"></script>
+    <script type="module" crossorigin src="/assets/index.872417fc.js"></script>
     <link rel="modulepreload" href="/assets/vendor.70e2a6e0.js">
     <link rel="stylesheet" href="/assets/index.71233784.css">
   </head>
@@ -737,25 +737,38 @@ style="zoom: ${zoom}" class="s_face">&nbsp;</a>`
 <!--  <script src="https://cdn.bootcdn.net/ajax/libs/jszip/3.6.0/jszip.min.js" async defer></script>-->
 <!--  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.2/echarts.min.js"  async defer></script>-->
 
-  
   <script type="module">
   // console.log(Vue)
-  setTimeout(() => {
-    let jshref = new URL('element-plus.1.1.0.js', import.meta.url).href
-    // console.log(jshref)
-    globalThis.importScripts(jshref).then(function () {
-      // ElMessage.info('sdsds')
-      globalThis.ElMessage = globalThis.ElementPlus.ElMessage;
-      globalThis.app = window.startApp();
-    })
-  }, 150)
+
+  {
+    function ready() {
+      let jshref = new URL('element-plus.1.1.0.js', import.meta.url).href
+      // console.log(jshref)
+      globalThis.importScripts(jshref).then(function () {
+        // ElMessage.info('sdsds')
+        globalThis.ElMessage = globalThis.ElementPlus.ElMessage;
+        globalThis.app = window.startApp();
+      })
+    }
+    // setTimeout(() => {
+    //
+    // }, 150)
+
+    function onLibReady() {
+      console.log('onLibReady');
+      ready();
+    }
+    globalThis.onLibReady = onLibReady
 
 
-  setTimeout(() => {
-    globalThis.importScripts('/jszip.min.js');
-    globalThis.importScripts('/echarts.min.js');
-  }, 300)
+    setTimeout(() => {
+      globalThis.importScripts('/jszip.min.js');
+      globalThis.importScripts('/echarts.min.js');
+    }, 300)
+  }
 </script>
+
+  
 
 
   </body>

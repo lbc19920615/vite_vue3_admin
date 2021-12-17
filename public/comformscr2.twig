@@ -1,0 +1,1110 @@
+{#{% import "./macros/formGroup.twig" as formGroup %}#}
+{#{% import "./macros/attr.twig" as attr %}#}
+
+
+<template>
+    <div class="http-com comformscr2">
+        {% for part in CONFIG.parts %}
+            {% set pathKey = "parts." ~ part.name %}
+            <div v-if="{{pathKey}}"
+                 :hidden="!debug"
+            >
+                <div>{% verbatim %}{{{% endverbatim %} {{pathKey}}.model {% verbatim %}}}{% endverbatim %}</div>
+                <div>{% verbatim %}{{{% endverbatim %} {{pathKey}}.computedModel {% verbatim %}}}{% endverbatim %}</div>
+                {#   <div>{{parts.form.computedModel}}</div>#}
+            </div>
+        {% endfor %}
+        {% for part in CONFIG.parts %}
+            {% set partConfigKey = 'config.parts[' ~ loop.index0 ~ '].def' %}
+            {% set pathKey = "parts." ~ part.name %}
+            {% set pathSKey = "'parts." ~ part.name ~ "'" %}
+            {% set modelKey = pathKey ~ ".model"  %}
+            {% if part.type == 'form' %}
+
+                {#      :style="getStyleFromStyles({{ partConfigKey }}.ui.styles)"#}
+                {#      {% verbatim %}{{ {% endverbatim %} parts {% verbatim %} }} {% endverbatim %}#}
+
+
+                <el-form class="z-form http-com-part http-com-part__{{ part.name }}"
+                         :ref="{{ pathKey }}.initEl" :model="{{ pathKey }}.model"
+                {#          {{ attr.parseKeyValue(part.def.ui.attrs) }}#}
+                {% for KeyValue in part.def.ui.attrs %} {{ KeyValue[0] }}="{{ KeyValue[1] }}"{% endfor %}
+                :style="getStyleFromStyles({{ partConfigKey }}.ui.styles)"
+                >
+                {#{{ modelKey }}#}
+                {#        {{ partConfigKey }}#}
+                {#            {% verbatim %}{{ {% endverbatim %} {{ modelKey }} {% verbatim %} }} {% endverbatim %}#}
+
+                {#        <slot-com :defs="slotContent" :attrs="{parts}"#}
+                {#                  :binds="{name: '{{ part.name }}', partName: '{{ part.name }}', parts, process: '{{ CONFIG.process}}' }"#}
+                {#                  name="form_before"></slot-com>#}
+                <slot-com :defs="slotContent" :attrs="{parts}"
+                          :binds="{name: '{{ part.name }}', partName: '{{ part.name }}', parts, process: '{{ CONFIG.process}}' }"
+                          name="form_beforebegin"></slot-com>
+                {{ partStr[part.name] }}
+                {#        <slot-com :defs="slotContent" :attrs="{parts}"#}
+                {#                  :binds="{name: '{{ part.name }}',  partName: '{{ part.name }}', parts, process: '{{ CONFIG.process}}' }"#}
+                {#                  name="form_after"></slot-com>#}
+                <slot-com :defs="slotContent" :attrs="{parts}"
+                          :binds="{name: '{{ part.name }}',  partName: '{{ part.name }}', parts, process: '{{ CONFIG.process}}' }"
+                          name="form_afterend"></slot-com>
+                </el-form>
+            {% endif %}
+            {% if part.type == 'form2' %}
+                {{ partStr[part.name] }}
+            {% endif %}
+            {% if part.type == 'table' %}
+                <slot-com :defs="slotContent" :attrs="{parts}"
+                          :binds="{name: '{{ part.name }}', partName: '{{ part.name }}', parts, process: '{{ CONFIG.process}}' }"
+                          name="table_prev"></slot-com>
+                {{ partStr[part.name] }}
+                {% verbatim %}{{ {% endverbatim %} typeof {{ pathKey }}.model.page {% verbatim %} }} {% endverbatim %}
+
+                {% verbatim %}{{ {% endverbatim %} {{ pathKey }}.model {% verbatim %} }} {% endverbatim %}
+
+                <z-pagination
+                        :page="{{ pathKey }}.model.page"
+                        {#              :current-page="{{ pathKey }}.model.page"#}
+                        :limit="{{ pathKey }}.model.limit"
+                        {#              :total="{{ pathKey }}.model.total"#}
+                        :total="50"
+                        @pagination="callPageEvent('table:pagination', {name: '{{ part.name }}', partName: '{{ part.name }}', parts, process: '{{ CONFIG.process}}' }, $event)"
+                ></z-pagination>
+            {% endif %}
+        {% endfor %}
+    </div>
+</template>
+
+<script type="module">
+    {#import { comHelper, formModel } from '{{ APP_CONFIG.server_origin }}/public/expose/main.js';#}
+    const {comHelper, formModel} = globalThis.ZY;
+
+    export default {
+      props: {
+        debug: {
+          type: Boolean
+        },
+        modelValue: null,
+        render: null
+      },
+      emits: [
+        'model:update',
+      ],
+      data() {
+        return {
+          comUUID: ZY.nid(),
+          comManager: null,
+          currentProcess: '{{ CONFIG.process }}',
+        }
+      },
+      mounted() {
+
+        const { inject } = global.Vue;
+        this.$emit('init', this);
+
+        let comManager = inject('comManager')
+        this.$nextTick(()=> {
+          comManager.context.sendEvent('http-component:com:mounted', {
+            httpComponentComContext: this,
+            comManager,
+            httpComponentContext: comManager.context,
+          })
+          comManager.context.sendEvent(`${comManager.context.is}@http-component:com:mounted`, {
+            httpComponentComContext: this,
+            comManager,
+            httpComponentContext: comManager.context,
+          })
+          comManager.register(this, this.comUUID)
+          comManager.context.setCurrentChild(this.comUUID)
+          // console.log(comManager)
+        })
+        this.comManager = comManager
+      },
+      beforeUnmount() {
+        // const { ref, inject, watch, getCurrentInstance, toRaw, nextTick } = global.Vue;
+        let comManager = this.comManager
+        // console.log(comManager)
+        comManager.destory(this.comUUID)
+      },
+      created() {
+        const { provide } = global.Vue;
+        provide('curFormCon', this)
+      },
+      setup(props, { emit }) {
+        let modelLocks = false
+        let ROOT_FUNC = `
+function ROOT_STATE(v, defaultVal) {
+ return ZY.lodash.get($rootStore.state, v, defaultVal)
+}
+//console.log($rootStore.getters.doneTodos('sds'))
+function ROOT_GETTERS(v, params = []) {
+ let fun  = ZY.lodash.get($rootStore.getters, v)
+ if (ZY.lodash.isFunction(fun)) {
+  return fun(...params)
+ }
+}
+      `
+
+
+        const COMMON_EVAL_FUNS = window.COM_FORM_COMMON_EVAL_FUNS
+
+        function heredoc(fn) {
+          return fn.toString().match(/\/\*\s*([\s\S]*?)\s*\*\//m)[1];
+        }
+        var txt = heredoc(function () {/*{{CONFIG_SOURCE_JSON5}}*/});
+        // console.log(txt)
+
+        const config = ZY.JSON5.parse(txt);
+        const { ref, inject, watch, getCurrentInstance, toRaw, nextTick } = global.Vue;
+        const { useStore } = global.Vuex
+        let store = useStore()
+
+        const globalStore = inject('globalStore');
+        const curFormCon = getCurrentInstance().ctx;
+
+
+        function initPart(partDef, {partsPath, partIndex} = {}) {
+          // console.log(partDef)
+          let rowDef = partDef.def
+          let partPath = `${partsPath}[${partIndex}].def`
+          let computedLinks = {
+          }
+          let reflectMap = new Map()
+          let computedFunMap = new Map()
+          // computed start
+          let ret = {
+          }
+          let computed = {}
+          for (let key in partDef.computed) {
+            /**
+             * 计算computed的function
+             * @type {Function}
+             */
+            computed[key] = new Function('model', 'options', `
+            let $root = options.context.ctx
+            let $rootStore = options.context.store
+            let A = options.context.app
+
+            ${commonFun}
+
+            function MODEL(v, defaultVal) {
+              return ZY.lodash.get(model, v, defaultVal)
+            }
+
+            // function ROOT_STATE(v, defaultVal) {
+            //    return ZY.lodash.get($rootStore.state, v, defaultVal)
+            // }
+
+            ${ROOT_FUNC}
+
+            return () => {
+              // console.log('computed ${key} build', options)
+              options.beforeBuild('${key}')
+              return ${partDef.computed[key]}
+            }
+        `)
+          }
+          // computed end
+          let model = null
+          const obj = formModel.createFormModel(rowDef);
+          formDefTravase(rowDef, computedLinks, {
+            path: '',
+            computedFunMap,
+            reflectMap,
+            pathArr: []
+          });
+
+
+          // console.log('rowDef', rowDef, computedLinks)
+          ret = globalStore.run(partDef.service, 'initModel', {
+            plain: obj,
+            computed,
+            callback: {
+              onComputedChange(key, newVal) {
+                let findKeys = computedLinks[key]
+                // console.log('onComputedChange', key, newVal, modelLocks)
+                // if (key === 'ui2_styles') {
+                //   console.log(findKeys)
+                // }
+                if (Array.isArray(findKeys)) {
+                  findKeys.forEach(findKeyItem => {
+
+                    let target = ZY.lodash.get(model, findKeyItem.parentKey)
+
+                    if (target && target.hasOwnProperty && !target.hasOwnProperty(findKeyItem.key)) {
+                      // console.log('sdsdsdsdsdsds')
+                      target[findKeyItem.key] = undefined
+                    }
+
+                    // console.log('findKeyItem', findKeyItem, modelLocks)
+
+                    if (!modelLocks) {
+                      comHelper.autoVal({
+                        obj: model,
+                        key: findKeyItem.key,
+                        base: model,
+                        computedVal() {
+                          // console.log('findKeyItem', findKeyItem)
+                          if (findKeyItem.valTpl) {
+                            // console.log(findKeyItem.valTpl)
+                            let context = {
+                              A: globalThis.getApp(),
+                              $VAL: newVal,
+                              L: ZY.lodash
+                            }
+                            return ZY_EXT.eval5(findKeyItem.valTpl, context)
+                          }
+                          return toRaw(newVal)
+                        }
+                      })
+                    }
+                  })
+                }
+              }
+            },
+            context: {
+              ctx: curFormCon,
+              app: globalThis.getApp(),
+              store
+            }
+          })
+          model = ret.model
+
+          ret.fromDef = function() {
+            const obj = formModel.createFormModel(rowDef);
+            return obj
+          }
+
+          function forceUpdate(parent, key, newVal) {
+            parent[key] = newVal
+            let obj = {
+              key,
+              newVal,
+              config,
+              model
+            }
+
+            curFormCon.comManager.context.sendEvent('model:update', obj)
+          }
+          ret.forceUpdate = forceUpdate
+
+          let cachedModel = ''
+
+
+          computedFunMap.forEach((computedFunItem) => {
+            // console.log(computedFunItem)
+            if (Array.isArray(computedFunItem.keys)) {
+              computedFunItem.keys.forEach(key => {
+                watch(() => {
+                  return ZY.deepGet(model, key)
+                }, (newVal, oldVal) => {
+                  // console.log('sdsdhsjdsjhdjsds', key)
+                  computedFunItem.run(model)
+                })
+              })
+            }
+          })
+
+          function flattenObject(ob) {
+            var toReturn = {};
+
+            for (var i in ob) {
+              if (!ob.hasOwnProperty(i)) continue;
+
+              if ((typeof ob[i]) == 'object' && ob[i] !== null) {
+                var flatObject = flattenObject(ob[i]);
+                for (var x in flatObject) {
+                  if (!flatObject.hasOwnProperty(x)) continue;
+
+                  toReturn[i + '.' + x] = flatObject[x];
+                }
+              } else {
+                toReturn[i] = ob[i];
+              }
+            }
+            return toReturn;
+          }
+
+          /**
+           * 比较新的path和旧的template path
+           * @description 1. @INDEX 必须是数字 2. 其余要key相等
+           * @param templatePathArr
+           * @param changedPathArr
+           * @returns {boolean}
+           */
+          function comparePathIsLikeTemplate(templatePathArr, changedPathArr) {
+            if (templatePathArr.length === changedPathArr.length) {
+              let flag = true
+              templatePathArr.forEach((templatePathArrItem, templatePathArrItemINDEX) => {
+                // templatePathArrItem @INDEX 对应的 changedPathArr 部分必须是数字
+                if (templatePathArrItem === '@INDEX') {
+                  if (!ZY.isNumeric(changedPathArr[templatePathArrItemINDEX])) {
+                    console.log(`changedPathArr ${templatePathArrItemINDEX} 不对`,  changedPathArr[templatePathArrItemINDEX])
+                    flag = false
+                  }
+                }
+                else {
+                  if (changedPathArr[templatePathArrItemINDEX] !== templatePathArrItem) {
+                    flag = false
+                  }
+                }
+              })
+              // console.log('sdsdsdsds')
+              return flag
+            }
+            return false
+          }
+
+          reflectMap.forEach((reflectMapItems, reflectMapKey) => {
+            if (Array.isArray(reflectMapItems)) {
+              reflectMapItems.forEach(reflectMapItem => {
+                let reflectLocks = false
+                let reflectOptions = reflectMapItem.reflectOptions
+                if (reflectOptions.v2) {
+                  let cachedModel = ''
+                  let templatePathArr = reflectMapItem.pathArr
+                  if (reflectMapItem.parentType === 'array') {
+                    templatePathArr = templatePathArr.concat(['@INDEX', reflectMapItem.reflect])
+                  }
+                  else if (reflectMapItem.parentType === 'object') {
+                    console.warn('reflectMap v2 parentType object 需要改')
+                  }
+
+                  // console.log(reflectMapItem, reflectMapKey, templatePathArr)
+                  watch(model,  (newVal, oldVal) => {
+                    let newObj = toRaw(newVal)
+                    // console.log(reflectLocks, reflectMapItem.key)
+                    if (!reflectLocks) {
+                      if (cachedModel) {
+                        let oldObj = ZY.JSON5.parse(cachedModel)
+                        let diffed = ZY.diff(oldObj, newObj)
+                        let flattenD = flattenObject(diffed)
+                        ZY.lodash.each(flattenD, function(newchangedPathVal, changedPath) {
+                          let changedPathArr = changedPath.split('.')
+                          let changedPathIsLikeTemplate = comparePathIsLikeTemplate(templatePathArr, changedPathArr);
+                          // console.log(changedPathArr,newchangedPathVal, templatePathArr, changedPathIsLikeTemplate)
+                          if (changedPathIsLikeTemplate) {
+                            let selfPathArr = changedPathArr.slice(0, changedPathArr.length - 1).concat([reflectMapItem.key])
+                            let context = {
+                              A: globalThis.getApp(),
+                              $VAL: newchangedPathVal,
+                              L: ZY.lodash
+                            }
+                            let newVal = ZY_EXT.eval5(reflectMapItem.valTpl, context)
+                            reflectLocks = true
+                            ZY.lodash.set(model, selfPathArr, newVal)
+                            // console.log(newVal, selfPathArr)
+                            setTimeout(() => {
+                              reflectLocks = false
+                            }, 150)
+                          }
+                        })
+                        // console.log(diffed, flattenD)
+                      }
+                    }
+                    cachedModel = ZY.JSON5.stringify(newObj)
+                  })
+                }
+              })
+            }
+          })
+
+          watch(model, (newVal, oldVal) => {
+            // console.log(modelLocks, newVal, oldVal)
+            if (!modelLocks) {
+              let newObj = toRaw(newVal)
+              if (!cachedModel) {
+                cachedModel = '{}'
+              } else {
+                //
+              }
+              let oldObj = ZY.JSON5.parse(cachedModel)
+              let diffed = ZY.diff(oldObj, newObj)
+              // console.log('model.content', oldObj, newObj)
+
+
+              reflectMap.forEach((arr, key) => {
+                // console.log(arr)
+                let reflectMapArr = arr
+                let reflectMapKey = key.trim()
+                let hasDiffedChange = ZY.deepGet(diffed, reflectMapKey)
+                let reflectMapArrKeys = reflectMapArr.map(v => v.key)
+                let reflectMapArrFullKeys = reflectMapArrKeys.map(v => {
+                  return `${reflectMapKey}.${v}`
+                })
+
+                // console.log(reflectMapKey, hasDiffedChange)
+                if (hasDiffedChange) {
+                  ZY.lodash.each(hasDiffedChange, (svalue, skey) => {
+                    if (typeof svalue !== 'undefined') {
+                      // let fullPath = key + '.' + skey
+                      let fullPath = [reflectMapKey, skey].filter(v => typeof v !== 'undefined').join('.')
+                      if (fullPath.trim().startsWith('.')) {
+                        fullPath = fullPath.trim().slice(1)
+                      }
+
+                      let modelTarget = ZY.deepGet(model, fullPath)
+                      if (typeof modelTarget === 'object') {
+                      }
+                      else {
+                        modelTarget = ZY.deepGet(model, reflectMapKey)
+                      }
+
+                      // console.log(`${fullPath} changed`, model, reflectMapArrFullKeys, reflectMapArr, reflectMap, modelTarget)
+
+                      // 如果更改的是reflect监听的元素 不需要更改其他reflectmap
+                      if (ZY.deepGet(model, reflectMapKey) === modelTarget && reflectMapArrFullKeys.includes(fullPath)) {
+                        return
+                      }
+
+                      // if (key === fullPath) {
+                      //   return
+                      // }
+
+                      reflectMapArr.forEach((arrItem) => {
+                        let {key, reflect, valTpl}  = arrItem
+
+                        if (!modelTarget.hasOwnProperty(reflect)) {
+                          return
+                        }
+
+
+                        let rawModel = toRaw(model)
+                        let $M = modelTarget
+                        let $VAL = ZY.deepGet($M, reflect)
+                        let calcedVal = undefined
+                        if (valTpl) {
+                          calcedVal = ZY_EXT.eval5(valTpl, {
+                            A: globalThis.getApp(),
+                            $R: reflect,
+                            $VAL,
+                            $M,
+                            $R_M: rawModel,
+                            $L: ZY.lodash,
+                            $DEFAULT: ZY.lodash.defaultTo,
+                            $NOW: Date.now()
+                          })
+                        } else {
+                          calcedVal = toRaw(modelTarget[reflect])
+                        }
+                        modelTarget[key]  = calcedVal
+
+                        // console.log('arrItem', parentPath, valTpl, path, rawModel, calcedVal)
+                        // ZY.lodash.set(model, path, calcedVal)
+                      })
+
+
+                    }
+                  })
+                }
+                // console.log(key, hasDiffedChange)
+              })
+
+              cachedModel = ZY.JSON5.stringify(newObj)
+              // emit('model:update', newVal);
+
+              // console.log(curFormCon.comManager.context)
+              curFormCon.comManager.context.sendEvent('model:update:all', {
+                newVal,
+                diffed,
+                config,
+                model
+              })
+            }
+          });
+
+          /**
+           * el 是el-form 的ref引用
+           */
+          ret.el = ref(null)
+          /**
+           * 初始化el-form 的ref引用
+           * @param ctx
+           */
+          ret.initEl = function(ctx) {
+            // console.log(ctx)
+            ret.el.value = ctx
+          }
+
+          function getEl(methodName, ...args) {
+            if (!ret.el ) {
+              throw new Error('formCom.value null')
+            }
+            // console.log(partKey, parts, part.el)
+            let elRef = ret.el.value
+            if (!elRef) {
+              throw new Error('formCom.value null')
+            }
+            return elRef
+          }
+          ret.getEl = getEl
+
+          /**
+           * 调用form的某个方法
+           * @param methodName
+           * @param args
+           * @returns {Promise<*>}
+           */
+          async function callEl(methodName, ...args) {
+            if (!ret.el ) {
+              throw new Error('formCom.value null')
+            }
+            // console.log(partKey, parts, part.el)
+            let elRef = ret.el.value
+            if (!elRef) {
+              throw new Error('formCom.value null')
+            }
+            return await ZY.awaitTo(elRef[methodName](...args))
+          }
+          ret.callEl = callEl
+
+          ret.getState = function() {
+            let res = {}
+            for (let k in ret.model) {
+              res[k] = ret.model[k]
+            }
+            for (let k in ret.computedModel) {
+              res[k] = ret.computedModel[k].value
+            }
+            return {
+              val: res,
+              toRaw() {
+                return ZY.JSON5.parse(ZY.JSON5.stringify(res))
+              }
+            }
+          }
+
+          /**
+           * 初始化model 不会触发computed reflect
+           * @param obj { any }
+           */
+          ret.initModel = function(obj = {}) {
+            // ZY.lodash.set(ret.model, path, value)
+            modelLocks = true
+            ZY.lodash.each(obj, function(item, key) {
+              ret.model[key] = item
+            })
+            setTimeout(() => {
+              // console.log('nextTick')
+              modelLocks = false
+            }, 150)
+          }
+
+          ret.getModelByPathArr = function(pathArr = []) {
+            let path = ZY.getObjPathFromPathArr(pathArr)
+            return ZY.lodash.get(ret.model, path)
+          }
+
+          /**
+           *
+           * @param path { string }
+           * @param value { any }
+           */
+          ret.setModel = function(path, value) {
+            ZY.lodash.set(ret.model, path, value)
+          }
+
+          ret.getModelByPath = function(path = '') {
+            return ZY.lodash.get(ret.model, path)
+          }
+
+          /**
+           * setModelByPath 通过path设置model
+           * @param path
+           * @param value
+           */
+          ret.setModelByPath = function(path, value) {
+            ZY.lodash.set(ret.model, path, value)
+          }
+
+          /**
+           * pathArr 设置对象同一等级其他函数
+           * @param pathArr
+           * @param key
+           * @param value
+           */
+          ret.setSameLevel = function(pathArr, key, value) {
+            let parentPath = ZY.getObjParentPathFromPathArr(pathArr)
+            if (parentPath) {
+              let parent = ret.getModelByPath(parentPath)
+              if (parent) {
+                parent[key] = value
+              }
+            }
+          }
+
+          /**
+           * 触发事件
+           * @param name
+           * @param event
+           */
+          ret.fireEvent = function(name, event) {
+            // console.log('curFormCon', name, event, curFormCon)
+            // 'form:input:blur'
+            curFormCon.callPageEvent(name, {
+              config,
+              process: config.process,
+              part: ret,
+              partDef,
+
+            }, event)
+          }
+
+          /**
+           * 设置动态options
+           * @param name
+           * @param value
+           */
+          ret.setDynamicOptions = function(name, value = []) {
+            store.dispatch('setDynamicOptions',
+              [
+                name,
+                value
+              ]
+            )
+          }
+
+          /**
+           * arr自动添加
+           * @param path
+           * @param initData
+           */
+          ret.arrAppend = function(path, initData = {}) {
+            let arr = ZY.lodash.get(ret.model, path)
+            // console.log(arr, path)
+            if (Array.isArray(arr)) {
+              arr.push(initData)
+            } else {
+              ZY.lodash.set(ret.model, path, [])
+              let newArr = ZY.lodash.get(ret.model, path)
+              // console.log('arr', newArr)
+              newArr.push(initData)
+            }
+            if (Array.isArray(arr)) {
+              return arr[arr.length - 1]
+            }
+            return
+          }
+
+          /**
+           * 获取part的配置
+           * @param configPath
+           * @returns {*}
+           */
+          ret.getPartConfig = function(configPath) {
+            let s_path = configPath.replace(partPath + '.', '')
+            return ZY.lodash.get(rowDef, s_path)
+          }
+
+          ret.get_SELF_CONFIG = function(path) {
+            // console.log(rowDef)
+            if (!path) {
+              return rowDef
+            }
+            return ZY.lodash.get(rowDef, path)
+          }
+
+          ret.rowDef = rowDef
+
+          /**
+           * arr删除
+           * @param path
+           * @param index
+           * @param deleteCount
+           */
+          ret.arrSplice = function(path, index, deleteCount = 1) {
+            let arr = ZY.lodash.get(ret.model, path)
+            if (Array.isArray(arr)) {
+              arr.splice(index, deleteCount)
+            }
+            // console.log(arr)
+          }
+
+          /**
+           * 获取不带computed值的model
+           * @returns {{}}
+           */
+          ret.getModel = function() {
+            let res = {}
+            for (let k in ret.model) {
+              res[k] = ret.model[k]
+            }
+            return res
+          }
+
+          /**
+           * 获取raw 的状态
+           * @param args
+           * @returns {*}
+           */
+          ret.getRawState = function(...args) {
+            return ret.getState(...args).toRaw()
+          }
+          return ret
+        }
+
+        function formDefTravase(formDef = {}, computedLinks, ext = {path: '', pathArr: [], reflectMap: {}, computedFunMap: new Map()}) {
+
+          if (formDef.type === 'object') {
+            Object.entries(formDef.properties)
+              .forEach(([ key, formDefProp ]) => {
+                let truePath = ext.path ? `${ext.path}.${key}` : key
+
+                if (formDefProp.type !== 'array') {
+                  if (formDefProp.type === 'object') {
+                    let newPathArr = ext.pathArr ? ext.pathArr.concat([key]) : ext.pathArr
+                    // console.log('oh this is a big formDefTravase handle object', {
+                    //   truePath,
+                    //   formDef
+                    // })
+                    formDefTravase(formDefProp, computedLinks, {
+                      path: truePath,
+                      parentDef: formDef.properties[key],
+                      parentType: 'object',
+                      computedFunMap: ext.computedFunMap,
+                      reflectMap: ext.reflectMap,
+                      pathArr: newPathArr
+                    });
+                  }
+                  else {
+                    if (formDefProp.computedFun) {
+                      let spath = ext.path
+                      const fun = formDefProp.computedFun;
+                      let keys = []
+                      let modelFun = Array.of(...fun.matchAll(/(MODEL\()[^\)]*\)/g))
+                      let modelStr = modelFun.map( v => v[0]).join(';')
+                      // console.log(modelStr)
+                      ZY_EXT.eval5(modelStr, {
+                        MODEL(key) {
+                          keys.push(key)
+                        }
+                      })
+
+                      // console.log(truePath, fun, keys)
+                      if (ext.computedFunMap) {
+                        ext.computedFunMap.set(truePath, {
+                          fun,
+                          spath,
+                          keys,
+                          run: function(model) {
+                            let val = ZY_EXT.eval5(fun, {
+                              app: globalThis.getApp(),
+                              T: COMMON_EVAL_FUNS,
+                              ...COMMON_EVAL_FUNS,
+                              MODEL(v, defaultVal) {
+                                return ZY.lodash.get(model, v, defaultVal)
+                              }
+                            })
+                            console.log(val)
+                            ZY.lodash.set(model, truePath, val)
+                          }
+                        })
+                      }
+                    }
+                    if (formDefProp.computedProp) {
+                      const linked = formDefProp.computedProp;
+                      if (!computedLinks[linked]) {
+                        computedLinks[linked] = [];
+                      }
+                      computedLinks[linked].push({
+                        key,
+                        parentType: ext.parentType ? ext.parentType :  '',
+                        parentKey: ext.path,
+                        parentDef: ext.parentDef ? ext.parentDef : {},
+                        valTpl: formDefProp.computedTpl,
+                        reflectMap: ext.reflectMap
+                      });
+                    }
+                    if (formDefProp.reflect) {
+                      let target = []
+                      let spath = ext.path
+                      let obj = {
+                        key,
+                        // reflectArr: formDefProp.reflectArr,
+                        // reflectArr: ['firstName', 'lastName'],
+                        reflectOptions: formDefProp.reflectOptions ?? {},
+                        parentPath: ext.path,
+                        path: truePath,
+                        parentType: ext.parentType,
+                        reflect: formDefProp.reflect,
+                        valTpl: formDefProp.reflectTpl,
+                        pathArr: ext.pathArr
+                      }
+                      if (ext.reflectMap.has(spath)) {
+                        target = ext.reflectMap.get(spath)
+                      }
+                      target.push(obj)
+                      ext.reflectMap.set(spath, target)
+                    }
+                  }
+                }
+                else {
+                  let newPathArr = []
+                  // console.log(ext.pathArr)
+                  if (ext.pathArr.length < 1) {
+                    newPathArr = ext.pathArr.concat([key])
+                  }
+                  else {
+                    newPathArr = ext.pathArr.concat(['@INDEX', key])
+                  }
+                  formDefTravase(formDefProp.items, computedLinks, {
+                    path: truePath,
+                    parentDef: formDef.properties[key].items,
+                    parentType: 'array',
+                    computedFunMap: ext.computedFunMap,
+                    reflectMap: ext.reflectMap,
+                    pathArr: newPathArr
+                  });
+                }
+              });
+          }
+        }
+
+        let templateFun = ''
+        for (let funName in ZY.lodash) {
+          templateFun = templateFun + `
+        function ${funName}(...args) {
+          return ZY.lodash.${funName}(...args)
+        }
+      `
+        }
+
+        let commonFun = `
+        ${templateFun}
+
+        function ZY_hour_between_2_date(date1, date2) {
+          if (date1 && date2) {
+            return ZY.Time.subtract2Date(date1, date2).asHours()
+          }
+          return null
+        }
+
+        function ZY_floor(v, presion) {
+          let ret = floor(v, presion)
+          if (ret === 0) {
+            return ''
+          }
+          return ret
+        }
+
+        function LENGTH(v) {
+          if (v && v.length) {
+            return v.length
+          }
+          return -1
+        }
+
+        function VAL(v, defaultVal) {
+          return ZY.lodash.get($root, v, defaultVal)
+        }
+      `
+
+        function dxEval(v, $root, context) {
+          let trueContext = context ? context : this;
+          // console.log(trueContext)
+          let fun = new Function('valueTemplate', 'options', `
+          // let $config = $context.config
+          let $root = options.$root
+          let $rootStore = options.store
+          let A = options.app
+
+         ${commonFun}
+
+         ${ROOT_FUNC}
+
+          function VAL(v, defaultVal) {
+            return ZY.lodash.get($root, v, defaultVal)
+          }
+
+          function MODEL(v, defaultVal) {
+            return ZY.lodash.get($root.model, v, defaultVal)
+          }
+
+          return eval(valueTemplate)
+        `)
+
+          return fun(v, {
+            $root,
+            context: trueContext,
+            app: globalThis.getApp(),
+            store
+          })
+        }
+
+        /**
+         *
+         * @param partContext
+         * @param v
+         * @returns {undefined|*}
+         */
+        function dxValue(partContext, v) {
+          // console.log('this', this, v)
+          if (!partContext) {
+            // throw new Error(`no partContext`)
+            return undefined
+          }
+          return dxEval(v, partContext, this)
+        }
+
+        /**
+         * 即将废弃
+         * @deprecated
+         * @param v
+         * @returns {*}
+         */
+        function valTpl(v) {
+          return dxEval(v, {}, this)
+        }
+
+
+        let parts = {}
+        config.parts.forEach((part, partIndex) => {
+          parts[part.name] = initPart(part, {
+            partsPath: 'config.parts',
+            partIndex
+          })
+        })
+
+        function z_get(obj, p, defaultVal) {
+          let ret = ZY.lodash.get(obj, p, defaultVal)
+          if (ret === '') {
+            return defaultVal
+          }
+          return ret
+        }
+
+
+        /**
+         * 触发上一级page control的事件接受
+         * @param name
+         * @param scope
+         * @param e
+         */
+        function callPageEvent(name, scope, e) {
+          // console.log('callPageEvent',  curFormCon.comManager.context)
+          curFormCon.comManager.context.sendEvent(name, {
+            scope,
+            originEvent: e,
+          })
+        }
+
+        /**
+         * 获取配置
+         * @param path
+         * @returns {*}
+         */
+        function getCONFIG(path) {
+          // console.log('getCONFIG', config, path)
+          return ZY.lodash.get(config, path)
+        }
+
+
+        /**
+         * 获取配置
+         * @param path
+         * @returns {*}
+         */
+        function getUI_CONFIG(path) {
+          // console.log('getCONFIG', config, path)
+          return ZY.lodash.get({
+            config
+          }, path)
+        }
+
+        /**
+         * 即将废弃
+         * @param path
+         * @returns {*}
+         */
+        function getUI_CONFIG_DEP_ID(path) {
+          let c = getUI_CONFIG(path)
+          return c.TOOLS_DEPID
+        }
+
+
+        /**
+         * 即将废弃
+         * @param path
+         * @returns {*}
+         */
+        function getUI_CONFIG_TOOLS_DEP_ITEM_ID(path) {
+          let c = getUI_CONFIG(path)
+          return c.TOOLS_DEP_ITEM_ID
+        }
+
+        /**
+         * 从 style entries 得到style string
+         * @param styles
+         * @returns {string}
+         */
+        function getStyleFromStyles(styles) {
+          let str = ''
+          if (Array.isArray(styles)) {
+            styles.forEach(([key, value]) => {
+              str = str + `${key}: ${value};`
+            })
+          }
+          // console.log('getStyleFromStyles', styles, str)
+          return str
+        }
+
+
+        /**
+         * 设置动态options 即将废弃
+         * @param name
+         * @param value
+         */
+        function setDynamicOptions(name, value) {
+          globalStore.dispatch('setDynamicOptions',
+            [
+              name,
+              value
+            ]
+          )
+        }
+
+        /**
+         * handleAttrVal
+         * @param v
+         * @returns {*}
+         */
+        function handleAttrVal(v) {
+          // console.log('handleAttrVal', v)
+          return v
+        }
+
+
+        let instanse = {
+          config,
+          parts,
+          getStyleFromStyles,
+          defaultTo: ZY.lodash.defaultTo,
+          z_get,
+          callPageEvent,
+          getUI_CONFIG_TOOLS_DEP_ITEM_ID,
+          getUI_CONFIG,
+          getUI_CONFIG_DEP_ID,
+          getCONFIG,
+          COMMON_EVAL_FUNS,
+          setDynamicOptions,
+          get: ZY.lodash.get,
+          handleAttrVal,
+          dxValue,
+          valTpl,
+          // dxEval,
+        };
+
+        instanse.slotContent = (function() {
+          if (props.render) {
+            return props.render()
+          }
+          return {
+            default: []
+          }
+        })()
+
+
+        return instanse
+      },
+    };
+</script>
