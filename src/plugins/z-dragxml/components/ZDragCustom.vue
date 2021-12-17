@@ -24,6 +24,13 @@ export default createZDragComponent('ZDragCustom', {
   },
   INIT_CONFIG: {
     type: 'string'
+  },
+  DRAG_EXPORT() {
+    return {
+      ui: {
+        custom: true,
+      }
+    }
   }
 })
 </script>
