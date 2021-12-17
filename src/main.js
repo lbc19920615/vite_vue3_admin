@@ -256,6 +256,8 @@ comPlugin.install = function (app) {
     globalThis.chinaAreaManager = res
   })
 
-
-
+  console.log(globalThis.onLibReady)
+  if (globalThis.onLibReady) {
+    globalThis.onLibReady();
+  }
 })()
