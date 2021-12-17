@@ -21,7 +21,7 @@ export let ZDragHighlightMixin = {
       return {
         ['z-drag-highlight']: isHighLight
       }
-    }
+    },
   }
 }
 
@@ -53,6 +53,9 @@ export let ZDragCommonMixin = {
     }
   },
   computed: {
+    zdrag__highlight() {
+      return this.zdrag__highlight_cls('itemUUID', this.uuid)
+    },
     form_config() {
       if (this.cusDragXml && this.cusDragXml.getFormConfig) {
         return this.cusDragXml.getFormConfig()

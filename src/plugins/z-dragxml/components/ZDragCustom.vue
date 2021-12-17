@@ -1,6 +1,6 @@
 <template>
   <div class="z-dragxml-com"
-       :class="zdrag__highlight_cls('itemUUID', uuid)"
+       :class="zdrag__highlight()"
        @mouseenter.stop="zdrag__onMouseEnter">
 <!--    {{form_config}}-->
     <z-cell-item v-bind="zdrag__form_config"
